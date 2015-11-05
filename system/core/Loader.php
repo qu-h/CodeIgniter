@@ -1257,10 +1257,8 @@ class CI_Loader {
 	 * @used-by	CI_Loader::initialize()
 	 * @return	void
 	 */
-	protected function _ci_autoloader()
-	{
-		if (file_exists(APPPATH.'config/autoload.php'))
-		{
+	protected function _ci_autoloader() {
+		if (file_exists(APPPATH.'config/autoload.php')) {
 			include(APPPATH.'config/autoload.php');
 		}
 
