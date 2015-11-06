@@ -910,11 +910,12 @@ class Smarty extends Smarty_Internal_TemplateBase
      *
      * @return Smarty current Smarty instance for chaining
      */
-    public function addPluginsDir($plugins_dir)
-    {
+    public function addPluginsDir($plugins_dir) {
         if (!isset($this->plugins_dir)) {
             $this->plugins_dir = array(SMARTY_PLUGINS_DIR);
+//             $this->plugins_dir[] = ;
         }
+        
         $this->plugins_dir = array_merge((array) $this->plugins_dir, (array) $plugins_dir);
         if (isset($this->_cache['plugins_dir'])) {
             unset($this->_cache['plugins_dir']);
@@ -927,11 +928,10 @@ class Smarty extends Smarty_Internal_TemplateBase
      *
      * @return array list of plugin directories
      */
-    public function getPluginsDir()
-    {
+    public function getPluginsDir() {
         if (!isset($this->_cache['plugins_dir'])) {
             if (!isset($this->plugins_dir)) {
-                $this->plugins_dir = array(SMARTY_PLUGINS_DIR);
+                $this->plugins_dir = array(SMARTY_PLUGINS_DIR,SMARTY_DIR . 'ci' . DS);
             } else {
                 $plugins_dir = (array) $this->plugins_dir;
                 $this->plugins_dir = array();

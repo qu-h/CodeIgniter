@@ -1,0 +1,23 @@
+.tp-caption.bottomtext, .bottomtext {
+	color: #ffffff;
+    font-family: Roboto,san-serif;
+    font-size: 48px;
+    font-weight: 100;
+    line-height: 60px;
+}
+
+.tp-caption.thintext, .thintext {
+    background-color: transparent;
+    border-color: rgb(255, 214, 88);
+    border-style: none;
+    border-width: 0;
+    color: #ffffff;
+    font-family: Roboto,san-serif;
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+
+.tp-caption.bottomtext,.bottomtext{font-size:48px;line-height:60px;font-weight:100;font-family:Roboto,san-serif;color:#ffffff;text-decoration:none;background-color:transparent;border-width:0px;border-color:rgb(255,214,88);border-style:none}.tp-caption.thintext,.thintext{font-size:18px;line-height:30px;font-weight:100;font-family:Roboto,san-serif;color:#ffffff;text-decoration:none;background-color:transparent;border-width:0px;border-color:rgb(255,214,88);border-style:none}

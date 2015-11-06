@@ -235,27 +235,25 @@ if ( ! function_exists('get_config'))
 	 * @param	array
 	 * @return	array
 	 */
-	function &get_config(Array $replace = array())
-	{
+	function &get_config(Array $replace = array()) {
 		static $config;
 
-		if (empty($config))
-		{
-			$file_path = APPPATH.'config/config.php';
+		if (empty($config)) {
+// 			$file_path = APPPATH.'config/config.php';
 			$found = FALSE;
-			if (file_exists($file_path))
-			{
+		    if (file_exists(BASEPATH.'config/config.php')) {
+		        $found = TRUE;
+		        require(BASEPATH.'config/config.php');
+		    }
+			if (file_exists(APPPATH.'config/config.php')) {
 				$found = TRUE;
-				require($file_path);
+				require(APPPATH.'config/config.php');
 			}
 
 			// Is the config file in the environment folder?
-			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php'))
-			{
+			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php')) {
 				require($file_path);
-			}
-			elseif ( ! $found)
-			{
+			} elseif ( ! $found) {
 				set_status_header(503);
 				echo 'The configuration file does not exist.';
 				exit(3); // EXIT_CONFIG

@@ -1073,7 +1073,7 @@ body:not(.top_panel_fixed) .top_panel_position_over.top_panel_wrap_inner,
 body:not(.top_panel_fixed) .top_panel_position_over .top_panel_top,
 body:not(.top_panel_fixed) .top_panel_position_over .top_panel_middle,
 body:not(.top_panel_fixed) .top_panel_position_over .top_panel_bottom {
-	background: none !important;
+	/*background: none !important; */
 }
 body:not(.top_panel_fixed) .half_opacity .top_panel_position_over .top_panel_middle {
     background: rgba(0,0,0,0.1) !important;
@@ -1368,7 +1368,7 @@ body:not(.top_panel_fixed) .half_opacity .top_panel_position_over .top_panel_mid
     -o-transition: all ease .3s;
     transition: all ease .3s;
     z-index: 1;
-    background-image: url("skins/ecoenergy/images/menu_hover.png");
+    background-image: url("../images/menu_hover.png");
     background-repeat: no-repeat;
     background-position: left center;
     opacity: 1;
@@ -1405,7 +1405,7 @@ body:not(.top_panel_fixed) .half_opacity .top_panel_position_over .top_panel_mid
     -o-transition: all ease .3s;
     transition: all ease .3s;
     z-index: -1;
-    background-image: url("skins/ecoenergy/images/menu_hover.png");
+    background-image: url("../images/menu_hover.png");
     background-repeat: no-repeat;
     background-position: left center;
     opacity: 1;

@@ -53,7 +53,7 @@ class CI_Smarty extends SmartyBC {
 		$alang = array();
 
 		if (strpos($resource_name, '.') === false) {
-			$resource_name .= '.tpl';
+			$resource_name .= '.htm';
 		}
 
 		if (!is_file($this->template_dir[0] . $resource_name)) {
