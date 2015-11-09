@@ -96,14 +96,14 @@ class CI_URI {
 	 *
 	 * @return	void
 	 */
-	public function __construct()
-	{
+	var $suffix=NULL;
+	public function __construct(){
+
 		$this->config =& load_class('Config', 'core');
 
 		// If query strings are enabled, we don't need to parse any segments.
 		// However, they don't make sense under CLI.
-		if (is_cli() OR $this->config->item('enable_query_strings') !== TRUE)
-		{
+		if (is_cli() OR $this->config->item('enable_query_strings') !== TRUE){
 			$this->_permitted_uri_chars = $this->config->item('permitted_uri_chars');
 
 			// If it's a CLI request, ignore the configuration
@@ -137,6 +137,21 @@ class CI_URI {
 			$this->_set_uri_string($uri);
 		}
 
+		if( isset($_SERVER['ORIG_PATH_INFO']) ){
+		    $pathInfo = pathinfo($_SERVER['ORIG_PATH_INFO']);
+		} else if ( isset($_SERVER['PATH_INFO']) ){
+		    $pathInfo = pathinfo($_SERVER['PATH_INFO']);
+		}
+
+		if( isset($pathInfo['extension']) && $pathInfo['extension'] ){
+		    $this->suffix = $pathInfo['extension'];
+		}
+		if( !$this->suffix ){
+		    $this->suffix = $this->config->item('url_suffix');
+		}
+
+
+
 		log_message('info', 'URI Class Initialized');
 	}
 
@@ -148,11 +163,13 @@ class CI_URI {
 	 * @param 	string	$str
 	 * @return	void
 	 */
-	protected function _set_uri_string($str)
-	{
+	protected function _set_uri_string($str){
 		// Filter out control characters and trim slashes
 		$this->uri_string = trim(remove_invisible_characters($str, FALSE), '/');
+		$this->uri_string = preg_replace("|".preg_quote('.json')."$|", "", $this->uri_string);
+		$this->uri_string = preg_replace("|".preg_quote('.'.$this->config->item('url_suffix'))."$|", "", $this->uri_string);
 
+// bug($this->uri_string); die;
 		if ($this->uri_string !== '')
 		{
 			// Remove the URL suffix, if present

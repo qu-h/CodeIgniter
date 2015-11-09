@@ -245,10 +245,15 @@ if ( ! function_exists('get_config'))
 		        $found = TRUE;
 		        require(BASEPATH.'config/config.php');
 		    }
+
 			if (file_exists(APPPATH.'config/config.php')) {
 				$found = TRUE;
+				$config_base = $config;
 				require(APPPATH.'config/config.php');
+// 				$config = array_combine($config,$config_base);
+				$config += $config_base;
 			}
+
 
 			// Is the config file in the environment folder?
 			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php')) {

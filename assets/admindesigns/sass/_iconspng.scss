@@ -1,0 +1,28 @@
+[class^="iconspng-"] {
+    background: url("../images/iconspng.png") no-repeat scroll left 0 transparent;
+	
+}
+[class^="iconspng-payment-"] {
+	display: inline-block;
+    width: 65px;
+	height: 43px;
+	border-radius: 10px;
+}
+.option-primary [class^="iconspng-payment-"] {
+	position: relative;
+	top: 15px;
+
+}
+
+.iconspng-payment-paypal {
+	background-position: -65px 0;
+}
+.iconspng-payment-mastercard {
+	background-position: -128px 0;
+}
+.iconspng-payment-dinerclub {
+	background-position: -192px 0;
+}
+.iconspng-payment-worldpay {
+	background-position: -254px 0;
+}

@@ -231,16 +231,11 @@ class CI_Loader {
 	 * @param	bool	$db_conn	An optional database connection configuration to initialize
 	 * @return	object
 	 */
-	public function model($model, $name = '', $db_conn = FALSE)
-	{
-		if (empty($model))
-		{
+	public function model($model, $name = '', $db_conn = FALSE){
+		if (empty($model)){
 			return $this;
-		}
-		elseif (is_array($model))
-		{
-			foreach ($model as $key => $value)
-			{
+		} elseif (is_array($model)){
+			foreach ($model as $key => $value){
 				is_int($key) ? $this->model($value, '', $db_conn) : $this->model($key, $value, $db_conn);
 			}
 
@@ -250,8 +245,7 @@ class CI_Loader {
 		$path = '';
 
 		// Is the model in a sub-folder? If so, parse out the filename and path.
-		if (($last_slash = strrpos($model, '/')) !== FALSE)
-		{
+		if (($last_slash = strrpos($model, '/')) !== FALSE){
 			// The path is in front of the last slash
 			$path = substr($model, 0, ++$last_slash);
 
@@ -259,8 +253,7 @@ class CI_Loader {
 			$model = substr($model, $last_slash);
 		}
 
-		if (empty($name))
-		{
+		if (empty($name)){
 			$name = $model;
 		}
 
@@ -291,26 +284,31 @@ class CI_Loader {
 		}
 
 		$model = ucfirst(strtolower($model));
-		if ( ! class_exists($model))
-		{
-			foreach ($this->_ci_model_paths as $mod_path)
-			{
-				if ( ! file_exists($mod_path.'models/'.$path.$model.'.php'))
-				{
-					continue;
-				}
+		if ( ! class_exists($model)){
 
-				require_once($mod_path.'models/'.$path.$model.'.php');
-				if ( ! class_exists($model, FALSE))
-				{
-					throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
-				}
+		    if( file_exists(BASEPATH.'models/'.$path.$model.'.php') ){
+		        require_once(BASEPATH.'models/'.$path.$model.'.php');
+		        if ( ! class_exists($model, FALSE)){
+		            throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
+		        }
 
-				break;
-			}
+		    } else {
+		        foreach ($this->_ci_model_paths as $mod_path){
+		            if ( ! file_exists($mod_path.'models/'.$path.$model.'.php')){
+		                continue;
+		            }
 
-			if ( ! class_exists($model, FALSE))
-			{
+		            require_once($mod_path.'models/'.$path.$model.'.php');
+		            if ( ! class_exists($model, FALSE)){
+		                throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
+		            }
+
+		            break;
+		        }
+		    }
+
+
+			if ( ! class_exists($model, FALSE)){
 				throw new RuntimeException('Unable to locate the model you have specified: '.$model);
 			}
 		}
@@ -814,7 +812,7 @@ class CI_Loader {
 		// make sure the application default paths are still in the array
 		$this->_ci_library_paths = array_unique(array_merge($this->_ci_library_paths, array(APPPATH, BASEPATH)));
 		$this->_ci_helper_paths = array_unique(array_merge($this->_ci_helper_paths, array(APPPATH, BASEPATH)));
-		$this->_ci_model_paths = array_unique(array_merge($this->_ci_model_paths, array(APPPATH)));
+		$this->_ci_model_paths = array_unique(array_merge($this->_ci_model_paths, array(APPPATH,BASEPATH)));
 		$this->_ci_view_paths = array_merge($this->_ci_view_paths, array(APPPATH.'views/' => TRUE));
 		$config->_config_paths = array_unique(array_merge($config->_config_paths, array(APPPATH)));
 
@@ -1258,17 +1256,25 @@ class CI_Loader {
 	 * @return	void
 	 */
 	protected function _ci_autoloader() {
+	    if (file_exists(BASEPATH.'config/autoload.php')) {
+	        include(BASEPATH.'config/autoload.php');
+	    }
+	    $autoload_base = $autoload;
+
 		if (file_exists(APPPATH.'config/autoload.php')) {
 			include(APPPATH.'config/autoload.php');
+
+			$autoload = array_merge_recursive($autoload,$autoload_base);
 		}
 
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php'))
-		{
+
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php')){
 			include(APPPATH.'config/'.ENVIRONMENT.'/autoload.php');
 		}
 
-		if ( ! isset($autoload))
-		{
+
+
+		if ( ! isset($autoload)) {
 			return;
 		}
 

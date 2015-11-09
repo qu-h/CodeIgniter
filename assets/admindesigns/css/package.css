@@ -1,0 +1,116 @@
+.row {
+  margin-top: 22px; }
+
+div.package {
+  border: 1px solid #c2c2c2;
+  cursor: pointer; }
+  div.package:hover, div.package.active {
+    border-color: #2fb544; }
+  div.package .packtitle {
+    background: #fff; }
+    div.package .packtitle .icon {
+      display: block;
+      width: 51px;
+      height: 51px;
+      background: transparent url("../images/packgage-icon.png") 0 0 no-repeat; }
+    div.package .packtitle h2 {
+      display: flex;
+      line-height: 50px;
+      color: #131313;
+      text-transform: uppercase;
+      margin: 0; }
+  div.package .price {
+    background: #f1f1f1;
+    color: #108067;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    padding: 25px 0; }
+    div.package .price .uni {
+      font-size: 200%;
+      position: relative;
+      top: -25px; }
+    div.package .price .pri {
+      font-size: 450%; }
+    div.package .price .per {
+      font-size: 150%;
+      position: relative;
+      bottom: -5px; }
+  div.package .packagebuy {
+    background: none repeat scroll 0 0 #2fb544;
+    border: medium none;
+    padding: 15px 0;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 200%;
+    text-transform: uppercase;
+    display: block; }
+    div.package .packagebuy:hover {
+      text-decoration: none; }
+
+.packdetail {
+  position: absolute;
+  z-index: 50;
+  display: none;
+  margin-top: -25px;
+  left: 0; }
+
+.packdesc {
+  background: #fff;
+  background-clip: padding-box;
+  border: 1px solid #2fb544;
+  left: 50%;
+  bottom: 100%;
+  color: #000;
+  -webkit-transition: opacity 0.5s linear;
+  -moz-transition: opacity 0.5s linear;
+  -ms-transition: opacity 0.5s linear;
+  -o-transition: opacity 0.5s linear;
+  transition: opacity 0.5s linear;
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px; }
+  .packdesc h3 {
+    margin-top: 0px; }
+  .packdesc ul {
+    list-style: none;
+    padding-left: 0; }
+    .packdesc ul li {
+      list-style: none;
+      line-height: 40px;
+      font-size: 110%; }
+      .packdesc ul li .checked {
+        background: none repeat scroll 0 0 #2fb544;
+        color: #fff;
+        display: inline-block;
+        margin-right: 10px;
+        padding: 2px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px; }
+
+.arrow {
+  left: 30px;
+  position: absolute;
+  top: 15px; }
+
+.arrow:before,
+.arrow:after {
+  content: "";
+  position: absolute;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  margin-left: -10px; }
+
+.arrow:before {
+  border-bottom: 10px solid #2fb544;
+  margin-top: -10px; }
+
+.arrow:after {
+  border-bottom: 10px solid #fff;
+  margin-top: -9px;
+  z-index: 1; }
+
+/*# sourceMappingURL=package.css.map */

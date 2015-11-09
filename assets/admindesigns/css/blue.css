@@ -1,0 +1,79 @@
+a {
+  color: #2fb544;
+  text-decoration: none; }
+
+.admin-form .panel-info.heading-border:before,
+.admin-form .panel-info .heading-border:before,
+.admin-form .panel-info > .panel-heading,
+.admin-form .panel-info > .panel-heading:before {
+  background-color: #2fb544; }
+.admin-form .panel-info > .panel-heading {
+  color: #ffffff;
+  background-color: #2fb544;
+  border-color: #2fb544; }
+.admin-form .switch-primary > input:checked + label {
+  background: #2fb544;
+  border-color: #2fb544; }
+.admin-form .switch-primary > input:checked + label:after {
+  color: #2fb544; }
+.admin-form .switch-primary > input:hover + label {
+  background: #108163;
+  border-color: #108163; }
+.admin-form .switch-primary > input:checked:focus + label {
+  background: #2e76d6;
+  border-color: #2e76d6; }
+.admin-form .btn-primary {
+  background-color: #2fb544; }
+  .admin-form .btn-primary:hover, .admin-form .btn-primary:focus {
+    background-color: #108163; }
+  .admin-form .btn-primary:active {
+    background-color: #2e76d6; }
+.admin-form.theme-info .gui-input:focus,
+.admin-form.theme-info .gui-textarea:focus,
+.admin-form.theme-info .select > select:focus,
+.admin-form.theme-info .select-multiple select:focus {
+  border-color: #108163;
+  color: #3C3C3C; }
+  .admin-form.theme-info .gui-input:focus ~ .field-icon i,
+  .admin-form.theme-info .gui-textarea:focus ~ .field-icon i,
+  .admin-form.theme-info .select > select:focus ~ .field-icon i,
+  .admin-form.theme-info .select-multiple select:focus ~ .field-icon i {
+    color: #108163; }
+
+/* Switch Option - Inline */
+.switch.switch-inline {
+  display: inline-block; }
+
+.switch.switch-inline + .switch.switch-inline {
+  margin-left: 15px; }
+
+div.switch.switch-primary input:checked + label {
+  background-color: #4a89dc; }
+
+div.switch.switch-success input:checked + label {
+  background-color: #70ca63; }
+
+div.switch.switch-info input:checked + label {
+  background-color: #2fb544; }
+
+div.switch.switch-warning input:checked + label {
+  background-color: #f6bb42; }
+
+div.switch.switch-danger input:checked + label {
+  background-color: #e9573f; }
+
+div.switch.switch-alert input:checked + label {
+  background-color: #967adc; }
+
+div.switch.switch-system input:checked + label {
+  background-color: #37bc9b; }
+
+div.switch.switch-dark input:checked + label {
+  background-color: #3b3f4f; }
+
+.text-info {
+  color: #2fb544; }
+  .text-info:hover {
+    color: #108163; }
+
+/*# sourceMappingURL=blue.css.map */

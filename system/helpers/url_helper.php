@@ -477,14 +477,10 @@ if ( ! function_exists('url_title'))
 	 * @param	bool	$lowercase	Whether to transform the output string to lowercase
 	 * @return	string
 	 */
-	function url_title($str, $separator = '-', $lowercase = FALSE)
-	{
-		if ($separator === 'dash')
-		{
+	function url_title($str, $separator = '-', $lowercase = true){
+		if ($separator === 'dash'){
 			$separator = '-';
-		}
-		elseif ($separator === 'underscore')
-		{
+		} elseif ($separator === 'underscore') {
 			$separator = '_';
 		}
 
@@ -497,17 +493,15 @@ if ( ! function_exists('url_title'))
 			'('.$q_separator.')+'	=> $separator
 		);
 
+		$str = convert_accented_characters($str);
+		if ($lowercase === TRUE){
+		    $str = strtolower($str);
+		}
 		$str = strip_tags($str);
-		foreach ($trans as $key => $val)
-		{
+
+		foreach ($trans as $key => $val){
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);
 		}
-
-		if ($lowercase === TRUE)
-		{
-			$str = strtolower($str);
-		}
-
 		return trim(trim($str, $separator));
 	}
 }
@@ -567,3 +561,15 @@ if ( ! function_exists('redirect'))
 		exit;
 	}
 }
+
+if ( ! function_exists('uri_suffix')){
+    function uri_suffix($type='html'){
+        $CI =& get_instance();
+        return $CI->config->site_url().'/'.$CI->uri->uri_string().'.'.$type;
+    }
+}
+
+function base64url_encode($data) {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
