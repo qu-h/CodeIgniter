@@ -193,10 +193,10 @@ class CI_User_agent {
 	 *
 	 * @return	bool
 	 */
-	protected function _load_agent_file()
-	{
-		if (($found = file_exists(APPPATH.'config/user_agents.php')))
-		{
+	protected function _load_agent_file(){
+	    if (($found = file_exists(BASEPATH.'config/user_agents.php'))){
+	        include(BASEPATH.'config/user_agents.php');
+	    } else if (($found = file_exists(APPPATH.'config/user_agents.php'))){
 			include(APPPATH.'config/user_agents.php');
 		}
 
@@ -213,29 +213,25 @@ class CI_User_agent {
 
 		$return = FALSE;
 
-		if (isset($platforms))
-		{
+		if (isset($platforms)){
 			$this->platforms = $platforms;
 			unset($platforms);
 			$return = TRUE;
 		}
 
-		if (isset($browsers))
-		{
+		if (isset($browsers)){
 			$this->browsers = $browsers;
 			unset($browsers);
 			$return = TRUE;
 		}
 
-		if (isset($mobiles))
-		{
+		if (isset($mobiles)){
 			$this->mobiles = $mobiles;
 			unset($mobiles);
 			$return = TRUE;
 		}
 
-		if (isset($robots))
-		{
+		if (isset($robots)){
 			$this->robots = $robots;
 			unset($robots);
 			$return = TRUE;

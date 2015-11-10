@@ -11,7 +11,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | of this setting
 |
 */
+defined('PAGES_LIMIT') OR define('PAGES_LIMIT', 20);
+
 defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
+
+
 
 /*
 |--------------------------------------------------------------------------

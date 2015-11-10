@@ -24,4 +24,19 @@ if ( ! function_exists('lang')) {
 
 		return $text;
 	}
+	function langdb($table,$field,$taget){
+        $ci = get_instance();
+        if( !method_exists ( $ci , 'Lang_Model' ) ){
+            $ci->load->model('Lang_Model');
+        }
+        return $ci->Lang_Model->line(false,$table,$field,$taget);
+	}
+
+	function lang_query($table,$field,$taget){
+	    $ci = get_instance();
+	    if( !method_exists ( $ci , 'Lang_Model' ) ){
+	        $ci->load->model('Lang_Model');
+	    }
+	    return $ci->Lang_Model->line(true,$table,$field,$taget);
+	}
 }

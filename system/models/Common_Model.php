@@ -5,6 +5,9 @@ class Common_Model extends CI_Model {
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
+		if( !method_exists ( $this , 'Lang_Model' ) ){
+		    $this->load->model('Lang_Model');
+		}
 	}
 
 	function update($id=0,$table='',$data=array(),$lang_fields=NULL){
@@ -43,13 +46,18 @@ class Common_Model extends CI_Model {
                 }
                 if( !$txt ) continue;
                 $row['language'] = $lang;
+
                 if( $content_id = $this->existed('content',$row) ){
-                    $row['content'] = $txt;
-                    $this->db->where('id', $content_id)->update('content', $row);
+                    $update_lang = $row;
+                    $update_lang['content'] = $txt;
+                    $this->db->where('id', $content_id)->update('content', $update_lang);
                 } else {
-                    $row['content'] = $txt;
-                    $this->db->insert('content', $row);
+                    $insert_lang = $row;
+                    $insert_lang['content'] = $txt;
+                    $this->db->insert('content', $insert_lang);
                 }
+
+
             }
         }
 
@@ -58,6 +66,7 @@ class Common_Model extends CI_Model {
 
 	public function existed($table,$where=null){
 	    $data = $this->db->where($where)->get($table)->row();
+
 	    return ( $data && !empty($data) ) ? $data->id : false;
 
 	}
@@ -71,6 +80,19 @@ class Common_Model extends CI_Model {
 	    $id= $this->common->insert_id();
 
 	    return $id;
+	}
+
+	function get($id=0,$table='',$lang_fields=NULL){
+
+	    $data = $this->db->where('id',$id)->get($table)->row();
+	    if( $lang_fields ){
+
+	        foreach ($lang_fields AS $lang){
+	            $data->$lang = $this->Lang_Model->lines($table,$lang,$data->id);
+	        }
+	    }
+	    return $data;
+// 	    bug($data);die;
 	}
 
 }
