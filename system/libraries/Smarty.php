@@ -11,6 +11,8 @@ class CI_Smarty extends SmartyBC {
 	var $css_all_ie = array();
     var $script = array('js'=>null,'ready'=>null);
     var $tpl_vars = array();
+    var $theme = 'default';
+    var $theme_ui = NULL;
 
 	public function __construct() {
 		parent::__construct();
@@ -22,7 +24,7 @@ class CI_Smarty extends SmartyBC {
 		$this->setConfigDir(BASEPATH . 'libraries/Smarty-3.1.21/configs' );
 		$this->setCacheDir( BASEPATH . '../cache' );
 		$this->loadPlugin('smarty_compiler_switch');
-		
+
 // 		if( !class_exists('SmartyPlugin') ){
 // 			$this->CI->load->library('SmartyPlugin');
 // 		}
@@ -31,10 +33,10 @@ class CI_Smarty extends SmartyBC {
 // 			if( $plugin !='__construct' ){
 // 				$this->registerPlugin('function', $plugin, 'SmartyPlugin::'.$plugin);
 // 			}
-				
+
 // 		}
 		$this->theme();
-		
+
 		define('IMGPATH', BASEPATH.'../images/');
 		define('IMGURL', $this->CI->config->item('images_url'));
 
@@ -63,11 +65,11 @@ class CI_Smarty extends SmartyBC {
 		foreach ($this->js AS $k=>$file){
 			$this->js[$k] = self::checkResoure($file);
 		}
-		
+
 		foreach ($this->css AS $k=>$file){
 			$this->css[$k] = self::checkResoure($file);
 		}
-		
+
         foreach ($this->css_ie AS $k=>$file){
 			$this->css_ie[$k] = self::checkResoure($file);
 		}
@@ -87,8 +89,8 @@ class CI_Smarty extends SmartyBC {
 			'assetsURL'=>$this->CI->config->item('asset_url').'/assets/',
 			'siteurl'=>$this->CI->config->item('base_url'),
 		);
-		
-		
+
+
 		if( !empty($this->tpl_vars) ){
 			foreach ( $this->tpl_vars AS $index=>$val){
 				$data[$index] = $val;
@@ -102,18 +104,18 @@ class CI_Smarty extends SmartyBC {
 
 
 		$data = array_merge ( $data ,$params );
-		
+
 		if( $this->useTemp === FALSE ){
 			return parent::display($resource_name,$data);
 		}
-		
+
 		return parent::display('layout/'.$this->layout.'.html',$data);
 	}
 	function layout($file){
 		$this->layout = $file;
 	}
 	public function theme($item=null){
-		
+
 		if( file_exists(APPPATH.'config/themes.php')  ){
 			$file = APPPATH.'config/themes.php';
 		} else {
@@ -121,35 +123,37 @@ class CI_Smarty extends SmartyBC {
 		}
 // 		bug($file);die;
 		if( $file == null ) return;
-		
+
 		include_once $file;
-		
+
 		if( !$item ) {
 			$item = $theme['default'];
+			$this->theme = $item;
 		}
-		
-		
+
+
 		if( isset($theme[$item]) ){
 			if( isset($theme[$item]['css']) ){
 				$this->css = $theme[$item]['css'];
 			}
-				
+
 			if( isset($theme[$item]['js']) ){
 				$this->js = $theme[$item]['js'];
 			}
 			if( isset($theme[$item]['layout']) ){
 			    $this->layout = $theme[$item]['layout'];
 			}
-			
-				
+
+
 // 			$this->theme = $item;
-			
+
 		}
-	
+
 	}
 
 	function checkResoure($file=NULL,$type='js'){
-		return ( ! preg_match('!^\w+://! i', $file)) ? ( str_replace('index.php/','',$this->CI->config->item('asset_url'))).$file : $file;
+	    return $file;
+// 		return ( ! preg_match('!^\w+://! i', $file)) ? ( str_replace('index.php/','',$this->CI->config->item('asset_url'))).$file : $file;
 	}
 
 	public function js($file){
@@ -168,29 +172,29 @@ class CI_Smarty extends SmartyBC {
 	public function jsready($str=null){
 		$this->script['ready'].= $str;
 	}
-	
+
 	function loadLibrariesPlugin($class=''){
 		if( !$class ) return false;
-		
+
 		if( !class_exists($class) ){
 			$this->CI->load->library($class);
 		}
-		
+
 		$methods = get_class_methods( $class );
 		foreach ($methods AS $plugin){
 			if( $plugin !='__construct' ){
 				$this->registerPlugin('function', $plugin, $class.'::'.$plugin);
 			}
-				
+
 		}
 	}
-	
+
 // 	function assign($index=null,$val=null){
 // 		if( $index ){
 // 			$this->tpl_vars[$index] = $val;
 // 			parent::assign($index,$val);
 // 		}
-		
-		
+
+
 // 	}
 }

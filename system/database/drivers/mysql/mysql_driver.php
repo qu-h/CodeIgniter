@@ -121,16 +121,15 @@ class CI_DB_mysql_driver extends CI_DB {
 	 * @param	bool	$persistent
 	 * @return	resource
 	 */
-	public function db_connect($persistent = FALSE)
-	{
+	public function db_connect($persistent = FALSE){
 		$client_flags = ($this->compress === FALSE) ? 0 : MYSQL_CLIENT_COMPRESS;
 
-		if ($this->encrypt === TRUE)
-		{
+		if ($this->encrypt === TRUE){
 			$client_flags = $client_flags | MYSQL_CLIENT_SSL;
 		}
 
 		// Error suppression is necessary mostly due to PHP 5.5+ issuing E_DEPRECATED messages
+
 		$this->conn_id = ($persistent === TRUE)
 			? mysql_pconnect($this->hostname, $this->username, $this->password, $client_flags)
 			: mysql_connect($this->hostname, $this->username, $this->password, TRUE, $client_flags);

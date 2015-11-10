@@ -381,20 +381,20 @@ if ( ! function_exists('convert_accented_characters'))
 	{
 		static $array_from, $array_to;
 
-		if ( ! is_array($array_from))
-		{
-			if (file_exists(APPPATH.'config/foreign_chars.php'))
-			{
+		if ( ! is_array($array_from)){
+		    if (file_exists(BASEPATH.'config/foreign_chars.php')){
+		        include(BASEPATH.'config/foreign_chars.php');
+		    }
+
+			if (file_exists(APPPATH.'config/foreign_chars.php')){
 				include(APPPATH.'config/foreign_chars.php');
 			}
 
-			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php'))
-			{
+			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php')){
 				include(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php');
 			}
 
-			if (empty($foreign_characters) OR ! is_array($foreign_characters))
-			{
+			if (empty($foreign_characters) OR ! is_array($foreign_characters)){
 				$array_from = array();
 				$array_to = array();
 
@@ -546,4 +546,33 @@ if ( ! function_exists('ellipsize'))
 
 		return $beg.$ellipsis.$end;
 	}
+}
+
+
+if ( ! function_exists('json_datatable')){
+    function json_datatable($data=NULL,$dataTable=true){
+        if( !$dataTable ){
+            echo json_encode($data);die;
+        }
+        $actions = null;
+
+        if( is_array($data) && !isset($data['data']) ){
+            $items = $data;
+            $total = $records = count($data);
+        } else if( isset($data['data']) ){
+
+            $items = ( !empty($data['data']))?$data['data']:array();
+            $total = ( isset($data['recordsTotal']) )?$data['recordsTotal']:0;
+            $records = ( isset($data['recordsFiltered']) )?$data['recordsFiltered']:0;
+            if( isset($data['actions']) && !empty($data['actions']) ){
+                $actions = $data['actions'];
+            }
+        } else {
+
+        }
+
+        $CI =& get_instance();
+        $return = array('data'=>$items,'recordsTotal'=>$total,'recordsFiltered'=>$total,'draw'=> intval($CI->input->get('draw')),'actions'=>$actions);
+        echo json_encode($return);die;
+    }
 }

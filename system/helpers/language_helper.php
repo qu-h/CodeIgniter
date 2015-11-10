@@ -11,8 +11,9 @@ if ( ! function_exists('lang')) {
 	 * @param	array	$attributes	Any additional HTML attributes
 	 * @return	string
 	 */
-	function lang($line, $for = '', $attributes = array()) {
-		$text = get_instance()->lang->line($line);
+	function lang($line, $for = '', $attributes = array(),$language='') {
+
+		$text = get_instance()->lang->line($line,false,$language);
 		if( !$text ){
 		    $text = $line;
 		}
@@ -22,5 +23,20 @@ if ( ! function_exists('lang')) {
 		}
 
 		return $text;
+	}
+	function langdb($table,$field,$taget){
+        $ci = get_instance();
+        if( !method_exists ( $ci , 'Lang_Model' ) ){
+            $ci->load->model('Lang_Model');
+        }
+        return $ci->Lang_Model->line(false,$table,$field,$taget);
+	}
+
+	function lang_query($table,$field,$taget){
+	    $ci = get_instance();
+	    if( !method_exists ( $ci , 'Lang_Model' ) ){
+	        $ci->load->model('Lang_Model');
+	    }
+	    return $ci->Lang_Model->line(true,$table,$field,$taget);
 	}
 }
