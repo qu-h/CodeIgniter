@@ -449,3 +449,18 @@ if ( ! function_exists('octal_permissions'))
 		return substr(sprintf('%o', $perms), -3);
 	}
 }
+
+function check_dir( $fpath ){
+    if( !is_string($fpath) ) return ;
+
+    $forders = explode('/',$fpath);
+    $dir_check =  (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? '' : '/' ;
+    foreach ($forders AS $k=>$dir){
+        if( trim($dir) =='' ) continue;
+        $dir_check .= $dir.'/';
+        if( $k+1==count($forders) ){
+        } else if( !is_dir($dir_check) ){
+            mkdir($dir_check, 0777);
+        }
+    }
+}

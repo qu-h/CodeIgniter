@@ -316,22 +316,17 @@ if ( ! function_exists('get_mimes'))
 	 *
 	 * @return	array
 	 */
-	function &get_mimes()
-	{
+	function &get_mimes(){
 		static $_mimes;
 
-		if (empty($_mimes))
-		{
-			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
-			{
+		if (empty($_mimes)){
+		    if (file_exists(BASEPATH.'config/mimes.php')){
+		        $_mimes = include(BASEPATH.'config/mimes.php');
+		    } elseif (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php')){
 				$_mimes = include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
-			}
-			elseif (file_exists(APPPATH.'config/mimes.php'))
-			{
+			} elseif (file_exists(APPPATH.'config/mimes.php')) {
 				$_mimes = include(APPPATH.'config/mimes.php');
-			}
-			else
-			{
+			} else {
 				$_mimes = array();
 			}
 		}

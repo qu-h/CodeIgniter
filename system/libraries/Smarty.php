@@ -157,7 +157,9 @@ class CI_Smarty extends SmartyBC {
 	}
 
 	public function js($file){
+
 		$this->js[] = $file;
+
 		//bug($this->js); die;
 	}
 	public function css($file){

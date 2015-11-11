@@ -32,11 +32,11 @@ if ( ! function_exists('lang')) {
         return $ci->Lang_Model->line(false,$table,$field,$taget);
 	}
 
-	function lang_query($table,$field,$taget){
+	function lang_query($table,$field,$taget,$lang='vn',$return=null){
 	    $ci = get_instance();
 	    if( !method_exists ( $ci , 'Lang_Model' ) ){
 	        $ci->load->model('Lang_Model');
 	    }
-	    return $ci->Lang_Model->line(true,$table,$field,$taget);
+	    return $ci->Lang_Model->line(true,$table,$field,$taget,$lang,$return);
 	}
 }

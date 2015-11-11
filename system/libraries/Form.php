@@ -140,8 +140,6 @@ class CI_Form {
 			}
 
 		}
-// 		bug($this->fields);
-// 		bug($this->postData);die;
 
 		if ( ! function_exists('convert_accented_characters')){
 			$this->CI->load->helper('text');
@@ -167,31 +165,36 @@ class CI_Form {
 	}
 
 	private function uploadImg($fieldKey=NULL,$dir=NULL){
+	    if( !isset($_FILES[$fieldKey]['tmp_name']) || !$_FILES[$fieldKey]['tmp_name']) return false;
+
 		if( !$dir ){
 			$dir = 'uploads';
 		}
-
-		$config['upload_path'] = BASEPATH.'../files/'.$dir;
-		$config['allowed_types'] = 'gif|png|jpg|jpeg';
-
-		//bug($config);die('file path');
-		$this->CI->load->library('upload', $config);
 		$this->CI->load->helper('file');
+		check_dir($dir);
+        if( is_dir($dir)){
+            $config['upload_path'] = $dir;
+        } else {
+
+            $config['upload_path'] = BASEPATH.'../files/'.$dir;
+        }
+
+		$config['allowed_types'] = 'gif|jpg|png';
+
+		$this->CI->load->library('upload', $config);
+
 
 		if ( ! $this->CI->upload->do_upload($fieldKey) ){
-
-// 			die('bug error');
-// 			die('can not upload');
-			//$data['errors'][] = $this->CI->upload->display_errors().' ('.lang('only upload excel files').')';
+		    bug($this->CI->upload->error_msg);
+			die('can not upload');
 		} else {
 			$newFile = array(
 				'name'=>$this->CI->upload->file_name,
 				'size'=>$this->CI->upload->file_size
 			);
-			//$this->CI->FilesModel->addNew($newFile);
 			return $this->CI->upload->file_name;
-			///$data['success'][] = lang('Success upload New File').'<span>'.$this->upload->file_name.'</span>';
 		}
+
 		return NULL;
 	}
 

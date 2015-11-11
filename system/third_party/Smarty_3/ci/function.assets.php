@@ -11,10 +11,18 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
             foreach ($content->css AS $file){
                 if( substr($file,0,2) != '//' && substr($file,0,4) != 'http' ){
 
-                    $file = "$resource_url/$folder/css/$file";
+                    if( file_exists($resource_dir.'/css/'.$file) ){
+                        $file = $resource_url.'/css/'.$file;
+                    } else if (file_exists($resource_dir.'/'.$file)) {
+                        $file = $resource_url.$file;
+                    } else {
+                        $file = "$resource_url/$folder/css/$file";
+                    }
+
                 }
                 $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />'; //id='woocommerce-layout-css'
             }
+
 
         } else if ( $type=='js' ){
 

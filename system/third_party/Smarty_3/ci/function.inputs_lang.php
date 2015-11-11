@@ -15,14 +15,14 @@ function smarty_function_inputs_lang($params,$content,$template=null, &$repeat=n
         $html = NULL;
 
         foreach ($fields->value AS $k=>$f){
-
             if( isset($f['lang']) &&  $f['lang'] ){
-
+                $f['key'] = $k;
                 $f['title'] = lang($f['title'],null,null,$lang);
-
                 $f['value'] = ( isset($f['value'][$lang]) ) ? $f['value'][$lang] : null;
 
+
                 $html .= $theme->input_icon($k."[$lang]",$f);
+
             }
         }
         return $html;

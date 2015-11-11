@@ -41,6 +41,13 @@ jQuery(document).ready(function() {
 
 	jQuery('#sidebar_left').height( jQuery(document).height() - 100 );
 
+	$('.summernote').summernote({
+		  height: 450,   //set editable area's height
+		  codemirror: { // codemirror options
+
+		  }
+	});
+
 });
 
 

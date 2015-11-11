@@ -6,7 +6,7 @@ class Lang_Model extends CI_Model {
 		$this->load->database();
 	}
 
-	public function line($returnSQL=false,$table,$field,$taget,$lang='vn'){
+	public function line($returnSQL=false,$table,$field,$taget,$lang='vn',$return=null){
 
 	    $this->db->select('txt.content')->from('content AS txt');
 	    $this->db->where(array('txt.table'=>$table,'txt.field'=>$field));
@@ -18,7 +18,8 @@ class Lang_Model extends CI_Model {
 	    if( $returnSQL ){
 	        $sql = $this->db->get_compiled_select();
 
-	        return "($sql AND `txt`.`taget`=$taget LIMIT 1) AS $field";
+	        $return = ( $return ) ? $return : $field;
+	        return "($sql AND `txt`.`taget`=$taget LIMIT 1) AS $return";
 	    } else {
 	        $line = $this->db->get()->row();
 	        return ($line && isset($line->content)) ? $line->content : null;
@@ -45,16 +46,23 @@ class Lang_Model extends CI_Model {
 	}
 
 
-	function search($table,$field,$txt='',$where=array()){
+	function search($table,$field,$txt='',$where=array(),$return_taget_id=false){
 	    $this->db->where(array('table'=>$table,'field'=>$field));
 	    $this->db->where('content',$txt);
 	    if( $where ){
-
 	        $this->db->where($where);
 	    }
         $items = $this->db->get('content')->result();
-
+        if( $return_taget_id ){
+            $ids = array();
+            bug($items);
+            foreach ($items AS $it){
+                $ids[] = $it->taget;
+            }
+            return $ids;
+        }
         return $items;
+
 	}
 
 }

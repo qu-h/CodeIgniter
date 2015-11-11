@@ -492,8 +492,9 @@ if ( ! function_exists('url_title'))
 			'\s+'			=> $separator,
 			'('.$q_separator.')+'	=> $separator
 		);
-
+// bug($str);
 		$str = convert_accented_characters($str);
+// 		bug($str);
 		if ($lowercase === TRUE){
 		    $str = strtolower($str);
 		}

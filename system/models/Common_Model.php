@@ -35,7 +35,11 @@ class Common_Model extends CI_Model {
 	        $id= $this->db->insert_id();
 	    }
 
+// 	    bug($this->db->last_query() );
+// 	    die('quannh');
+
         if( $languages && !empty($languages) ) foreach ($languages AS $field=>$contents){
+            if( !$id ) continue;
             $row = array('taget'=>$id,'table'=>$table,'field'=>$field);
             if( $contents && !empty($contents) ) foreach ($contents AS $lang => $txt){
                 $txt = trim($txt);
@@ -62,6 +66,20 @@ class Common_Model extends CI_Model {
         }
 
 	    return $id;
+	}
+
+	function alias_check($data,$name_field=null){
+// 	    bug($data['alias']);
+// 	    bug($data[$name_field]);
+        if( isset($data['alias']) && isset($data[$name_field]) ){
+            foreach ($data['alias'] AS $lang=>$txt){
+                if( !$txt ){
+                    $data['alias'][$lang] = url_title($data[$name_field][$lang]);
+                }
+            }
+        }
+//         bug($data['alias']);
+        return $data;
 	}
 
 	public function existed($table,$where=null){

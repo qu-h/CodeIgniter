@@ -371,16 +371,12 @@ class CI_Upload {
 	 * @param	string	$field
 	 * @return	bool
 	 */
-	public function do_upload($field = 'userfile')
-	{
+	public function do_upload($field = 'userfile'){
 		// Is $_FILES[$field] set? If not, no reason to continue.
-		if (isset($_FILES[$field]))
-		{
+		if (isset($_FILES[$field])){
 			$_file = $_FILES[$field];
-		}
-		// Does the field name contain array notation?
-		elseif (($c = preg_match_all('/(?:^[^\[]+)|\[[^]]*\]/', $field, $matches)) > 1)
-		{
+		} elseif (($c = preg_match_all('/(?:^[^\[]+)|\[[^]]*\]/', $field, $matches)) > 1) {
+		    // Does the field name contain array notation?
 			$_file = $_FILES;
 			for ($i = 0; $i < $c; $i++)
 			{
@@ -461,8 +457,7 @@ class CI_Upload {
 		$this->client_name = $this->file_name;
 
 		// Is the file type allowed to be uploaded?
-		if ( ! $this->is_allowed_filetype())
-		{
+		if ( ! $this->is_allowed_filetype()){
 			$this->set_error('upload_invalid_filetype', 'debug');
 			return FALSE;
 		}
@@ -533,8 +528,7 @@ class CI_Upload {
 		 * If it returns false there was a problem.
 		 */
 		$this->orig_name = $this->file_name;
-		if (FALSE === ($this->file_name = $this->set_filename($this->upload_path, $this->file_name)))
-		{
+		if (FALSE === ($this->file_name = $this->set_filename($this->upload_path, $this->file_name))){
 			return FALSE;
 		}
 
@@ -643,32 +637,28 @@ class CI_Upload {
 	 * @param	string	$filename
 	 * @return	string
 	 */
-	public function set_filename($path, $filename)
-	{
-		if ($this->encrypt_name === TRUE)
-		{
+	public function set_filename($path, $filename){
+		if ($this->encrypt_name === TRUE){
 			$filename = md5(uniqid(mt_rand())).$this->file_ext;
 		}
 
-		if ($this->overwrite === TRUE OR ! file_exists($path.$filename))
-		{
+		if ($this->overwrite === TRUE OR ! file_exists($path.$filename)){
 			return $filename;
 		}
 
 		$filename = str_replace($this->file_ext, '', $filename);
 
-		$new_filename = '';
-		for ($i = 1; $i < $this->max_filename_increment; $i++)
-		{
-			if ( ! file_exists($path.$filename.$i.$this->file_ext))
-			{
-				$new_filename = $filename.$i.$this->file_ext;
-				break;
-			}
-		}
+		$new_filename = $filename.'_'.date('ymd_hsi').$this->file_ext;
 
-		if ($new_filename === '')
-		{
+// 		for ($i = 1; $i < $this->max_filename_increment; $i++){
+// 			if ( ! file_exists($path.$filename.$i.$this->file_ext))
+// 			{
+// 				$new_filename = $filename.$i.$this->file_ext;
+// 				break;
+// 			}
+// 		}
+
+		if ($new_filename === ''){
 			$this->set_error('upload_bad_filename', 'debug');
 			return FALSE;
 		}
@@ -846,8 +836,7 @@ class CI_Upload {
 	 *
 	 * @return	bool
 	 */
-	public function is_image()
-	{
+	public function is_image(){
 		// IE will sometimes return odd mime-types during upload, so here we just standardize all
 		// jpegs or pngs to the same file type.
 
@@ -876,15 +865,12 @@ class CI_Upload {
 	 * @param	bool	$ignore_mime
 	 * @return	bool
 	 */
-	public function is_allowed_filetype($ignore_mime = FALSE)
-	{
-		if ($this->allowed_types === '*')
-		{
+	public function is_allowed_filetype($ignore_mime = FALSE){
+		if ($this->allowed_types === '*'){
 			return TRUE;
 		}
 
-		if (empty($this->allowed_types) OR ! is_array($this->allowed_types))
-		{
+		if ( empty($this->allowed_types) OR ! is_array($this->allowed_types)){
 			$this->set_error('upload_no_file_types', 'debug');
 			return FALSE;
 		}
@@ -897,18 +883,18 @@ class CI_Upload {
 		}
 
 		// Images get some additional checks
-		if (in_array($ext, array('gif', 'jpg', 'jpeg', 'jpe', 'png'), TRUE) && @getimagesize($this->file_temp) === FALSE)
-		{
+		if (in_array($ext, array('gif', 'jpg', 'jpeg', 'jpe', 'png'), TRUE) && @getimagesize($this->file_temp) === FALSE){
 			return FALSE;
 		}
+
+
 
 		if ($ignore_mime === TRUE)
 		{
 			return TRUE;
 		}
 
-		if (isset($this->_mimes[$ext]))
-		{
+		if (isset($this->_mimes[$ext])){
 			return is_array($this->_mimes[$ext])
 				? in_array($this->file_type, $this->_mimes[$ext], TRUE)
 				: ($this->_mimes[$ext] === $this->file_type);
@@ -1173,15 +1159,15 @@ class CI_Upload {
 	 * @param	string	$filename
 	 * @return	string
 	 */
-	protected function _prep_filename($filename)
-	{
-		if ($this->mod_mime_fix === FALSE OR $this->allowed_types === '*' OR ($ext_pos = strrpos($filename, '.')) === FALSE)
-		{
+	protected function _prep_filename($filename){
+		if ($this->mod_mime_fix === FALSE OR $this->allowed_types === '*' OR ($ext_pos = strrpos($filename, '.')) === FALSE){
 			return $filename;
 		}
 
 		$ext = substr($filename, $ext_pos);
 		$filename = substr($filename, 0, $ext_pos);
+
+		$filename = url_title($filename);
 		return str_replace('.', '_', $filename).$ext;
 	}
 
