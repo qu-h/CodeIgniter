@@ -192,9 +192,13 @@
     margin-top:0;
 }
 .woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price {
-    font-size: 1.6153em;
-    font-weight:400;
+    font-size: 1.8em;
+    font-weight:bold;
     margin-bottom:0.8em;
+	text-align: right;
+}
+ul.products li.product .price:AFTER {
+	content: 'VNĐ';
 }
 .woocommerce ul.products li.product .price ins {
     text-decoration:none;

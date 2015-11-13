@@ -390,7 +390,7 @@ button:after,
 	position: relative;
 }
 .sc_blogger.sc_scroll_controls_type_top {
-	overflow: visible !important;	
+	overflow: visible !important;
 }
 .sc_blogger.sc_scroll_controls_type_top .sc_scroll_controls_wrap {
 	top: -50px;
@@ -423,7 +423,7 @@ button:after,
 	content: none;
 }
 
-.sc_blogger.layout_date .sc_blogger_item .sc_blogger_date { 
+.sc_blogger.layout_date .sc_blogger_item .sc_blogger_date {
 	width: 78px;
 	height: 78px;
 	border: 1px solid #ddd;
@@ -458,7 +458,7 @@ button:after,
 }
 
 .sc_blogger.layout_date.sc_blogger_horizontal {
-	overflow: hidden;	
+	overflow: hidden;
 }
 .sc_blogger.layout_date.sc_blogger_horizontal .sc_blogger_item {
 	float: left;
@@ -474,7 +474,7 @@ button:after,
 .sc_blogger.layout_date.sc_blogger_vertical .sc_blogger_item + .sc_blogger_item {
 	padding-top: 2em;
 }
-.sc_blogger.layout_date.sc_blogger_vertical .sc_blogger_item .sc_blogger_date { 
+.sc_blogger.layout_date.sc_blogger_vertical .sc_blogger_item .sc_blogger_date {
 	float: left;
 }
 .sc_blogger.layout_date.sc_blogger_vertical .post_content {
@@ -487,7 +487,7 @@ button:after,
 	display:block;
 	clear:both;
 }
-.sc_blogger.layout_date.sc_blogger_vertical .sc_blogger_item .post_info { 
+.sc_blogger.layout_date.sc_blogger_vertical .sc_blogger_item .post_info {
 	margin: 0;
 }
 
@@ -600,7 +600,7 @@ button:after,
 	vertical-align:top;
 	position:relative;
 	padding-bottom:0;
-	white-space:nowrap; 
+	white-space:nowrap;
 }
 .sc_scroll_vertical .sc_blogger .isotope_wrap,
 .sc_blogger .sc_scroll_vertical .isotope_wrap {
@@ -1030,10 +1030,10 @@ button:after,
 	        box-sizing: content-box;
 }
 
-.sc_contact_form .sc_contact_form_button { 
+.sc_contact_form .sc_contact_form_button {
 	margin: 2.2857em 0 0;
 }
-.sc_contact_form .sc_contact_form_item.sc_contact_form_button button { 
+.sc_contact_form .sc_contact_form_item.sc_contact_form_button button {
 	-webkit-transition: all ease .3s;
 	   -moz-transition: all ease .3s;
 	    -ms-transition: all ease .3s;
@@ -1114,7 +1114,7 @@ button:after,
 	font-weight:700;
 	height: 1.3542em;
 	line-height:1.3542em;
-	
+
 }
 .sc_countdown.sc_countdown_style_2 .sc_countdown_separator {
 	font-weight:300;
@@ -1161,17 +1161,17 @@ button:after,
     margin-right: 0.36em;
     margin-bottom: 0.05em;
     margin-top: -0.12em;
-} 
+}
 .sc_dropcaps.sc_dropcaps_style_3 .sc_dropcaps_item {
     font-size: 4.6154em;
     padding: 0.08em 0.35em 0.08em 0.26em;
 	margin-top:2px;
     margin-right: 0.46em;
-} 
+}
 .sc_dropcaps.sc_dropcaps_style_4 .sc_dropcaps_item {
 	line-height:1.3em;
 	margin-top:2px;
-} 
+}
 
 
 
@@ -1245,7 +1245,7 @@ button:after,
 }
 .sc_icon_shape_square,
 .sc_icon_shape_round {
-	display:inline-block; 
+	display:inline-block;
 	padding: 4px;
 	text-align:center;
 	width: 1.2em;
@@ -1571,7 +1571,7 @@ ul.sc_list_style_iconed {
 	right:0;
 	bottom:0;
 }
-.sc_parallax video.sc_video_bg { 
+.sc_parallax video.sc_video_bg {
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
@@ -1904,7 +1904,7 @@ ul.sc_list_style_iconed {
 
 .sc_pan {
 	position:absolute;
-	width:100%; 
+	width:100%;
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
@@ -2092,7 +2092,7 @@ ul.sc_list_style_iconed {
 .sc_skills_counter .sc_skills_item.sc_skills_style_2 .sc_skills_count {
 	font-weight: 300;
 }
-.sc_skills_counter .sc_skills_item.sc_skills_style_3 .sc_skills_count { 
+.sc_skills_counter .sc_skills_item.sc_skills_style_3 .sc_skills_count {
 	font-weight: 300;
 	color:#fff;
 	padding: 0 10px;
@@ -2109,8 +2109,8 @@ ul.sc_list_style_iconed {
 	position: absolute;
 	top: 0;
 	left: 0;
-    border-top: 1.3333em solid #fff; 
-    border-right: 1.6667em solid transparent;	
+    border-top: 1.3333em solid #fff;
+    border-right: 1.6667em solid transparent;
 	opacity: 0.2;
 	filter: alpha(opacity=20);
 }
@@ -2137,8 +2137,8 @@ ul.sc_list_style_iconed {
 	background-color: #000;
 	z-index: 1;
 	width: 100%;
-	height: 100%;  
-	opacity: 0.1;			
+	height: 100%;
+	opacity: 0.1;
 	filter: alpha(opacity=10);
 }
 .sc_skills_counter .sc_skills_item.sc_skills_style_4 .sc_skills_info .sc_skills_label {
@@ -3399,8 +3399,8 @@ ul.sc_list_style_iconed {
 	position:absolute;
 	border-top: 2px solid #ffffff;
 	height:0;
-	width:12%;
-	left: 42%;
+	width:30%;
+	left: 50%;
 	bottom:0;
 }
 .custom_area_wrap .sc_title_underline:after {
@@ -3416,9 +3416,9 @@ ul.sc_list_style_iconed {
 }
 
 /* Divider */
-.sc_title_divider { 
-	position:relative; 
-	padding-left: 5ex; 
+.sc_title_divider {
+	position:relative;
+	padding-left: 5ex;
 	padding-right: 5ex;
 	text-align:center;
 }

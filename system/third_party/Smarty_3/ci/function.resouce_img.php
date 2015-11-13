@@ -4,11 +4,11 @@ function smarty_function_resouce_img($params,$content,$template=null, &$repeat=n
     $class = ( isset($params['class']) )?$params['class']:null;
     $style = ( isset($params['style']) )?$params['style']:null;
     $return = ( isset($params['return']) )?$params['return']:'img';
-   
+
     $resource_url = $content->CI->config->config['resouce_url'];
     $resource_dir = $content->CI->config->config['resouce_dir'];
     if( file_exists($resource_dir.DS.$file) ){
-       
+
         switch ($return){
             case 'src':
                 $html = $resource_url.'/'.$file; break;

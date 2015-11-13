@@ -38,7 +38,7 @@ class Common_Model extends CI_Model {
 // 	    bug($this->db->last_query() );
 // 	    die('quannh');
 
-        if( $languages && !empty($languages) ) foreach ($languages AS $field=>$contents){
+        if( $id && $languages && !empty($languages) ) foreach ($languages AS $field=>$contents){
             if( !$id ) continue;
             $row = array('taget'=>$id,'table'=>$table,'field'=>$field);
             if( $contents && !empty($contents) ) foreach ($contents AS $lang => $txt){
@@ -64,7 +64,7 @@ class Common_Model extends CI_Model {
 
             }
         }
-
+// die('inserted product');
 	    return $id;
 	}
 

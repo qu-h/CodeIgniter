@@ -65,4 +65,8 @@ class Lang_Model extends CI_Model {
 
 	}
 
+	function line_by_id($id){
+	    return $this->db->where('id',$id)->get('content')->row();
+	}
+
 }

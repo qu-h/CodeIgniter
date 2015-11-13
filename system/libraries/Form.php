@@ -97,9 +97,8 @@ class CI_Form {
 					$file = self::uploadImg($key,$dir);
 					if( $file ){
 						$this->postData[$key] = $file;
-					} else {
-						$this->postData[$key] = null;
 					}
+
 					break;
 				case 'status':
 					$this->postData[$key] = ( $this->CI->input->post($key) == 'on')?1:0;break;

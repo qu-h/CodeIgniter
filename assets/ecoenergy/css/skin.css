@@ -5,7 +5,7 @@ Please, make all necessary changes in the corresponding .less-file!
 @charset "utf-8";
 
 body {
-  font-family: "Arial";
+  font-family: "inherit";
   font-size: 13px;
   line-height: 1.3847em;
   font-weight: 400;

@@ -1,6 +1,7 @@
 @charset "UTF-8";
 /*===============================================
   Animate.css Helpers
+  aaaaaaaaaa
 ================================================= */
 /* used in conjuction with "data-animate"
  * attr to create a delayed page animation
@@ -1546,6 +1547,7 @@ Copyright (c) 2014 Daniel Eden
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
+	line-height: auto;
 }
 /* makes the font 33% larger relative to the icon container */
 .fa-lg {
