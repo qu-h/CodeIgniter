@@ -1564,7 +1564,7 @@ body:not(.top_panel_fixed) .half_opacity .top_panel_position_over .top_panel_mid
 
 /* Logo in the header */
 .top_panel_wrap .logo {
-	margin: 2em 0 1em 12px;
+	margin: 1em 0 1em;
 	overflow:hidden;
 
 }
@@ -1572,7 +1572,7 @@ body:not(.top_panel_fixed) .half_opacity .top_panel_position_over .top_panel_mid
     width: 75%;
 }
 .top_panel_wrap .logo_main {
-	max-height:50px;
+	max-height:90px;
 	width:auto;
 }
 .logo a {

@@ -81,3 +81,25 @@ div.product div.images {
 .sidebar_right .sidebar {
     float: right;
 }
+
+
+.electrichome {
+	text-align:center;
+	color: #12b100;
+}
+.electrichome > span {
+	display:block; margin-right:0px;font-size:3em; line-height: 1em;
+}
+.electrichome >h2 {
+	margin-top:0.3em;margin-bottom:0.3em;
+	color: #12b100;
+}
+.electrichome >h5{
+
+	font-weight:400;
+	font-size:1.384em;
+	color: #12b100;
+}
+.electrichome .sc_line {
+	margin:auto;border-top: 2px solid;margin-top:0px;margin-bottom:2em;width:2.2em;border-top-style:solid;
+}
