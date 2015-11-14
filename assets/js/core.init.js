@@ -4,7 +4,7 @@
 jQuery(document).ready(function() {
 	"use strict";
 	THEMEREX_GLOBALS['theme_init_counter'] = 0;
-	THEMEREX_GLOBALS['system_message'] = null;
+	THEMEREX_GLOBALS['system_message']['message'] = null;
 	themerex_init_actions();
 });
 
