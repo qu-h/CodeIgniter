@@ -2,3 +2,6 @@
 
 $lang['Category Name'] = 'Tên Danh Mục';
 $lang['Description'] = 'Mô tả ngắn';
+$lang += array(
+    'VND'=>'VNĐ'
+);

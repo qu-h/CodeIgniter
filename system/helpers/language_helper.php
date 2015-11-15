@@ -14,6 +14,7 @@ if ( ! function_exists('lang')) {
 	function lang($line, $for = '', $attributes = array(),$language='') {
 
 		$text = get_instance()->lang->line($line,false,$language);
+
 		if( !$text ){
 		    $text = $line;
 		}
