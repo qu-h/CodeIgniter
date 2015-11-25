@@ -1,9 +1,27 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Lang_Model extends CI_Model {
+    var $table = 'content';
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
+	}
+	
+	function text($id){
+	    $vn = $this->db->where(array('id'=>$id,'language'=>'vn'))->from($this->table)->get()->row();
+	    $data = array();
+	    if( isset($vn->table) && $vn->table==$this->table ){
+	        
+	        $data['id'] = $vn->id;
+	        $data[$vn->language] = $vn->content;
+	        $en = $this->db->where(array('taget'=>$id,'language'=>'en'))->from($this->table)->get()->row();
+	        if( isset($en->content) && $en->content ){
+	            $data[$en->language] = $en->content;
+	        }
+	        
+	    }
+	    
+	    return $data;
 	}
 
 	public function line($returnSQL=false,$table,$field,$taget,$lang='vn',$return=null){
@@ -46,6 +64,15 @@ class Lang_Model extends CI_Model {
 	}
 
 
+	function get_row($taget=0,$field='title',$table=null){
+	    $this->db->where(array('table'=>$table,'field'=>$field));
+	    if( $taget ){
+	        $this->db->where('taget',$taget);
+	    }
+	    $item = $this->db->get($this->table)->row();
+	    return $item;
+	    
+	}
 	function search($table,$field,$txt='',$where=array(),$return_taget_id=false){
 	    $this->db->where(array('table'=>$table,'field'=>$field));
 	    $this->db->where('content',$txt);

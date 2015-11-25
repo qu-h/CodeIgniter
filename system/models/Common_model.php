@@ -10,6 +10,13 @@ class Common_Model extends CI_Model {
 		}
 	}
 
+	function delete($id=0,$table='content'){
+	    if ( $this->db->field_exists('status',$table) ) {
+	        $data['status'] = -1;
+	        $this->db->where('id', $id)->update($table, $data);
+	    }
+	    return true;
+	}
 	function update($id=0,$table='',$data=array(),$lang_fields=NULL){
 	    if( isset($data['id']) ){
 	        $id =  $data['id'];
@@ -19,6 +26,7 @@ class Common_Model extends CI_Model {
         if ( $this->db->field_exists('modified',$table) ) {
 	        $data['modified'] = date('Y-m-d H:i:s');
 	    }
+	    $languages = array();
 	    if( $lang_fields && !empty($lang_fields) ){
 	        foreach ($lang_fields AS $k){
 	            $languages[$k] = $data[$k]; unset($data[$k]);
