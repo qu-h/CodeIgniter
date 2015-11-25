@@ -475,12 +475,14 @@ function themerex_scroll_actions() {
 		if (scroll_offset <= slider_height + THEMEREX_GLOBALS['top_panel_height']) {
 			if (jQuery('body').hasClass('top_panel_fixed')) {
 				jQuery('body').removeClass('top_panel_fixed');
+				jQuery('.tp-bannertimer').css('top',0);
 			}
 		} else if (scroll_offset > slider_height + THEMEREX_GLOBALS['top_panel_height']) {
 			if (!jQuery('body').hasClass('top_panel_fixed')) {
 				jQuery('.top_panel_fixed_wrap').height(THEMEREX_GLOBALS['top_panel_height']);
 				jQuery('.top_panel_wrap').css('marginTop', '-150px').animate({'marginTop': 0}, 500);
 				jQuery('body').addClass('top_panel_fixed');
+				jQuery('.tp-bannertimer').css('top',70);
 			}
 		}
 	}

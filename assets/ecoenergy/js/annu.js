@@ -169,11 +169,10 @@ revslider_showDoubleJqueryError('#rev_slider_1_1');
 revapi1 = tpj('#rev_slider_1_1').show().revolution(
 {	
 							dottedOverlay:"none",
-	delay:9000,
+	delay:5000,
 	startwidth:1170,
 	startheight:915,
 	hideThumbs:200,
-
 	thumbWidth:100,
 	thumbHeight:50,
 	thumbAmount:3,
@@ -187,7 +186,7 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	navigationStyle:"round",
 
 	touchenabled:"on",
-	onHoverStop:"on",
+	onHoverStop:0,
 	nextSlideOnWindowFocus:"off",
 
 	swipe_threshold: 75,
@@ -217,7 +216,7 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	fullWidth:"on",
 	fullScreen:"off",
 
-							spinner:"spinner0",
+	spinner:"spinner0",
 							
 	stopLoop:"off",
 	stopAfterLoops:-1,
@@ -236,10 +235,11 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	hideArrowsOnMobile:"off",
 	hideThumbsUnderResolution:0,
 
-							hideSliderAtLimit:0,
+	hideSliderAtLimit:0,
 	hideCaptionAtLimit:0,
 	hideAllCaptionAtLilmit:0,
-	startWithSlide:0					});
+	startWithSlide:1
+});
 
 
 
