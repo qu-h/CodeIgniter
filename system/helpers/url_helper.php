@@ -62,7 +62,7 @@ if ( ! function_exists('site_url'))
 	 * @return	string
 	 */
 	function site_url($uri = '', $protocol = NULL){
-	    if( !$uri ){
+	    if( !$uri || $uri =='#'){
 	       return 'javascript:void(0)';
 	    }
 		return get_instance()->config->site_url($uri, $protocol);
