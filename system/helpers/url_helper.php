@@ -61,8 +61,10 @@ if ( ! function_exists('site_url'))
 	 * @param	string	$protocol
 	 * @return	string
 	 */
-	function site_url($uri = '', $protocol = NULL)
-	{
+	function site_url($uri = '', $protocol = NULL){
+	    if( !$uri ){
+	       return 'javascript:void(0)';
+	    }
 		return get_instance()->config->site_url($uri, $protocol);
 	}
 }
@@ -163,13 +165,11 @@ if ( ! function_exists('anchor'))
 			? site_url($uri)
 			: (preg_match('#^(\w+:)?//#i', $uri) ? $uri : site_url($uri));
 
-		if ($title === '')
-		{
+		if ($title === ''){
 			$title = $site_url;
 		}
 
-		if ($attributes !== '')
-		{
+		if ($attributes !== ''){
 			$attributes = _stringify_attributes($attributes);
 		}
 
