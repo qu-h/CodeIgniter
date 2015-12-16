@@ -82,22 +82,17 @@ function &DB($params = '', $query_builder_override = NULL)
 			}
 		}
 
-		if (empty($db))
-		{
+		if (empty($db)) {
 			show_error('No database connection settings were found in the database config file.');
 		}
 
-		if ($params !== '')
-		{
+		if ($params !== '') {
 			$active_group = $params;
 		}
 
-		if ( ! isset($active_group))
-		{
+		if ( ! isset($active_group)) {
 			show_error('You have not specified a database connection group via $active_group in your config/database.php file.');
-		}
-		elseif ( ! isset($db[$active_group]))
-		{
+		} elseif ( ! isset($db[$active_group])) {
 			show_error('You have specified an invalid database connection group ('.$active_group.') in your config/database.php file.');
 		}
 
@@ -201,8 +196,7 @@ function &DB($params = '', $query_builder_override = NULL)
 	$DB = new $driver($params);
 
 	// Check for a subdriver
-	if ( ! empty($DB->subdriver))
-	{
+	if ( ! empty($DB->subdriver)) {
 		$driver_file = BASEPATH.'database/drivers/'.$DB->dbdriver.'/subdrivers/'.$DB->dbdriver.'_'.$DB->subdriver.'_driver.php';
 
 		if (file_exists($driver_file))

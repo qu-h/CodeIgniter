@@ -1,3 +1,22 @@
 .field-icon .fa {
 	line-height: 42px;
 }
+
+
+.sublevel-1 {
+	display: inline-block;
+	width: 20px;
+
+}
+.sublevel-1:AFTER {
+	content: '----'
+}
+
+.sublevel-2 {
+	display: inline-block;
+	width: 40px;
+
+}
+.sublevel-2:AFTER {
+	content: '--------'
+}
