@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
 	THEMEREX_GLOBALS['theme_skin_color'] = '#424242';
 	THEMEREX_GLOBALS['theme_skin_bg_color'] = '#ffffff';
 
-	THEMEREX_GLOBALS["strings"] = { 
+	THEMEREX_GLOBALS["strings"] = {
 			bookmark_add: 		"Add the bookmark",
 			bookmark_added:		"Current page has been successfully added to the bookmarks. You can see it in the right panel on the tab \'Bookmarks\'",
 			bookmark_del: 		"Delete this bookmark",
@@ -78,23 +78,23 @@ jQuery(document).ready(function() {
 jQuery(document).ready(function() {
 	// CUSTOM AJAX CONTENT LOADING FUNCTION
 	var ajaxRevslider = function(obj) {
-	
+
 		// obj.type : Post Type
 	// obj.id : ID of Content to Load
 	// obj.aspectratio : The Aspect Ratio of the Container / Media
 	// obj.selector : The Container Selector where the Content of Ajax will be injected. It is done via the Essential Grid on Return of Content
-	
+
 	var content = "";
-	
+
 	data = {};
-	
+
 	data.action = 'revslider_ajax_call_front';
 	data.client_action = 'get_slider_html';
 	data.token = 'ae62160984';
 	data.type = obj.type;
 	data.id = obj.id;
 	data.aspectratio = obj.aspectratio;
-	
+
 	// SYNC AJAX REQUEST
 	jQuery.ajax({
 		type:"post",
@@ -104,28 +104,28 @@ jQuery(document).ready(function() {
 		async:false,
 		success: function(ret, textStatus, XMLHttpRequest) {
 			if(ret.success == true)
-				content = ret.data;								
+				content = ret.data;
 		},
 		error: function(e) {
 			console.log(e);
 		}
 	});
-	
+
 	 // FIRST RETURN THE CONTENT WHEN IT IS LOADED !!
-		 return content;						 
+		 return content;
 	};
-	
+
 	// CUSTOM AJAX FUNCTION TO REMOVE THE SLIDER
 	var ajaxRemoveRevslider = function(obj) {
 		return jQuery(obj.selector+" .rev_slider").revkill();
 	};
-	
+
 	// EXTEND THE AJAX CONTENT LOADING TYPES WITH TYPE AND FUNCTION
 	var extendessential = setInterval(function() {
 		if (jQuery.fn.tpessential != undefined) {
 			clearInterval(extendessential);
 			if(typeof(jQuery.fn.tpessential.defaults) !== 'undefined') {
-	jQuery.fn.tpessential.defaults.ajaxTypes.push({type:"revslider",func:ajaxRevslider,killfunc:ajaxRemoveRevslider,openAnimationSpeed:0.3});   
+	jQuery.fn.tpessential.defaults.ajaxTypes.push({type:"revslider",func:ajaxRevslider,killfunc:ajaxRemoveRevslider,openAnimationSpeed:0.3});
 	// type:  Name of the Post to load via Ajax into the Essential Grid Ajax Container
 	// func: the Function Name which is Called once the Item with the Post Type has been clicked
 	// killfunc: function to kill in case the Ajax Window going to be removed (before Remove function !
@@ -133,6 +133,14 @@ jQuery(document).ready(function() {
 				}
 			}
 		},30);
+
+	jQuery('ul.products .post_thumb a img').each(function(){
+		block_h = jQuery(this).parent('a').height() - jQuery(this).height();
+		if( block_h > 0 ){
+			jQuery(this).css({'margin-top':block_h/2,'display':'inline-block'});
+		}
+
+	});
 });
 
 
@@ -167,7 +175,7 @@ if(tpj('#rev_slider_1_1').revolution == undefined){
 revslider_showDoubleJqueryError('#rev_slider_1_1');
 }else{
 revapi1 = tpj('#rev_slider_1_1').show().revolution(
-{	
+{
 							dottedOverlay:"none",
 	delay:5000,
 	startwidth:1170,
@@ -176,9 +184,9 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	thumbWidth:100,
 	thumbHeight:50,
 	thumbAmount:3,
-	
+
 	minHeight:220,
-									
+
 	simplifyAll:"off",
 
 	navigationType:"none",
@@ -192,9 +200,9 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	swipe_threshold: 75,
 	swipe_min_touches: 1,
 	drag_block_vertical: false,
-	
-							
-							
+
+
+
 	keyboardNavigation:"off",
 
 	navigationHAlign:"center",
@@ -217,7 +225,7 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 	fullScreen:"off",
 
 	spinner:"spinner0",
-							
+
 	stopLoop:"off",
 	stopAfterLoops:-1,
 	stopAtSlide:-1,
@@ -226,9 +234,9 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 
 	autoHeight:"off",
 	forceFullWidth:"off",
-	
-	
-	
+
+
+
 	hideThumbsOnMobile:"off",
 	hideNavDelayOnMobile:1500,
 	hideBulletsOnMobile:"off",
@@ -245,4 +253,4 @@ revapi1 = tpj('#rev_slider_1_1').show().revolution(
 
 				}
 });	/*ready*/
-/* END REVOLUTION SLIDER */	
+/* END REVOLUTION SLIDER */
