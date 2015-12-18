@@ -92,7 +92,7 @@ class CI_Form {
 
 			switch ($field['type']){
 				case 'image':
-				case 'images':
+
 					$dir = ( isset($field['dir']) && $field['dir'])?$field['dir']:'uploads';
 					$file = self::uploadImg($key,$dir);
 					if( $file ){
@@ -100,6 +100,14 @@ class CI_Form {
 					}
 
 					break;
+				case 'images': /* add array images */
+				    $this->postData[$key] = array();
+				    $imgs = $this->CI->input->post($key);
+				    if( !empty($imgs) ) foreach ($imgs AS $img){
+				        $this->postData[$key][] = str_replace($this->CI->config->item('resouce_url'), null, $img);
+				    }
+				    $this->postData[$key] = json_encode($this->postData[$key]);
+				    break;
 				case 'status':
 					$this->postData[$key] = ( $this->CI->input->post($key) == 'on')?1:0;break;
 				case 'price':
@@ -145,16 +153,23 @@ class CI_Form {
 		}
 
 		if( array_key_exists('alias', $this->fields) && array_key_exists('title', $this->postData) && !array_key_exists('alias', $this->postData) ){
-			$alias = convert_accented_characters($this->postData['title']);
+		    $title = reset($this->postData['title']);
+			$alias = convert_accented_characters($title);
+
 			$this->postData['alias'] = url_title($alias,'-',TRUE);
+		} elseif( array_key_exists('alias', $this->postData) ){
+		    if( is_array($this->postData['alias']) ) foreach ($this->postData['alias'] AS $index=>$alias){
+		        $this->postData['alias'][$index] = url_title($alias,'-',TRUE);
+		    }
+
 		}
-// bug($this->CI->input->post('captcha')); die;
+
 		if( array_key_exists('captcha', $_POST) ){
 
 			$checkCaptcha = $this->CI->Common_Model->checkCaptcha($this->CI->input->post('captcha'));
 			if( $checkCaptcha != true ){
 				$this->CI->error('The security code entered was incorrect');
-// 				bug( $this->CI->error );
+
 				$success = false;
 			}
 

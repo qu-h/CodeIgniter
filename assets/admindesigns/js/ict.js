@@ -13,6 +13,7 @@ jQuery(document).ready(function() {
 	$('button.cancel').click(function(){
 		 window.history.back(-1);
 	});
+
 	$('a.sendmail, button.sendmail').click(function(){
 		name = $(this).attr('uname');
 		uid = $(this).attr('uid');
@@ -20,6 +21,7 @@ jQuery(document).ready(function() {
 		form.mailform(name,uid);
 		return false;
 	});
+
 
 
 	$("#toggle_sidemenu_l").click(function(){
@@ -47,6 +49,16 @@ jQuery(document).ready(function() {
 
 		  }
 	});
+
+//	$('div.imgs_add').bind('click',form.upload_img() );
+	jQuery('div.imgs_add').unbind('click').click(function(event ){
+		event.preventDefault();
+		form.upload_img( $(this).attr('uri'),$(this).attr('inname'),$(this).attr('dir'));
+
+	});
+
+//	jQuery('div.imgs_add').trigger("click");
+
 
 });
 
@@ -186,7 +198,40 @@ var form = {
             	return false;
             });
 
-	}
+	},
+
+	ajaxing : false,
+	upload_img: function(uri,name,dir){
+		var file_input = jQuery('#add_file_ajax input[type=file]');
+		if( file_input.length <= 0 ){
+			var formupload = '<form id="add_file_ajax" action="" method="post" enctype="multipart/form-data" style="display: none;" ><input type="file" name="fileajax"><input type="hidden" name="dir" value="'+dir+'" /></form>';
+			jQuery('body').append(formupload);
+			file_input = jQuery('#add_file_ajax input[type=file]');
+		}
+
+		file_input.trigger('click').on("change", function(e){
+			e.preventDefault();
+			if( form.ajaxing == false ){
+				form.ajaxing=true;
+				$.ajax({
+		              url: uri, type: "POST",cache: true,
+		              data: new FormData( $('#add_file_ajax')[0] ),
+		              enctype: 'multipart/form-data',
+		              processData: false,  // tell jQuery not to process the data
+		              contentType: false
+		            }).done(function( data ) {
+		            	data = jQuery.parseJSON(data);
+		            	if( data.f ) {
+		            		$('<div class="fileupload-preview thumbnail col-sm-6" ><img src="'+data.f+'" ><input type="hidden" name="'+name+'[]" value="'+data.f+'" ></div>').insertBefore('div.imgs_add');
+
+		            	}
+		            }).complete(function(){form.ajaxing=false;});
+
+			}
+
+		});
+
+	},
 };
 
 var charts = function () {
