@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/helpers/url_helper.html
+ * @link		https://codeigniter.com/user_guide/helpers/url_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -61,10 +61,8 @@ if ( ! function_exists('site_url'))
 	 * @param	string	$protocol
 	 * @return	string
 	 */
-	function site_url($uri = '', $protocol = NULL){
-	    if( $uri =='#'){
-	       return 'javascript:void(0)';
-	    }
+	function site_url($uri = '', $protocol = NULL)
+	{
 		return get_instance()->config->site_url($uri, $protocol);
 	}
 }
@@ -165,11 +163,13 @@ if ( ! function_exists('anchor'))
 			? site_url($uri)
 			: (preg_match('#^(\w+:)?//#i', $uri) ? $uri : site_url($uri));
 
-		if ($title === ''){
+		if ($title === '')
+		{
 			$title = $site_url;
 		}
 
-		if ($attributes !== ''){
+		if ($attributes !== '')
+		{
 			$attributes = _stringify_attributes($attributes);
 		}
 
@@ -477,10 +477,14 @@ if ( ! function_exists('url_title'))
 	 * @param	bool	$lowercase	Whether to transform the output string to lowercase
 	 * @return	string
 	 */
-	function url_title($str, $separator = '-', $lowercase = true){
-		if ($separator === 'dash'){
+	function url_title($str, $separator = '-', $lowercase = FALSE)
+	{
+		if ($separator === 'dash')
+		{
 			$separator = '-';
-		} elseif ($separator === 'underscore') {
+		}
+		elseif ($separator === 'underscore')
+		{
 			$separator = '_';
 		}
 
@@ -492,17 +496,18 @@ if ( ! function_exists('url_title'))
 			'\s+'			=> $separator,
 			'('.$q_separator.')+'	=> $separator
 		);
-// bug($str);
-		$str = convert_accented_characters($str);
-// 		bug($str);
-		if ($lowercase === TRUE){
-		    $str = strtolower($str);
-		}
-		$str = strip_tags($str);
 
-		foreach ($trans as $key => $val){
+		$str = strip_tags($str);
+		foreach ($trans as $key => $val)
+		{
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);
 		}
+
+		if ($lowercase === TRUE)
+		{
+			$str = strtolower($str);
+		}
+
 		return trim(trim($str, $separator));
 	}
 }
@@ -562,15 +567,3 @@ if ( ! function_exists('redirect'))
 		exit;
 	}
 }
-
-if ( ! function_exists('uri_suffix')){
-    function uri_suffix($type='html'){
-        $CI =& get_instance();
-        return $CI->config->site_url().'/'.$CI->uri->uri_string().'.'.$type;
-    }
-}
-
-function base64url_encode($data) {
-    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-}
-

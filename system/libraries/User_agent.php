@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	User Agent
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/libraries/user_agent.html
+ * @link		https://codeigniter.com/user_guide/libraries/user_agent.html
  */
 class CI_User_agent {
 
@@ -193,10 +193,10 @@ class CI_User_agent {
 	 *
 	 * @return	bool
 	 */
-	protected function _load_agent_file(){
-	    if (($found = file_exists(BASEPATH.'config/user_agents.php'))){
-	        include(BASEPATH.'config/user_agents.php');
-	    } else if (($found = file_exists(APPPATH.'config/user_agents.php'))){
+	protected function _load_agent_file()
+	{
+		if (($found = file_exists(APPPATH.'config/user_agents.php')))
+		{
 			include(APPPATH.'config/user_agents.php');
 		}
 
@@ -213,25 +213,29 @@ class CI_User_agent {
 
 		$return = FALSE;
 
-		if (isset($platforms)){
+		if (isset($platforms))
+		{
 			$this->platforms = $platforms;
 			unset($platforms);
 			$return = TRUE;
 		}
 
-		if (isset($browsers)){
+		if (isset($browsers))
+		{
 			$this->browsers = $browsers;
 			unset($browsers);
 			$return = TRUE;
 		}
 
-		if (isset($mobiles)){
+		if (isset($mobiles))
+		{
 			$this->mobiles = $mobiles;
 			unset($mobiles);
 			$return = TRUE;
 		}
 
-		if (isset($robots)){
+		if (isset($robots))
+		{
 			$this->robots = $robots;
 			unset($robots);
 			$return = TRUE;

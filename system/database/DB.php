@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @category	Database
  * @author	EllisLab Dev Team
- * @link	http://codeigniter.com/user_guide/database/
+ * @link	https://codeigniter.com/user_guide/database/
  *
  * @param 	string|string[]	$params
  * @param 	bool		$query_builder_override
@@ -82,17 +82,22 @@ function &DB($params = '', $query_builder_override = NULL)
 			}
 		}
 
-		if (empty($db)) {
+		if ( ! isset($db) OR count($db) === 0)
+		{
 			show_error('No database connection settings were found in the database config file.');
 		}
 
-		if ($params !== '') {
+		if ($params !== '')
+		{
 			$active_group = $params;
 		}
 
-		if ( ! isset($active_group)) {
+		if ( ! isset($active_group))
+		{
 			show_error('You have not specified a database connection group via $active_group in your config/database.php file.');
-		} elseif ( ! isset($db[$active_group])) {
+		}
+		elseif ( ! isset($db[$active_group]))
+		{
 			show_error('You have specified an invalid database connection group ('.$active_group.') in your config/database.php file.');
 		}
 
@@ -196,7 +201,8 @@ function &DB($params = '', $query_builder_override = NULL)
 	$DB = new $driver($params);
 
 	// Check for a subdriver
-	if ( ! empty($DB->subdriver)) {
+	if ( ! empty($DB->subdriver))
+	{
 		$driver_file = BASEPATH.'database/drivers/'.$DB->dbdriver.'/subdrivers/'.$DB->dbdriver.'_'.$DB->subdriver.'_driver.php';
 
 		if (file_exists($driver_file))

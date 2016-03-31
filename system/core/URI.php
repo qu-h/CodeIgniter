@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	URI
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/libraries/uri.html
+ * @link		https://codeigniter.com/user_guide/libraries/uri.html
  */
 class CI_URI {
 
@@ -96,14 +96,14 @@ class CI_URI {
 	 *
 	 * @return	void
 	 */
-	var $suffix=NULL;
-	public function __construct(){
-
+	public function __construct()
+	{
 		$this->config =& load_class('Config', 'core');
 
 		// If query strings are enabled, we don't need to parse any segments.
 		// However, they don't make sense under CLI.
-		if (is_cli() OR $this->config->item('enable_query_strings') !== TRUE){
+		if (is_cli() OR $this->config->item('enable_query_strings') !== TRUE)
+		{
 			$this->_permitted_uri_chars = $this->config->item('permitted_uri_chars');
 
 			// If it's a CLI request, ignore the configuration
@@ -137,21 +137,6 @@ class CI_URI {
 			$this->_set_uri_string($uri);
 		}
 
-		if( isset($_SERVER['ORIG_PATH_INFO']) ){
-		    $pathInfo = pathinfo($_SERVER['ORIG_PATH_INFO']);
-		} else if ( isset($_SERVER['PATH_INFO']) ){
-		    $pathInfo = pathinfo($_SERVER['PATH_INFO']);
-		}
-
-		if( isset($pathInfo['extension']) && $pathInfo['extension'] ){
-		    $this->suffix = $pathInfo['extension'];
-		}
-		if( !$this->suffix ){
-		    $this->suffix = $this->config->item('url_suffix');
-		}
-
-
-
 		log_message('info', 'URI Class Initialized');
 	}
 
@@ -163,13 +148,11 @@ class CI_URI {
 	 * @param 	string	$str
 	 * @return	void
 	 */
-	protected function _set_uri_string($str){
+	protected function _set_uri_string($str)
+	{
 		// Filter out control characters and trim slashes
 		$this->uri_string = trim(remove_invisible_characters($str, FALSE), '/');
-		$this->uri_string = preg_replace("|".preg_quote('.json')."$|", "", $this->uri_string);
-		$this->uri_string = preg_replace("|".preg_quote('.'.$this->config->item('url_suffix'))."$|", "", $this->uri_string);
 
-// bug($this->uri_string); die;
 		if ($this->uri_string !== '')
 		{
 			// Remove the URL suffix, if present
@@ -311,7 +294,7 @@ class CI_URI {
 	 *
 	 * Do some final cleaning of the URI and return it, currently only used in self::_parse_request_uri()
 	 *
-	 * @param	string	$url
+	 * @param	string	$uri
 	 * @return	string
 	 */
 	protected function _remove_relative_directory($uri)

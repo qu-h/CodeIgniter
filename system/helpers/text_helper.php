@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/helpers/text_helper.html
+ * @link		https://codeigniter.com/user_guide/helpers/text_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -275,13 +275,28 @@ if ( ! function_exists('word_censor'))
 
 		foreach ($censored as $badword)
 		{
+			$badword = str_replace('\*', '\w*?', preg_quote($badword, '/'));
 			if ($replacement !== '')
 			{
-				$str = preg_replace("/({$delim})(".str_replace('\*', '\w*?', preg_quote($badword, '/')).")({$delim})/i", "\\1{$replacement}\\3", $str);
+				$str = preg_replace(
+					"/({$delim})(".$badword.")({$delim})/i",
+					"\\1{$replacement}\\3",
+					$str
+				);
 			}
-			else
+			elseif (preg_match_all("/{$delim}(".$badword."){$delim}/i", $str, $matches, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE))
 			{
-				$str = preg_replace("/({$delim})(".str_replace('\*', '\w*?', preg_quote($badword, '/')).")({$delim})/ie", "'\\1'.str_repeat('#', strlen('\\2')).'\\3'", $str);
+				$matches = $matches[1];
+				for ($i = count($matches) - 1; $i >= 0; $i--)
+				{
+					$length = strlen($matches[$i][0]);
+					$str = substr_replace(
+						$str,
+						str_repeat('#', $length),
+						$matches[$i][1],
+						$length
+					);
+				}
 			}
 		}
 
@@ -381,20 +396,20 @@ if ( ! function_exists('convert_accented_characters'))
 	{
 		static $array_from, $array_to;
 
-		if ( ! is_array($array_from)){
-		    if (file_exists(BASEPATH.'config/foreign_chars.php')){
-		        include(BASEPATH.'config/foreign_chars.php');
-		    }
-
-			if (file_exists(APPPATH.'config/foreign_chars.php')){
+		if ( ! is_array($array_from))
+		{
+			if (file_exists(APPPATH.'config/foreign_chars.php'))
+			{
 				include(APPPATH.'config/foreign_chars.php');
 			}
 
-			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php')){
+			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php'))
+			{
 				include(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php');
 			}
 
-			if (empty($foreign_characters) OR ! is_array($foreign_characters)){
+			if (empty($foreign_characters) OR ! is_array($foreign_characters))
+			{
 				$array_from = array();
 				$array_to = array();
 
@@ -546,33 +561,4 @@ if ( ! function_exists('ellipsize'))
 
 		return $beg.$ellipsis.$end;
 	}
-}
-
-
-if ( ! function_exists('json_datatable')){
-    function json_datatable($data=NULL,$dataTable=true){
-        if( !$dataTable ){
-            echo json_encode($data);die;
-        }
-        $actions = null;
-
-        if( is_array($data) && !isset($data['data']) ){
-            $items = $data;
-            $total = $records = count($data);
-        } else if( isset($data['data']) ){
-
-            $items = ( !empty($data['data']))?$data['data']:array();
-            $total = ( isset($data['recordsTotal']) )?$data['recordsTotal']:0;
-            $records = ( isset($data['recordsFiltered']) )?$data['recordsFiltered']:0;
-            if( isset($data['actions']) && !empty($data['actions']) ){
-                $actions = $data['actions'];
-            }
-        } else {
-
-        }
-
-        $CI =& get_instance();
-        $return = array('data'=>$items,'recordsTotal'=>$total,'recordsFiltered'=>$total,'draw'=> intval($CI->input->get('draw')),'actions'=>$actions);
-        echo json_encode($return);die;
-    }
 }

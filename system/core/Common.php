@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	CodeIgniter
  * @category	Common Functions
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/
+ * @link		https://codeigniter.com/user_guide/
  */
 
 // ------------------------------------------------------------------------
@@ -235,30 +235,27 @@ if ( ! function_exists('get_config'))
 	 * @param	array
 	 * @return	array
 	 */
-	function &get_config(Array $replace = array()) {
+	function &get_config(Array $replace = array())
+	{
 		static $config;
 
-		if (empty($config)) {
-// 			$file_path = APPPATH.'config/config.php';
+		if (empty($config))
+		{
+			$file_path = APPPATH.'config/config.php';
 			$found = FALSE;
-		    if (file_exists(BASEPATH.'config/config.php')) {
-		        $found = TRUE;
-		        require(BASEPATH.'config/config.php');
-		    }
-
-			if (file_exists(APPPATH.'config/config.php')) {
+			if (file_exists($file_path))
+			{
 				$found = TRUE;
-				$config_base = $config;
-				require(APPPATH.'config/config.php');
-// 				$config = array_combine($config,$config_base);
-				$config += $config_base;
+				require($file_path);
 			}
 
-
 			// Is the config file in the environment folder?
-			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php')) {
+			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php'))
+			{
 				require($file_path);
-			} elseif ( ! $found) {
+			}
+			elseif ( ! $found)
+			{
 				set_status_header(503);
 				echo 'The configuration file does not exist.';
 				exit(3); // EXIT_CONFIG
@@ -316,17 +313,22 @@ if ( ! function_exists('get_mimes'))
 	 *
 	 * @return	array
 	 */
-	function &get_mimes(){
+	function &get_mimes()
+	{
 		static $_mimes;
 
-		if (empty($_mimes)){
-		    if (file_exists(BASEPATH.'config/mimes.php')){
-		        $_mimes = include(BASEPATH.'config/mimes.php');
-		    } elseif (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php')){
+		if (empty($_mimes))
+		{
+			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
+			{
 				$_mimes = include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
-			} elseif (file_exists(APPPATH.'config/mimes.php')) {
+			}
+			elseif (file_exists(APPPATH.'config/mimes.php'))
+			{
 				$_mimes = include(APPPATH.'config/mimes.php');
-			} else {
+			}
+			else
+			{
 				$_mimes = array();
 			}
 		}
@@ -750,7 +752,12 @@ if ( ! function_exists('html_escape'))
 
 		if (is_array($var))
 		{
-			return array_map('html_escape', $var, array_fill(0, count($var), $double_encode));
+			foreach (array_keys($var) as $key)
+			{
+				$var[$key] = html_escape($var[$key], $double_encode);
+			}
+
+			return $var;
 		}
 
 		return htmlspecialchars($var, ENT_QUOTES, config_item('charset'), $double_encode);

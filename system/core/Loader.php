@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Loader
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/libraries/loader.html
+ * @link		https://codeigniter.com/user_guide/libraries/loader.html
  */
 class CI_Loader {
 
@@ -231,11 +231,16 @@ class CI_Loader {
 	 * @param	bool	$db_conn	An optional database connection configuration to initialize
 	 * @return	object
 	 */
-	public function model($model, $name = '', $db_conn = FALSE){
-		if (empty($model)){
+	public function model($model, $name = '', $db_conn = FALSE)
+	{
+		if (empty($model))
+		{
 			return $this;
-		} elseif (is_array($model)){
-			foreach ($model as $key => $value){
+		}
+		elseif (is_array($model))
+		{
+			foreach ($model as $key => $value)
+			{
 				is_int($key) ? $this->model($value, '', $db_conn) : $this->model($key, $value, $db_conn);
 			}
 
@@ -245,7 +250,8 @@ class CI_Loader {
 		$path = '';
 
 		// Is the model in a sub-folder? If so, parse out the filename and path.
-		if (($last_slash = strrpos($model, '/')) !== FALSE){
+		if (($last_slash = strrpos($model, '/')) !== FALSE)
+		{
 			// The path is in front of the last slash
 			$path = substr($model, 0, ++$last_slash);
 
@@ -253,7 +259,8 @@ class CI_Loader {
 			$model = substr($model, $last_slash);
 		}
 
-		if (empty($name)){
+		if (empty($name))
+		{
 			$name = $model;
 		}
 
@@ -278,37 +285,62 @@ class CI_Loader {
 			$this->database($db_conn, FALSE, TRUE);
 		}
 
+		// Note: All of the code under this condition used to be just:
+		//
+		//       load_class('Model', 'core');
+		//
+		//       However, load_class() instantiates classes
+		//       to cache them for later use and that prevents
+		//       MY_Model from being an abstract class and is
+		//       sub-optimal otherwise anyway.
 		if ( ! class_exists('CI_Model', FALSE))
 		{
-			load_class('Model', 'core');
+			$app_path = APPPATH.'core'.DIRECTORY_SEPARATOR;
+			if (file_exists($app_path.'Model.php'))
+			{
+				require_once($app_path.'Model.php');
+				if ( ! class_exists('CI_Model', FALSE))
+				{
+					throw new RuntimeException($app_path."Model.php exists, but doesn't declare class CI_Model");
+				}
+			}
+			elseif ( ! class_exists('CI_Model', FALSE))
+			{
+				require_once(BASEPATH.'core'.DIRECTORY_SEPARATOR.'Model.php');
+			}
+
+			$class = config_item('subclass_prefix').'Model';
+			if (file_exists($app_path.$class.'.php'))
+			{
+				require_once($app_path.$class.'.php');
+				if ( ! class_exists($class, FALSE))
+				{
+					throw new RuntimeException($app_path.$class.".php exists, but doesn't declare class ".$class);
+				}
+			}
 		}
 
-		$model = ucfirst(strtolower($model));
-		if ( ! class_exists($model)){
+		$model = ucfirst($model);
+		if ( ! class_exists($model, FALSE))
+		{
+			foreach ($this->_ci_model_paths as $mod_path)
+			{
+				if ( ! file_exists($mod_path.'models/'.$path.$model.'.php'))
+				{
+					continue;
+				}
 
-		    if( file_exists(BASEPATH.'models/'.$path.$model.'.php') ){
-		        require_once(BASEPATH.'models/'.$path.$model.'.php');
-		        if ( ! class_exists($model, FALSE)){
-		            throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
-		        }
+				require_once($mod_path.'models/'.$path.$model.'.php');
+				if ( ! class_exists($model, FALSE))
+				{
+					throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
+				}
 
-		    } else {
-		        foreach ($this->_ci_model_paths as $mod_path){
-		            if ( ! file_exists($mod_path.'models/'.$path.$model.'.php')){
-		                continue;
-		            }
+				break;
+			}
 
-		            require_once($mod_path.'models/'.$path.$model.'.php');
-		            if ( ! class_exists($model, FALSE)){
-		                throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
-		            }
-
-		            break;
-		        }
-		    }
-
-
-			if ( ! class_exists($model, FALSE)){
+			if ( ! class_exists($model, FALSE))
+			{
 				throw new RuntimeException('Unable to locate the model you have specified: '.$model);
 			}
 		}
@@ -686,9 +718,16 @@ class CI_Loader {
 	{
 		if (is_array($library))
 		{
-			foreach ($library as $driver)
+			foreach ($library as $key => $value)
 			{
-				$this->driver($driver);
+				if (is_int($key))
+				{
+					$this->driver($value, $params);
+				}
+				else
+				{
+					$this->driver($key, $params, $value);
+				}
 			}
 
 			return $this;
@@ -812,7 +851,7 @@ class CI_Loader {
 		// make sure the application default paths are still in the array
 		$this->_ci_library_paths = array_unique(array_merge($this->_ci_library_paths, array(APPPATH, BASEPATH)));
 		$this->_ci_helper_paths = array_unique(array_merge($this->_ci_helper_paths, array(APPPATH, BASEPATH)));
-		$this->_ci_model_paths = array_unique(array_merge($this->_ci_model_paths, array(APPPATH,BASEPATH)));
+		$this->_ci_model_paths = array_unique(array_merge($this->_ci_model_paths, array(APPPATH)));
 		$this->_ci_view_paths = array_merge($this->_ci_view_paths, array(APPPATH.'views/' => TRUE));
 		$config->_config_paths = array_unique(array_merge($config->_config_paths, array(APPPATH)));
 
@@ -897,6 +936,14 @@ class CI_Loader {
 		 */
 		if (is_array($_ci_vars))
 		{
+			foreach (array_keys($_ci_vars) as $key)
+			{
+				if (strncmp($key, '_ci_', 4) === 0)
+				{
+					unset($_ci_vars[$key]);
+				}
+			}
+
 			$this->_ci_cached_vars = array_merge($this->_ci_cached_vars, $_ci_vars);
 		}
 		extract($this->_ci_cached_vars);
@@ -1255,26 +1302,20 @@ class CI_Loader {
 	 * @used-by	CI_Loader::initialize()
 	 * @return	void
 	 */
-	protected function _ci_autoloader() {
-	    if (file_exists(BASEPATH.'config/autoload.php')) {
-	        include(BASEPATH.'config/autoload.php');
-	    }
-	    $autoload_base = $autoload;
-
-		if (file_exists(APPPATH.'config/autoload.php')) {
+	protected function _ci_autoloader()
+	{
+		if (file_exists(APPPATH.'config/autoload.php'))
+		{
 			include(APPPATH.'config/autoload.php');
-
-			$autoload = array_merge_recursive($autoload,$autoload_base);
 		}
 
-
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php')){
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php'))
+		{
 			include(APPPATH.'config/'.ENVIRONMENT.'/autoload.php');
 		}
 
-
-
-		if ( ! isset($autoload)) {
+		if ( ! isset($autoload))
+		{
 			return;
 		}
 
@@ -1308,10 +1349,7 @@ class CI_Loader {
 		// Autoload drivers
 		if (isset($autoload['drivers']))
 		{
-			foreach ($autoload['drivers'] as $item)
-			{
-				$this->driver($item);
-			}
+			$this->driver($autoload['drivers']);
 		}
 
 		// Load libraries
