@@ -11,13 +11,21 @@ function smarty_function_resouce_img_from_json($params,$content,$template=null, 
 
     $src = $resource_url."/$null";
 
-    $files = json_decode($file);
 
 
-    $img = ( $files && is_array($files) ) ? reset($files) : NULL ;
 
-    if( $img && file_exists($resource_dir.DS.$img) ){
-        $src = $resource_url.'/'.$img;
+    if(substr( $file, 0, 1 ) === "[") { // is json_endcode
+        $files = json_decode($file);
+        if( count($files)  >0){
+            foreach ($files AS $img){
+                if( file_exists($resource_dir.$img) ){
+                    $src = $resource_url.'/'.$img;
+                    break;
+                }
+            }
+        }
+    } elseif(file_exists($this->config->item('resouce_dir').$str)){
+        $src = $resource_url.$null;
     }
 
     switch ($return){
