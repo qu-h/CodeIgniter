@@ -56,7 +56,6 @@ jQuery(document).ready(function() {
 		form.upload_img( $(this).attr('uri'),$(this).attr('inname'),$(this).attr('dir'));
 
 	});
-	form.remove_img();
 
 //	jQuery('div.imgs_add').trigger("click");
 
@@ -226,20 +225,12 @@ var form = {
 		            		$('<div class="fileupload-preview thumbnail col-sm-6" ><img src="'+data.f+'" ><input type="hidden" name="'+name+'[]" value="'+data.f+'" ></div>').insertBefore('div.imgs_add');
 
 		            	}
-		            	form.remove_img();
 		            }).complete(function(){form.ajaxing=false;});
 
 			}
 
 		});
 
-	},
-	remove_img :function(){
-		var imgs = jQuery('.fileupload-preview.thumbnail  img');
-		imgs.click(function(){
-			var div = $(this).parent('.fileupload-preview.thumbnail ');
-			if( div.length ) div.remove();
-		})
 	},
 };
 
