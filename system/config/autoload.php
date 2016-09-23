@@ -58,8 +58,8 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
+$autoload['libraries'] = array('smarty','session');
 
-$autoload['libraries'] = array('Smarty');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Drivers
@@ -72,6 +72,12 @@ $autoload['libraries'] = array('Smarty');
 | Prototype:
 |
 |	$autoload['drivers'] = array('cache');
+|
+| You can also supply an alternative property name to be assigned in
+| the controller:
+|
+|	$autoload['drivers'] = array('cache' => 'cch');
+|
 */
 $autoload['drivers'] = array();
 
@@ -83,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url','language','html');
+$autoload['helper'] = array('language','url');
 
 /*
 | -------------------------------------------------------------------
@@ -126,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Common_Model');
+$autoload['model'] = array();

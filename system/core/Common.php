@@ -238,14 +238,25 @@ if ( ! function_exists('get_config'))
 	function &get_config(Array $replace = array())
 	{
 		static $config;
+		require(BASEPATH.'config/config.php');
+		$config_base = $config;
 
+		if (file_exists(APPPATH.'config/config.php'))
+		{
+		    require(APPPATH.'config/config.php');
+		    $config = array_merge($config_base,$config);
+		}
+
+		/*
 		if (empty($config))
 		{
+
+
 			$file_path = APPPATH.'config/config.php';
-			$found = FALSE;
+			$found = TRUE;
 			if (file_exists($file_path))
 			{
-				$found = TRUE;
+// 				$found = TRUE;
 				require($file_path);
 			}
 
@@ -269,6 +280,7 @@ if ( ! function_exists('get_config'))
 				exit(3); // EXIT_CONFIG
 			}
 		}
+		*/
 
 		// Are any values being dynamically added or replaced?
 		foreach ($replace as $key => $val)

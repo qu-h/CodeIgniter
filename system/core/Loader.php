@@ -486,6 +486,7 @@ class CI_Loader {
 	 */
 	public function view($view, $vars = array(), $return = FALSE)
 	{
+
 		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_object_to_array($vars), '_ci_return' => $return));
 	}
 
@@ -1094,8 +1095,9 @@ class CI_Loader {
 		}
 
 		// If we got this far we were unable to find the requested class.
-		log_message('error', 'Unable to load the requested class: '.$class);
-		show_error('Unable to load the requested class: '.$class);
+
+// 		log_message('error', 'Unable to load the requested class: '.$class);
+// 		show_error('Unable to load the requested class: '.$class);
 	}
 
 	// --------------------------------------------------------------------
@@ -1304,7 +1306,12 @@ class CI_Loader {
 	 */
 	protected function _ci_autoloader()
 	{
-		if (file_exists(APPPATH.'config/autoload.php'))
+	    if (file_exists(BASEPATH.'config/autoload.php'))
+	    {
+	        include(BASEPATH.'config/autoload.php');
+	    }
+
+	    if (file_exists(APPPATH.'config/autoload.php'))
 		{
 			include(APPPATH.'config/autoload.php');
 		}

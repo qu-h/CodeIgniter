@@ -11,15 +11,15 @@ class CI_Smarty extends SmartyBC {
 	var $css_all_ie = array();
     var $script = array('js'=>null,'ready'=>null);
     var $tpl_vars = array();
-    var $theme = 'default';
-    var $theme_ui = NULL;
+//     var $theme = 'default';
+//     var $theme_ui = NULL;
 
 	public function __construct() {
 		parent::__construct();
-		$this->CI =& get_instance();
+// 		$this->CI =& get_instance();
 		$config =& get_config();
 		$this->caching = false;
-		$this->setTemplateDir( APPPATH. 'views' );
+// 		$this->setTemplateDir( APPPATH. 'views' );
 		$this->setCompileDir( APPPATH . 'compile' );
 // 		$this->setConfigDir(BASEPATH . 'libraries/Smarty-3.1.21/configs' );
 		$this->setCacheDir( BASEPATH . '../cache' );
@@ -35,10 +35,10 @@ class CI_Smarty extends SmartyBC {
 // 			}
 
 // 		}
-		$this->theme();
+// 		$this->theme();
 
 		define('IMGPATH', BASEPATH.'../images/');
-		define('IMGURL', $this->CI->config->item('images_url'));
+// 		define('IMGURL', $this->CI->config->item('images_url'));
 
 	}
 
@@ -54,13 +54,13 @@ class CI_Smarty extends SmartyBC {
 	function view($resource_name, $params = array())   {
 		$alang = array();
 
-		if (strpos($resource_name, '.') === false) {
-			$resource_name .= '.htm';
-		}
+// 		if (strpos($resource_name, '.') === false) {
+// 			$resource_name .= '.htm';
+// 		}
 
-		if (!is_file($this->template_dir[0] . $resource_name)) {
-			show_error("template: [$resource_name] cannot be found.");
-		}
+// 		if (!is_file($this->template_dir[0] . $resource_name)) {
+// 			show_error("template: [$resource_name] cannot be found.");
+// 		}
 
 		foreach ($this->js AS $k=>$file){
 			$this->js[$k] = self::checkResoure($file);
@@ -79,38 +79,60 @@ class CI_Smarty extends SmartyBC {
 		}
 
 		$data = array('view'=>$resource_name,
-			'js'=>$this->js,
-			'css'=>$this->css,
-            'css_ie'=>$this->css_ie,
-			'css_all_ie'=>$this->css_all_ie,
-			'script'=>$this->script,
-			'siteDir'=>$this->CI->config->item('base_url'),
-			'imgURL'=>$this->CI->config->item('image_url').DS,
-			'assetsURL'=>$this->CI->config->item('asset_url').'/assets/',
-			'siteurl'=>$this->CI->config->item('base_url'),
+// 			'js'=>$this->js,
+// 			'css'=>$this->css,
+//             'css_ie'=>$this->css_ie,
+// 			'css_all_ie'=>$this->css_all_ie,
+// 			'script'=>$this->script,
+// 			'siteDir'=>$this->CI->config->item('base_url'),
+// 			'imgURL'=>$this->CI->config->item('image_url').DS,
+// 			'assetsURL'=>$this->CI->config->item('asset_url').'/assets/',
+// 			'siteurl'=>$this->CI->config->item('base_url'),
 		);
 
 
-		if( !empty($this->tpl_vars) ){
-			foreach ( $this->tpl_vars AS $index=>$val){
-				$data[$index] = $val;
-			}
+// 		if( !empty($this->tpl_vars) ){
+// 			foreach ( $this->tpl_vars AS $index=>$val){
+// 				$data[$index] = $val;
+// 			}
+// 		}
+
+// 		if( isset($this->CI->title) ){
+// 			$data['pagetitle'] = $this->CI->title;
+// 		}
+
+
+// 		$data = array_merge ( $data ,$params );
+        if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
+            $this->assign($k, $d);
+        }
+//         bug($params);
+// bug($this->tpl_vars);
+		$ci = get_instance();
+
+
+		list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
+		if( $path === FALSE) {
+		    $resource_ext = pathinfo($resource_name, PATHINFO_EXTENSION);
+		    foreach (array('.html','.htm') AS $ext){
+		        if( $resource_ext ){
+		            $file_name = str_replace($resource_ext, $ext, $resource_name);
+		        } else {
+		            $file_name = $resource_name.$ext;
+		        }
+
+		        list($path, $_view) = Modules::find($file_name, SYSTEM_MODULE_PATH, 'views/');
+		        if ($path != FALSE)
+		            break;
+		    }
+
+		}
+		if ($path != FALSE)
+		{
+		    return parent::fetch("$path$_view");
 		}
 
-		if( isset($this->CI->title) ){
-			$data['pagetitle'] = $this->CI->title;
-		}
-
-
-
-		$data = array_merge ( $data ,$params );
-
-		if( $this->useTemp === FALSE ){
-			return parent::display($resource_name,$data);
-		}
-
-		return parent::display('layout/'.$this->layout.'.html',$data);
-	}
+}
 	function layout($file){
 		$this->layout = $file;
 	}

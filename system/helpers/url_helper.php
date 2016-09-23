@@ -63,7 +63,15 @@ if ( ! function_exists('site_url'))
 	 */
 	function site_url($uri = '', $protocol = NULL)
 	{
-		return get_instance()->config->site_url($uri, $protocol);
+		$url = get_instance()->config->site_url($uri, $protocol);
+		$base_url = get_instance()->config->item('base_url');
+		$index_page = get_instance()->config->item('index_page');
+
+		$url_check = str_replace(array($base_url,$index_page), NULL, $url);
+		if( strlen($url_check) < 3 ){
+		    $url = "javascript:void(0);";
+		}
+		return $url;
 	}
 }
 

@@ -37,6 +37,13 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+if( !function_exists('bug') ){
+    function bug($var=null){
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    }
+}
 /**
  * System Initialization File
  *
@@ -62,19 +69,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *  Load the framework constants
  * ------------------------------------------------------
  */
-	if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
-	{
-		require_once(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
-	}
+require_once(BASEPATH.'config/constants.php');
+if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
+{
+	require_once(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
+}
 
-	require_once(APPPATH.'config/constants.php');
+
 
 /*
  * ------------------------------------------------------
  *  Load the global functions
  * ------------------------------------------------------
  */
-	require_once(BASEPATH.'core/Common.php');
+require_once(BASEPATH.'core/Common.php');
 
 
 /*

@@ -62,14 +62,23 @@ if ( ! function_exists('lang'))
 	 * @return	string
 	 */
 	function lang($line, $for = '', $attributes = array())
-	{
-		$line = get_instance()->lang->line($line);
+    {
+		$line_lang = get_instance()->lang->line($line);
 
 		if ($for !== '')
 		{
-			$line = '<label for="'.$for.'"'._stringify_attributes($attributes).'>'.$line.'</label>';
+			$line_lang = '<label for="'.$for.'"'._stringify_attributes($attributes).'>'.$line_lang.'</label>';
 		}
-
-		return $line;
+        if( !$line_lang ){
+            $line_lang = $line;
+        }
+		return $line_lang;
 	}
 }
+
+// function _($txt=null){
+//     if( strlen($txt) > 0 ){
+//         return lang($txt);
+//     }
+//     return NULL;
+// }
