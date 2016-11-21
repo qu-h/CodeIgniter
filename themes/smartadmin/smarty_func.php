@@ -36,7 +36,7 @@ class smartadmin_ui {
         $content = isset($params['content']) ? $params['content'] : '';
 
         $html = '<div class="alert alert-block alert-success">
-            	<a href="#" data-dismiss="alert" class="close">×</a>
+            	<a href="#" data-dismiss="alert" class="close">ï¿½</a>
             	<h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Check validation!</h4>
             	<p>'.$content.'</p>
             </div>';
@@ -171,10 +171,37 @@ class smartadmin_ui {
 
         return $html;
 
-//         <div class="smart-form" style="margin-bottom: 10px;" ><header>Responsive grid system</header></div>
+    }
+
+    static function input_MultiImage($params){
+        get_instance()->smarty->add_js('multi_images.js');
+
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if( strlen($name) < 1 )
+            return NULL;
+
+        $value = isset($params['value']) ? trim($params['value']) : "";
 
 
+        $html ='<output id="imgs_thumb" class="row">';
 
+        if( strlen($value) > 0 ){
+            $url_dir = get_instance()->form->img_upload_url;
+            $images = unserialize($value);
+            if( !empty($images) ) foreach ($images AS $img){
+                $html .= '<div class="col-sm-6 col-md-6 col-lg-6" >
+                        <img class="thumb" src="'.$url_dir.$img.'" title="" />
+                        <input type="hidden" name="'.$name.'[]" value="'.$img.'"  />
+                        </div>';
+            }
+        }
+		$html.='</output>';
+        $html.= '<section class="smart-form"> <div class="input input-file">
+					<span class="button">
+					<input type="file" id="files" multiple>Browse</span>
+					<input type="text" placeholder="Include some files" readonly="" >
+				</div></section>';
 
+        return $html;
     }
 }

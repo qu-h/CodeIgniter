@@ -506,6 +506,11 @@ if ( ! function_exists('url_title'))
 		);
 
 		$str = strip_tags($str);
+
+		if( !function_exists('convert_accented_characters') ){
+		    get_instance()->load->helper('text');
+		}
+		$str = convert_accented_characters($str);
 		foreach ($trans as $key => $val)
 		{
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);

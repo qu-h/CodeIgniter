@@ -1306,20 +1306,27 @@ class CI_Loader {
 	 */
 	protected function _ci_autoloader()
 	{
+	    $autoload_using = array();
+
 	    if (file_exists(BASEPATH.'config/autoload.php'))
 	    {
 	        include(BASEPATH.'config/autoload.php');
+	        $autoload_using = array_merge_recursive($autoload_using,$autoload);
 	    }
 
 	    if (file_exists(APPPATH.'config/autoload.php'))
 		{
 			include(APPPATH.'config/autoload.php');
+			$autoload_using = array_merge_recursive($autoload_using,$autoload);
 		}
 
 		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php'))
 		{
 			include(APPPATH.'config/'.ENVIRONMENT.'/autoload.php');
+			$autoload_using = array_merge_recursive($autoload_using,$autoload);
 		}
+
+		$autoload = $autoload_using; unset($autoload_using);
 
 		if ( ! isset($autoload))
 		{

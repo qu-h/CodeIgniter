@@ -1,2 +1,2 @@
 <?php
-// $autoload['libraries'] = array('layouts/template');
+// $autoload['libraries'] = array('layouts/smarty');

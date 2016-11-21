@@ -194,6 +194,12 @@ class Template
 		is_array($data) OR $data = (array) $data;
 		// Merge in what we already have with the specific data
 		$this->_data = array_merge($this->_data, $data);
+
+
+		if( !array_key_exists('fields', $this->_data) AND isset($this->_ci->form) ){
+		    $this->_ci->smarty->assign("fields", $this->_ci->form->fields);
+		}
+
 		// We don't need you any more buddy
 		unset($data);
 		if (empty($this->_title)) {
@@ -213,7 +219,7 @@ class Template
 			// We can only work with data arrays
 			is_array($partial['data']) OR $partial['data'] = (array) $partial['data'];
 
-			// If it uses a view, load it
+			//If it uses a view, load it
 			if (isset($partial['view'])) {
 				$template['partials'][$name] = $this->_find_view($partial['view'], $partial['data']);
 			} else {  // Otherwise the partial must be a string
@@ -237,27 +243,44 @@ class Template
 		// Test to see if this file
 		$this->_body = $this->_find_view($view, array(), $this->_parser_body_enabled);
 
-		if( $this->get_theme_path() != "" ){
-		    $this->_ci->config->load( $this->get_theme_path()."config.php" );
-		    $this->_data['theme_css'] = $this->_ci->config->item('css');
-		    $this->_data['theme_js'] = $this->_ci->config->item('js');
-// 		    bug($this->_ci->config->item('css'));
-		}
+
 
 		// Want this file wrapped with a layout file?
 		if ($this->_layout)
 		{
 			// Added to $this->_data['template'] by refference
 			$template['body'] = $this->_body;
-// bug($this->_data);die;
 			// Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
-			if( file_exists(VIEWPATH.'layouts/'.$this->_layout) ){
-			    $this->_body =  self::_load_view('layouts/'.$this->_layout, $this->_data, $return, self::_find_view_folder());
-			} else {
-			    $this->_body =  self::_load_view('layouts/views/'.$this->_layout, $this->_data, $return, SYSTEM_MODULE_PATH."/" );
+
+			list($layout_path, $layout_view) = Modules::find($this->_layout.'.htm',APPPATH.'views/layouts');
+			if( $layout_path != FALSE ){
+			    $this->_body =  self::_load_view($layout_view, $this->_data, $return, $layout_path );
 			}
 
+			list($layout_path, $layout_view) = Modules::find('layouts/'.$this->_layout,  self::_find_view_folder() );
+			if( $layout_path != FALSE ){
+			    $this->_body =  self::_load_view('layouts/'.$this->_layout, $this->_data, $return, $layout_path);
+			}
+
+			list($layout_path, $layout_view) = Modules::find('layouts/views/'.$this->_layout,  SYSTEM_MODULE_PATH."/" );
+			if( $layout_path != FALSE ){
+			    $this->_body =  self::_load_view('layouts/views/'.$this->_layout, $this->_data, $return, $layout_path );
+			}
+
+// 			if( file_exists(SYSTEM_MODULE_PATH.'/layouts/views/'.$this->_layout) ){
+// 			    $this->_body =  self::_load_view('layouts/views/'.$this->_layout, $this->_data, $this->_parser_body_enabled, SYSTEM_MODULE_PATH."/" );
+
+// 			}elseif( file_exists(VIEWPATH.'layouts/'.$this->_layout) ){
+// 			    $this->_body =  self::_load_view('layouts/'.$this->_layout, $this->_data, $this->_parser_body_enabled, self::_find_view_folder());
+
+// 			} else {
+// 			    $this->_body =  self::_find_view("layouts/".$this->_layout, $this->_data);
+// 			}
+
+
+
 		}
+
 		// Want it returned or output to browser?
 		if ( ! $return)
 		{
@@ -370,7 +393,21 @@ class Template
 		/*
 		 * 160823 QuanNH add Smarty Plugin
 		 */
+
+		if( $this->get_theme_path() != "" ){
+		    $this->_ci->config->load( $this->get_theme_path()."config.php" );
+
+            $this->_data['assets_dir'] = $this->_ci->config->item('assets_dir');
+            $this->_data['assets_url'] = $this->_ci->config->item('assets_url');
+		    $this->_data['theme_css'] = $this->_ci->config->item('css');
+		    $this->_data['theme_js'] = $this->_ci->config->item('js');
+		}
+		if( property_exists($this->_ci, 'smarty') ){
+		    $this->_ci->smarty->theme = $theme;
+		}
+
 		if( $this->_theme AND is_dir($this->_theme_path) ){
+
 		    if( file_exists($smart_func = $this->_theme_path."smarty_func.php") AND property_exists($this->_ci, 'smarty') ){
 		        include_once $smart_func;
 		        $ui_class_name = $this->_theme.'_ui';
@@ -393,6 +430,7 @@ class Template
 		    }
 
 		}
+
 		return $this;
 	}
 
@@ -718,8 +756,16 @@ class Template
 
 	private function _load_view($view, array $data, $parse_view = TRUE, $override_view_path = NULL)
 	{
+// 	    bug("template _load_view= $view");
 	    if( property_exists($this->_ci, 'smarty') ){
-	        return $this->_ci->smarty->view($override_view_path.$view,$data);
+	        $file_path = $view;
+
+	        if( file_exists($override_view_path.$view) ){
+	            $file_path = $override_view_path.$view;
+	        } elseif ( file_exists(APPPATH."views/$view") ){
+	            $file_path = APPPATH."views/$view";
+	        }
+	        return $this->_ci->smarty->view($file_path,$data);
 	    }
 
 		// Sevear hackery to load views from custom places AND maintain compatibility with Modular Extensions
@@ -743,9 +789,6 @@ class Template
 			    // None of that fancy stuff for me!
 			    $content = $this->_ci->load->view($view, $data, TRUE);
 			}
-
-
-
 
 		}
 

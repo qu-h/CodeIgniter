@@ -8,13 +8,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<link rel="icon" type="image/png" href="">
-    {if isset($theme_css)}{foreach $theme_css AS $css}
-    <link rel="stylesheet" href="{$css}" type="text/css"/>
-    {/foreach}{/if}
 
-    {if isset($theme_js)}{foreach $theme_js AS $js}
-    <script src="{$js}"></script>
-    {/foreach}{/if}
+    {assets type='css'}
+    {assets type='js'}
 
     <meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">

@@ -96,6 +96,7 @@ class CI_URI {
 	 *
 	 * @return	void
 	 */
+	var $extension = 'html';
 	public function __construct()
 	{
 		$this->config =& load_class('Config', 'core');
@@ -155,11 +156,18 @@ class CI_URI {
 
 		if ($this->uri_string !== '')
 		{
-			// Remove the URL suffix, if present
-			if (($suffix = (string) $this->config->item('url_suffix')) !== '')
-			{
-				$slen = strlen($suffix);
+		    // Remove the URL suffix, if present
+		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), array('json','xml')) ){
+		        $this->extension = $ext;
+		        $ext = ".".$this->extension;
+		        $slen = strlen($ext);
+		        if (substr($this->uri_string, -$slen) === $ext)
+		        {
+		            $this->uri_string = substr($this->uri_string, 0, -$slen);
+		        }
+		    } elseif (($suffix = (string) $this->config->item('url_suffix')) !== '') {
 
+				$slen = strlen($suffix);
 				if (substr($this->uri_string, -$slen) === $suffix)
 				{
 					$this->uri_string = substr($this->uri_string, 0, -$slen);

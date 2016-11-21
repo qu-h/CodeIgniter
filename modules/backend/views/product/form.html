@@ -1,0 +1,109 @@
+{notification}
+<form action="" method="post">
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-sm-9 col-md-9 col-lg-9">
+			<div class="jarviswidget" id="wid-id-0"
+				data-widget-colorbutton="false" data-widget-editbutton="false"
+				data-widget-custombutton="false">
+				<header>
+					<span class="widget-icon"> <i class="fa fa-edit"></i></span>
+					<h2>Form Grid</h2>
+				</header>
+				<div>
+					<div class="jarviswidget-editbox"></div>
+					<div class="widget-body {*no-padding*}">
+
+							{if isset($fields) && $fields|@count > 0}
+								{foreach $fields AS $name=>$field }
+									{if $name !='images' }
+									{inputs name=$name field=$field}
+									{/if}
+								{/foreach}
+							{/if}
+
+							<div>
+								<footer class="smart-form">
+									<button class="btn btn-primary" type="submit">Submit
+										Form</button>
+								</footer>
+							</div>
+
+					</div>
+				</div>
+			</div>
+		</article>
+
+		<article class="col-sm-3 col-md-3 col-lg-3">
+			<div class="jarviswidget" id="wid-id-7"
+				data-widget-togglebutton="false" data-widget-editbutton="false"
+				data-widget-deletebutton="false"
+				data-widget-fullscreenbutton="false">
+
+				<header>
+					<h2>
+						<strong>Product</strong> <i>Images</i>
+					</h2>
+
+				</header>
+				<div>
+					<div class="jarviswidget-editbox">
+						<!-- This area used as dropdown edit box -->
+					</div>
+					<!-- end widget edit box -->
+					<div class="widget-body">
+						{input_MultiImage name="images" value=$fields.images.value}
+
+
+<script>
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var block = document.createElement('div');
+          block.className = "col-sm-6 col-md-6 col-lg-6";
+          block.innerHTML = ['<img class="thumb" src="', e.target.result,'" title="', escape(theFile.name), '" />'].join('');
+          block.innerHTML += ['<input type="hidden" value="', e.target.result,'" name="imgsdata[]" />'].join('');
+          block.innerHTML += ['<input type="hidden" value="',escape(theFile.name),'" name="imgsname[]" />'].join('');
+
+
+          document.getElementById('imgs_thumb').insertBefore(block, null);
+        };
+      })(f);
+
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+
+
+
+					</div>
+					<!-- end widget content -->
+
+				</div>
+				<!-- end widget div -->
+
+			</div>
+		</article>
+
+
+
+	</div>
+</section>
+</form>

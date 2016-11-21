@@ -794,3 +794,42 @@ if ( ! function_exists('date_range'))
 		return $range;
 	}
 }
+
+
+
+
+function is_date( $str ){
+    $stamp = strtotime( $str );
+    if (!is_numeric($stamp))
+        return FALSE;
+    $month = date( 'm', $stamp );
+    $day   = date( 'd', $stamp );
+    $year  = date( 'Y', $stamp );
+    if (checkdate($month, $day, $year))
+        return TRUE;
+    return FALSE;
+}
+
+function time_diff($begin,$end){
+    if(!$begin || !$end) return null;
+    $datediff = '';
+    //	bug( date_diff(date_create($end),date_create($begin)) ); exit;
+    $time = floor( strtotime($end) - strtotime($begin) );
+    $days = round( $time/(60 * 60 * 24) );
+    if($days > 0){
+        $datediff .="$days ngÃ y ";
+    }
+    $hours = round( ( $time - ($days*(60 * 60 * 24)) )/(60*60) );
+    if($hours > 0){
+        $datediff .="$hours giá»� ";
+    }
+    $minute  = round( ( $time - ($days*(60 * 60 * 24)) - $hours*(60*60) )/(60) );
+    if($minute > 0){
+        $datediff .="$minute phÃºt ";
+    }
+    $secons  = round( ( $time - ($days*(60 * 60 * 24)) - $hours*(60*60)- $minute*60 ) );
+    if($secons > 0){
+        $datediff .="$secons giÃ¢y";
+    }
+    return $datediff;
+}

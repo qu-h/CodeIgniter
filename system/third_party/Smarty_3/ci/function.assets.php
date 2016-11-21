@@ -1,8 +1,9 @@
 <?php
 function smarty_function_assets($params,$content,$template=null, &$repeat=null){
     $type = ( isset($params['type']) )?$params['type']:null;
-    $resource_dir = $content->CI->config->config['assets_dir'];
-    $resource_url = $content->CI->config->config['assets_url'];
+    $resource_dir = $content->get_template_vars('assets_dir');
+    $resource_url = $content->get_template_vars('assets_url');
+
 
     if( $type ){
         $folder = $content->theme;
@@ -32,12 +33,14 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
                 } elseif( file_exists($resource_dir.'/js/'.$file) ){
                     $file = $resource_url.'/js/'.$file;
                 } else if (file_exists($resource_dir.$file)) {
-                    $file = $resource_url.$file;
+//                     $file = $resource_url.$file;
                 } elseif (file_exists($resource_dir."/$folder/js/".$file) ) {
                     $file = "$resource_url/$folder/js/$file";
                 } else {
+                    $file = "$resource_url/$folder/js/$file";
 //                     $file ='unknow.js';
-                    $file = $resource_url.$file;
+//                     $file = $resource_url.$file;
+//                     $file = "$resource_url/$folder/js/$file";
                 }
 
                 $html .= '<script type="text/javascript" src="'.$file.'" ></script>'; //id='woocommerce-layout-css'

@@ -99,3 +99,33 @@ if ( ! function_exists('directory_map'))
 		return FALSE;
 	}
 }
+
+if( !function_exists('check_directory') ):
+    function check_directory($fpath=NULL,$mode = 0777){
+
+        if( !is_string($fpath) OR strlen($fpath) < 3) return ;
+
+        if( !is_dir($fpath) ){
+            $forders = explode('/',$fpath);
+            $dir_check =  (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? '' : '/' ;
+
+            foreach ($forders AS $k=>$dir){
+                if( trim($dir) =='' )
+                    continue;
+
+                $parent = $dir_check;
+                $dir_check .= $dir.'/';
+
+                if( !is_dir($dir_check) ){
+                    //chmod($parent, intval($mode));
+                    mkdir($dir_check, $mode);
+                }
+            }
+        } else {
+            $dir_check = $fpath;
+        }
+
+        return realpath($dir_check);
+
+    }
+endif; //check_directory

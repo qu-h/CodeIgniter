@@ -2,6 +2,8 @@
 
 (defined('EXT')) OR define('EXT', '.php');
 
+(defined('DS')) OR define('DS', DIRECTORY_SEPARATOR);
+
 global $CFG;
 
 /* get module locations from config settings or use the default module location and offset */
@@ -191,12 +193,15 @@ class Modules
 	public static function find($file, $module, $base=null)
 	{
 
+
+	    $file_in = $file;
 		$segments = explode('/', $file);
 
 		$file = array_pop($segments);
 		$file_ext = (pathinfo($file, PATHINFO_EXTENSION)) ? $file : $file.EXT;
         $extension_taget = pathinfo($file, PATHINFO_EXTENSION);
 		$path = ltrim(implode('/', $segments).'/', '/');
+
 		$module ? $modules[$module] = $path : $modules = array();
 
 
@@ -209,15 +214,13 @@ class Modules
 
 			foreach($modules as $module => $subpath) {
                 $path_check1 = $module.'/'.$base.$subpath;
+
 			    if( is_file($path_check1.ucfirst($file_ext)) ){
 			        return array($path_check1, ucfirst($file_ext));
 			    }
-// 			    bug("module_find 214: fullpath='$path_check1' file='".ucfirst($file_ext) );
 
 				$fullpath = $location.$module.'/'.$base.$subpath;
 				$fullpath = realpath($fullpath)."/";
-
-// 				bug("module_find 213: fullpath='$fullpath' file='".ucfirst($file_ext) );
 
                 if (($base == 'libraries/' OR $base == 'models/') AND is_file($fullpath.ucfirst($file_ext))) {
                     return array($fullpath, ucfirst($file));
@@ -228,7 +231,11 @@ class Modules
 
 			}
 		}
-// 		bug("module_find ".$file_ext);
+// bug('app path='.APPPATH."views/$file_in");
+// 		if( file_exists(APPPATH."view/$file_in") ){
+// 		    die('check APPath');
+// 		}
+// 		bug("file in=$file_in");
 
 		return array(FALSE, $file);
 	}

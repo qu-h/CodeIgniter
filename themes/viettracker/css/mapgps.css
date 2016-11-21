@@ -1,0 +1,865 @@
+@CHARSET "UTF-8";
+body {
+
+    font-family:Tahoma,MS Sans Serif;
+	font-size: 13px;
+    padding: 0px;
+	margin:0;
+    color: #2B3136;
+	overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* common page */
+h2 {
+	margin: 0;
+}
+a {
+	text-decoration: none;
+}
+a:HOVER {
+	text-decoration: underline;
+	color: red !important;
+}
+.crfloat {
+	float: right;
+}
+.clfloat {
+	float: left;
+}
+.wrappage {
+	width:100%;
+	margin: 0 auto;
+	background-color: #FFF;
+}
+.page404 {
+	background: url("../images/404bg.png") top left repeat-x;
+
+	padding-top: 150px;
+}
+.page404  .page404-content {
+	width: 800px;
+	height:300px;
+	margin: 0 auto;
+	background: url("../images/404.png") right top no-repeat;
+}
+.page404  .page404-function {
+
+}
+.page404 h1 {
+	padding-top: 0;
+	margin-top: 0;
+}
+.header {
+	height: 85px;
+	position: relative;
+
+	background: #344A62 url("images/topbg.gif") bottom left repeat-x;
+}
+.logo {
+	height: 100%;
+	width: 270px;
+	background: url("images/logocon.png") top left no-repeat transparent;
+	float: left;
+}
+/* popup style */
+
+
+.ajax-modal {
+	display: none;
+	position:   fixed;
+	z-index:    1000;
+	top:        0;
+	left:       0;
+	height:     100%;
+	width:      100%;
+	background: rgba( 255, 255, 255, .8 )
+	            url('http://i.stack.imgur.com/FhHRx.gif')
+	            50% 50%
+	            no-repeat;
+	opacity: 0.80;
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 80);
+	filter: alpha(opacity = 80);
+}
+.vmap-popup {
+	background: #EEF2F7;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid #536376;
+	-webkit-box-shadow: rgba(0, 0, 0, .6) 0px 2px 12px;
+}
+.vmap-popup  .close_x {
+	background: url(../images/download_sprite.png) no-repeat;
+	width: 24px;
+	height: 23px;
+	overflow: hidden;
+	line-height: 1000px;
+	display: block;
+	position: absolute;
+	top: -20px;
+	right: -20px;
+	background-position: -387px -102px;
+}
+
+.menu {
+  bottom: 5px;
+  height: 42px;
+  left: 270px;
+  overflow: hidden;
+  position: absolute;
+
+}
+.account {
+	position: absolute;
+    right: -50px;
+    top: -15px;
+    width: 500px;
+}
+.menu ul,
+.account ul {
+	list-style: none;
+	list-style-type: none;
+}
+.menu ul li,
+.account ul li {
+	float: left;
+	border: 1px solid #BCD5EE;
+	border-bottom: none;
+}
+.account ul li {
+	border: none;
+}
+.menu ul li a {
+	background: url("../images/tabbg2.gif") repeat-x;
+	display: block;
+	color: #0278C2;
+	line-height: 28px;
+	text-align: center;
+	padding: 0px 15px;
+
+}
+.menu li.selected a {
+	background: #0278C2;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.account ul li:BEFORE{
+	content: ' | ';
+}
+.account ul li:FIRST-CHILD:BEFORE {
+	content: '  ';
+}
+.account ul li a,
+.account ul li {
+	color: #FFF;
+	text-decoration: none;
+	line-height: 25px;
+	padding-right: 5px;
+}
+.account ul li a {
+	display: inline-block;
+}
+.clearfix:after{
+	clear:both;
+	content:' ';
+	display:block;
+	font-size:0;
+	line-height:0;
+	visibility:hidden;
+	width:0;
+	height:0
+}
+
+.col50 {
+	width: 50%;
+}
+.col40 {
+	width: 40%;
+}
+
+.clfloat {
+	float: left;
+}
+.crfloat {
+	float: right;
+}
+.cenal {
+	text-align: center;
+}
+.fweightupcase{
+    font-weight: bold;
+    text-transform: uppercase;
+
+}
+.hidden {
+	display: none;
+}
+
+/* adv-login */
+.products {
+	margin: 0 10px;
+	border: 1px #344A62 solid;
+}
+.products h3 {
+	color: #fff;
+	background: #344A62;
+	text-align: center;
+	text-transform: uppercase;
+	height: 40px;
+	line-height: 40px;
+	margin: 0;
+
+	border: 1px solid #C6C6C6;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+/* style form */
+form fieldset {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  position: relative;
+  border:none;
+
+}
+form fieldset > label {
+    clear: left;
+    float: left;
+    left: 0;
+    line-height: 15px;
+    margin-bottom: -5px;
+    margin-top: 5px;
+    position: relative;
+    width: 100px;
+
+    display: block;
+    margin-right: 10px;
+    padding: 8px 0;
+
+}
+
+form fieldset > div {
+  clear: right;
+  margin-left: 110px;
+  padding: 5px;
+  width: auto;
+}
+form fieldset > div > input,
+form fieldset > div > select {
+	border-radius: 2px 2px 2px 2px;
+	height: 32px;
+    line-height: 32px;
+    padding: 0 0 0 5px;
+    background: none repeat scroll 0 0 #FAFFBD;
+    border: 0 none;
+    border-radius: 1px 1px 1px 1px;
+    box-shadow: 0 0 2px 0 #DDDDDD inset;
+    width: 100%;
+}
+form fieldset > div.clearfix > span {
+	line-height: 32px;
+}
+form fieldset > div > input.unit {
+	width: 150px;
+	margin-right: 5px;
+}
+form fieldset > div > select.dropdown  {
+	width: auto;
+	padding: 8px 4px;
+}
+
+form .button_bar {
+	text-align: right;
+	padding: 0 30px 30px 0;
+}
+.ui-button {
+	margin: 0 5px;
+}
+/* style for line */
+.line35 {
+	line-height: 35px;
+	font-weight: bold;
+}
+.line35 span {
+	padding-right: 10px;
+	font-weight: normal;
+}
+.line35 span:AFTER{
+	content:": ";
+}
+
+
+/*
+ * style for map obi- object item
+ */
+.icon-h30 {
+	background: url("../images/icon-h30.png") no-repeat transparent;
+	height: 30px;
+	width: 55px;
+	position: absolute;
+	top: 0;
+}
+.icon-speed {
+	background-position: 0 0;
+	right: 20px;
+
+}
+.icon-motor {
+	background-position: 0 -30px;
+	left: 20px;
+}
+
+.icon-h16 {
+	background: url("../images/icon-h16.png") no-repeat transparent;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+
+}
+.icon-h16-gsm {
+	background-position: -16px -16px;
+}
+.icon-h16-vaq {
+	background-position: -64px 0;
+}
+.icon-h16-address {
+	background-position: 0 -16px;
+}
+.icon-h16-gps {
+	background-position: -16px 0;
+}
+
+.icon25 {
+	background: url("../images/icon-h25.png") no-repeat transparent;
+	height: 25px;
+	width: 25px;
+}
+.icon25-user {
+	background-position: 0 0;
+}
+.icon25-key {
+	background-position: 0 -25px;
+}
+.gps-left {
+	width: 250px;
+	float: left;
+}
+.gps-left .ui-datepicker{
+	width: 100%;
+}
+
+.gps-tool > div {
+	margin-top: 1px;
+}
+.gps-tool input,
+.gps-tool select,
+.gps-tool .gps-button {
+	background: url("../images/ui-bg_glass_80_d7ebf9_1x400.png") repeat-x scroll 50% 50% #D7EBF9;
+    border: 1px solid #AED0EA;
+    color: #2779AA;
+	padding: 1px 2px 2px;
+	margin: 0 0 0 5px;
+	cursor: pointer;
+}
+.gps-tool input[type=text] {
+	font-size: 15px;
+	width: 100px;
+	text-align: center;
+	margin: 0 5px;
+}
+.gps-tool input.ui-time {
+	width: 50px;
+}
+.gps-tool .gps-button {
+	cursor: pointer;
+}
+.gps-tool button.ui-button {
+	font-size: 10px;
+    height: 22px;
+    line-height: 22px;
+}
+
+.gps-tool img {
+	height: 16px;
+	position: relative;
+	top: 2px;
+}
+.container {
+	padding-top: 25px;
+}
+.container .block-left {
+	width: 250px;
+	position: absolute;
+	margin-left: 20px;
+}
+.container .box-wrap {
+	padding-top: 5px !important;
+}
+.container .block-left ul {
+	padding: 0;
+	margin:0 0 0 15px;
+	list-style: none;
+	list-style-type: none;
+}
+.container .block-left ul li,
+.container .block-left ul li a {
+	line-height: 30px;
+	color: #008000;
+}
+.container .block-right {
+	margin: 0 20px 0 300px ;
+}
+.container  .content-box h2 {
+	font-size: 15px;
+	color: #344A62;
+}
+
+.gps-right {
+	float: right;
+/*	background-color: red;
+	height: 510px; */
+	min-height: 250px;
+	margin: 10px 10px 0 0 ;
+
+}
+.gmap-area {
+	position: relative;
+}
+#gmap {
+	width: 100%;
+	height: 510px;
+	top:0;
+	left: 0;
+}
+#gmap-status {
+	background: none repeat scroll 0 0 #000000;
+    color: #FFFFFF;
+    font-size: 10px;
+    height: 15px;
+    left: 80px;
+    line-height: 15px;
+    min-width: 100px;
+    opacity: 0.4;
+    padding: 2px;
+    position: absolute;
+    top: 5px;
+}
+#gmap-address-search {
+	position: absolute;
+	left: 5px;
+	bottom:50px;
+	min-height: 25px;
+	min-width: 100px;
+	padding: 5px;
+	background: #f1f1f1;
+	color: #FFFFFF;
+	border: 1px solid #e5e5e5;
+}
+#search-address {
+	margin: 0;
+}
+#search-address input {
+	border: 1px solid #d9d9d9;
+	border-top: 1px solid #c0c0c0;
+	line-height: 25px;
+	padding: 5px;
+	float: left;
+	width: 250px;
+}
+#gbqfb {
+	background-color: #4D90FE;
+    background-image: -moz-linear-gradient(center top , #4D90FE, #4787ED);
+    border: 1px solid #3079ED;
+    color: #FFFFFF !important;
+    margin: 0 0 0 10px;
+     -moz-user-select: none;
+    border-radius: 2px 2px 2px 2px;
+    cursor: pointer !important;
+    display: inline-block;
+    font-weight: bold;
+    height: 29px;
+    line-height: 29px;
+    min-width: 54px;
+    padding: 0 8px;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+#gbqfb .gbqfi {
+	background-image: url("../images/k1_a31af7ac.png");
+    background-size: 294px 45px;
+	background-position: -33px 0;
+    display: inline-block;
+    height: 13px;
+    margin: 7px 19px;
+    width: 14px;
+}
+#gmap-address-search .results {
+	background: #fff;
+	color: #000;
+	overflow: hidden;
+}
+
+#gmap-address-search .results .control {
+	text-align: right;
+	background-color: #f1f1f1;
+	padding: 5px 0;
+}
+#gmap-address-search .results .control a {
+	color: #4D90FE;
+}
+#gmap-address-search .result {
+	background: transparent url("http://maps.gstatic.com/mapfiles/markers2/red_markers_A_J2.png") no-repeat;
+	line-height: 30px;
+    margin-bottom: 5px;
+    padding:2px 2px 2px 25px;
+}
+#gmap-address-search .result_1 {
+	background-position:0  -34px;
+}
+#gmap-address-search .result_2 {
+	background-position:0  -68px;
+}
+#gmap-address-search .result_3 {
+	background-position:0  -102px;
+}
+#gmap-address-search .result_4 {
+	background-position:0  -136px;
+}
+#gmap-address-search .result_5 {
+	background-position:0  -170px;
+}
+#gmap-address-search .result_6 {
+	background-position:0  -204px;
+}
+#gmap-address-search .result_7 {
+	background-position:0  -238px;
+}
+#gmap-address-search .result_9 {
+	background-position:0  -272px;
+}
+
+#gmap-address-search .results .result:HOVER {
+	cursor: pointer;
+	background-color: #f1f1f1;
+}
+
+
+.obi {
+	min-height: 80px;
+    padding: 5px 0 5px 5px;
+	margin:8px;
+    width: 230px;
+	border: 1px solid #96A5AC;
+	padding:0;
+	line-height: 25px;
+	position: relative;
+}
+.obi-w {
+	border: none;
+	width: 100%;
+	margin: 0;
+}
+
+.obi h3 {
+	background: none repeat scroll 0 0 #96A5AC;
+    color: White;
+    font-size: 10pt;
+    height: 25px;
+	line-height:25px;
+	text-align: center;
+	margin: 0;
+	width: 240px;
+	position:relative;
+	left: -5px;
+}
+.obi-w h3{
+	width: 100%;
+	left: 0;
+}
+.obi .obi-t {
+	color: #B42121;
+    font-size: 12px;
+}
+.obi .obi-pn {
+	color: #000000;
+    font-size: 12px;
+}
+.obi .obi-s {
+	height: 30px;
+	line-height: 30px;
+	color: #B42121;
+	font-size: 15px;
+	position: relative;
+	border: 1px solid #C6C6C6;
+	border-left: none;
+	border-right: none;
+
+}
+.obi .obi-l {
+	position: relative;
+	text-align: right;
+}
+
+.obi .obi-l label {
+	position: absolute;
+	left: 0px;
+}
+
+.obi .obi-l > span {
+	display: inline-block;
+}
+
+.obi .obi-l span.unit {
+	color: red;
+	font-weight: bold;
+	padding: 0 3px;
+}
+.obi select {
+	height: 20px;
+	position: relative;
+	margin: 4px 0 5px 0;
+}
+/* line input value */
+
+.obi-li {
+	position: relative;
+	text-align: right;
+	padding: 5px 5px;
+}
+.obi-li a {
+	color: red;
+	text-decoration: none;
+}
+.obi-li input {
+	position: absolute;
+	left: 5px;
+	border: 1px solid #ddd;
+}
+.obi-li input{
+	text-align: center;
+	color: #333;
+}
+.obi-li input[name=gps-date] {
+
+	height: 25px;
+}
+.obi-li span.value {
+	margin: 0 3px;
+}
+.node-guide {
+
+	padding: 5px 0;
+	text-align: right;
+	/* margin-top: 510px; */
+}
+.node-guide > span {
+	height: 25px;
+	display: inline-block;
+}
+.node-guide .node-stop {
+	background: url("../images/stoping.gif") top left no-repeat;
+	padding: 0px 25px;
+}
+.node-guide .node-running {
+	background: url("../images/viewchay.png") top left no-repeat;
+	padding: 2px 15px 0;
+}
+.node-guide .node-exceed {
+	background: url("../images/viewqtd.png") top left no-repeat;
+	padding: 2px 15px 0;
+}
+
+/* tracking page*/
+.gps-tool {
+	display: block;
+	width: 100%;
+	position: relative;
+	margin-top: -24px;
+	height: 27px;
+	background-color: #ecf4f3;
+	border-bottom: 1px solid #4594dd;
+	padding-left: 10px;
+/*	overflow: hidden; */
+}
+.gps-tool .vehicles {
+	width: 400px;
+	padding: 2px;
+	position: absolute;
+	top: 0px;
+	right: 10px;
+}
+/* chart diagram */
+#chart {
+	margin: 0 auto;
+}
+.report {
+	clear: both;
+}
+
+/* account-info */
+.account-info {
+	width: 800px;
+	margin: 0 auto;
+
+}
+.account-info fieldset > label {
+	width: 200px;
+	color: #344A62;
+	font-weight: bold;
+	text-align: right;
+
+}
+.account-info fieldset > label:AFTER {
+	content :':';
+	padding-right: 5px;
+}
+.account-info fieldset > div {
+	margin-left: 210px;
+}
+
+
+
+/* style for node in map */
+.vehicle-node {
+	width:40px;
+	height:40px;
+	background: url("../images/icon_rotate.png") no-repeat transparent;
+	cursor: pointer;
+	z-index:99;
+}
+.node-stop {
+	width:40px;
+	height:40px;
+	background: url("../images/stoping.gif") no-repeat transparent;
+	cursor: pointer;
+	z-index:99;
+	background-position: center;
+}
+.marker-title {
+
+}
+.marker-title > span {
+	background-color: #0278C2;
+    border: 1px solid #FFFFFF;
+	color: #FFFFFF;
+    bottom: 25px;
+
+    padding: 0 2px 1px 2px;
+	text-align : center;
+    position: relative;
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+
+}
+.node-0 {
+	background-position: 0 0;
+}
+.node-22-5 {
+	background-position: 0 -80px;
+}
+.node-45 {
+	background-position: -40px 0;
+}
+.node-67-5 {
+	background-position: -40px -80px;
+}
+.node-90 {
+	background-position: -80px 0;
+}
+.node-112-5 {
+	background-position: -80px -80px;
+}
+.node-135 {
+	background-position: -120px 0;
+}
+.node-157-5 {
+	background-position: -120px -80px;
+}
+.node-180 {
+	background-position: 0 -40px;
+}
+.node-202-5 {
+	background-position: 0 -120px;
+}
+.node-225 {
+	background-position: -40px -40px;
+}
+.node-247-5 {
+	background-position: -40px -120px;
+}
+.node-270 {
+	background-position: -80px -40px;
+}
+.node-292-5 {
+	background-position: -80px -120px;
+}
+.node-315 {
+	background-position: -120px -40px;
+}
+.node-337-5 {
+	background-position: -120px -120px;
+}
+
+
+
+
+#vehicle-info {
+	position: relative;
+/*
+	height: 22px;
+	padding-top: 7px;
+	*/
+
+	width: 950px;
+	overflow: hidden;
+}
+#vehicle-info .item {
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin-left: 10px;
+}
+#vehicle-info .item span {
+	position: relative;
+	padding-left: 20px;
+}
+#vehicle-info .item span.unit {
+	padding-left: 2px;
+	color: red;
+}
+
+#moving-info {
+    width: 150px;
+    font-size: 10px;
+    line-height: 15px;
+    max-height: 45px !important;
+    min-height: 45px !important;
+}
+
+.node_stop:HOVER {
+	cursor: pointer;
+	color: red;
+
+}
+
+/*
+ * DateTimepicker
+ */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; }
+.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+.ui-timepicker-div { padding: 5px;}

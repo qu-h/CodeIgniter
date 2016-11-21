@@ -398,15 +398,27 @@ if ( ! function_exists('convert_accented_characters'))
 
 		if ( ! is_array($array_from))
 		{
+		    $foreign_characters_using = array();
+		    if (file_exists(BASEPATH.'config/foreign_chars.php'))
+		    {
+		        include(BASEPATH.'config/foreign_chars.php');
+		        $foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
+		    }
+
 			if (file_exists(APPPATH.'config/foreign_chars.php'))
 			{
 				include(APPPATH.'config/foreign_chars.php');
+				include(BASEPATH.'config/foreign_chars.php');
+				$foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
 			}
 
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php'))
 			{
 				include(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php');
+				include(BASEPATH.'config/foreign_chars.php');
+				$foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
 			}
+			$foreign_characters = $foreign_characters_using;
 
 			if (empty($foreign_characters) OR ! is_array($foreign_characters))
 			{

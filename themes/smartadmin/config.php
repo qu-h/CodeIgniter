@@ -15,8 +15,8 @@ $config['css'] = array(
 
     //Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp
     "$domain/css/demo.min.css",
-
-    "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
+    "$domain/css/ict.css",
+//     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
 );
 
 $config['js'] = array(

@@ -163,12 +163,15 @@ if ( ! function_exists('load_class'))
 					require_once($path.$directory.'/'.$class.'.php');
 				}
 
+// 				if (class_exists($name, FALSE) === FALSE){
+// 				    $name = $class;
+// 				}
 				break;
 			}
 		}
 
 		// Is the request a class extension? If so we load it too
-		if (file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
+		if ($name!= FALSE && file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
 		{
 			$name = config_item('subclass_prefix').$class;
 
@@ -184,7 +187,7 @@ if ( ! function_exists('load_class'))
 			// Note: We use exit() rather than show_error() in order to avoid a
 			// self-referencing loop with the Exceptions class
 			set_status_header(503);
-			echo 'Unable to locate the specified class: '.$class.'.php';
+			echo 'Common line 187 : Unable to locate the specified class: '.$class.'.php';
 			exit(5); // EXIT_UNK_CLASS
 		}
 
@@ -331,6 +334,11 @@ if ( ! function_exists('get_mimes'))
 
 		if (empty($_mimes))
 		{
+		    if (file_exists(BASEPATH.'config/mimes.php'))
+		    {
+		        $_mimes_default = include(BASEPATH.'config/mimes.php');
+		    }
+
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
 			{
 				$_mimes = include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
@@ -343,6 +351,10 @@ if ( ! function_exists('get_mimes'))
 			{
 				$_mimes = array();
 			}
+		}
+
+		if( isset($_mimes_default) ){
+		    $_mimes = array_merge($_mimes,$_mimes_default);
 		}
 
 		return $_mimes;

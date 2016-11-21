@@ -4,9 +4,13 @@ class Article extends MX_Controller {
 
     function __construct()
     {
+        $this->load->model('backend/Article_Model');
+        $this->load->model('backend/Category_Model');
+
         $this->load->module('layouts');
 
         $this->template->set_theme('smartadmin')->set_layout('main');
+
     }
 
     function items(){
@@ -35,9 +39,13 @@ class Article extends MX_Controller {
             'desc' => null,
             'icon' => 'link'
         ),
-        'cateogry' => array(
+        'category' => array(
             'type' => 'select',
             'icon' => 'list'
+        ),
+        'source' => array(
+            'type' => 'text',
+            'icon' => 'link'
         ),
         'content' => array(
             'type' => 'textarea'
@@ -50,7 +58,7 @@ class Article extends MX_Controller {
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
             }
-            bug($formdata);die;
+
             $add = $this->Category_Model->update($formdata);
             if( $add ){
                 set_error(lang('Success.'));
@@ -58,6 +66,41 @@ class Article extends MX_Controller {
 
         }
 //         bug($this->session->flashdata('error'));
+
+
+        $data = array(
+            'fields' => $this->fields
+        );
+        $this->template
+        ->title( lang('welcome_to'))
+        ->build('backend/form',$data);
+    }
+
+    public function crawler(){
+        $this->load->module('crawler');
+        if( strlen($source = $this->input->get('s')) > 0 ){
+             list($c_title,$c_content)= $this->crawler->get_content($source);
+             if( is_string($c_title) ){
+                 $this->fields['title']['value']=$c_title;
+                 $this->fields['alias']['value']= url_title($c_title,'-',true);
+             }
+             if( is_string($c_content) ){
+                 $this->fields['content']['value']=$c_content;
+             }
+
+            $this->fields['source']['value']=$source;
+        }
+
+        if ($this->input->post()) {
+            $formdata = array();
+            foreach ($this->fields as $name => $field) {
+                $formdata[$name] = $this->input->post($name);
+            }
+            if( !empty($formdata) AND ($add = $this->Article_Model->update($formdata)) ){
+                set_error(lang('Success.'));
+            }
+
+        }
 
 
         $data = array(
