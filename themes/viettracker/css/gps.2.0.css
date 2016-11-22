@@ -2636,7 +2636,7 @@ h1 {
 
 .account {
 	position: absolute;
-	right: -50px;
+	right: 0;
 	top: -15px;
 	width: 500px
 }
@@ -2689,7 +2689,8 @@ li {
 	color: #FFF;
 	text-decoration: none;
 	line-height: 25px;
-	padding-right: 5px
+	padding-right: 5px;
+	float: right;
 }
 
 .account ul li
