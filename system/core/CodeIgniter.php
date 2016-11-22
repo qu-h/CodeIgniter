@@ -36,7 +36,7 @@
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Bangkok');
 if( !function_exists('bug') ){
     function bug($var=null){
         echo '<pre>';
