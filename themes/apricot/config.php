@@ -5,7 +5,7 @@
  *
  */
 $domain = "//ci.quannh.dev/themes/";
-
+$gmap_api_key = 'AIzaSyDv63aI2TwqzUiPAY_dXtMUttX-Ov6vWes';
 $config['assets_url'] = "$domain";
 $config['assets_dir'] = "D:\PHP-www\Quannh\CodeIgniter-3.0.6\themes";
 
@@ -45,6 +45,6 @@ $config['js'] = array(
 
 
     'map/gmap3.js',
-    'http://maps.googleapis.com/maps/api/js?sensor=false'
+    "https://maps.googleapis.com/maps/api/js?key=$gmap_api_key"
 
 );

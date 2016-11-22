@@ -8,6 +8,6 @@ function smarty_function_anchor($params){
         $uri = ( isset($params['uri']) )?$params['uri']:null;
         return anchor( $uri,lang($params['txt']) );
     }
-    
+
 
 }

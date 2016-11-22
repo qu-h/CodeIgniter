@@ -2676,7 +2676,7 @@ a {
 	font-weight: bold
 }
 
-.account ul li:BEFORE {
+.account ul li:AFTER {
 	content: ' | '
 }
 
