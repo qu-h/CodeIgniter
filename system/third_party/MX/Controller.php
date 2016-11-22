@@ -40,6 +40,7 @@ class MX_Controller
 {
 	public $autoload = array();
     var $url_suffix = 'html';
+    var $msg = array();
 	public function __construct()
 	{
 		$class = str_replace(CI::$APP->config->item('controller_suffix'), '', get_class($this));
