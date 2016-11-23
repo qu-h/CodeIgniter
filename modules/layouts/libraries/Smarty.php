@@ -10,7 +10,7 @@ class CI_Smarty extends SmartyBC {
 	var $css = array();
     var $css_ie = array();
 	var $css_all_ie = array();
-    var $script = array('js'=>null,'ready'=>null);
+    var $script = array('js'=>null,'ready'=>null,'header'=>'');
     var $tpl_vars = array();
     var $theme = 'default';
 
@@ -59,7 +59,7 @@ class CI_Smarty extends SmartyBC {
 
 		if( array_key_exists('theme_css', $params) ){
 		    foreach ($params['theme_css'] AS $k=>$file){
-    			$this->css[$k] = self::checkResoure($file);
+    			$this->css[] = self::checkResoure($file);
     		}
     		unset($params['theme_css']);
 
@@ -68,7 +68,7 @@ class CI_Smarty extends SmartyBC {
 
 		if( array_key_exists('theme_js', $params) ){
 		    foreach ($params['theme_js'] AS $k=>$file){
-		        $this->js[$k] = self::checkResoure($file);
+		        $this->js[] = self::checkResoure($file);
 		    }
 		    unset($params['theme_js']);
 
@@ -126,6 +126,13 @@ class CI_Smarty extends SmartyBC {
         if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
             $this->assign($k, $d);
         }
+        if( !empty($this->script['ready']) ){
+            $this->assign('js_ready', $this->script['ready']);
+        }
+        if( !empty($this->script['header']) ){
+            $this->assign('js_header', $this->script['header']);
+        }
+
 
 		$ci = get_instance();
 
@@ -154,9 +161,6 @@ class CI_Smarty extends SmartyBC {
 		    }
 
 		}
-
-
-
 
 		if ( $path === FALSE )
 		{
@@ -278,9 +282,15 @@ die('smarty 168 : check app');
 	public function jsscript($str=null){
 		$this->script['js'].= $str;
 	}
-	public function jsready($str=null){
+	public function js_ready($str=null){
 		$this->script['ready'].= $str;
 	}
+
+	public function js_header($str=null){
+	    $this->script['header'].= $str;
+	}
+
+
 
 	function loadLibrariesPlugin($class=''){
 		if( !$class ) return false;

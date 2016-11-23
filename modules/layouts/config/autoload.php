@@ -4,4 +4,4 @@
 $autoload['libraries'] = array('template');
 $autoload['libraries'][] = 'smarty';
 
-$autoload['helper'] = array('messages');
+$autoload['helper'] = array('messages','ci_smarty_function');
