@@ -399,8 +399,15 @@ class Template
 
             $this->_data['assets_dir'] = $this->_ci->config->item('assets_dir');
             $this->_data['assets_url'] = $this->_ci->config->item('assets_url');
-		    $this->_data['theme_css'] = $this->_ci->config->item('css');
-		    $this->_data['theme_js'] = $this->_ci->config->item('js');
+		    $theme_css = $this->_ci->config->item('css');
+		    if( !empty($theme_css) ) foreach ($theme_css AS $css){
+		        add_css($css);
+		    }
+
+		    $theme_js = $this->_ci->config->item('js');
+		    if( !empty($theme_js) ) foreach ($theme_js AS $js){
+		        add_js($js);
+		    }
 		}
 		if( property_exists($this->_ci, 'smarty') ){
 		    $this->_ci->smarty->theme = $theme;

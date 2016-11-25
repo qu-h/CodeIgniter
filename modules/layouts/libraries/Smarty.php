@@ -57,23 +57,21 @@ class CI_Smarty extends SmartyBC {
 		$alang = array();
 
 
-		if( array_key_exists('theme_css', $params) ){
-		    foreach ($params['theme_css'] AS $k=>$file){
-    			$this->css[] = self::checkResoure($file);
-    		}
-    		unset($params['theme_css']);
+// 		if( array_key_exists('theme_css', $params) ){
+// 		    foreach ($params['theme_css'] AS $k=>$file){
+//     			$this->css[] = self::checkResoure($file);
+//     		}
+//     		unset($params['theme_css']);
 
 
-		}
+// 		}
 
-		if( array_key_exists('theme_js', $params) ){
-		    foreach ($params['theme_js'] AS $k=>$file){
-		        $this->js[] = self::checkResoure($file);
-		    }
-		    unset($params['theme_js']);
-
-
-		}
+// 		if( array_key_exists('theme_js', $params) ){
+// 		    foreach ($params['theme_js'] AS $k=>$file){
+// 		        $this->js[] = self::checkResoure($file);
+// 		    }
+// 		    unset($params['theme_js']);
+// 		}
 // 		if (strpos($resource_name, '.') === false) {
 // 			$resource_name .= '.htm';
 // 		}
@@ -275,8 +273,9 @@ die('smarty 168 : check app');
 	}
 	public function css($file){
 		$this->css[] = $file;
-// 		die('add css');
-		//bug($this->js); die;
+	}
+	public function add_css($file){
+	    $this->css[] = $file;
 	}
 
 	public function jsscript($str=null){

@@ -21,7 +21,8 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
                     }
 
                 }
-                $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />'; //id='woocommerce-layout-css'
+                $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />
+                    '; //id='woocommerce-layout-css'
             }
 
 
@@ -43,7 +44,8 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
 //                     $file = "$resource_url/$folder/js/$file";
                 }
 
-                $html .= '<script type="text/javascript" src="'.$file.'" ></script>'; //id='woocommerce-layout-css'
+                $html .= '<script type="text/javascript" src="'.$file.'" ></script>
+                    '; //id='woocommerce-layout-css'
             }
         }
         return $html;
