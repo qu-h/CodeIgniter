@@ -403,8 +403,10 @@ class Template
 		    if( !empty($theme_css) ) foreach ($theme_css AS $css){
 		        add_css($css);
 		    }
-		    if( !empty($theme_css = $this->_ci->config->item('css_loggedin')) && $this->_ci->session->userdata('uid'))
-		        foreach ($theme_css AS $css){
+
+		    $css_loggedin = $this->_ci->config->item('css_loggedin');
+		    if( !empty($css_loggedin) && $this->_ci->session->userdata('uid'))
+		        foreach ($css_loggedin AS $css){
 		        add_css($css);
 		    }
 
@@ -413,8 +415,9 @@ class Template
 		        add_js($js);
 		    }
 
-		    if( !empty($theme_js = $this->_ci->config->item('js_loggedin')) && $this->_ci->session->userdata('uid'))
-	        foreach ($theme_js AS $js){
+		    $js_loggedin = $this->_ci->config->item('js_loggedin');
+		    if( !empty($js_loggedin) && $this->_ci->session->userdata('uid'))
+	        foreach ($js_loggedin AS $js){
 		        add_js($js);
 		    }
 		}
