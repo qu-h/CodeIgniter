@@ -253,6 +253,8 @@ class CI_Input {
 	 */
 	public function post($index = NULL, $xss_clean = NULL)
 	{
+	    if( is_null($index) AND empty($_POST) )
+	        return false;
 		return $this->_fetch_from_array($_POST, $index, $xss_clean);
 	}
 
