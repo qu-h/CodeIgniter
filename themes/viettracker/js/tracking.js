@@ -7,7 +7,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 			vmap.loading = true;
 			tracking.center = true;
 			if(tracking.ajax){
-				tracking.ajax.abort();
+			    tracking.ajax.abort();
 			}
 			tracking.refresh = vmap.refresh;
 			vmap.statusArea.html(i18n.loading);
@@ -23,8 +23,6 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		} else {
 			$icon = vmap.icon.run;
 		}
-		//alert($icon);
-		//alert($icon+' $speed='+$speed);
 		return $icon;
 	},
 	rotateLayer:function($rotate){
@@ -65,7 +63,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		}
 		//alert($icon);
 		return $icon;
-		
+
 	},
 	nodeItem:function($type,$val){
 		switch($type){
@@ -75,8 +73,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 				$unit = '<span class="unit" >Km/h</span>';break;
 			case 'temp':
 				$unit = '<span class="unit" >°C</span>';break;
-			case 'vaq':
-				$unit = '<span class="unit" >V</span>';break;
+
 			case 'fuel':
 				//$unit = '<span class="unit" >lít</span>';break;
 			case 'gsm':
@@ -84,7 +81,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 				$unit = '<span class="unit" >%</span>';break;
 			default:
 				$unit = '';break;
-		
+
 		}
 		return '<div class="item" rel="tooltip" tip="'+i18n[$type+'_lable']+'" ><div class="icon-h16 icon-h16-'+$type+'" ></div><span class="value" name="'+$type+'">'+$val+'</span>'+$unit+'</div>';
 	},
@@ -93,7 +90,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 				+tracking.nodeItem('gps',$node.gps)
 				+tracking.nodeItem('gsm',$node.gsm)
 				+tracking.nodeItem('vaq',$node.vaq);
-		
+
 		if (typeof($node.temp) != "undefined"){
 			$html+= tracking.nodeItem('temp',$node.temp);
 		}
@@ -111,10 +108,10 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		$('#vehicle-info').html($html);
 		vmap.addressArea.show();
 		vmap.bind_geocode($node.la,$node.lo);
-		
+
 		vmap.tooltip();
-		
-		
+
+
 
 	},
 	nodeTrueInfo:function($node){
@@ -126,7 +123,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		$('span[name=la]',$trueInfoArea).html($node.la);
 		$('span[name=lon]',$trueInfoArea).html($node.lo);
 		$('span[name=vaq]',$trueInfoArea).html($node.vaq);
-		
+
 		$('span[name=cooler]',$trueInfoArea).html($node.cooler);
 		$('span[name=temp]',$trueInfoArea).html($node.temp);
 		$('span[name=fuel]',$trueInfoArea).html($node.fuel);
@@ -144,7 +141,6 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		if(!tracking.markers[$vid]){
 			tracking.markers[$vid] = [];
 		}
-		//alert('vid='+$vid+'  array='+tracking.markers[$vid]);
 		if(!tracking.rotate[$vid]){
 			tracking.rotate[$vid] = '';
 		}
@@ -160,7 +156,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		if(!tracking.nodes[$vid]){
 			tracking.nodes[$vid] = [];
 		}
-		
+
 		$markerPrevious = tracking.markers[$vid][tracking.markers[$vid].length-1];
 		if($markerPrevious){ // check Icon marker previoua
 			if($markerPrevious.getIcon() == vmap.icon.rotate )
@@ -171,28 +167,28 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 			tracking.rotate[$vid] = '';
 		}
 
-		
+
 		if ( (vmap.timestamp/1000 -  $time) > 1800 ) {
 			$marker.icon = vmap.icon.lost;
 		} else if( $time != $info.t || $info.speed == 0){
-			tracking.rotate[$vid] = new Label({ 
-				map: vmap.map, 
-				position: $marker.position , 
+			tracking.rotate[$vid] = new Label({
+				map: vmap.map,
+				position: $marker.position ,
 				subclass: 'node-stop',
 				title:$marker.title
 			});
 			$markerStop = true;
 			$marker.icon = vmap.icon.transparent;
 		} else {
-			tracking.rotate[$vid] = new Label({ 
-				map: vmap.map, 
-				position: $marker.position , 
+			tracking.rotate[$vid] = new Label({
+				map: vmap.map,
+				position: $marker.position ,
 				subclass:tracking.rotateLayer($info.rotate ),
 				title:$marker.title
 			});
 			$marker.icon = vmap.icon.transparent;
 		}
-		
+
 		//if( tracking.markers[$vid].length > 0 && tracking.markers[$vid][tracking.markers[$vid].length-1].getPosition().equals($marker.position) ){
 		if( tracking.polyline[$vid].getPath().getLength() > 0 &&  tracking.polyline[$vid].getPath().getAt(tracking.polyline[$vid].getPath().getLength()-1).equals($marker.position) ){
 			/*
@@ -201,41 +197,41 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 			 */
 			lastMarker = tracking.markers[$vid][tracking.markers[$vid].length-1];
 			lastMarker.info = $info;
-			lastMarker.setIcon($marker.icon)
+			lastMarker.setIcon($marker.icon);
 			if(tracking.polyline[$vid].getPath().length < 1 ) // set polyline for firt time
 				tracking.polyline[$vid].getPath().push($marker.position);
 		} else {
 			/*
 			 * add new marker and new point on polyline
 			 */
-			
-			
+
+
 				$addMarker = new google.maps.Marker($marker);
 				google.maps.event.addListener($addMarker, 'click', function(innerKey) {
 				    vmap.showMarkerInfo(this);
 				});
 				$addMarker.info = $info;
-					
+
 				tracking.markers[$vid].push($addMarker);
-					
-				
+
+
 				 if(tracking.markers[$vid].length > tracking.maxMarker){
 					tracking.markers[$vid][ 0 ].setMap(null); // remove first when max
 					tracking.markers[$vid].splice(0,1);
 				}
-				
+
 				tracking.polyline[$vid].getPath().push($marker.position);
 				tracking.nodes[$vid].push({t:$info.t});
 //				alert('add new marker, name='+$info.name+' vid='+$vid);
 			//}
-			
-			
+
+
 		}
 		if(show_title == true){
 			if($marker.title.length > 0){
 				tracking.createMarkerName($vid,$marker.title,$marker.position,$markerStop);
 			}
-			
+
 		}
 		//tracking.polyline[$vid].getPath().push($marker.position);
 		vmap.polylineOver(tracking.polyline[$vid],tracking.nodes[$vid],{name:$("#gps-vehicles option[value="+$vid+"]").text(),vid:$vid,t:tracking.nodes[$vid].t});
@@ -251,7 +247,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 			 if(tracking.rotate[i]) {
 				tracking.rotate[i].remove();
 				delete tracking.rotate[i];
-				
+
 			 }
 			 if(tracking.name[i]) {
 				tracking.name[i].remove();
@@ -267,46 +263,48 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 				delete tracking.polyline[i];
 			 }
 		 });
-		
+
 	},
 	createMarkerName:function($vid,$name,$position,$iconStop){
 		if (tracking.name[$vid]){
 			tracking.name[$vid].remove();
 		}
-		
-		tracking.name[$vid] = new Label({ 
-			map: vmap.map, 
-			position: $position , 
+
+		tracking.name[$vid] = new Label({
+			map: vmap.map,
+			position: $position ,
 			innerHTML:'<span style="width:'+($name.length*8)+'px; margin-bottom:'+( ($iconStop == true )?-10:30 )+'px" >'+$name+'</span>',
 			className:'marker-title'
 		});
 	},
 	track:function(){
-		var vehicle = []; 
+		var vehicle = [];
 		var uncheck = [];
-		$('#gps-vehicles :selected').each(function(i, selected){ 
-			vehicle.push($(selected).val());
+		$('#gps-vehicles :selected').each(function(i, selected){
+		    vehicle.push($(selected).val());
 		});
-		if(vehicle.length < 1) return false;
+		//if(vehicle.length < 1) return false;
+
 		tracking.ajax = $.ajax({
 			  url: site_url+'theo-doi.json',dataType: 'json', data:{vehicle:vehicle},type :'GET',
 			  beforeSend:function(){
-				  vmap.loading = true; 
-				  $('#gps-vehicles :not(:selected)').each(function(i, selected){ 
+				  vmap.loading = true;
+				  $('#gps-vehicles :not(:selected)').each(function(i, selected){
 						uncheck.push($(selected).val());
 				  });
 				  tracking.unsetPoints(uncheck);
+
 			  },
 			  success: function(data){
 				  if(data && data != '' && data[0] ) {
-					  
+
 					  var $itemSize = 0;
 					  var node, point;
 					  var movingNode = lastTime =0;
-					
+
 					  vmap.timestamp = data.timestamp;  delete data['timestamp'];
 					  if(data[1]){
-						  $showTitle = true; 
+						  $showTitle = true;
 					  } else {
 						  $showTitle = false;
 						  if(tracking.name){
@@ -315,9 +313,9 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 										tracking.name[i].remove();
 										delete tracking.name[i];
 									}
-							  });  
+							  });
 						  }
-						  
+
 					  }
 					  $.each(data, function(i, item) {
 						  if(item !=null && item.vid){
@@ -327,15 +325,15 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 								  data[0].la = point.la;
 								  data[0].lo = point.lo;
 							  } else {
-								  point = item; 
+								  point = item;
 							  }
-							  
+
 							  if ( (vmap.timestamp/1000 -  item.t) < 1800 && item.t == point.t && point.speed > 0  ) {
 								  movingNode++;
 								}
-							  
-							  
-							  tracking.addPoint(item.vid, point, item.t , $showTitle); 
+
+
+							  tracking.addPoint(item.vid, point, item.t , $showTitle);
 							  if(tracking.center==true){
 								  if(!vmap.bounds){
 									  vmap.bounds = new google.maps.LatLngBounds();
@@ -344,32 +342,32 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 							  }
 							  $itemSize++;
 						  }
-						  
+
 					  });
-					
+
 					if(data && tracking.center==true && vmap.bounds){
 						if($itemSize == 1){
 							vmap.map.setCenter(vmap.LatLng(point.la,point.lo));
 						} else if( tracking.center ==  true) {
 							//vmap.map.setCenter(vmap.bounds.getCenter());
-							
-							
+
+
 							//console.log('fitBounds zoom='+vmap.map.getZoom());
 							var zoomSet = google.maps.event.addListener(vmap.map, 'bounds_changed', function() {
-								
+
 								if( this.initialZoom == true ){
 									console.log('fitBounds zoom='+vmap.map.getZoom());
-									vmap.map.setZoom( Math.min(vmap.zoom,vmap.map.getZoom())); 
+									vmap.map.setZoom( Math.min(vmap.zoom,vmap.map.getZoom()));
 									this.initialZoom = false;
 								}
 								console.log('fitBounds zoom='+vmap.map.getZoom());
 								google.maps.event.removeListener(zoomSet);
-								
+
 							});
 							vmap.map.initialZoom = true;
 							vmap.map.fitBounds(vmap.bounds);
 							//zoomSet.remove();
-							
+
 							//console.log('current zoom='+vmap.map.getZoom());
 							//console.log('current zoom='+vmap.map.getZoom());
 							//console.log('set zoom='+vmap.map.getZoom());
@@ -385,8 +383,8 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 				  }
 			  },
 			  complete:function(){
-				  vmap.loading = false;  
-				  
+				  vmap.loading = false;
+
 			  }
 		});
 	},
@@ -394,7 +392,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		$.ajax({
 			url: vmap.trackingLink,dataType: 'json',
 			beforeSend:function(){
-			  vmap.loading = true; 
+			  vmap.loading = true;
 		  	},
 			success: function(data){
 				  if(data){
@@ -417,13 +415,13 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 	trackingOneIni:function(){
 		vmap.autoLoad("tracking.trackingOne");
 		$("#gps-vehicles").change(function() {
-			 window.location.href = site_url+"theo-doi/"+$(this).val()+'.html';  
-		}); 
+			 window.location.href = site_url+"theo-doi/"+$(this).val()+'.html';
+		});
 		$('input[type=text][name=gps-date]').val('');
 		$('#obi-calendar').datepicker('option', 'onSelect',function(dateStr){
 			$('input[type=text][name=gps-date]').val(dateStr);
 			$vid = $('#gps-vehicles option:selected').val();
-			vmap.stopAjax = true; 
+			vmap.stopAjax = true;
 			vmap.statusArea.hide();
 			tracking.unsetPoints([]);
 			playback.int({
@@ -435,7 +433,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		});
 		$('a[name=reset]').click(function(e){
 			$('input[type=text][name=gps-date]').val('');
-			vmap.stopAjax = false; 
+			vmap.stopAjax = false;
 			vmap.statusArea.show();
 			playback.setNull();
 			e.preventDefault();

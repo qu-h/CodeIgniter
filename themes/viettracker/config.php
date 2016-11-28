@@ -24,11 +24,13 @@ $config['js'] = array(
 	"https://maps.googleapis.com/maps/api/js?key=$gmap_api_key", //&callback=vmap.ini
 	$domain.'viettracker/plugin/dropdown-check-list/ui.dropdownchecklist.js',
     $domain.'viettracker/plugin/timepicker-addon/jquery-ui-timepicker-addon.js',
-	'gps.js',
+    '../datatables/js/jquery.dataTables.min.js',
+    '../highcharts/highcharts.js',
+	//'gps.js',
 	'i18n.js',
 	'mapgps.js',
 	'gps.js',
-	'playback.js',
+// 	'playback.js',
 	'report.js',
 	'tracking.js',
 

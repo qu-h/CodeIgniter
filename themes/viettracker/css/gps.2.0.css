@@ -82,7 +82,7 @@ caption {
 }
 
 table.style1 tr:hover {
-	background: url('/terminator/images/bck_black_10.png')
+	background: url('../terminator/images/bck_black_10.png')
 }
 
 table.style1
@@ -119,7 +119,7 @@ table.style1 tbody th,table.style1 tbody
 
 table.style1
 td {
-	background: url('/terminator/images/bck_white_75.png');
+	background: url('../terminator/images/bck_white_75.png');
 	border-bottom: 1px solid #DDD;
 	line-height: 22px;
 	padding: 4px 6px 4px 6px
@@ -157,7 +157,7 @@ caption {
 }
 
 .chart-wrap tr:hover {
-	background: url('/terminator/images/bck_black_10.png')
+	background: url('../terminator/images/bck_black_10.png')
 }
 
 .chart-wrap
@@ -188,7 +188,7 @@ td {
 
 .chart-wrap tbody
 th {
-	background: url('/terminator/images/bck_black_5.png');
+	background: url('../terminator/images/bck_black_5.png');
 	font-weight: bold;
 	white-space: nowrap;
 	color: #666
@@ -196,7 +196,7 @@ th {
 
 .chart-wrap
 td {
-	background: url('/terminator/images/bck_white_75.png');
+	background: url('../terminator/images/bck_white_75.png');
 	border-bottom: 1px solid #DDD;
 	line-height: 22px;
 	padding: 4px 6px 4px 6px
@@ -283,7 +283,7 @@ th.sorting {
 th.sorting_desc {
 	cursor: pointer;
 	padding-right: 25px;
-	background: url('/terminator/images/arrow_sm_black_top.gif') center
+	background: url('../terminator/images/arrow_sm_black_top.gif') center
 		right no-repeat #eee
 }
 
@@ -291,7 +291,7 @@ th.sorting_desc {
 th.sorting_asc {
 	cursor: pointer;
 	padding-right: 25px;
-	background: url('/terminator/images/arrow_sm_black_down.gif') center
+	background: url('../terminator/images/arrow_sm_black_down.gif') center
 		right no-repeat #eee
 }
 
@@ -326,7 +326,7 @@ a {
 .paginate_active {
 	cursor: pointer;
 	width: 20px;
-	background: url('/terminator/images/button_glas2.png') center center
+	background: url('../terminator/images/button_glas2.png') center center
 		repeat-x #eee;
 	text-align: center;
 	color: #333;
@@ -348,7 +348,7 @@ a {
 
 .dataTables_wrapper .dataTables_paginate
 .paginate_active {
-	background: url('/terminator/images/button_glas1.png') center center
+	background: url('../terminator/images/button_glas1.png') center center
 		repeat-x #333;
 	border-width: 0px;
 	line-height: 22px;
@@ -361,7 +361,7 @@ a {
 
 .dataTables_wrapper .dataTables_paginate
 .first {
-	background: url('/terminator/images/arrow_leftend_off.png') center
+	background: url('../terminator/images/arrow_leftend_off.png') center
 		center no-repeat !important;
 	margin: 0px 0px 0px 0px;
 	text-indent: -9999px;
@@ -372,14 +372,14 @@ a {
 }
 
 .dataTables_wrapper .dataTables_paginate .first:hover {
-	background: url('/terminator/images/arrow_leftend_ovr.png') center
+	background: url('../terminator/images/arrow_leftend_ovr.png') center
 		center no-repeat !important;
 	text-indent: -9999px
 }
 
 .dataTables_wrapper .dataTables_paginate
 .previous {
-	background: url('/terminator/images/arrow_left_off.png') center center
+	background: url('../terminator/images/arrow_left_off.png') center center
 		no-repeat !important;
 	margin: 0px 4px 0px 0px;
 	text-indent: -9999px;
@@ -390,14 +390,14 @@ a {
 }
 
 .dataTables_wrapper .dataTables_paginate .previous:hover {
-	background: url('/terminator/images/arrow_left_ovr.png') center center
+	background: url('../terminator/images/arrow_left_ovr.png') center center
 		no-repeat !important;
 	text-indent: -9999px
 }
 
 .dataTables_wrapper .dataTables_paginate
 .last {
-	background: url('/terminator/images/arrow_rightend_off.png') center
+	background: url('../terminator/images/arrow_rightend_off.png') center
 		center no-repeat !important;
 	margin: 0px 0px 0px 0px;
 	text-indent: -9999px;
@@ -408,14 +408,14 @@ a {
 }
 
 .dataTables_wrapper .dataTables_paginate .last:hover {
-	background: url('/terminator/images/arrow_rightend_ovr.png') center
+	background: url('../terminator/images/arrow_rightend_ovr.png') center
 		center no-repeat !important;
 	text-indent: -9999px
 }
 
 .dataTables_wrapper .dataTables_paginate
 .next {
-	background: url('/terminator/images/arrow_right_off.png') center center
+	background: url('../terminator/images/arrow_right_off.png') center center
 		no-repeat !important;
 	margin: 0px 0px 0px 4px;
 	text-indent: -9999px;
@@ -442,7 +442,7 @@ a {
 	height: 16px;
 	width: 16px;
 	border: none;
-	background: url("/terminator/images/icons_16.png") center center
+	background: url("../terminator/images/icons_16.png") center center
 		no-repeat;
 	margin-left: 5px;
 	cursor: pointer;
@@ -525,7 +525,7 @@ span.total {
 
 .content-box .box-header {
 	min-height: 36px;
-	background: url('/terminator/images/bck_header.png') top center repeat-x;
+	background: url('../terminator/images/bck_header.png') top center repeat-x;
 	position: relative;
 	-moz-border-radius: 4px 4px 4px 4px;
 	-webkit-border-radius: 4px 4px 4px 4px;
@@ -2677,10 +2677,11 @@ a {
 }
 
 .account ul li:AFTER {
-	content: ' | '
+	content: '|';
+	margin-right: 10px;
 }
 
-.account ul li:FIRST-CHILD:BEFORE {
+.account ul li:last-child:AFTER {
 	content: '  '
 }
 
@@ -3075,7 +3076,7 @@ input {
 	cursor: pointer !important;
 	display: inline-block;
 	font-weight: bold;
-	height: 29px;
+	height: 36px;
 	line-height: 29px;
 	min-width: 54px;
 	padding: 0 8px;
@@ -3085,13 +3086,14 @@ input {
 
 #gbqfb
 .gbqfi {
-	background-image: url("/images/k1_a31af7ac.png");
+	background-image: url("../images/k1_a31af7ac.png");
 	background-size: 294px 45px;
 	background-position: -33px 0;
 	display: inline-block;
 	height: 13px;
-	margin: 7px 19px;
-	width: 14px
+	margin: 9px 5px 5px 0;
+	width: 14px;
+	float: left;
 }
 
 #gmap-address-search
@@ -3400,7 +3402,7 @@ span.value {
 .vehicle-node {
 	width: 40px;
 	height: 40px;
-	background: url("/images/icon_rotate.png") no-repeat transparent;
+	background: url("../images/icon_rotate.png") no-repeat transparent;
 	cursor: pointer;
 	z-index: 99
 }
@@ -3408,7 +3410,7 @@ span.value {
 .node-stop {
 	width: 40px;
 	height: 40px;
-	background: url("/images/stoping.gif") no-repeat transparent;
+	background: url("../images/stoping.gif") no-repeat transparent;
 	cursor: pointer;
 	z-index: 99;
 	background-position: center

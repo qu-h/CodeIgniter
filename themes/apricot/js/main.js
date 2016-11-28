@@ -1,12 +1,7 @@
 //Sliding Effect Control
-//head.js("skin-select/jquery.cookie.js");
-//head.js("assets/js/skin-select/skin-select.js");
-
 //Showing Date
 //head.js("assets/js/clock/date.js");
 
-//Bootstrap
-//head.js("assets/js/bootstrap.js");
 $( document ).ready(function() {
   //NEWS STICKER
     var nt_title = $('#nt-title').newsTicker({
@@ -15,7 +10,7 @@ $( document ).ready(function() {
         duration: 5000,
         pauseOnHover: 0
     });
-	
+
 	////Right Sliding menu
 	$(document).ready(function() {
         var mySlidebars = new $.slidebars();
@@ -24,7 +19,7 @@ $( document ).ready(function() {
             mySlidebars.toggle('right');
         });
     });
-	
+
 	////Acordion and Sliding menu
     $(".topnav").accordionze({
         accordionze: true,
@@ -32,10 +27,10 @@ $( document ).ready(function() {
         closedSign: '<img src="assets/img/plus.png">',
         openedSign: '<img src="assets/img/minus.png">'
     });
-	
+
 	//SEARCH MENU
     $('input.id_search').quicksearch('#menu-showhide li, .menu-left-nest li');
-	
+
 	//EASY PIE CHART
     $(function() {
 
@@ -81,8 +76,8 @@ $( document ).ready(function() {
             }
         });
     });
-	
-	
+
+
 	//TOOL TIP
     $('.tooltip-tip-x').tooltipster({
         position: 'right'
@@ -129,8 +124,8 @@ $( document ).ready(function() {
         animation: 'fade'
     });
     //For icon tooltip
-	
-	
+
+
 	//NICE SCROLL
     $(".nano").nanoScroller({
         //stop: true
@@ -213,25 +208,34 @@ $( document ).ready(function() {
         offset: '+5',
         type: 'digital'
     });
-	var g1;
-    window.onload = function() {
-        var g1 = new JustGage({
-            id: "g1",
-            value: getRandomInt(0, 1000),
-            min: 0,
-            max: 1000,
-            relativeGaugeSize: true,
-            gaugeColor: "rgba(0,0,0,0.4)",
-            levelColors: "#0DB8DF",
-            labelFontColor : "#ffffff",
-            titleFontColor: "#ffffff",
-            valueFontColor :"#ffffff",
-            label: "VISITORS",
-            gaugeWidthScale: 0.2,
-            donut: true
-        });
-    };
-	
-	
-	
+
+
+
+
+
+	$('#skin-select').animate({ left:0 }, 100);
+	$('.wrap-fluid').css({"width":"auto","margin-left":"250px"});
+	$('.navbar').css({"margin-left":"240px"});
+
+	$('#skin-select li').css({"text-align":"left"});
+	$('#skin-select li span, ul.topnav h4, .side-dash, .noft-blue, .noft-purple-number, .noft-blue-number, .title-menu-left').css({"display":"inline-block", "float":"none"});
+	//$('body').css({"padding-left":"250px"});
+
+
+	$('.ul.topnav li a:hover').css({" background-color":"green!important"});
+
+	$('.ul.topnav h4').css({"display":"none"});
+
+	$('.tooltip-tip2').addClass('tooltipster-disable');
+	$('.tooltip-tip').addClass('tooltipster-disable');
+
+
+	$('.datepicker-wrap').css({"position":"absolute", "right":"300px"});
+	$('.skin-part').css({"visibility":"visible"});
+	$('#menu-showhide, .menu-left-nest').css({"margin":"10px"});
+	$('.dark').css({"visibility":"visible"});
+
+	$('.search-hover').css({"display":"none"});
+	$('.dropdown-wrap').css({"position":"absolute", "left":"0px", "top":"53px"});
+
 });
