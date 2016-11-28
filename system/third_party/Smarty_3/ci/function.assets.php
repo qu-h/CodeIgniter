@@ -24,7 +24,7 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
                 $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />
                     '; //id='woocommerce-layout-css'
             }
-
+// die('call css');
 
         } else if ( $type=='js' ){
 

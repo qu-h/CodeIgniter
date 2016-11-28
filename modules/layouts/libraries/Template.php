@@ -399,6 +399,8 @@ class Template
 
             $this->_data['assets_dir'] = $this->_ci->config->item('assets_dir');
             $this->_data['assets_url'] = $this->_ci->config->item('assets_url');
+            $theme_url = $this->_ci->config->item('theme_url');
+            $assets_dir = $this->_ci->config->item('assets_dir');
 		    $theme_css = $this->_ci->config->item('css');
 		    if( !empty($theme_css) ) foreach ($theme_css AS $css){
 		        add_css($css);
@@ -407,12 +409,13 @@ class Template
 		    $css_loggedin = $this->_ci->config->item('css_loggedin');
 		    if( !empty($css_loggedin) && $this->_ci->session->userdata('uid'))
 		        foreach ($css_loggedin AS $css){
-		        add_css($css);
+		          add_css($css);
 		    }
 
 		    $theme_js = $this->_ci->config->item('js');
 		    if( !empty($theme_js) ) foreach ($theme_js AS $js){
 		        add_js($js);
+
 		    }
 
 		    $js_loggedin = $this->_ci->config->item('js_loggedin');

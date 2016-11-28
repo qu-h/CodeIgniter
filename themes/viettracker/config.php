@@ -7,7 +7,8 @@
 $domain = "//ci.quannh.dev/themes/";
 
 $config['assets_url'] = "$domain";
-$config['assets_dir'] = "D:\PHP-www\Quannh\CodeIgniter-3.0.6\themes";
+$config['assets_dir'] = "D:/PHP-www/Quannh/CodeIgniter-3.0.6/themes/viettracker/";
+$config['theme_url'] = "//ci.quannh.dev/themes/viettracker/";
 
 $config['css'] = array(
     'gps.2.0.css',
@@ -15,6 +16,7 @@ $config['css'] = array(
     $domain.'viettracker/plugin/timepicker-addon/jquery-ui-timepicker-addon.css',
 
 );
+
 $gmap_api_key = 'AIzaSyDv63aI2TwqzUiPAY_dXtMUttX-Ov6vWes';
 $config['js'] = array(
    'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',

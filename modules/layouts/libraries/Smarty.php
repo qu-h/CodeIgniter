@@ -269,13 +269,32 @@ die('smarty 168 : check app');
 		$this->js[] = $file;
 	}
 	public function add_js($file){
-	    $this->js[] = $file;
+	    $assets_dir = config_item("assets_dir");
+	    $theme_url = config_item("theme_url");
+	    if( substr($file,0,2) == '//' OR substr($file,0,4) == 'http' ){
+	        $this->js[] = $file;
+	    } elseif( file_exists($assets_dir."js/$file")  ){
+	        $file = realpath($assets_dir."js/$file");
+	        $file = str_replace(realpath($assets_dir), NULL, $file);
+	        $this->js[] = $theme_url.str_replace(array('\\'), '/', $file);
+	    }
+
 	}
 	public function css($file){
 		$this->css[] = $file;
 	}
 	public function add_css($file){
-	    $this->css[] = $file;
+	    $assets_dir = config_item("assets_dir");
+	    $theme_url = config_item("theme_url");
+	    if( substr($file,0,2) == '//' OR substr($file,0,4) == 'http' ){
+	        $this->css[] = $file;
+	    } elseif( file_exists($assets_dir."css/$file")  ){
+	        $file = realpath($assets_dir."css/$file");
+	        $file = str_replace(realpath($assets_dir), NULL, $file);
+	        $this->css[] = $theme_url.str_replace(array('\\'), '/', $file);
+	    }
+
+// 	    $this->css[] = $file;
 	}
 
 	public function jsscript($str=null){
