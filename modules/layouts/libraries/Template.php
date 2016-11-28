@@ -403,9 +403,18 @@ class Template
 		    if( !empty($theme_css) ) foreach ($theme_css AS $css){
 		        add_css($css);
 		    }
+		    if( !empty($theme_css = $this->_ci->config->item('css_loggedin')) && $this->_ci->session->userdata('uid'))
+		        foreach ($theme_css AS $css){
+		        add_css($css);
+		    }
 
 		    $theme_js = $this->_ci->config->item('js');
 		    if( !empty($theme_js) ) foreach ($theme_js AS $js){
+		        add_js($js);
+		    }
+
+		    if( !empty($theme_js = $this->_ci->config->item('js_loggedin')) && $this->_ci->session->userdata('uid'))
+	        foreach ($theme_js AS $js){
 		        add_js($js);
 		    }
 		}
@@ -430,9 +439,10 @@ class Template
 		        foreach ($methods AS $plugin){
 
 // 		            if( $plugin !='__construct' AND $reflection->getMethod($plugin)->isStatic() ){
+                    if( !isset($this->_ci->smarty->registered_plugins['function']) OR  !array_key_exists($plugin->name, $this->_ci->smarty->registered_plugins['function']) ) {
 		                $this->_ci->smarty->registerPlugin('function', $plugin->name, $ui_class_name.'::'.$plugin->name);
-// 		            }
-
+		            }
+// 		            bug($this->_ci->smarty->registered_plugins);die;
 		        }
 		    }
 

@@ -36,6 +36,7 @@ class CI_techtalk_vn
         foreach ( $html->find('article div[class=td-post-content] a') AS $link){
            $this->out_links[] = $link->href;
         }
+// bug($this);die('bug');
 
     }
 
