@@ -27,7 +27,7 @@ $(function() {
             PIE.attach(this);
         });
     }
-	
+
 $(window).resize(function() {
 		$map = $('.gps-right');
 		$map.parents('.container');
@@ -37,7 +37,7 @@ $(window).resize(function() {
 });
 
 jQuery.fn.center = function () {
-	
+
 	this.css("position","absolute");
 	this.css("top", ( jQuery(window).height() - this.height() ) / 2+jQuery(window).scrollLeft() + "px");
 	this.css("left", ( jQuery(window).width() - this.width() ) / 2+jQuery(window).scrollLeft() + "px");
@@ -53,7 +53,7 @@ function Label(opt) { // Initialization
 	} else {
 		this.div_.className = "vehicle-node";
 	}
-	
+
 	if(opt.subclass){
 		this.div_.className += " "+opt.subclass;
 	}
@@ -62,7 +62,7 @@ function Label(opt) { // Initialization
 	}
 	this.div_.style.cssText = 'position: absolute; display: block; cursor: pointer;';
 	this.div_.title = opt.title;
-	
+
 };
 
 Label.prototype = new google.maps.OverlayView;
@@ -157,9 +157,9 @@ var vmap = {
 			parse = Date.parse(new Date());
 		}else {
 			strTmp = $str;
-			strTmp = strTmp.replace(/\s{2,}|^\s|\s$/g, ' '); // unecessary spaces  
-			strTmp = strTmp.replace(/[\t\r\n]/g, ''); // unecessary chars  
-			    
+			strTmp = strTmp.replace(/\s{2,}|^\s|\s$/g, ' '); // unecessary spaces
+			strTmp = strTmp.replace(/[\t\r\n]/g, ''); // unecessary chars
+
 			$timeAr = strTmp.split('-');
 			parse = Date.parse( new Date($timeAr[2],$timeAr[1]-1,$timeAr[0]) );
 		}
@@ -168,29 +168,29 @@ var vmap = {
 		 } else {
 			 return null;
 		 }
-		
+
 	},
 	date:function(strtotime,format ){
 		if(strtotime == undefined ){
 			strtotime = vmap.timestamp;
-		} 
+		}
 		format = (format == undefined)?'d-m-Y':format;
 		$date = new Date(strtotime);
 		$day = ($date.getDate() >= 10 )?$date.getDate():'0'+$date.getDate();
 		$month = ($date.getMonth() > 10)?($date.getMonth()+1) : ('0'+ ($date.getMonth()+1) );
-		
-		
+
+
 		$timeStr = format;
 		$timeStr = $timeStr.replace("d",$day);
 		$timeStr = $timeStr.replace("m",$month);
 		$timeStr = $timeStr.replace("Y",$date.getFullYear());
-		
+
 		$timeStr = $timeStr.replace("H",$date.getHours());
 		$timeStr = $timeStr.replace("i",$date.getMinutes());
 		$timeStr = $timeStr.replace("s",$date.getSeconds());
 		return $timeStr;
 	},
-	
+
 	daysFromNow:function($str,$add){
 		$now = new Date();
 		$diff = vmap.strtotime($str) - Date.parse(new Date())/1000;
@@ -216,10 +216,10 @@ var vmap = {
 		else if (lon >= 180 || lon <=-180) return false;
 		else return true;
 	},
-	
+
 	bind_geocode:function(la,lo,el){
 		var geocoder =  new google.maps.Geocoder();
-		
+
 		geocoder.geocode({'latLng': vmap.LatLng(la,lo)}, function(results, status) {
 	        if (status == google.maps.GeocoderStatus.OK) {
 	        	if (results[1]) {
@@ -230,8 +230,8 @@ var vmap = {
 	        			}
 	        		});
 	        		el.html(address);
-	            } 
-	        } 
+	            }
+	        }
         });
 	},
 	ini : function ($la,$lon) {
@@ -246,7 +246,7 @@ var vmap = {
 	      mapTypeId: google.maps.MapTypeId.ROADMAP,
 	      center: this.lastNode,
 	      scaleControl: true,
-	      scrollwheel: true, 
+	      scrollwheel: true,
 	      streetViewControl:false,
 	      //mapTypeControl: false,
 			//zoomControlOptions: {
@@ -274,12 +274,12 @@ var vmap = {
 		}
 		$('body').css({'overflow-y':'hidden'});
 		$('.ui-widget-overlay').show();
-		
-		
+
+
 		$info = {'name':i18n.node_stop,'address':e.html()};
 		vmap.addMarker( vmap.LatLng(latlngStr[0], latlngStr[1]) ,$info.name,vmap.iconIndex(0),$info,null,null,false );
 		vmap.map.setCenter(vmap.LatLng(latlngStr[0], latlngStr[1]));
-        
+
 		$('.close_x',$('.vmap-popup')).click(function(e){
 			e.preventDefault();
 			$(this).parents('.vmap-popup').hide();
@@ -332,7 +332,7 @@ var vmap = {
 				} else {
 					vmap.showMarkerInfo(this);
 				}
-				
+
 			});
 			*/
 		}
@@ -342,7 +342,7 @@ var vmap = {
 			vmap.markers.push($addMarker);
 		}
 	},
-	
+
 	removeMaker:function(){
 		for (i in vmap.markers) {
 			vmap.markers[i].setMap(null);
@@ -352,7 +352,7 @@ var vmap = {
 	},
 	showMarkerInfo:function($marker){
 		$marker.info.address = null;
-		
+
 		$content = ('<div id="infowindow-content" class="obi obi-w"  >'+
 		         '<h3 id="firstHeading" class="firstHeading">'+$marker.info.name+'</h3>'+
 		         '<div class="bodyContent">'+
@@ -367,9 +367,9 @@ var vmap = {
 	         '</div>'
          );
 		//vmap.markerInfo.setOptions({maxWidth:500,width:500});
-		
-		
-		
+
+
+
 		vmap.markerInfo.setContent($content);
 		vmap.map.setCenter($marker.getPosition());
 		vmap.markerInfo.open(vmap.map,$marker);
@@ -378,9 +378,9 @@ var vmap = {
 			vmap.bind_geocode($marker.info.la,$marker.info.lo,$('#infowindow-content .bodyContent .obi-address'));
 			$('#infowindow-content .bodyContent').css({'width':'500px'});
 		//}
-		
+
 	},
-	
+
 	removeInfoWindow:function(){
 		for (i in vmap.infowindow) {
 			vmap.infowindow[i]['info'].close();;
@@ -400,14 +400,14 @@ var vmap = {
 			vmap.defaultMaker();
 			e.preventDefault();
 		}).children('span').css({'padding':'2px 5px'});
-		
-		
+
+
 		$('input[name=page]').val(1);
 	    $('a[name=next]').button().click(function(e){
 	    	if(parseInt( $('span[name=gps-number]').html() ) < parseInt( $('span[name=gps-total]').html() )) {
 	    		vmap.loadMaker($('input[type=text][name=gps-date]'));
 	    	}
-	    	
+
 	    	e.preventDefault();
 		}).children('span').css({'padding':'2px 5px'});
 	    google.maps.event.addListener(vmap.map, 'click', function() {
@@ -428,7 +428,7 @@ var vmap = {
 						vmap.statusArea.show().html(i18n.loading);
 						$formResult.html('<div class="control"><a href="#">'+i18n.search_reset+'</a></div>');
 					},
-					success:function(data){ 
+					success:function(data){
 						if( data.status=='OK' ){
 							$.each(data.results, function(i, $r) {
 								$('div.control',$formResult).before('<div class="result result_'+i+'" >'+$r.formatted_address+'</div>');
@@ -436,7 +436,7 @@ var vmap = {
 								$info = {'name':i18n.search+' ('+$q+')','address':$r.formatted_address};
 								$showInfoWindow = (i==0)?true:false;
 								vmap.addMarker( $location,$info.name,vmap.iconIndex(i),$info,null,null,$showInfoWindow );
-								
+
 							});
 							$('.result',$formResult).each(function(i, $e) {
 								$(this).click(function(){
@@ -480,7 +480,7 @@ var vmap = {
 			var $nearNode = 0;
 			var $nearest = 0;
 			line.setOptions({'strokeOpacity':1});
-			
+
 			$.each(line.getPath(), function(index, value) {
 				$distance = parseFloat( vmap.distance(  line.getPath().getAt(index) ,event.latLng) );
 				if(index==0){
@@ -495,7 +495,7 @@ var vmap = {
 			$nodeIndex = $nearNode;
 			//alert($nodeIndex);
 			if(vmap.detailMarker == null ){
-				
+
 				//alert('new marker');
 				//alert( nodes[0].t +' click=' +  nodes[$nearNode].t );
 				vmap.detailMarker = vmap.addMarker(line.getPath().getAt($nearNode),' node =' + $nodeIndex,vmap.polylineMarker(),{},false,true,true);
@@ -504,14 +504,14 @@ var vmap = {
 				//alert('update postion');
 				vmap.detailMarker.setPosition( line.getPath().getAt($nearNode) );
 				vmap.detailMarker.setTitle( ' node =' + $nodeIndex );
-				
+
 				//google.maps.event.addListener(vmap.detailMarker, 'click', function(innerKey) {
 				//	vmap.getNode( nodes[$nodeIndex].t ,{name:motor.name,vid:motor.vid});
 				//});
 			}
 			vmap.subNodeByTime(vmap.detailMarker,{name:motor.name,vid:motor.vid,t:nodes[$nodeIndex].t,index:$nodeIndex});
 		});
-		
+
 		google.maps.event.addListener(line, 'mouseout', function (event) {
 			line.setOptions({'strokeOpacity':playback.polylineOpacity});
 			vmap.detailMarker.setVisible(false);
@@ -526,11 +526,11 @@ var vmap = {
 				}
 				line.setOptions({'strokeOpacity':playback.polylineOpacity});
 			});
-			
+
 		});
-		
+
 	},
-	
+
 	subNodeByTime:function($marker,$ven){
 		google.maps.event.clearListeners($marker, 'click');
 		google.maps.event.addListener($marker, 'click', function(innerKey) {
@@ -545,7 +545,7 @@ var vmap = {
 			vmap.markerInfo.close();
 			$.ajax({ url: site_url+'lich-su/toa-do.json',dataType:'JSON', data :'node='+$ven.t+'&vid='+$ven.vid,
 				beforeSend: function(){ $('.ajax-modal').show(); },
-				success:function(data){ 
+				success:function(data){
 					if(data){
 						//alert(data.t*1000 );
 						vmap.checkMarker.info = data;
@@ -560,7 +560,7 @@ var vmap = {
 				}
 			});
 			return ;
-			
+
 		});
 	},
 	getNode:function(time,motor){
@@ -570,7 +570,7 @@ var vmap = {
     		delete vmap.checkMarker;
     	}
 		vmap.checkMarker = vmap.addMarker(vmap.detailMarker.getPosition(),'Stop',vmap.polylineMarker(),{},false,true,false);
-		
+
 		vmap.detailMarker.setMap(null);
 		delete vmap.detailMarker;
 		vmap.detailMarker = null;
@@ -578,7 +578,7 @@ var vmap = {
 		vmap.markerInfo.close();
 		$.ajax({ url: site_url+'lich-su/toa-do.json',dataType:'JSON', data :'node='+time+'&vid='+motor.vid,
 			beforeSend: function(){ $('.ajax-modal').show(); },
-			success:function(data){ 
+			success:function(data){
 				if(data){
 					//alert(data.t);
 					vmap.checkMarker.info = data;
@@ -594,7 +594,7 @@ var vmap = {
 			}
 		});
 	},
-	
-	
-	
+
+
+
 };

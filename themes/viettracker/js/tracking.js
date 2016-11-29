@@ -181,9 +181,13 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 			$marker.icon = vmap.icon.transparent;
 		} else {
 			tracking.rotate[$vid] = new Label({
+				// map: vmap.map,
+				// position: $marker.position ,
+				// subclass:tracking.rotateLayer($info.rotate ),
+				// title:$marker.title
 				map: vmap.map,
 				position: $marker.position ,
-				subclass:tracking.rotateLayer($info.rotate ),
+				rotate: $info.angle,
 				title:$marker.title
 			});
 			$marker.icon = vmap.icon.transparent;

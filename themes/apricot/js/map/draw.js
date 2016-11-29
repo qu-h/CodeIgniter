@@ -56,8 +56,19 @@ jQuery(function() {
 				node = data.node;
 				map.setZoom(22);
 				map.panTo(nodePosition);
-				ictmap.markers[node.id] = new google.maps.Marker({ position: nodePosition, draggable: true, icon: 'http://www.google.com/mapfiles/marker.png',map: map});
-				
+				// ictmap.markers[node.id] = new google.maps.Marker({
+				// 	position: nodePosition, draggable: true, 
+				// 	icon: 'http://www.google.com/mapfiles/marker.png',
+				// 	map: map
+				// });
+				ictmap.markers[node.id] = new Label({
+					map: map,
+					position: nodePosition ,
+					rotate: node.angle,
+					title:'checking point'
+				});
+				ictmap.markers[node.id].icon = ictmap.icon.transparent;
+
 				google.maps.event.addListener(ictmap.markers[node.id], 'dragend', function(){
 					jQuery('input[name=latitude]').val(ictmap.markers[node.id].getPosition().lat());
 					jQuery('input[name=longitude]').val(ictmap.markers[node.id].getPosition().lng());

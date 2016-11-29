@@ -26,7 +26,7 @@ var playback = {
 			playback.dayAct();
 		} else if ($( "input[name=gps-time-begin]" ) && $( "input[name=gps-time-end]" )){
 			$begin = $('input[name=gps-time-begin]');
-			playback.daysAct()
+			playback.daysAct();
 		}
 		if($begin.attr('min') && $begin.attr('min')!='' ){
 			//alert('set min for date');
@@ -101,20 +101,21 @@ var playback = {
 
 			var d = new Date( vmap.strtotime($begin.val())*1000 );
 
-			alert( vmap.date(Date.parse(d),'d-m-Y 23:59') ); return false;
+			alert( vmap.date(Date.parse(d),'d-m-Y 23:59') );
+			return false;
 
-		    $end.datepicker("option","minDate",vmap.date(Date.parse(d),'d-m-Y 23:59'));
-			d.setMonth(d.getMonth() + 1);
-			if( ( Date.parse(d)/1000 - vmap.strtotime($end.val()) ) <= 0  ){
-				//alert(' hrere');
-				$end.val( vmap.date(Date.parse(d),'d-m-Y')+' 23:59' );
-		    	$end.datetimepicker("option","maxDate", vmap.date(Date.parse(d),'d-m-Y')+' 23:59' );
-
-			} else if ( vmap.strtotime($begin.val()) - vmap.strtotime($end.val()) > 0 ){
-				//alert(vmap.date($begin.val()*1000,'d-m-Y'));
-				$end.val( vmap.date($begin.val()*1000,'d-m-Y')+' 23:59' );
-				$end.datetimepicker("option","maxDate",vmap.date($begin.val()*1000,'d-m-Y 23:59'));
-			}
+//		    $end.datepicker("option","minDate",vmap.date(Date.parse(d),'d-m-Y 23:59'));
+//			d.setMonth(d.getMonth() + 1);
+//			if( ( Date.parse(d)/1000 - vmap.strtotime($end.val()) ) <= 0  ){
+//				//alert(' hrere');
+//				$end.val( vmap.date(Date.parse(d),'d-m-Y')+' 23:59' );
+//		    	$end.datetimepicker("option","maxDate", vmap.date(Date.parse(d),'d-m-Y')+' 23:59' );
+//
+//			} else if ( vmap.strtotime($begin.val()) - vmap.strtotime($end.val()) > 0 ){
+//				//alert(vmap.date($begin.val()*1000,'d-m-Y'));
+//				$end.val( vmap.date($begin.val()*1000,'d-m-Y')+' 23:59' );
+//				$end.datetimepicker("option","maxDate",vmap.date($begin.val()*1000,'d-m-Y 23:59'));
+//			}
 
 		});
 	},
@@ -166,7 +167,7 @@ var playback = {
 						}
 						playback.nodes = [];
 						if(data.nodes.length <=0){
-							alert('Không có dữ liệu');
+							alert('Không có dữ liệu');
 						} else {
 							$.each(data.nodes, function(i, no) {
 								$newPoint = vmap.LatLng(no.la,no.lo);
@@ -177,7 +178,7 @@ var playback = {
 							playback.way.setMap(vmap.map);
 							playback.infoStr = playback.infoHtml({name:data.name,t:data.nodes[0].t, speed:data.nodes[0].speed});
 							if(playback.buttonPlay){
-								playback.buttonPlay.button({ disabled: false , label: "Bắt Đầu" });
+								playback.buttonPlay.button({ disabled: false , label: "Bắt đầu" });
 							}
 						}
 					}
@@ -329,9 +330,9 @@ var playback = {
 		var html = '<div id="moving-info" class="obi obi-w" >'+
         //'<h3 id="firstHeading" class="firstHeading">'+ob.name+'</h3>'+
         '<div id="bodyContent">'+
-	         '<div class="obi-l" ><label>Vận Tốc</label><span class="value" name="speed">'+ob.speed+'</span><span class="unit" >Km/h</span></div>'+
-	         '<div class="obi-l" ><label>Đã Đi</label><span class="value" name="moved">'+ob.moved+'</span><span class="unit" >Km</span></div>'+
-	         '<div class="obi-l" ><label>Thời Gian</label><span class="value" name="time">'+vmap.date( ob.t * 1000, 'd/m/Y H:i:s')+'</span></div>'+
+	         '<div class="obi-l" ><label>Vận tốc</label><span class="value" name="speed">'+ob.speed+'</span><span class="unit" >Km/h</span></div>'+
+	         '<div class="obi-l" ><label>Đã đi</label><span class="value" name="moved">'+ob.moved+'</span><span class="unit" >Km</span></div>'+
+	         '<div class="obi-l" ><label>Thời Gian</label><span class="value" name="time">'+vmap.date( ob.t * 1000, 'd/m/Y H:i:s')+'</span></div>'+
         '</div>'+
         '</div>';
 		return html;

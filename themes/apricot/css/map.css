@@ -1,0 +1,41 @@
+/* style for node in map */
+.vehicle-node {
+	width:40px;
+	height:40px;
+	background: url("../img/icon_rotate.png") no-repeat transparent;
+	cursor: pointer;
+	z-index:99;
+}
+.node-stop {
+	width:40px;
+	height:40px;
+	background: url("../img/stoping.gif") no-repeat transparent;
+	cursor: pointer;
+	z-index:99;
+	background-position: center;
+}
+.marker-title {
+
+}
+.marker-title > span {
+	background-color: #0278C2;
+    border: 1px solid #FFFFFF;
+	color: #FFFFFF;
+    bottom: 25px;
+
+    padding: 0 2px 1px 2px;
+	text-align : center;
+    position: relative;
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+
+}
+
+.vehicleicon {
+	width:40px;
+	height:70px;
+	background: url("../img/vehicle-icon.png") no-repeat transparent;
+	cursor: pointer;
+	z-index:99;
+}

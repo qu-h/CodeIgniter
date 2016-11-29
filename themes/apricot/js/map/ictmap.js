@@ -47,6 +47,8 @@ var ictmap = {
 		return new google.maps.LatLng($la, $lon);
 		;
     },
+
+   
 };
 
 
@@ -70,3 +72,72 @@ jQuery(function() {
 
     }
 });
+
+
+function Label(opt) { // Initialization
+	this.setValues(opt);
+	this.div_ = document.createElement('div');
+	if(opt.className){
+		this.div_.className = opt.className;
+	} else {
+		//this.div_.className = "vehicle-node";
+		this.div_.className = "vehicleicon";
+	}
+	
+	if(opt.subclass){
+		this.div_.className += " "+opt.subclass;
+	}
+	if(opt.innerHTML ) {
+		this.div_.innerHTML  = opt.innerHTML ;
+	}
+	this.div_.style.cssText = 'position: absolute; display: block; cursor: pointer; ';
+	
+	if(opt.rotate ) {
+		this.div_.style.cssText += '-ms-transform: rotate('+opt.rotate+'deg);'; /* IE 9 */
+    	this.div_.style.cssText += '-webkit-transform: rotate('+opt.rotate+'deg);'; /* Safari */
+    	this.div_.style.cssText += 'transform: rotate('+opt.rotate+'deg);';
+	}
+
+	this.div_.title = opt.title;
+	
+};
+Label.prototype = new google.maps.OverlayView;
+
+Label.prototype.onAdd = function() {
+	var pane = this.getPanes().overlayLayer;
+	pane.appendChild(this.div_);
+	var me = this;
+	this.listeners_ = [
+       google.maps.event.addListener(this, 'position_changed',function() { me.draw(); }),
+       google.maps.event.addListener(this, 'text_changed',function() { me.draw(); }),
+       google.maps.event.addListener(this, 'visible_changed', function() { me.draw(); }),
+       google.maps.event.addListener(this, 'clickable_changed', function() { me.draw(); }),
+       google.maps.event.addListener(this, 'zindex_changed', function() { me.draw(); }),
+       google.maps.event.addListener(this.div_, 'click', function() {
+    	   if (me.get('clickable')) {
+    		   google.maps.event.trigger(me, 'click');
+    	   }
+       }),
+    ];
+};
+// Implement onRemove
+Label.prototype.remove = function() {
+	if( this.div_.parentNode ){
+		this.div_.parentNode.removeChild(this.div_);
+	}
+	
+	// Label is removed from the map, stop updating its position/text.
+	if(this.listeners_){
+		for (var i = 0, I = this.listeners_.length; i < I; ++i) {
+			google.maps.event.removeListener(this.listeners_[i]);
+		}
+	}
+	
+};
+// Implement draw
+Label.prototype.draw = function() {
+	var projection = this.getProjection();
+	var position = projection.fromLatLngToDivPixel(this.get('position'));
+	this.div_.style.left = (position.x - this.div_.offsetWidth/2) + 'px';
+	this.div_.style.top = (position.y - this.div_.offsetHeight/2) + 'px';
+};

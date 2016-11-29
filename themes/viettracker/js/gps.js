@@ -152,7 +152,8 @@ function Label(opt) { // Initialization
 	if(opt.className){
 		this.div_.className = opt.className;
 	} else {
-		this.div_.className = "vehicle-node";
+		//this.div_.className = "vehicle-node";
+		this.div_.className = "vehicleicon";
 	}
 	
 	if(opt.subclass){
@@ -161,7 +162,15 @@ function Label(opt) { // Initialization
 	if(opt.innerHTML ) {
 		this.div_.innerHTML  = opt.innerHTML ;
 	}
-	this.div_.style.cssText = 'position: absolute; display: block; cursor: pointer;';
+	this.div_.innerHTML = 'abc';
+	this.div_.style.cssText = 'position: absolute; display: block; cursor: pointer; ';
+	
+	if(opt.rotate ) {
+		this.div_.style.cssText += '-ms-transform: rotate('+opt.rotate+'deg);'; /* IE 9 */
+    	this.div_.style.cssText += '-webkit-transform: rotate('+opt.rotate+'deg);'; /* Safari */
+    	this.div_.style.cssText += 'transform: rotate('+opt.rotate+'deg);';
+	}
+
 	this.div_.title = opt.title;
 	
 };

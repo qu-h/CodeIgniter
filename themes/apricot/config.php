@@ -19,6 +19,7 @@ $config['css'] = array(
 
 $config['css_loggedin'] = array(
     'style.css',
+    'map.css'
 );
 
 $gmap_api_key = 'AIzaSyDv63aI2TwqzUiPAY_dXtMUttX-Ov6vWes';
