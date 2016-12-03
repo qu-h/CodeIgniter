@@ -580,3 +580,18 @@ if ( ! function_exists('redirect'))
 		exit;
 	}
 }
+
+if ( !function_exists('is_uri') ):
+function is_uri($url=null){
+    if($url==NULL) return false;
+
+    $protocol = '(http://|https://)';
+    $allowed = '([a-z0-9]([-a-z0-9]*[a-z0-9]+)?)';
+
+    $regex = "^". $protocol . // must include the protocol
+    '(' . $allowed . '{1,63}\.)+'. // 1 or several sub domains with a max of 63 chars
+    '[a-z]' . '{2,6}'; // followed by a TLD
+    if(preg_match("/^http/", $url)) return true;
+    else return false;
+}
+endif;
