@@ -156,7 +156,7 @@ var playback = {
 		}
 		//alert(ob.start); 'vehicle='+ob.vid
 		if( $('#gps-vehicles').val() ){
-			$.ajax({ url: site_url+'lich-su/'+$('#gps-vehicles').val()+'.json',dataType:'JSON', data :$query,
+			$.ajax({ url: site_url+'history/data/'+$('#gps-vehicles').val()+'.json',dataType:'JSON', data :$query,
 				beforeSend: function(){
 					$('.ajax-modal').show();
 				},

@@ -2777,7 +2777,7 @@ form fieldset>label {
 	margin-bottom: -5px;
 	margin-top: 5px;
 	position: relative;
-	width: 100px;
+	width: 150px;
 	display: block;
 	margin-right: 10px;
 	padding: 8px 0
@@ -2785,7 +2785,7 @@ form fieldset>label {
 
 form fieldset>div {
 	clear: right;
-	margin-left: 110px;
+	margin-left: 160px;
 	padding: 5px;
 	width: auto
 }
@@ -2842,7 +2842,7 @@ span {
 }
 
 .icon-h30 {
-	background: url("/images/icon-h30.png") no-repeat transparent;
+	background: url("../images/icon-h30.png") no-repeat transparent;
 	height: 30px;
 	width: 55px;
 	position: absolute;

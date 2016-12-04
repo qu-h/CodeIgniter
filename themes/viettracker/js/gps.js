@@ -59,7 +59,7 @@ var manager = {
 			window.location.href =  site_url+'thong-ke/'+$(this).nextAll('input[type=hidden]').val()+'.html';
 		});
 		$('.item-history').click(function(e){
-			window.location.href =  site_url+'lich-su/'+$(this).nextAll('input[type=hidden]').val()+'.html';
+			window.location.href =  site_url+'history/item/'+$(this).nextAll('input[type=hidden]').val()+'.html';
 		});
 
 		$('.item-shutdown').click(function(e){
@@ -70,7 +70,7 @@ var manager = {
 			} else {
 				$form.append( $item.clone() );
 			}
-			$form.attr('action',site_url+'quan-ly/tat-thiet-bi.html').submit();
+			$form.attr('action',site_url+'setting/shutdown.html').submit();
 		});
 		
 		$('.item-turnon').click(function(e){
@@ -81,8 +81,7 @@ var manager = {
 			} else {
 				$form.append( $item.clone() );
 			}
-//			alert('trun on'); return false;
-			$form.attr('action',site_url+'quan-ly/mo-thiet-bi.html').submit();
+			$form.attr('action',site_url+'setting/open.html').submit();
 		});
 	},
 };
