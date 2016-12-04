@@ -1,6 +1,6 @@
 var repo = {
     chart : '',
-    ajaxLink : site_url + 'thong-ke/bieu-do',
+    ajaxLink : site_url + 'report/item/bieu-do',
     report_data : [],
     day : '',
     month : '',
@@ -18,8 +18,7 @@ var repo = {
 
 	$("#gps-vehicles").change(
 		function() {
-		    window.location.href = site_url + 'thong-ke/'
-			    + $(this).val() + '.html';
+		    window.location.href = site_url + 'report/item/'+ $(this).val() + '.html';
 		});
 
 	$('.dataTables_wrapper input[type=button]').click(function() {
@@ -178,7 +177,7 @@ var repo = {
 		&& $('input[type=button][name=fueldata]').attr('aria-disabled') == 'true') {
 
 	    repo.ajax = $.ajax({
-		url : site_url + 'thong-ke/' + $('input[name=vid]').val()
+		url : site_url + 'report/item/' + $('input[name=vid]').val()
 			+ '/bieu-do-xang.json',
 		dataType : 'json',
 		data : {
@@ -234,12 +233,12 @@ var repo = {
 	    });
 	} else {
 
-	    console.log(site_url + 'thong-ke/' + $('input[name=vid]').val()
+	    console.log(site_url + 'report/item/' + $('input[name=vid]').val()
 			+ '/bieu-do.json');
 
 
 	    repo.ajax = $.ajax({
-		url : site_url + 'thong-ke/' + $('input[name=vid]').val()
+		url : site_url + 'report/item/' + $('input[name=vid]').val()
 			+ '/bieu-do.json',
 		dataType : 'json',
 		data : {
@@ -445,7 +444,7 @@ var stoptable = {
 	    repo.ajax = jQuery.ajax({
 		"dataType" : 'json',
 		"type" : "GET",
-		"url" : site_url + 'thong-ke/' + $('input[name=vid]').val()
+		"url" : site_url + 'report/item/' + $('input[name=vid]').val()
 			+ '/diem-dung.json',
 		"data" : aoData,
 		success : function(data) {
@@ -537,11 +536,12 @@ var stoptable = {
 	    jQuery('#node-data-stop').dataTable().fnDestroy();
 	    var oTable = $('#node-data-stop').dataTable(stoptable.config);
 	    $('h3.table-title').html('Các Điểm Dừng');
+	    /*
 	    $(".talbe-view .export")
 		    .html(
 			    '<a href="'
 				    + site_url
-				    + 'thong-ke/'
+				    + 'report/item/'
 				    + $('input[name=vid]').val()
 				    + '/'
 				    + $('select[name=rday]').val()
@@ -550,6 +550,7 @@ var stoptable = {
 				    + '-'
 				    + $('input[name=ryear]').val()
 				    + '.xls" title="Tải Dữ Liệu Excel" target="_blank" class="gps-button ui-button ui-widget ui-state-default ui-corner-all"  >Tải Dữ Liệu Excel</a>');
+		*/		    
 	} else {
 	    alert('show do xang');
 	}
@@ -565,7 +566,7 @@ var stoptable = {
 	    repo.ajax = jQuery.ajax({
 		"dataType" : 'json',
 		"type" : "GET",
-		"url" : site_url + 'thong-ke/' + $('input[name=vid]').val()
+		"url" : site_url + 'report/item/' + $('input[name=vid]').val()
 			+ '/diem-do-xang.json',
 		"data" : aoData,
 		success : function(data) {

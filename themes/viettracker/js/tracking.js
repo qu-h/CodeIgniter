@@ -290,7 +290,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 		//if(vehicle.length < 1) return false;
 
 		tracking.ajax = $.ajax({
-			  url: site_url+'theo-doi.json',dataType: 'json', data:{vehicle:vehicle},type :'GET',
+			  url: site_url+'tracking/items.json',dataType: 'json', data:{vehicle:vehicle},type :'GET',
 			  beforeSend:function(){
 				  vmap.loading = true;
 				  $('#gps-vehicles :not(:selected)').each(function(i, selected){
@@ -419,7 +419,7 @@ var tracking = {opacity:1.0,weight:4,trackLink:'',center:false,
 	trackingOneIni:function(){
 		vmap.autoLoad("tracking.trackingOne");
 		$("#gps-vehicles").change(function() {
-			 window.location.href = site_url+"theo-doi/"+$(this).val()+'.html';
+			 window.location.href = site_url+"tracking/trackone/"+$(this).val()+'.html';
 		});
 		$('input[type=text][name=gps-date]').val('');
 		$('#obi-calendar').datepicker('option', 'onSelect',function(dateStr){

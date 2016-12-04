@@ -53,10 +53,10 @@ var manager = {
 			$form.submit();
 		});
 		$('.item-tracking').click(function(e){
-			window.location.href =  site_url+'theo-doi/'+$(this).nextAll('input[type=hidden]').val()+'.html';
+			window.location.href =  site_url+'tracking/trackone/'+$(this).nextAll('input[type=hidden]').val()+'.html';
 		});
 		$('.item-report').click(function(e){
-			window.location.href =  site_url+'thong-ke/'+$(this).nextAll('input[type=hidden]').val()+'.html';
+			window.location.href =  site_url+'report/item/'+$(this).nextAll('input[type=hidden]').val()+'.html';
 		});
 		$('.item-history').click(function(e){
 			window.location.href =  site_url+'history/item/'+$(this).nextAll('input[type=hidden]').val()+'.html';
