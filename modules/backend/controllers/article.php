@@ -13,16 +13,54 @@ class Article extends MX_Controller {
 
     }
 
+    var $table_fields = array(
+        'id'=>array("#"),
+        'title'=>array("Title"),
+        'category'=>array("Category"),
+        'source'=>array('Source'),
+        'actions'=>array(NULL,5,false),
+    );
     function items(){
-        $data = array();
+        $js = add_js('test.js');
+        if( $this->uri->extension =='json' ){
+            return $this->items_json_data(array_keys($this->table_fields));
+        }
+
+        $data = array('fields'=>$this->table_fields,'columns_filter'=>true);
 //         $data['page_header'] = $this->template->view('layouts/page_header',null,true);
+        $data['data_json_url'] = base_url($this->uri->uri_string().'.json',NULL);
+
+        $data['columns_fields'] = "";
+        foreach ($this->table_fields AS $k=>$f){
+            /*
+             * https://datatables.net/reference/option/columns.render
+             */
+            $col_data = "data:'$k'";
+            $col_order = NULL;
+            if( isset($f[2]) &&  $f[2] != true ){
+                $col_order = ',"orderable": false';
+            }
+            $col_width = NULL;
+            if( isset($f[1]) &&  is_numeric($f[1]) ){
+                $col_width = ',"width": "'.$f[1].'%"';
+            }
+            $content_default = NULL;
+            if( $k=='actions' ){
+                $col_data = "data:null";
+                $content_default = ', "defaultContent" : \'<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>\'';
+            }
+            $data['columns_fields'] .= "{ $col_data $col_order $col_width $content_default},";
+        }
+        $data['columns_fields'] = substr($data['columns_fields'], 0,-1);
 
 
     	$this->template
     	->title( lang('welcome_to').' '.config_item('company_name') )
     	->build('backend/datatables',$data);
-// bug($this->template);die;
-//         $this->load->view('login');
+    }
+
+    private function items_json_data(){
+        $this->Article_Model->items_json('edit');
     }
 
     var $fields = array(
@@ -59,14 +97,19 @@ class Article extends MX_Controller {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
             }
 
-            $add = $this->Category_Model->update($formdata);
+            $add = $this->Article_Model->update($formdata);
             if( $add ){
                 set_error(lang('Success.'));
             }
 
+        } else {
+            $item = $this->Article_Model->get_item_by_id($id);
+            foreach ($this->fields AS $field=>$val){
+                if( isset($item->$field) ){
+                    $this->fields[$field]['value']=$item->$field;
+                }
+            }
         }
-//         bug($this->session->flashdata('error'));
-
 
         $data = array(
             'fields' => $this->fields
@@ -78,8 +121,10 @@ class Article extends MX_Controller {
 
     public function crawler(){
         $this->load->module('crawler');
+
         if( strlen($source = $this->input->get('s')) > 0 ){
              list($c_title,$c_content)= $this->crawler->get_content($source);
+
              if( is_string($c_title) ){
                  $this->fields['title']['value']=$c_title;
                  $this->fields['alias']['value']= url_title($c_title,'-',true);

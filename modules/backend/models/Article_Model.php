@@ -8,6 +8,9 @@ class Article_Model extends CI_Model {
 		$this->load->database();
 	}
 
+	function get_item_by_id($id=0){
+	    return $this->db->where('id',$id)->get($this->table)->row();
+	}
 
 	function update($data=NULL){
 	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
@@ -47,5 +50,27 @@ class Article_Model extends CI_Model {
 	    $result = $this->db->get($this->table);
         //bug($this->db->last_query());
 	    return ( $result->num_rows() > 0) ? true : false;
+	}
+
+	/*
+	 * Json return for Datatable
+	 */
+	function items_json($actions_allow=NULL){
+	    $this->db->select('id,title,category,source');
+	    $this->db->order_by('id DESC');
+	    $query = $this->db->get($this->table);
+        $items = array();
+        foreach ($query->result() AS $ite){
+            if( strlen($ite->source ) > 0 ){
+                $parse = parse_url($ite->source );
+                $ite->source = $parse['host'];
+            }
+            $ite->actions = "";
+//             if( strlen($actions_allow) > 0 ) foreach (explode(',',$actions_allow) AS $act){
+//                 $ite->actions .= '<button class="btn btn-xs btn-default" ><i class="fa fa-pencil"></i></button>';
+//             }
+            $items[] = $ite;
+        }
+	    return jsonData(array('data'=>$items));
 	}
 }

@@ -19,7 +19,7 @@ class CI_techtalk_vn
             $html = new simple_html_dom();
             $html->load(get_site_html_curl($config['url']));
         }
-
+// bug(get_site_html_curl($config['url']));die;
         foreach ( $html->find('article div[class=td-post-content] div[class=td-a-rec]') AS $adv){
             $adv->outertext = "";
         }

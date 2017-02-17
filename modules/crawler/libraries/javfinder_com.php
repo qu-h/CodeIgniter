@@ -22,21 +22,20 @@ class javfinder_com
 
     static $site = "//javfinder.com";
 
+    var $img;
     public function initialize($config){
         if( array_key_exists('url', $config) ){
             $html = file_get_html($config['url']);
         }
 
-        $video_url = $html->find('div[id="player"] iframe ',0)->src;
-        $video_parse = parse_url($video_url);
-//         bug($video_parse);die;
-        $this->video = "//".$video_parse['host'].DS.$video_parse['path'];
+//         $video_url = $html->find('div[id="player"] iframe ',0)->src;
+//         $video_parse = parse_url($video_url);
+        $video_uri = "https:".self::$site.$html->find('iframe[class=embed-responsive-item]',0)->src;
+        $this->video = $video_uri;
 
-        parse_str($video_parse['query'], $video_params);
-        if( isset($video_params['img']) ){
-            $this->img = $video_params['img'];
-        }
+        $html_player = file_get_html($this->video);
 
+        $this->img = $html_player->find('meta[property=og:image]',0)->content;
 
 
 

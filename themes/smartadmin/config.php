@@ -66,6 +66,6 @@ $config['js'] = array(
 
     "$domain/js/ict.js",
 
-
+    "$domain/js/tables.js",
 
 );

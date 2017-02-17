@@ -232,7 +232,8 @@
 			<!-- end user info -->
 
 			<!-- NAVIGATION : This navigation is also responsive-->
-			<nav>
+			<nav>{menu_navigation}
+			{*
 				<ul>
 					<li>
 						<a href="index.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
@@ -634,6 +635,7 @@
 					</li>
 
 				</ul>
+*}
 			</nav>
 			<span class="minifyme" data-action="minifyMenu">
 				<i class="fa fa-arrow-circle-left hit"></i>
