@@ -7,8 +7,8 @@
 $domain = "//ci.quannh.dev/themes/";
 $gmap_api_key = 'AIzaSyDv63aI2TwqzUiPAY_dXtMUttX-Ov6vWes';
 $config['assets_url'] = "$domain";
-$config['assets_dir'] = "D:/PHP-www/Quannh/CodeIgniter-3.0.6/themes/apricot/";
-$config['theme_url'] = "//ci.quannh.dev/themes/apricot";
+$config['assets_dir'] = "G:/Project_GPS/CodeIgniter/themes/apricot/";
+$config['theme_url'] = "//localhost:90/apricot";
 $config['css'] = array(
     'loader-style.css',
     "bootstrap.min.css",
