@@ -298,7 +298,7 @@ class MX_Loader extends CI_Loader
         if( ! $path ){
             list($path, $_view) = Modules::find($view, SYSTEM_MODULE_PATH);
         }
-bug("path= $path view=$view");die;
+// bug("path= $path view=$view");die;
 		if ($path != FALSE)
 		{
 			$this->_ci_view_paths = array($path => TRUE) + $this->_ci_view_paths;

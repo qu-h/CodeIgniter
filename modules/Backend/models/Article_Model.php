@@ -14,8 +14,16 @@ class Article_Model extends CI_Model {
 
 	function update($data=NULL){
 	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
-	        set_error('Please enter alias');
-	        return false;
+	        if( strlen($data['title']) > 0 ){
+	            $data['alias'] = url_title($data['title'],'-',true);
+	        } else {
+	            set_error('Please enter alias');
+	            return false;
+	        }
+
+	    }
+	    if( !isset($data['id']) ){
+	        $data['id'] = 0;
 	    }
 	    if( is_null($data['category']) ){
 	        $data['category'] = 0;
@@ -57,7 +65,7 @@ class Article_Model extends CI_Model {
 	 */
 	function items_json($actions_allow=NULL){
 	    $this->db->select('id,title,category,source');
-	    $this->db->order_by('id DESC');
+	    $this->db->order_by('id ASC');
 	    $query = $this->db->get($this->table);
         $items = array();
         foreach ($query->result() AS $ite){

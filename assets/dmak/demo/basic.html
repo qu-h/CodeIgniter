@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Draw Me A Kanji</title>
+	<link rel="stylesheet" href="demo.css"/>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<script src="../src/dmak.js"></script>
+	<script src="../src/dmakLoader.js"></script>
+	</head>
+	<body>
+	<div id="konnichiha"></div>
+	<div id="sample-btn">
+		<button id="p">BACK</button>
+		<button id="s">STOP</button>
+		<button id="g">PLAY</button>
+		<button id="n">NEXT</button>
+		<button id="r">RESET</button>
+	</div>
+	<div id="sekai"></div>
+	<script>
+		var dmak = new Dmak('こんにちは', {'element': "konnichiha", "uri": "http://kanjivg.tagaini.net/kanjivg/kanji/"});
+		var p = document.getElementById("p");
+		p.onclick = function () {
+			dmak.eraseLastStrokes(1);
+		};
+		var s = document.getElementById("s");
+		s.onclick = function () {
+			dmak.pause();
+		};
+		var g = document.getElementById("g");
+		g.onclick = function () {
+			dmak.render();
+		};
+		var n = document.getElementById("n");
+		n.onclick = function () {
+			dmak.renderNextStrokes(1);
+		};
+		var r = document.getElementById("r");
+		r.onclick = function () {
+			dmak.erase();
+		};
+		var dmak2 = new Dmak('世界', {'element': "sekai", "stroke": {"attr": {"stroke": "#FF0000"}}, "uri": "http://kanjivg.tagaini.net/kanjivg/kanji/"});
+	</script>
+	</body>
+</html>

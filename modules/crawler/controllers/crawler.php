@@ -77,16 +77,16 @@ class Crawler extends MX_Controller
                     $this->site_dome->content
                 );
                 break;
-//             case 'viblo.asia':
-//                 $this->load->library('viblo_asia', array(
-//                     'url' => $url
+//             case 'dantri.com.vn':
+//                 $this->load->library('dantri_com_vn', array(
+//                 'url' => $url
 //                 ), 'site_dome');
 //                 $content = array(
 //                     $this->site_dome->title,
 //                     $this->site_dome->content
 //                 );
 //                 break;
-            case '':
+          case '':
                 break;
         }
         // bug($this->site_dome);die;

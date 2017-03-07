@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Draw Me A Kanji</title>
+	<link rel="stylesheet" href="demo.css"/>
+	<link rel="stylesheet" href="../src/dmak.css"/>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<script src="../dist/dmak.js"></script>
+	<script src="../dist/jquery.dmak.js"></script>
+	</head>
+	<body>
+	<div id="draw"></div>
+	<div id="sample-btn">
+		<button id="p">‹</button>
+		<button id="s">■</button>
+		<button id="g" style="display:none;">▶</button>
+		<button id="n">›</button>
+		<button id="r">✕</button>
+	</div>
+	<script>
+		$(function () {
+			var dmak = $("#draw");
+			dmak.dmak('電車');
+			$("#sample-btn").find("button").on("click", function (e) {
+				e.preventDefault();
+				switch ($(this).attr("id")) {
+					case 'p':
+						dmak.dmak('rewind', 1);
+						break;
+					case 's':
+						dmak.dmak('pause');
+						$(this).toggle();
+						$("#g").toggle();
+						break;
+					case 'g':
+						dmak.dmak('play');
+						$(this).toggle();
+						$("#s").toggle();
+						break;
+					case 'n':
+						dmak.dmak('forward', 1);
+						break;
+					case 'r':
+						dmak.dmak('reset');
+						break;
+				}
+			})
+		});
+	</script>
+	</body>
+</html>

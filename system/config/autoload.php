@@ -88,7 +88,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('language','url','json');
+$autoload['helper'] = array('language','url','file','json','input');
 
 /*
 | -------------------------------------------------------------------
@@ -132,3 +132,5 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 $autoload['model'] = array();
+$autoload['modules'] = array('layouts');
+
