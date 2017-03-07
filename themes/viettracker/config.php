@@ -4,16 +4,16 @@
  * site template : http://www.templatemonster.com/demo/58895.html
  *
  */
-$domain = "//ci.quannh.dev/themes/";
+$domain = "//localhost:90/";
 
 $config['assets_url'] = "$domain";
-$config['assets_dir'] = "D:/PHP-www/Quannh/CodeIgniter-3.0.6/themes/viettracker/";
-$config['theme_url'] = "//ci.quannh.dev/themes/viettracker/";
+$config['assets_dir'] = "G:/Project_GPS/CodeIgniter/themes/viettracker/";
+$config['theme_url'] = "//localhost:90/viettracker/";
 
 $config['css'] = array(
     'gps.2.0.css',
-    $domain.'viettracker/plugin/dropdown-check-list/ui.dropdownchecklist.themeroller.css',
-    $domain.'viettracker/plugin/timepicker-addon/jquery-ui-timepicker-addon.css',
+    'plugin/dropdown-check-list/ui.dropdownchecklist.themeroller.css',
+    'plugin/timepicker-addon/jquery-ui-timepicker-addon.css',
 
 );
 
@@ -24,8 +24,8 @@ $config['js'] = array(
 
 	//'http://maps.google.com/maps/api/js?sensor=true&language=vi',
 	"https://maps.googleapis.com/maps/api/js?key=$gmap_api_key", //&callback=vmap.ini
-	$domain.'viettracker/plugin/dropdown-check-list/ui.dropdownchecklist.js',
-    $domain.'viettracker/plugin/timepicker-addon/jquery-ui-timepicker-addon.js',
+	$config['theme_url'].'plugin/dropdown-check-list/ui.dropdownchecklist.js',
+    $config['theme_url'].'plugin/timepicker-addon/jquery-ui-timepicker-addon.js',
     '../datatables/js/jquery.dataTables.min.js',
     '../highcharts/highcharts.js',
 	//'gps.js',
