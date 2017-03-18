@@ -30,49 +30,58 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
                 $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />
                     '; //id='woocommerce-layout-css'
             }
-       } else if ( $type=='js' AND !empty($js = get_instance()->config->item('js') ) ){
-
-            foreach ($js AS $file){
-                $file = add_asset_file($file,'js',$theme_folder = $folder);
-                if( strlen($file) > 0 ){
-                    $html .= "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
-                }
-
-            }
-        } elseif ($type=='css_lte_ie9' AND !empty($css = get_instance()->config->item('css_lte_ie9') )){
-            foreach ($css AS $file){
-                if( substr($file,0,2) != '//' && substr($file,0,4) != 'http' ){
-
-                    if( file_exists($resource_dir.'/css/'.$file) ){
-                        $file = $resource_url.'/css/'.$file;
-                    } else if (file_exists($resource_dir.'/'.$file)) {
-                        $file = $resource_url.$file;
-                    } else {
-                        $file = "$resource_url/$folder/css/$file";
+       } else if ( $type=='js' ){
+           $js = get_instance()->config->item('js');
+            if( !empty($js) ){
+                foreach ($js AS $file){
+                    $file = add_asset_file($file,'js',$theme_folder = $folder);
+                    if( strlen($file) > 0 ){
+                        $html .= "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
                     }
 
                 }
-                $html .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$file.'" type="text/css"/>';
             }
-            $html = "<!--[if lte IE 9]>$html<![endif]-->";
-        } else if ( $type=='js_lt_ie9' AND !empty($js = get_instance()->config->item('js_lt_ie9') ) ){
 
-            foreach ($js AS $file){
-                if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
+        } elseif ($type=='css_lte_ie9' ){
+            $css = get_instance()->config->item('css_lte_ie9');
+            if( !empty($css) ){
+                foreach ($css AS $file){
+                    if( substr($file,0,2) != '//' && substr($file,0,4) != 'http' ){
 
-                } elseif( file_exists($resource_dir.'/js/'.$file) ){
-                    $file = $resource_url.'/js/'.$file;
-                } else if (file_exists($resource_dir.$file)) {
-                    //                     $file = $resource_url.$file;
-                } elseif (file_exists($resource_dir."/$folder/js/".$file) ) {
-                    $file = "$resource_url/$folder/js/$file";
-                } else {
-                    $file = "$resource_url/$folder/js/$file";
+                        if( file_exists($resource_dir.'/css/'.$file) ){
+                            $file = $resource_url.'/css/'.$file;
+                        } else if (file_exists($resource_dir.'/'.$file)) {
+                            $file = $resource_url.$file;
+                        } else {
+                            $file = "$resource_url/$folder/css/$file";
+                        }
+
+                    }
+                    $html .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$file.'" type="text/css"/>';
                 }
-
-                $html .= '<script src="'.$file.'" ></script>';
             }
-            $html = "<!--[if lt IE 9]>$html<![endif]-->";
+
+            $html = "<!--[if lte IE 9]>$html<![endif]-->";
+        } else if ( $type=='js_lt_ie9'){
+            $js = get_instance()->config->item('js_lt_ie9');
+            if( !empty($js) ){
+                foreach ($js AS $file){
+                    if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
+
+                    } elseif( file_exists($resource_dir.'/js/'.$file) ){
+                        $file = $resource_url.'/js/'.$file;
+                    } else if (file_exists($resource_dir.$file)) {
+                        //                     $file = $resource_url.$file;
+                    } elseif (file_exists($resource_dir."/$folder/js/".$file) ) {
+                        $file = "$resource_url/$folder/js/$file";
+                    } else {
+                        $file = "$resource_url/$folder/js/$file";
+                    }
+
+                    $html .= '<script src="'.$file.'" ></script>';
+                }
+                $html = "<!--[if lt IE 9]>$html<![endif]-->";
+            }
         }
         return $html;
     }
