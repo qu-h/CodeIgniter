@@ -242,16 +242,32 @@ class Template
 
 		// Test to see if this file
 		$this->_body = $this->_find_view($view, array(), $this->_parser_body_enabled);
-
+// 		if( is_null(trim($this->_body)) ){
+// 		    list($view_path, $file_view) = Modules::find($view.'.htm','views/');
+// 		    $this->_body = self::_load_view($file_view, array(), $return, $view_path );
+// 		    bug($file_view);
+// 		}
 
 
 		// Want this file wrapped with a layout file?
+// 		bug($this->_layout);die;
 		if ($this->_layout)
 		{
+
 			// Added to $this->_data['template'] by refference
 			$template['body'] = $this->_body;
 			// Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
 
+// 			if( !is_null($app_path=realpath(APPPATH.'views/layouts')) ){
+// 			    $file_view = $this->_layout;
+// 			    foreach (glob("$app_path/$file_view.*") AS $file_name){
+// 			        if( is_null($file_path) ){
+//                         $file_path = $file_name;
+//                         break;
+//                     }
+//                 }
+
+// 			}
 			list($layout_path, $layout_view) = Modules::find($this->_layout.'.htm',APPPATH.'views/layouts');
 
 			if( $layout_path != FALSE ){
@@ -259,11 +275,13 @@ class Template
 			}
 
 			list($layout_path, $layout_view) = Modules::find('layouts/'.$this->_layout,  self::_find_view_folder() );
+
 			if( $layout_path != FALSE ){
 			    $this->_body =  self::_load_view('layouts/'.$this->_layout, $this->_data, $return, $layout_path);
 			}
 
 			list($layout_path, $layout_view) = Modules::find('layouts/views/'.$this->_layout,  SYSTEM_MODULE_PATH."/" );
+
 			if( $layout_path != FALSE ){
 			    $this->_body =  self::_load_view('layouts/views/'.$this->_layout, $this->_data, $return, $layout_path );
 			}
@@ -283,7 +301,7 @@ class Template
 		}
 
 		// Want it returned or output to browser?
-		if ( ! $return)
+		if ( !$return)
 		{
 			$this->_ci->output->set_output($this->_body);
 		}
@@ -752,6 +770,7 @@ class Template
 	private function _find_view($view, array $data, $parse_view = TRUE)
 	{
 		// Only bother looking in themes if there is a theme
+
 		if ( ! empty($this->_theme))
 		{
 			foreach ($this->_theme_locations as $location)
@@ -771,6 +790,15 @@ class Template
 			}
 		}
 
+// 		foreach (Modules::$locations AS $module_local=>$val){
+
+// 		    if ( realpath($module_path = $module_local.DS.$this->_module.DS.'views')   ){
+// 		        bug($module_path);
+// 		        $file_path = $module_path.DS.$view;
+// 		    }
+// 		}
+
+
 		// Not found it yet? Just load, its either in the module or root view
 		return self::_load_view($view, $this->_data + $data, $parse_view);
 	}
@@ -781,14 +809,64 @@ class Template
 
 	private function _load_view($view, array $data, $parse_view = TRUE, $override_view_path = NULL)
 	{
-	    if( !realpath(APPPATH."views/$view.php") AND property_exists($this->_ci, 'smarty') ){
-	        $file_path = $view;
+	    //!realpath(APPPATH."views/$view.php");
 
-	        if( file_exists($override_view_path.$view) ){
-	            $file_path = $override_view_path.$view;
-	        } elseif ( file_exists(APPPATH."views/$view") ){
-	            $file_path = APPPATH."views/$view";
+	    if(  property_exists($this->_ci, 'smarty') ){
+	        $file_path = NULL;
+
+	        if( is_null($file_path) ){
+	            if( file_exists($override_view_path.$view) ){
+	                $file_path = $override_view_path.$view;
+	            } elseif ( file_exists(APPPATH."views/$view") ){
+	                $file_path = APPPATH."views/$view";
+	            }
 	        }
+	        if( is_null($file_path) ){
+	            $module_check = substr($view, 0,strpos($view, '/'));
+	            $file_view = substr($view, strpos($view, '/')+1);
+
+	            foreach (Modules::$locations AS $local=>$val){
+	                if ( !is_null($module_path= realpath($local.DS.$module_check.DS.'views')) ){
+	                    foreach (glob("$module_path/$file_view.*") AS $file_name){
+	                        if( is_null($file_path) ){
+	                            $file_path = $file_name;
+	                            break;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+
+	        if( is_null($file_path) ){
+	            foreach (Modules::$locations AS $local=>$val){
+    	            if ( realpath($module_path = $local.DS.$this->_module.DS.'views')  ){
+    	                foreach (glob("$module_path/$view.*") AS $filename){
+                            if( !is_null($file_path) ){
+                                $file_path = $module_path.DS.$view;
+                                break;
+                            }
+    	                }
+    	            }
+    	        }
+	        }
+
+	        if( is_null($file_path)){
+	            $module_current = get_instance()->router->class;
+	            foreach (Modules::$locations AS $local=>$val){
+	                if ( ($module_path = realpath($local."/$module_current/views") ) != FALSE ){
+	                    $file_path = $module_path.DS.$view;
+	                }
+	            }
+
+	        }
+
+	        if( is_null($file_path) ){
+	            $file_path = $view;
+
+	        }
+
+// 	        $file_path = realpath($file_path);
+
 	        return $this->_ci->smarty->view($file_path,$data);
 	    }
 

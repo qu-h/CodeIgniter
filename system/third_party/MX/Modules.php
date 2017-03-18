@@ -108,7 +108,12 @@ class Modules
 
             $file = ucfirst($class);
             if( !file_exists($path.$file) ) {
-                $path = SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory;
+
+                if( is_dir($system_module = realpath(SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory)) ){
+                    $path = $system_module.DS;
+                } elseif ( is_dir($app_module = realpath(APPPATH."/modules/".CI::$APP->router->directory)) ){
+                    $path = $app_module.DS;
+                }
 
             }
 
@@ -224,18 +229,15 @@ class Modules
 
                 if (($base == 'libraries/' OR $base == 'models/') AND is_file($fullpath.ucfirst($file_ext))) {
                     return array($fullpath, ucfirst($file));
-                } else if ( is_file($fullpath.$file_ext) ) { /* load non-class files */
+                } else if ( is_file($fullpath.$file_ext) ) {
+                    /* load non-class files */
                     return array($fullpath, $file_ext);
+                } else {
+//                     bug($fullpath);
                 }
-
-
 			}
 		}
-// bug('app path='.APPPATH."views/$file_in");
-// 		if( file_exists(APPPATH."view/$file_in") ){
-// 		    die('check APPath');
-// 		}
-// 		bug("file in=$file_in");
+
 
 		return array(FALSE, $file);
 	}

@@ -6,12 +6,13 @@ $config['assets_url'] = "$domain";
 $config['assets_dir'] = "E:/PHP-www/Quannh/CodeIgniter-3.0.6/themes/bootstrap/";
 
 $config['css'] = array(
-    "bootstrap.min.css",
+    assets('bootstrap.css','bootstrap'),
 
 );
 
 $config['js'] = array(
-    "jquery-3.1.1.min.js",
-    "bootstrap.min.js",
+    assets("jquery-3.1.1.min.js",'jquery'),
+    assets('tether.min.js','tether'),
+    assets('bootstrap.min.js','bootstrap'),
 
 );

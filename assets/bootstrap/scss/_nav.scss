@@ -110,10 +110,18 @@
 // Hide tabbable panes to start, show them when `.active`
 
 .tab-content {
+  
+  border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+  padding: 15px;
   > .tab-pane {
     display: none;
   }
   > .active {
     display: block;
+    > .row {
+      margin: auto -5px; 
+    }
   }
 }

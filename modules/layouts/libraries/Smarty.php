@@ -57,8 +57,7 @@ class CI_Smarty extends SmartyBC {
 		$alang = array();
 
 
-		$data = array('view'=>$resource_name,
-		);
+		$data = array('view'=>$resource_name);
 
 
         if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
@@ -75,7 +74,7 @@ class CI_Smarty extends SmartyBC {
 		$ci = get_instance();
 
 		list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
-
+//         bug("module = ".get_instance()->router->fetch_module());
 
 		if( $path === FALSE) {
 
@@ -99,21 +98,27 @@ class CI_Smarty extends SmartyBC {
 		    }
 
 		}
-
 		if ( $path === FALSE )
 		{
+		    if( file_exists($_view) ){
+		        $pathinfo = pathinfo($_view);
+		        $this->setTemplateDir( $pathinfo['dirname'] );
+		        return parent::fetch($_view);
+		    }
 		    $segments = explode('/', $resource_name);
 // bug($resource_name);
 // 		    unset($segments)
 		    $path = ltrim(implode('/', $segments).'/', '/');
 		    bug("path = $path && view = $_view");
-die('smarty 170 : check app');
-		    if( file_exists(APPPATH."views/$resource_name") ){
+die('smarty 113 : check app');
+// 		    if( file_exists(APPPATH."views/$resource_name") ){
 
-		    }
+// 		    }
+		} else {
+		    return parent::fetch("$path$_view");
 		}
 
-		return parent::fetch("$path$_view");
+
 
 
 

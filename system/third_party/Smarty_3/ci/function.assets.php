@@ -13,40 +13,31 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
         if($type=='css'){
 
             foreach ($content->css AS $file){
-                if( substr($file,0,2) != '//' && substr($file,0,4) != 'http' ){
+//                 if( substr($file,0,2) != '//' && substr($file,0,4) != 'http' ){
 
-                    if( file_exists($resource_dir.'/css/'.$file) ){
-                        $file = $resource_url.'/css/'.$file;
-                    } else if (file_exists($resource_dir.'/'.$file)) {
-                        $file = $resource_url.$file;
-                    } elseif ( strpos($file, '{root_assets}') !== false ){
-                        $file = str_replace('{root_assets}', $root_assets_url, $file);
-                    } else {
-                        $file = "$resource_url/$folder/css/$file";
-                    }
+//                     if( file_exists($resource_dir.'/css/'.$file) ){
+//                         $file = $resource_url.'/css/'.$file;
+//                     } else if (file_exists($resource_dir.'/'.$file)) {
+//                         $file = $resource_url.$file;
+//                     } elseif ( strpos($file, '{root_assets}') !== false ){
+//                         $file = str_replace('{root_assets}', $root_assets_url, $file);
+//                     } else {
+//                         $file = "$resource_url/$folder/css/$file";
+//                     }
 
-                }
+//                 }
+                $file = add_asset_file($file,'css',$theme_folder = $folder);
                 $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />
                     '; //id='woocommerce-layout-css'
             }
        } else if ( $type=='js' AND !empty($js = get_instance()->config->item('js') ) ){
 
             foreach ($js AS $file){
-                if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
-
-                } elseif( file_exists($resource_dir.'/js/'.$file) ){
-                    $file = $theme_url.'/js/'.$file;
-                } else if (file_exists($resource_dir.$file)) {
-//                     $file = $resource_url.$file;
-                } elseif (file_exists($resource_dir."/$folder/js/".$file) ) {
-                    $file = "$theme_url/$folder/js/$file";
-                } elseif ( strpos($file, '{root_assets}') !== false ){
-                    $file = str_replace('{root_assets}', $root_assets_url, $file);
-                } else {
-                    $file = "$theme_url/$folder/js/$file";
+                $file = add_asset_file($file,'js',$theme_folder = $folder);
+                if( strlen($file) > 0 ){
+                    $html .= "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
                 }
 
-                $html .= '<script type="text/javascript" src="'.$file.'" ></script>';
             }
         } elseif ($type=='css_lte_ie9' AND !empty($css = get_instance()->config->item('css_lte_ie9') )){
             foreach ($css AS $file){
@@ -86,4 +77,28 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
         return $html;
     }
 
+}
+
+function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
+    $resource_dir = get_instance()->config->item('assets_url');
+    $theme_url = get_instance()->config->item('theme_url');
+    $root_assets_url = get_instance()->config->item('root_assets_url');
+    if( is_array($file) ){
+        return assets($file[0],$file[1]);
+    }
+    if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
+
+    } elseif( file_exists($resource_dir."/$sub_directory/".$file) ){
+        $file = $theme_url.'/js/'.$file;
+    } else if (file_exists($resource_dir.$file)) {
+
+    } elseif ( !is_null($theme_folder) AND file_exists($resource_dir."/$theme_folder/js/".$file) ) {
+        $file = "$theme_url/$theme_folder/$sub_directory/$file";
+    } elseif ( strpos($file, '{root_assets}') !== false ){
+        $file = str_replace('{root_assets}', $root_assets_url, $file);
+    } else {
+        $file = "$theme_url/$sub_directory/$file";
+    }
+
+    return $file;
 }

@@ -1,8 +1,13 @@
 <?php
 function add_js($file=NULL){
+    $ci = get_instance();
+    if( is_array($file) ){
+        $file = assets($file[0],$file[1]);
+        $ci->smarty->add_js($file);
+    }
     if( strlen($file) < 4 )
         return ;
-    $ci = get_instance();
+
     if( isset($ci->smarty) ){
         $ci->smarty->add_js($file);
     }

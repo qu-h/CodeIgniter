@@ -73,8 +73,8 @@ class MX_Loader extends CI_Loader
 	/** Add a module path loader variables **/
 	public function _add_module_paths($module = '')
 	{
-		if (empty($module)) return;
-
+		if (empty($module))
+		    return;
 		foreach (Modules::$locations as $location => $offset)
 		{
 			/* only add a module path if it exists */

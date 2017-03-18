@@ -40,8 +40,8 @@
 		uri: "",
 		skipLoad: false,
 		autoplay: true,
-		height: 109,
-		width: 109,
+		height: 250,
+		width: 250,
 		viewBox: {
 			x: 0,
 			y: 0,
@@ -58,15 +58,15 @@
 			order: {
 				visible: false,
 				attr: {
-					"font-size": "8",
+					"font-size": "10",
 					"fill": "#999999"
 				}
 			},
 			attr: {
-				"active": "#BF0000",
+				"active": "#c86969",
 				// may use the keyword "random" here for random color
-				"stroke": "#2C2C2C",
-				"stroke-width": 4,
+				"stroke": "#74cee4",
+				"stroke-width": 5,
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round"
 			}

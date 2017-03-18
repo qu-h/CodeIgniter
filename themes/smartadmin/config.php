@@ -3,6 +3,7 @@
 $domain = "//ci.quannh.dev/themes/smartadmin";
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
+    //assets('bootstrap.css','bootstrap'),
     "$domain/css/font-awesome.min.css",
 
     //SmartAdmin Styles : Caution! DO NOT change the order

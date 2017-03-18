@@ -266,8 +266,8 @@ class CI_Config {
 		if ($this->item('enable_query_strings') === FALSE)
 		{
 			$suffix = isset($this->config['url_suffix']) ? $this->config['url_suffix'] : '';
-
-			if ($suffix !== '')
+			$ext = pathinfo($uri, PATHINFO_EXTENSION);
+			if ($suffix !== '' AND !in_array($ext, array('json','html','htm') ))
 			{
 				if (($offset = strpos($uri, '?')) !== FALSE)
 				{
