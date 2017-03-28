@@ -8,6 +8,7 @@ $config['css'] = array(
 
     //SmartAdmin Styles : Caution! DO NOT change the order
     "$domain/css/smartadmin-production-plugins.min.css",
+//     "$domain/css/smartadmin-production.css",
     "$domain/css/smartadmin-production.css",
     "$domain/css/smartadmin-skins.min.css",
 

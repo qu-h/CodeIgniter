@@ -4,7 +4,9 @@ class smartadmin_ui
 {
 
     function __construct()
-    {}
+    {
+
+    }
 
     static function button_anchor($template = null, $params = null)
     {
@@ -75,8 +77,11 @@ class smartadmin_ui
 
         $function_registered = $template->registered_plugins['function'];
 
+// bug($function_registered);die;
         if (array_key_exists($input_func, $function_registered)) {
-            return smartadmin_ui::$input_func($params['field']);
+            return call_user_func_array($function_registered[$input_func][0],array($params['field']));
+            ;
+//             return smartadmin_ui::$input_func($params['field']);
         } else {
             return smartadmin_ui::input_text($params['field']);
         }
@@ -106,7 +111,24 @@ class smartadmin_ui
             $html .= '<div class="note">' . lang($params['note']) . '</div>';
         }
 
-        return '<section  class="smart-form" >' . $html . '</section>';
+        return '<div class="row"><section>' . $html . '</section></div>';
+    }
+
+    static function input_lable(array $params){
+        if (! isset($params['html']) || strlen($params['html']) < 1)
+            return NULL;
+
+        $row = isset($params['row']) ? $params['row'] : TRUE;
+        $content = $params['html'];
+        $label = isset($params['label']) ? "<header>".$params['label']."</header>" : NULL;
+
+
+
+        if( $row ){
+            return "<div class=\"row\" >$label $content</div>";
+        } else {
+            return "<div class=\"row\" >$label $content</div>";
+        }
     }
 
     static function input_hidden(array $params = null)
@@ -118,6 +140,22 @@ class smartadmin_ui
         $value = isset($params['value']) ? $params['value'] : NULL;
 
         $html = '<input type="hidden" name="' . $name . '" value="' . $value . '" >';
+        return $html;
+    }
+
+    static function text_addon($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        $title = isset($params['title']) ? $params['title'] : NULL;
+        $value = isset($params['value']) ? $params['value'] : NULL;
+
+        if( isset($params['icon']) ){
+            $icon = "<i class=\"fa ".$params['icon']."\"></i>";
+        } elseif (isset($params['txt_pre'])) {
+            $icon = $params['txt_pre'];
+        }
+        $icon = '<span class="input-group-addon">'.$icon.'</span>';
+
+        $html = "<div class=\"input-group\">$icon <input name=\"$name\" value=\"$value\" placeholder=\"$title\" type=\"text\" class=\"form-control\" ></div>";
         return $html;
     }
 
@@ -142,7 +180,9 @@ class smartadmin_ui
         if( strpos($addon,'fa-') !== false ){
             $addon = '<li class="fa '.$addon.'"></li>';
         }
-        return '<div class="input-group"><span class="input-group-addon">'.$addon.'</span><input type="text" class="form-control" name="'.$name.'" value="'.$value.'"></div>';
+        $params['html'] = '<div class="input-group"><span class="input-group-addon">'.$addon.'</span><input type="text" class="form-control" name="'.$name.'" value="'.$value.'"></div>';
+
+        return self::input_lable($params);
     }
 
     static function input_select($params = null)
@@ -153,16 +193,20 @@ class smartadmin_ui
         if (strlen($name) < 1)
             return NULL;
 
-        $params['html'] = '<select>
+        $input = '<select>
 												<option value="0">Choose name</option>
 												<option value="1">Alexandra</option>
 												<option value="2">Alice</option>
 												<option value="3">Anastasia</option>
 												<option value="4">Avelina</option>
 											</select>';
-        $params['html'] .= '<i class="icon"></i></label>';
-        $params['class_type'] = 'select';
-        return self::row_input($params);
+
+        $html = '<section class="select">'.$input.'<i></i></section>';
+
+        $params['html'] = $html;
+
+        $params['label'] = NULL;
+        return self::input_lable($params);
     }
 
     static function input_select_fromDB($params = null)
@@ -174,13 +218,14 @@ class smartadmin_ui
         if (strlen($name) < 1)
             return NULL;
 
-        $input = '<select name="'.$name.'" class="form-control">';
+        $input = '<select name="'.$name.'" >';
         if( !empty($options) ) foreach ($options as $ite) {
             $input .= '<option value="'.$ite->id.'" '.($ite->id ==$value ? 'selected="selected"' : NULL ).' >'.$ite->title.'</option>';
         }
 
         $input .= '</select>';
-        $html = '<div class="icon-addon addon-sm">'.$input.'<label for="email" class="glyphicon glyphicon-search" rel="tooltip" title="" data-original-title="email"></label></div>';
+
+        $html = '<label class="select">'.$input.'<i></i></label>';
         return $html;
     }
 
@@ -190,20 +235,12 @@ class smartadmin_ui
         if (strlen($name) < 1)
             return NULL;
 
-        $value = isset($params['value']) ? trim($params['value']) : "";
-
+        $value = isset($params['value']) ? trim($params['value']) : "&nbsp;";
         if (strlen($value) < 1) {
             $value = "&nbsp;";
         }
-
-        $html = NULL;
-        if (isset($params['label']) && strlen($params['label']) > 0) {
-            $html .= '<section class="smart-form" ><header>' . $params['label'] . '</header></section>';
-        }
-
-        $html .= '<textarea name="' . $name . '"  class="summernote">' . $value . '</textarea >';
-
-        return $html;
+        $params['html'] = '<textarea name="' . $name . '"  class="summernote">' . $value . '</textarea >';
+        return self::input_lable($params);
     }
 
     static function input_MultiImage($params)
@@ -302,42 +339,5 @@ class smartadmin_ui
         return $html;
     }
 
-    static function input_conversation($params = null)
-    {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        $course = isset($params['course']) ? $params['course'] : NULL;
 
-        if (strlen($name) < 1)
-            return NULL;
-
-        $placeholder = isset($params['placeholder']) ? $params['placeholder'] : NULL;
-        $maxlength = isset($params['maxlength']) ? $params['maxlength'] : 0;
-        $value = isset($params['value']) ? $params['value'] : NULL;
-
-        $html = NULL;
-        if (isset($params['label']) && strlen($params['label']) > 0) {
-            $html .= '<section class="smart-form" ><header>' . $params['label'] . '</header></section>';
-        }
-
-        $db = get_instance()->db;
-        $character_item = $db->select('id,name AS title')->from('course_conversation_character')->get();
-
-        $conversations = $db->where('course',$course)->get('course_conversation');
-        if ($conversations->num_rows() > 0) foreach ($conversations->result() as $row) {
-            $character = self::input_select_fromDB(array('name'=>$name."[character]",'value'=>$row->character,'options'=>$character_item->result()));
-            $txt_japan = self::input_text_addon_str(array('addon'=>'JP','value'=>$row->content_jp,'name'=>$name."[content_jp]"));
-            $txt_vn = self::input_text_addon_str(array('addon'=>'VN','value'=>$row->content_vn,'name'=>$name."[content_vn]"));
-            $txt_mp3 = self::input_text_addon_str(array('addon'=>'fa-check','value'=>$row->mp3,'name'=>$name."[mp3][]"));
-
-            $html .= '<div class="row"><div class="col-md-2">'.$character.'</div><div class="col-md-10">'.$txt_japan.$txt_vn.$txt_mp3 .'</div></div>';
-        }
-
-        $character = self::input_select_fromDB(array('name'=>$name."[character][]",'value'=>'','options'=>$character_item->result()));
-        $txt_japan = self::input_text_addon_str(array('addon'=>'JP','value'=>NULL,'name'=>$name."[content_jp][]"));
-        $txt_vn = self::input_text_addon_str(array('addon'=>'VN','value'=>NULL,'name'=>$name."[content_vn][]"));
-        $txt_mp3 = self::input_text_addon_str(array('addon'=>'fa-check','value'=>NULL,'name'=>$name."[mp3][]"));
-        $html .= '<div class="row"><div class="col-md-2">'.$character.'</div><div class="col-md-10">'.$txt_japan.$txt_vn.$txt_mp3.'</div></div>';
-
-        return $html;
-    }
 }

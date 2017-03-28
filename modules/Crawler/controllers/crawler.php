@@ -77,15 +77,15 @@ class Crawler extends MX_Controller
                     $this->site_dome->content
                 );
                 break;
-//             case 'dantri.com.vn':
-//                 $this->load->library('dantri_com_vn', array(
-//                 'url' => $url
-//                 ), 'site_dome');
-//                 $content = array(
-//                     $this->site_dome->title,
-//                     $this->site_dome->content
-//                 );
-//                 break;
+            case 'toidicode.com':
+                $this->load->library('article/toidicode_com', array(
+                    'url' => $url
+                ), 'site_dome');
+                $content = array(
+                    $this->site_dome->title,
+                    $this->site_dome->content
+                );
+                break;
           case '':
                 break;
         }

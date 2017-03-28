@@ -24,16 +24,17 @@
 				<div>
 					<div class="jarviswidget-editbox"></div>
 					<div class="widget-body {*no-padding*}">
-						<form action="" method="post">
+						<form action="" method="post" class="smart-form" >
+							<fieldset>
 							{if isset($fields) && $fields|@count > 0}
 								{foreach $fields AS $name=>$field }
 									{inputs name=$name field=$field}
 								{/foreach}
 							{/if}
-
-							<div ><footer class="smart-form" >
+							</fieldset>
+							<footer class="smart-form" >
 								<button class="btn btn-primary" type="submit"> Submit Form </button>
-							</footer></div>
+							</footer>
 						</form>
 					</div>
 				</div>

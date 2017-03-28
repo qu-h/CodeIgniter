@@ -1,16 +1,22 @@
 <?php
 function add_js($file=NULL){
     $ci = get_instance();
-    if( is_array($file) ){
-        $file = assets($file[0],$file[1]);
-        $ci->smarty->add_js($file);
-    }
-    if( strlen($file) < 4 )
-        return ;
 
-    if( isset($ci->smarty) ){
-        $ci->smarty->add_js($file);
-    }
+    $items = $ci->config->item('js');
+    $items[] = $file;
+    $ci->config->set_item('js', $items);
+
+
+//     if( is_array($file) ){
+//         $file = assets($file[0],$file[1]);
+//         $ci->smarty->add_js($file);
+//     }
+//     if( strlen($file) < 4 )
+//         return ;
+
+//     if( isset($ci->smarty) ){
+//         $ci->smarty->add_js($file);
+//     }
 }
 
 function add_css($file=NULL){

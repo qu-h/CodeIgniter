@@ -26,20 +26,8 @@ class CI_Smarty extends SmartyBC {
 		$this->setCacheDir( BASEPATH . '../cache' );
 		$this->loadPlugin('smarty_compiler_switch');
 
-// 		if( !class_exists('SmartyPlugin') ){
-// 			$this->CI->load->library('SmartyPlugin');
-// 		}
-// 		$methods = get_class_methods('SmartyPlugin' );
-// 		foreach ($methods AS $plugin){
-// 			if( $plugin !='__construct' ){
-// 				$this->registerPlugin('function', $plugin, 'SmartyPlugin::'.$plugin);
-// 			}
-
-// 		}
-// 		$this->theme();
 
 		if ( ! defined('IMGPATH') ) define('IMGPATH', BASEPATH.'../images/');
-// 		define('IMGURL', $this->CI->config->item('images_url'));
 
 	}
 
@@ -73,8 +61,8 @@ class CI_Smarty extends SmartyBC {
 
 		$ci = get_instance();
 
+
 		list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
-//         bug("module = ".get_instance()->router->fetch_module());
 
 		if( $path === FALSE) {
 

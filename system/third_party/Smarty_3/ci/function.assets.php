@@ -38,7 +38,6 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
                     if( strlen($file) > 0 ){
                         $html .= "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
                     }
-
                 }
             }
 
@@ -106,7 +105,7 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
     } elseif ( strpos($file, '{root_assets}') !== false ){
         $file = str_replace('{root_assets}', $root_assets_url, $file);
     } else {
-        $file = "$theme_url/$sub_directory/$file";
+        $file = base_url()."assets/$sub_directory/$file";
     }
 
     return $file;
