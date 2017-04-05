@@ -511,6 +511,7 @@ if ( ! function_exists('url_title'))
 		    get_instance()->load->helper('text');
 		}
 		$str = convert_accented_characters($str);
+
 		foreach ($trans as $key => $val)
 		{
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);
@@ -520,7 +521,7 @@ if ( ! function_exists('url_title'))
 		{
 			$str = strtolower($str);
 		}
-
+		$str = toAscii($str);
 		return trim(trim($str, $separator));
 	}
 }

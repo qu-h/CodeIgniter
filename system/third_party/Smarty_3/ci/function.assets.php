@@ -89,6 +89,7 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
 
 function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
     $resource_dir = get_instance()->config->item('assets_url');
+    $theme_dir = get_instance()->config->item('theme_dir');
     $theme_url = get_instance()->config->item('theme_url');
     $root_assets_url = get_instance()->config->item('root_assets_url');
     if( is_array($file) ){
@@ -96,10 +97,9 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
     }
     if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
 
-    } elseif( file_exists($resource_dir."/$sub_directory/".$file) ){
-        $file = $theme_url.'/js/'.$file;
-    } else if (file_exists($resource_dir.$file)) {
-
+    } elseif( file_exists($theme_dir."/$sub_directory/".$file) ){
+        $file = $theme_url.DS.$sub_directory.DS.$file;
+    //} else if (file_exists($resource_dir.$file)) {
     } elseif ( !is_null($theme_folder) AND file_exists($resource_dir."/$theme_folder/js/".$file) ) {
         $file = "$theme_url/$theme_folder/$sub_directory/$file";
     } elseif ( strpos($file, '{root_assets}') !== false ){
