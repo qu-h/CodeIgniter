@@ -91,6 +91,7 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
     $resource_dir = get_instance()->config->item('assets_url');
     $theme_dir = get_instance()->config->item('theme_dir');
     $theme_url = get_instance()->config->item('theme_url');
+
     $root_assets_url = get_instance()->config->item('root_assets_url');
     if( is_array($file) ){
         return assets($file[0],$file[1]);
@@ -100,7 +101,8 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
     } elseif( file_exists($theme_dir."/$sub_directory/".$file) ){
         $file = $theme_url.DS.$sub_directory.DS.$file;
     //} else if (file_exists($resource_dir.$file)) {
-    } elseif ( !is_null($theme_folder) AND file_exists($resource_dir."/$theme_folder/js/".$file) ) {
+    //} elseif ( !is_null($theme_folder) AND file_exists($resource_dir."/$theme_folder/js/".$file) ) {
+    } elseif ( file_exists($theme_dir.DS.$sub_directory.DS.$file) ) {
         $file = "$theme_url/$theme_folder/$sub_directory/$file";
     } elseif ( strpos($file, '{root_assets}') !== false ){
         $file = str_replace('{root_assets}', $root_assets_url, $file);

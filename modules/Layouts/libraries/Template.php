@@ -378,9 +378,11 @@ class Template
         foreach ($this->_theme_locations as $location) {
             if ($this->_theme and file_exists($location . $this->_theme)) {
                 $this->_theme_path = realpath(rtrim($location . $this->_theme . '/')) . DS;
+                get_instance()->config->set_item('theme_dir', $this->_theme_path);
                 break;
             }
         }
+        
         /*
          * 160823 QuanNH add Smarty Plugin
          */
