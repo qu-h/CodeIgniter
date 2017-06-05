@@ -407,10 +407,11 @@ class Template
                 }
 
             $theme_js = $this->_ci->config->item('js');
-            if (! empty($theme_js))
-                foreach ($theme_js as $js) {
-                    add_js($js);
-                }
+            
+//             if (! empty($theme_js))
+//                 foreach ($theme_js as $js) {
+// //                     add_js($js);
+//                 }
 
             $js_loggedin = $this->_ci->config->item('js_loggedin');
             if (! empty($js_loggedin) && $this->_ci->session->userdata('uid'))

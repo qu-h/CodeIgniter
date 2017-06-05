@@ -521,7 +521,7 @@ if ( ! function_exists('url_title'))
 		{
 			$str = strtolower($str);
 		}
-		$str = toAscii($str);
+		//$str = toAscii($str);
 		return trim(trim($str, $separator));
 	}
 }

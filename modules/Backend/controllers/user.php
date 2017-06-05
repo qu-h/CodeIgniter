@@ -15,7 +15,5 @@ class User extends MX_Controller {
     	->set_theme('smartadmin')
     	->set_layout('login_layout')
     	->build('backend/user_login');
-// bug($this->template);die;
-//         $this->load->view('login');
     }
 }

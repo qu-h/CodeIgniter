@@ -19,3 +19,10 @@
 	width: 100%;
 	height: auto;
 }
+
+img.maxw_200 {
+	max-width: 200px;
+}
+img.maxw_50 {
+	max-width: 50px;
+}

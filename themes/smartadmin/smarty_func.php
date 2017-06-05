@@ -55,8 +55,11 @@ class smartadmin_ui
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
         $field = isset($params['field']) ? $params['field'] : NULL;
+        if( empty($field) ){
+            $field = array('type'=>'text');
+        }
 
-        if (strlen($name) < 1 or empty($field))
+        if (strlen($name) < 1 )
             return NULL;
 
         if (! array_key_exists('type', $field)) {
@@ -77,11 +80,9 @@ class smartadmin_ui
 
         $function_registered = $template->registered_plugins['function'];
 
-// bug($function_registered);die;
         if (array_key_exists($input_func, $function_registered)) {
             return call_user_func_array($function_registered[$input_func][0],array($params['field']));
             ;
-//             return smartadmin_ui::$input_func($params['field']);
         } else {
             return smartadmin_ui::input_text($params['field']);
         }
@@ -110,7 +111,6 @@ class smartadmin_ui
         if (isset($params['note']) && strlen($params['note']) > 0) {
             $html .= '<div class="note">' . lang($params['note']) . '</div>';
         }
-
         return '<div class="row"><section>' . $html . '</section></div>';
     }
 
@@ -190,24 +190,25 @@ class smartadmin_ui
         $name = isset($params['name']) ? $params['name'] : NULL;
         $value = isset($params['value']) ? $params['value'] : NULL;
 
-        if (strlen($name) < 1)
+        if (strlen($name) < 1){
             return NULL;
-
-        $input = '<select>
-												<option value="0">Choose name</option>
-												<option value="1">Alexandra</option>
-												<option value="2">Alice</option>
-												<option value="3">Anastasia</option>
-												<option value="4">Avelina</option>
-											</select>';
-
+        }
+        $options = '<option value="0"> -- No Value --</option>';
+        if( isset($params["options"]) AND count($params["options"]) > 0 ){
+            foreach ($params["options"] AS $v=>$t){
+                $selected = $value == $v ? 'selected="selected"' : NULL;
+                $options .= '<option value="'.$v.'" '.$selected.' >'.$t.'</option>';
+            }
+        }
+            
+        $input = '<select name="'.$name.'" >'.$options.'</select>';
         $html = '<section class="select">'.$input.'<i></i></section>';
-
         $params['html'] = $html;
 
         $params['label'] = NULL;
         return self::input_lable($params);
     }
+    
 
     static function input_select_fromDB($params = null)
     {
@@ -281,6 +282,7 @@ class smartadmin_ui
         $db = get_instance()->db;
         $db->from('menus')
             ->where('parent', 0)
+            ->where('backend', 1)
             ->where('status', 1);
         $menus = $db->order_by('order ASC')->get();
 
@@ -339,5 +341,27 @@ class smartadmin_ui
         return $html;
     }
 
+    static function input_crawler_link($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if (strlen($name) < 1)
+            return NULL;
+        
+            $placeholder = isset($params['placeholder']) ? $params['placeholder'] : NULL;
+            $maxlength = isset($params['maxlength']) ? $params['maxlength'] : 0;
+            $value = isset($params['value']) ? $params['value'] : NULL;
+        
+//             $params['class_type'] = "input-group";
+            
+            $params["html"] = "";
+//             if( strlen($params['icon']) > 0 ){
+//                 $params["html"].= '<span class="input-group-addon"><i class="fa fa-'.$params['icon'].'"></i></span>';
+//                 $params['icon'] = NULL;
+//             }
+            
+            $params['html'].= '<input type="text" name="' . $name . '" value="' . $value . '" placeholder="' . $placeholder . '"  ' . (intval($maxlength) > 0 ? ' maxlength="' . $maxlength . '"' : null) . ' >';
+            
+            $params['html'].= '<i class="icon-append fa fa-check submit"></i>';
+            return self::row_input($params);
+    }
 
 }

@@ -64,8 +64,7 @@
 								-->
 
 				<header>
-					<span class="widget-icon"> <i class="fa fa-table"></i>
-					</span>
+					<span class="widget-icon"> <i class="fa fa-table"></i></span>
 					<h2>Standard Data Tables</h2>
 
 				</header>
@@ -81,7 +80,7 @@
 
 					<div class="widget-body no-padding">
 						{if isset($fields)}
-						<table id="data_ajax" class="table table-striped table-bordered table-hover" width="100%" data-order='[[ 0, "asc" ]]' data-page-length='25'>
+						<table id="data_ajax" class="table table-striped table-bordered table-hover" width="100%" data-order='[[ 0, "desc" ]]' data-page-length='25'>
 							<thead>
 								{if isset($columns_filter) AND $columns_filter }
 								<tr>

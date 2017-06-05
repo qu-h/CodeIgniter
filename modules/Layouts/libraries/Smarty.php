@@ -103,6 +103,8 @@ die('smarty 113 : check app');
 
 // 		    }
 		} else {
+		    $this->setTemplateDir( $path );
+
 		    return parent::fetch("$path$_view");
 		}
 

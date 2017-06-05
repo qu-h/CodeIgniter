@@ -22,6 +22,7 @@ class Article_Model extends CI_Model {
 	        }
 
 	    }
+
 	    if( !isset($data['id']) ){
 	        $data['id'] = 0;
 	    }
@@ -33,8 +34,11 @@ class Article_Model extends CI_Model {
 	        return false;
 	    } elseif( intval($data['id']) > 0 ) {
 	        $data['modified'] = date("Y-m-d H:i:s");
-	        $id = $data['id']; unset($data['id']);
+	        $id = $data['id'];
+	        unset($data['id']);
 	        $this->db->where('id',$id)->update($this->table,$data);
+// 	        bug($this->db->last_query());
+// 	        bug($data);die;
 	        return $id;
 	    } else {
 	        $this->db->insert($this->table,$data);
@@ -71,7 +75,10 @@ class Article_Model extends CI_Model {
         foreach ($query->result() AS $ite){
             if( strlen($ite->source ) > 0 ){
                 $parse = parse_url($ite->source );
-                $ite->source = $parse['host'];
+                if( isset($parse['host']) ){
+                	$ite->source = $parse['host'];
+                }
+                
             }
             $ite->actions = "";
 //             if( strlen($actions_allow) > 0 ) foreach (explode(',',$actions_allow) AS $act){

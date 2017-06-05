@@ -1,6 +1,9 @@
 <?php
 
-$domain = "//ci.quannh.dev/themes/smartadmin";
+$domain = "//ci.giaiphapict.dev/themes/smartadmin";
+
+$config['theme_url'] = "//ci.giaiphapict.dev/themes/smartadmin";
+
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
     //assets('bootstrap.css','bootstrap'),

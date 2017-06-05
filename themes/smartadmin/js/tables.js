@@ -42,17 +42,24 @@ var tables = {
 			}
 		    },
 		    "rowCallback" : function(nRow) {
-			tables.helper.createExpandIcon(nRow);
+		    	tables.helper.createExpandIcon(nRow);
 		    },
 		    "drawCallback" : function(oSettings) {
-			tables.helper.respond();
+		    	tables.helper.respond();
 		    },
 		    "initComplete": function () {
 	            var api = this.api();
 	            api.$('button').click( function () {
 	            	if( typeof $(this).attr('data-action') != undefined ){
 	            		if( $(this).attr('data-action')=='edit' ){
-	            			url = window.location.href  + '/edit/';
+	            			var href = window.location.href;
+	            			if( href.slice(-5) ==".html"){
+	            				url = href.substring(0,href.length - 5) + '/edit/';
+	            			}else if( href.slice(-4) ==".htm"){
+	            				url = href.substring(0,href.length - 4) + '/edit/';
+	            			} else {
+	            				url = href + '/edit/';
+	            			}
 
             				row_data = tables.table.row( $(this).parents('tr') ).data();
             				if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){

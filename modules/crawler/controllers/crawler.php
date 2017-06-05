@@ -86,6 +86,16 @@ class Crawler extends MX_Controller
                     $this->site_dome->content
                 );
                 break;
+            case 'daytiengnhatban.com':
+                $this->load->library('article/daytiengnhatban_com', array(
+                        'url' => $url
+                ), 'site_dome');
+                bug($this->site_dome);die;
+                $content = array(
+                        $this->site_dome->title,
+                        $this->site_dome->content
+                );
+                break;
           case '':
                 break;
         }

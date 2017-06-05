@@ -21,7 +21,7 @@ class Article extends MX_Controller {
         'actions'=>array(NULL,5,false),
     );
     function items(){
-        $js = add_js('test.js');
+        //$js = add_js('test.js');
         if( $this->uri->extension =='json' ){
             return $this->items_json_data(array_keys($this->table_fields));
         }
@@ -82,8 +82,11 @@ class Article extends MX_Controller {
             'icon' => 'list'
         ),
         'source' => array(
-            'type' => 'text',
+            'type' => 'crawler_link',
             'icon' => 'link'
+        ),
+        'summary'=>array(
+            'type' => 'textarea'
         ),
         'content' => array(
             'type' => 'textarea'
@@ -91,16 +94,31 @@ class Article extends MX_Controller {
     );
 
     public function form($id=0){
+        add_js('crawler_form_actions.js');
         if ($this->input->post()) {
+            
+            $crawler_source = $this->input->post("crawler_source");
+            
             $formdata = array();
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
             }
 
-            $add = $this->Article_Model->update($formdata);
-            if( $add ){
-                set_error(lang('Success.'));
+            if( !$crawler_source ){
+                $add = $this->Article_Model->update($formdata);
+                if( $add ){
+                    set_error(lang('Success.'));
+                }    
+            } else {
+                $this->load->module('crawler');
+                list($c_title,$c_content)= $this->crawler->get_content($crawler_source);
+                if( !is_null($c_title) AND strlen($this->fields["title"]['value']) < 2 ){
+                    $this->fields["title"]['value'] = $c_title;
+                    $this->fields["content"]['value'] = $c_content;
+                }
+
             }
+            
 
         } else {
             $item = $this->Article_Model->get_item_by_id($id);
@@ -146,7 +164,6 @@ class Article extends MX_Controller {
             }
 
         }
-
 
         $data = array(
             'fields' => $this->fields

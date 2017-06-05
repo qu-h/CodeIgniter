@@ -17,10 +17,9 @@
 		};
 
 		if (!this.options.skipLoad) {
-			var loader = new DmakLoader(this.options.uri),
-				self = this;
-
+			var loader = new DmakLoader(this.options.uri), self = this;
 			loader.load(text, function (data) {
+				console.log("loader.load");
 				self.prepare(data);
 
 				// Execute custom callback "loaded" here
@@ -48,7 +47,7 @@
 			w: 109,
 			h: 109
 		},
-		step: 0.03,
+		step: 0.02,
 		element: "draw",
 		stroke: {
 			animated : {
@@ -96,6 +95,7 @@
 		 * Prepare kanjis and papers for rendering.
 		 */
 		prepare: function (data) {
+			console.log("Dmak.fn.prepare");
 			this.strokes = preprocessStrokes(data, this.options);
 			this.papers = giveBirthToRaphael(data.length, this.options);
 			if (this.options.grid.show) {
@@ -246,7 +246,6 @@
 		var papers = [],
 			paper,
 			i;
-
 		for (i = 0; i < nbChar; i++) {
 			paper = new Raphael(options.element, options.width + "px", options.height + "px");
 			paper.setViewBox(options.viewBox.x, options.viewBox.y, options.viewBox.w, options.viewBox.h);

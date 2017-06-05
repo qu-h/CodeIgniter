@@ -233,7 +233,18 @@ class Modules
                     /* load non-class files */
                     return array($fullpath, $file_ext);
                 } else {
-//                     bug($fullpath);
+                    $segments = explode(DS, $file);
+                    $file_in_name = array_pop($segments);
+                   
+                    foreach (glob("$file.*") as $filename) {
+                        $pathinfo = pathinfo($filename);
+                        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                        
+                        if( $pathinfo["filename"]==$file_in_name AND strlen($pathinfo["filename"]) > 0 ){
+  
+                           return array($pathinfo["dirname"].DS, $pathinfo["basename"]);
+                        }
+                    }
                 }
 			}
 		}
