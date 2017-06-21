@@ -162,14 +162,32 @@ class smartadmin_ui
     static function input_text($params = null)
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
-        if (strlen($name) < 1)
+        if (strlen($name) < 1){
             return NULL;
+        }
+        $input_attributes = array(
+            "type"=>"text",
+            "name"=>$name,
+            "value"=>isset($params['value']) ? $params['value'] : NULL,
+            "placeholder"=>isset($params['placeholder']) ? $params['placeholder'] : NULL
+                
+        );
+            
 
-        $placeholder = isset($params['placeholder']) ? $params['placeholder'] : NULL;
-        $maxlength = isset($params['maxlength']) ? $params['maxlength'] : 0;
-        $value = isset($params['value']) ? $params['value'] : NULL;
 
-        $params['html'] = '<input type="text" name="' . $name . '" value="' . $value . '" placeholder="' . $placeholder . '"  ' . (intval($maxlength) > 0 ? ' maxlength="' . $maxlength . '"' : null) . ' >';
+        if( isset($params['maxlength']) ) {
+            $input_attributes["maxlength"] = $params['maxlength'];
+        };
+        if( isset($params['id']) ) {
+            $input_attributes["id"] = $params['id'];
+        };
+        
+        if( isset($params['class']) ) {
+            $input_attributes["class"] = $params['class'];
+        };
+
+
+        $params['html'] = '<input '._stringify_attributes($input_attributes).'>';
         return self::row_input($params);
     }
 
@@ -177,10 +195,12 @@ class smartadmin_ui
         $name = isset($params['name']) ? $params['name'] : NULL;
         $value = isset($params['value']) ? $params['value'] : NULL;
         $addon = isset($params['addon']) ? $params['addon'] : NULL;
+        $input_class = isset($params['class']) ? $params['class'] : NULL;
+        $input_class .= " form-control"; 
         if( strpos($addon,'fa-') !== false ){
             $addon = '<li class="fa '.$addon.'"></li>';
         }
-        $params['html'] = '<div class="input-group"><span class="input-group-addon">'.$addon.'</span><input type="text" class="form-control" name="'.$name.'" value="'.$value.'"></div>';
+        $params['html'] = '<div class="input-group"><span class="input-group-addon">'.$addon.'</span><input type="text" class="'.$input_class.'" name="'.$name.'" value="'.$value.'"></div>';
 
         return self::input_lable($params);
     }
@@ -193,7 +213,7 @@ class smartadmin_ui
         if (strlen($name) < 1){
             return NULL;
         }
-        $options = '<option value="0"> -- No Value --</option>';
+        $options = '<option value="0" > -- No Value --</option>';
         if( isset($params["options"]) AND count($params["options"]) > 0 ){
             foreach ($params["options"] AS $v=>$t){
                 $selected = $value == $v ? 'selected="selected"' : NULL;
@@ -207,6 +227,27 @@ class smartadmin_ui
 
         $params['label'] = NULL;
         return self::input_lable($params);
+    }
+    
+    static function input_tags($params = null)
+    {
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        $value = isset($params['value']) ? $params['value'] : NULL;
+    
+        if (strlen($name) < 1){
+            return NULL;
+        }
+        $options = '';
+        if( isset($params["options"]) AND count($params["options"]) > 0 ){
+            foreach ($params["options"] AS $v ){
+                
+                $options .= '<option value="'.$v.'" >'.$v.'</option>';
+            }
+        }
+    
+        $input = '<select name="'.$name.'[]" multiple="multiple" data-role="tagsinput"  >'.$options.'</select>';
+        $html = '<section class="select" >'.$input.'</section>';
+        return $html;
     }
     
 

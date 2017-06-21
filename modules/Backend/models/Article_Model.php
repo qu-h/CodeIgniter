@@ -60,7 +60,7 @@ class Article_Model extends CI_Model {
 	    ->where("category = $category")
 	    ->where('id <>',$id);
 	    $result = $this->db->get($this->table);
-        //bug($this->db->last_query());
+        //bug($this->db->last_query());die;
 	    return ( $result->num_rows() > 0) ? true : false;
 	}
 

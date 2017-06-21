@@ -28,6 +28,11 @@ class CI_Smarty extends SmartyBC {
 
 
 		if ( ! defined('IMGPATH') ) define('IMGPATH', BASEPATH.'../images/');
+		
+		$siteconfig = config_item("site");
+		if( !empty($siteconfig) ){
+		    $this->assign("config", $siteconfig);
+		}
 
 	}
 

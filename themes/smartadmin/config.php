@@ -74,3 +74,6 @@ $config['js'] = array(
     "$domain/js/tables.js",
 
 );
+
+$config['css'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.css";
+$config['js'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.js";
