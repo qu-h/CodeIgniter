@@ -6,9 +6,7 @@ class Article extends MX_Controller {
     {
         $this->load->model('backend/Article_Model');
         $this->load->model('backend/Category_Model');
-
         $this->load->module('layouts');
-
         $this->template->set_theme('smartadmin')->set_layout('main');
 
     }
@@ -94,7 +92,7 @@ class Article extends MX_Controller {
     );
 
     public function form($id=0){
-        add_js('crawler_form_actions.js');
+        
         if ($this->input->post()) {
             
             $crawler_source = $this->input->post("crawler_source");
@@ -132,9 +130,12 @@ class Article extends MX_Controller {
         $data = array(
             'fields' => $this->fields
         );
-        $this->template
-        ->title( lang('welcome_to'))
-        ->build('backend/form',$data);
+        
+//         $this->template
+//         ->title( lang('welcome_to'))
+//         ->build('backend/form',$data);
+        add_js('crawler_form_actions.js');
+        temp_view('backend/article-form',$data);
     }
 
     public function crawler(){

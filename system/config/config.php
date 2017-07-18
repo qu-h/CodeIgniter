@@ -2,7 +2,7 @@
 
 $config['assets_url'] = '//ci.giaiphapict.dev/assets/';
 $config['root_assets_url'] = '//ci.giaiphapict.dev/assets/';
-$config['assets_dir'] = 'E:\PHP\QuanICT\CodeIgniter\assets';
+$config['assets_dir'] = 'D:\WWW\QuanNH\CodeIgniter\assets';
 
 $config['resouce_dir'] = 'E:\PHP-www\Quannh\CodeIgniter\images';
 $config['resouce_url'] = '//giaiphapict.dev/CodeIgniter/images';

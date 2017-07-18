@@ -4,6 +4,7 @@ function assets($vars=NULL,$folder=''){
 
         $dir = NULL;
         $assets_dir = config_item("assets_dir");
+        
         if( is_dir($assets_dir.DS.$folder) ){
             if( strlen($folder) > 0 ){
                 $dir = config_item('assets_url').DS."$folder/";
@@ -12,13 +13,22 @@ function assets($vars=NULL,$folder=''){
     
             switch ($type){
                 case 'text/css':
-                    $dir .="css/";break;
+                    $dir .="css/";
+                    break;
                 case 'application/x-javascript':
-                    $dir .="js/";break;
+                    //$dir .="js/";
+                    if( file_exists("$assets_dir/$folder/js/$vars") ){
+                         return "$dir/js/$vars";
+                    } else if ( file_exists("$assets_dir/$folder/$vars") ){
+                        return "$dir/$vars";
+                    }
+                    bug($dir.DS.$vars);die;
+                    break;
             }
         }
         
-        return $dir.DS.$vars;
+
+        return $dir.$vars;
     }
 }
 
@@ -42,7 +52,12 @@ function add_asset($file=NULL,$folder=''){
                 break;
             case 'application/x-javascript':
                 $old_config = config_item('js');
-                $old_config[] = "$dir/js/$file";
+                if( file_exists("$dir/js/$file") ){
+                    $old_config[] = "$dir/js/$file";    
+                } else if ( file_exists("$dir/$file") ){
+                    $old_config[] = "$dir/$file";
+                }
+                
                 $ci->config->set_item('js', $old_config);
                 break;
         }

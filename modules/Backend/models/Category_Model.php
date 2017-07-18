@@ -41,4 +41,15 @@ class Category_Model extends CI_Model {
 
         return ( $result->num_rows() > 0) ? true : false;
 	}
+
+	public function load_options($type='article',$status=1)
+	{
+		$options = array();
+		$query = $this->db->where(array("c.type"=>$type,'c.status'=>$status))->get($this->table." AS c");
+		if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
+			$options[$row->id] = $row->name;
+		}}
+		return $options;
+
+	}
 }

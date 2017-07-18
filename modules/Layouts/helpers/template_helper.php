@@ -4,3 +4,9 @@ if ( !function_exists('temp_view')) {
         get_instance()->template->build($view,$vars);
     }
 }
+
+function set_temp_val($name="",$val=NULL){
+    if( strlen($name) > 0 ){
+    	get_instance()->smarty->assign($name,$val);
+    }
+}	

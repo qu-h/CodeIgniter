@@ -70,7 +70,7 @@ if ( ! function_exists('lang'))
 			$line_lang = '<label for="'.$for.'"'._stringify_attributes($attributes).'>'.$line_lang.'</label>';
 		}
         if( !$line_lang ){
-            $line_lang = $line;
+            $line_lang = ucwords($line);
         }
 		return $line_lang;
 	}
