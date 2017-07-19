@@ -215,13 +215,21 @@ class Modules
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}
 
+		if( is_file($file_ext) ){
+			$file_info = pathinfo($file_ext);
+			return array($file_info["dirname"].DS, $file_info["basename"] );
+		}
+
 		foreach (Modules::$locations as $location => $offset) {
 
 			foreach($modules as $module => $subpath) {
-                $path_check1 = $module.'/'.$base.$subpath;
 
-			    if( is_file($path_check1.ucfirst($file_ext)) ){
+				$path_check1 = realpath($module.'/'.$base.$subpath).DS;
+
+ 				 if( is_file($path_check1.ucfirst($file_ext)) ){
 			        return array($path_check1, ucfirst($file_ext));
+			    }else if( is_file($path_check1.$file_ext) ){
+			        return array($path_check1, $file_ext);
 			    }
 
 				$fullpath = $location.$module.'/'.$base.$subpath;
@@ -235,7 +243,7 @@ class Modules
                 } else {
                     $segments = explode(DS, $file);
                     $file_in_name = array_pop($segments);
-                   
+
                     foreach (glob("$file.*") as $filename) {
                         $pathinfo = pathinfo($filename);
                         $ext = pathinfo($filename, PATHINFO_EXTENSION);

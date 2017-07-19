@@ -84,26 +84,29 @@ class CI_Smarty extends SmartyBC {
 		        if ($path != FALSE)
 		            break;
 
-		        list($path, $_view) = Modules::find($file_name, APPPATH, 'views/');
+		        //list($path, $_view) = Modules::find(APPPATH."views/".$file_name,"");
+				list($path, $_view) = Modules::find("$file_name", APPPATH,"views/");
 
 		        if ($path != FALSE)
 		            break;
 		    }
 
 		}
+
 		if ( $path === FALSE )
 		{
+			bug($_view);die;
+
 		    if( file_exists($_view) ){
 		        $pathinfo = pathinfo($_view);
 		        $this->setTemplateDir( $pathinfo['dirname'] );
 		        return parent::fetch($_view);
 		    }
 		    $segments = explode('/', $resource_name);
-// bug($resource_name);
-// 		    unset($segments)
+
 		    $path = ltrim(implode('/', $segments).'/', '/');
 		    bug("path = $path && view = $_view");
-die('smarty 113 : check app');
+die('smarty 106 : check app');
 // 		    if( file_exists(APPPATH."views/$resource_name") ){
 
 // 		    }
