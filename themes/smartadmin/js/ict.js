@@ -4,16 +4,49 @@
 
 $( document ).ready(function() {
     $('.summernote').each(function () {
-	var target = $(this);
-	if( target.is('textarea') ){
-	    target.summernote({
-		onKeyup: function (e) {
-		    target.val($(this).code());
-		    target.change(); //To update any action binded on the control
+		var target = $(this);
+		if( target.is('textarea') ){
+		    target.summernote({
+			onKeyup: function (e) {
+			    target.val($(this).code());
+			    target.change(); //To update any action binded on the control
+			}
+		    });
 		}
-	    });
-	}
 
     });
-
+    
+	imgupload.ready();
 });
+
+var imgupload = {
+	fileupload : null,
+	ready:function(){
+		imgupload.fileupload = jQuery("input[type=file]");
+		if( imgupload.fileupload.length ){
+			imgupload.click();
+			//imgupload.preview();
+		}
+		
+	},
+	
+	click:function(){
+		$(".upload-imgthumb").click(function(){
+			var inputfiles = $(this).parents('div[class^="col-"]').find("input[type=file]");
+	    	//imgupload.fileupload.focus().trigger('click');
+	    	inputfiles.focus().trigger('click');
+	    	return false;
+	    });
+	},
+	preview : function(){
+		imgupload.fileupload.change(function(event) {
+		  var reader = new FileReader();
+		    reader.onload = function(){
+		      //var output = document.getElementById('output');
+		      //output.src = reader.result;
+		      $(".upload-imgthumb").attr("src",reader.result);
+		    };
+	    	reader.readAsDataURL(event.target.files[0]);
+		});
+	}
+};

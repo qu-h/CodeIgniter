@@ -12,13 +12,19 @@
 					<div class="jarviswidget-editbox"></div>
 					<div class="widget-body {*no-padding*}">
 						{if isset($fields) && $fields|@count > 0}
-						<form action="" method="post" class="smart-form" >
-							{assign var='FieldCustomize' value = array('title','alias','category','source')}
+						<form action="" method="post" class="smart-form" enctype="multipart/form-data" >
+							{assign var='FieldCustomize' value = array('title','alias','category','source',"imgthumb")}
 							<fieldset>
 								<div class="row">
 									<div class="col-md-5">
 										<div class="br-dashed br-grey" >
-											{img file="svg/image/500x200.svg" class="img-responsive"}
+											{if $fields.imgthumb.value|count_characters > 0 }
+											{img file="/uploads/article/"|cat:$fields.imgthumb.value class="img-responsive upload-imgthumb"}
+											{else}
+											{img file="svg/image/500x200.svg" class="img-responsive upload-imgthumb"}
+											{/if}
+											
+											<input type="file" name="imgthumb" accept="image/*" class="hidden"> 
 										</div>
 									</div>
 									<div class="col-md-7">

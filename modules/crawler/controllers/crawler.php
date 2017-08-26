@@ -86,11 +86,37 @@ class Crawler extends MX_Controller
                     $this->site_dome->content
                 );
                 break;
+            case 'viblo.asia':
+                $this->load->library('article/viblo_asia', array(
+                    'url' => $url
+                ), 'site_dome');
+                $content = array(
+                    $this->site_dome->title,
+                    $this->site_dome->content
+                );
+            case "o7planning.org":
+                $this->load->library('article/o7planning_org', array(
+                    'url' => $url
+                ), 'site_dome');
+                $content = array(
+                    $this->site_dome->title,
+                    $this->site_dome->content
+                );
+                break;
+            case "laptrinhandroid.vn":
+                $this->load->library('article/laptrinhandroid_vn', array(
+                    'url' => $url
+                ), 'site_dome');
+                $content = array(
+                    $this->site_dome->title,
+                    $this->site_dome->content
+                );
+                break;
           case '':
                 break;
         }
-        // bug($this->site_dome);die;
-        // if( isset($this->site_dome) ){
+
+         // if( isset($this->site_dome) ){
 
         // $content = array(
         // $this->site_dome->title,

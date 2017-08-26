@@ -583,6 +583,25 @@ class CI_Upload {
 		return TRUE;
 	}
 
+	function do_upload_images($field = 'userfile') {
+	    $files = $_FILES;
+
+	    $cpt = count ( $_FILES [$field] ['name'] );
+	    for($i = 0; $i < $cpt; $i ++) {
+
+	        $_FILES [$field."_".$i] ['name'] = $files [$field] ['name'] [$i];
+	        $_FILES [$field."_".$i] ['type'] = $files [$field] ['type'] [$i];
+	        $_FILES [$field."_".$i] ['tmp_name'] = $files [$field] ['tmp_name'] [$i];
+	        $_FILES [$field."_".$i] ['error'] = $files [$field] ['error'] [$i];
+	        $_FILES [$field."_".$i] ['size'] = $files [$field] ['size'] [$i];
+
+	        $this->do_upload ($field."_".$i);
+	        $this->set_images_data();
+
+	    }
+	    return TRUE;
+	}
+
 	// --------------------------------------------------------------------
 
 	/**
@@ -603,7 +622,7 @@ class CI_Upload {
 				'full_path'		=> $this->upload_path.$this->file_name,
 				'raw_name'		=> str_replace($this->file_ext, '', $this->file_name),
 				'orig_name'		=> $this->orig_name,
-				'client_name'		=> $this->client_name,
+				'client_name'	=> $this->client_name,
 				'file_ext'		=> $this->file_ext,
 				'file_size'		=> $this->file_size,
 				'is_image'		=> $this->is_image(),
@@ -619,6 +638,12 @@ class CI_Upload {
 		}
 
 		return $data;
+	}
+
+	public $images_data = array();
+	public function set_images_data() {
+		$this->images_data[] = $this->data();
+		
 	}
 
 	// --------------------------------------------------------------------
@@ -1165,6 +1190,7 @@ class CI_Upload {
 	{
 		return (count($this->error_msg) > 0) ? $open.implode($close.$open, $this->error_msg).$close : '';
 	}
+
 
 	// --------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 class Article_Model extends CI_Model {
 	var $table = 'article';
-
+	var $page_limit = 10;
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
@@ -37,8 +37,6 @@ class Article_Model extends CI_Model {
 	        $id = $data['id'];
 	        unset($data['id']);
 	        $this->db->where('id',$id)->update($this->table,$data);
-// 	        bug($this->db->last_query());
-// 	        bug($data);die;
 	        return $id;
 	    } else {
 	        $this->db->insert($this->table,$data);
@@ -87,5 +85,12 @@ class Article_Model extends CI_Model {
             $items[] = $ite;
         }
 	    return jsonData(array('data'=>$items));
+	}
+
+	function get_items_latest(){
+		$this->db->select('id,title,summary ,category,source');
+	    $this->db->order_by('id DESC');
+	    $query = $this->db->limit($this->page_limit)->get($this->table);
+	    return $query->result();
 	}
 }
