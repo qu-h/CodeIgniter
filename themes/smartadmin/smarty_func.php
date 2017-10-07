@@ -249,7 +249,6 @@ class smartadmin_ui
         $html = '<section class="select" >'.$input.'</section>';
         return $html;
     }
-    
 
     static function input_select_fromDB($params = null)
     {
@@ -316,6 +315,22 @@ class smartadmin_ui
 				</div></section>';
 
         return $html;
+    }
+
+    static function input_image($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        $value = isset($params['value']) ? $params['value'] : NULL;
+
+        if (strlen($name) < 1){
+            return NULL;
+        }
+
+        $input = '<input class="btn btn-default" id="exampleInputFile1" type="file">';
+        //$html = '<section class="select">'.$input.'<i></i></section>';
+        $params['html'] = $input;
+
+        $params['label'] = NULL;
+        return self::input_lable($params);
     }
 
     static function menu_navigation($params)
