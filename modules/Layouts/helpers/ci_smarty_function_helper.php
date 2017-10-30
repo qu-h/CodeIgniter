@@ -8,7 +8,7 @@ function add_js($file=NULL){
 }
 
 function add_css($file=NULL){
-    if( strlen($file) < 4 )
+    if( is_string($file) && strlen($file) < 4 )
         return ;
     $ci = get_instance();
     if( isset($ci->smarty) ){

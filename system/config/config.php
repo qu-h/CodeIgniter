@@ -7,6 +7,7 @@ $config['assets_dir'] = 'D:\WWW\QuanNH\CodeIgniter\assets';
 $config['resouce_dir'] = 'E:\PHP-www\Quannh\CodeIgniter\images';
 $config['resouce_url'] = '//giaiphapict.dev/CodeIgniter/images';
 
+$config['assets_git_url'] = '//git-io.giaiphapict.dev/';
 
 
 

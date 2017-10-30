@@ -32,6 +32,41 @@ function assets($vars=NULL,$folder=''){
     }
 }
 
+function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL){
+    if( is_string($file) ){
+
+        $dir = NULL;
+        $assets_dir = config_item("assets_git_url");
+
+        if( strlen($folder) > 0 ){
+            if( substr($folder, 0, 6) === "jquery" ){
+                $folder = "jquery/$folder";
+            }
+            $assets_dir .= "/$folder";
+        }
+        if( strlen($version) > 0 ){
+            $assets_dir .= "/$version";
+        }
+        $type = get_mime_by_extension($file);
+
+        switch ($type){
+            case 'text/css':
+                $dir = "$assets_dir/css/";
+                break;
+            case 'application/x-javascript':
+                $dir = "$assets_dir/js/";
+                break;
+        }
+
+        if( !empty($attributes) && is_array($attributes)){
+            $attributes['href'] = $dir.$file;
+            return $attributes;
+        }
+
+        return $dir.$file;
+    }
+}
+
 function add_asset($file=NULL,$folder=''){
     $ci = get_instance();
     if( !isset($ci->smarty) ){

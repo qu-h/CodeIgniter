@@ -159,7 +159,7 @@ die('smarty 106 : check app');
 	public function add_css($file){
 	    $assets_dir = config_item("assets_dir");
 	    $theme_url = config_item("theme_url");
-	    if( substr($file,0,2) == '//' OR substr($file,0,4) == 'http' ){
+	    if( is_array($file) ||  substr($file,0,2) == '//' OR substr($file,0,4) == 'http' ){
 	        $this->css[] = $file;
 	    } elseif( file_exists($assets_dir."css/$file")  ){
 	        $file = realpath($assets_dir."css/$file");
@@ -168,7 +168,6 @@ die('smarty 106 : check app');
 	    } else {
 	        $this->css[] = $file;
 	    }
-
 // 	    $this->css[] = $file;
 	}
 

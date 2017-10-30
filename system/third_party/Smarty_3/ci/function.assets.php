@@ -26,9 +26,22 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
 //                     }
 
 //                 }
-                $file = add_asset_file($file,'css',$theme_folder = $folder);
-                $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />'."\n"; 
-                    //id='woocommerce-layout-css'
+                if( is_array($file) ){
+                    if( !isset($file['media']) ){
+                        $file['media'] = 'all';
+                    }
+                    $attributes = [
+                        'rel'=>"stylesheet",
+                        'media'=>$file['media'],
+                        'href'=>add_asset_file($file['href'],'css',$folder),
+                    ];
+
+
+                    $html .= '<link '._stringify_attributes($attributes).' />'."\n";
+                } elseif ( is_string($file) ){
+                    $file = add_asset_file($file,'css',$theme_folder = $folder);
+                    $html .= '<link rel="stylesheet"   href="'.$file.'" type="text/css" media="all" />'."\n";
+                }
             }
        } else if ( $type=='js' ){
            $js = get_instance()->config->item('js');
