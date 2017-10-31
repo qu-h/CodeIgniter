@@ -1,6 +1,10 @@
 <?php
 function smarty_function_img($params,$content,$template=null, &$repeat=null){
     $file = ( isset($params['file']) )?$params['file']:null;
+    if( strlen($file) < 1 && isset($params['src']) ){
+        $file = $params['src'];
+    }
+
     $class = ( isset($params['class']) )?$params['class']:null;
     $style = ( isset($params['style']) )?$params['style']:null;
     $return = ( isset($params['return']) )?$params['return']:'img';
