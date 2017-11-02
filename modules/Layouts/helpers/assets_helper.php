@@ -38,12 +38,13 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL){
         $dir = NULL;
         $assets_dir = config_item("assets_git_url");
 
-        if( strlen($folder) > 0 ){
-            if( substr($folder, 0, 6) === "jquery" ){
-                $folder = "jquery/$folder";
+        if( strlen($folder) > 0 ) {
+            if (substr($folder, 0, 7) === "jquery.") {
+                $folder = "/" . str_replace("jquery.", "jquery/", $folder);
             }
             $assets_dir .= "/$folder";
         }
+
         if( strlen($version) > 0 ){
             $assets_dir .= "/$version";
         }
@@ -56,6 +57,8 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL){
             case 'application/x-javascript':
                 $dir = "$assets_dir/js/";
                 break;
+            default:
+                $dir = "$assets_dir/";
         }
 
         if( !empty($attributes) && is_array($attributes)){
