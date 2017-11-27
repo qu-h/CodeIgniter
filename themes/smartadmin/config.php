@@ -1,8 +1,8 @@
 <?php
 
-$domain = "//ci.giaiphapict.dev/themes/smartadmin";
+$domain = "//codeigniter.loc/themes/smartadmin";
 
-$config['theme_url'] = "//ci.giaiphapict.dev/themes/smartadmin";
+$config['theme_url'] = "//codeigniter.loc/themes/smartadmin";
 
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
@@ -28,7 +28,6 @@ $config['css'] = array(
 $config['js'] = array(
     //PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
     "$domain/js/plugin/pace/pace.min.js",
-
     "$domain/js/libs/jquery-2.1.1.min.js",
     "$domain/js/libs/jquery-ui-1.10.3.min.js",
 
@@ -68,7 +67,9 @@ $config['js'] = array(
     "$domain/js/plugin/datatables/dataTables.bootstrap.min.js",
     "$domain/js/plugin/datatable-responsive/datatables.responsive.min.js",
 
-    "$domain/js/plugin/summernote/summernote.min.js",
+    //"$domain/js/plugin/summernote/summernote.min.js",
+    //"$domain/js/plugin/ckeditor/ckeditor.js",
+    git_assets('ckeditor.js','ckeditor','4.7.3'),
 
     "$domain/js/ict.js",
 
@@ -76,5 +77,8 @@ $config['js'] = array(
 
 );
 
-$config['css'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.css";
-$config['js'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.js";
+//$config['css'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.css";
+//$config['js'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.js";
+$config['css'][] = git_assets('bootstrap-tagsinput.css','bootstrap-tagsinput');
+$config['js'][] = git_assets('bootstrap-tagsinput.js','bootstrap-tagsinput');
+

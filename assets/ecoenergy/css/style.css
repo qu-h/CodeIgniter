@@ -25,7 +25,7 @@ Tags: light, responsive-layout, flexible-header, accessibility-ready, custom-bac
    7.3 Page top: page title and breadcrumbs
    7.4 Main content wrapper
    7.5 Post Formats
-   7.6 Post Layouts
+   7.6 Post layouts
    7.7 Paginations
 8. Single page parts
    8.1 Attachment and Portfolio post navigation
@@ -2444,7 +2444,7 @@ blockquote cite {
 
 
 
-/* 7.6 Post Layouts
+/* 7.6 Post layouts
 -------------------------------------------------------------- */
 
 .post_item .post_descr {

@@ -3,26 +3,31 @@
  */
 
 $( document ).ready(function() {
-    $('.summernote').each(function () {
-		var target = $(this);
-		if( target.is('textarea') ){
-		    target.summernote({
-			onKeyup: function (e) {
-			    target.val($(this).code());
-			    target.change(); //To update any action binded on the control
-			}
-		    });
-		}
+    // $('.summernote').each(function () {
+		// var target = $(this);
+		// if( target.is('textarea') ){
+		//     target.summernote({
+		// 	onKeyup: function (e) {
+		// 	    target.val($(this).code());
+		// 	    target.change(); //To update any action binded on the control
+		// 	}
+		//     });
+		// }
+    //
+    // });
 
-    });
-    
+    //CKEDITOR.replaceClass = 'ckeditor';
+
 	imgupload.ready();
+
+
 });
 
 var imgupload = {
 	fileupload : null,
 	ready:function(){
 		imgupload.fileupload = jQuery("input[type=file]");
+		console.log("check ready upload ",imgupload.fileupload.length);
 		if( imgupload.fileupload.length ){
 			imgupload.click();
 			//imgupload.preview();
@@ -33,6 +38,7 @@ var imgupload = {
 	click:function(){
 		$(".upload-imgthumb").click(function(){
 			var inputfiles = $(this).parents('div[class^="col-"]').find("input[type=file]");
+			console.log("input file",inputfiles);
 	    	//imgupload.fileupload.focus().trigger('click');
 	    	inputfiles.focus().trigger('click');
 	    	return false;

@@ -8,11 +8,23 @@ function smarty_function_img($params,$content,$template=null, &$repeat=null){
     $class = ( isset($params['class']) )?$params['class']:null;
     $style = ( isset($params['style']) )?$params['style']:null;
     $return = ( isset($params['return']) )?$params['return']:'img';
+    $defaultDir = ( isset($params['dir']) )?$params['dir']: null ;
 
-    $CI =& get_instance();
 
-    $url = $CI->config->item("base_url").($file);
-    $url = str_replace('index.php/', null, $url);
+    if ( !filter_var($file, FILTER_VALIDATE_URL)) {
+        $CI =& get_instance();
+
+        if( $defaultDir ){
+            $file = $defaultDir.DS.$file;
+        }
+
+        $url = $CI->config->item("base_url").($file);
+
+        $url = str_replace('index.php/', null, $url);
+    } else {
+        $url = $file;
+    }
+
     switch ($return){
         case 'src':
             $html = $url; break;

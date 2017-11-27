@@ -1,13 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['assets_url'] = '//ci.giaiphapict.dev/assets/';
-$config['root_assets_url'] = '//ci.giaiphapict.dev/assets/';
-$config['assets_dir'] = 'D:\WWW\QuanNH\CodeIgniter\assets';
+$config['assets_url'] = '//ci.giaiphapict.loc/assets/';
+$config['root_assets_url'] = '//ci.giaiphapict.loc/assets/';
 
-$config['resouce_dir'] = 'E:\PHP-www\Quannh\CodeIgniter\images';
-$config['resouce_url'] = '//giaiphapict.dev/CodeIgniter/images';
+$config['resouce_url'] = '//giaiphapict.loc/CodeIgniter/images';
 
-$config['assets_git_url'] = '//git-io.giaiphapict.dev/';
+$config['assets_git_url'] = '//git-io.giaiphapict.loc/';
 
 
 
@@ -38,6 +36,7 @@ $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ?
 $config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 
+
 // $config['base_url'] = '';
 
 /*
@@ -51,7 +50,7 @@ $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER
 |
 */
 $config['index_page'] = 'index.php';
-
+//$config['base_url'] .= $config['index_page']."/";
 /*
 |--------------------------------------------------------------------------
 | URI PROTOCOL

@@ -10,8 +10,9 @@ class smartadmin_ui
 
     static function button_anchor($template = null, $params = null)
     {
-        $icon = (isset($template['icon']) and $template['icon'] != "") ? $template['icon'] : 'plus';
+        $icon = (isset($template['icon']) and $template['icon'] != "") ? $template['icon'] : null;
         $txt = isset($template['txt']) ? $template['txt'] : NULL;
+        $is_btn = isset($template['is_btn']) ? $template['is_btn'] : false;
 
         $uri_add = isset($template['uri_add']) ? $template['uri_add'] : NULL;
         if (strlen($uri_add) > 1) {
@@ -21,7 +22,13 @@ class smartadmin_ui
         }
 
         if ($txt) {
-            return '<a class="btn btn-success btn-xs" href="' . site_url($uri) . '"><i class="glyphicon glyphicon-' . $icon . '"></i> ' . lang($txt) . '</a>';
+            $anchor_class = $is_btn ? "btn btn-success btn-xs" : null;
+            $html =  "<a class=\"$anchor_class\" href=\"" . site_url($uri) . "\">" ;
+            if( strlen($icon) > 0 ){
+                $html .= "<i class=\"glyphicon glyphicon-$icon\"></i>";
+            }
+            $html .= lang($txt) . '</a>';
+            return $html;
         }
     }
 
@@ -280,7 +287,7 @@ class smartadmin_ui
         if (strlen($value) < 1) {
             $value = "&nbsp;";
         }
-        $params['html'] = '<textarea name="' . $name . '"  class="summernote">' . $value . '</textarea >';
+        $params['html'] = '<textarea name="' . $name . '"  class="summernote ckeditor">' . $value . '</textarea >';
         return self::input_lable($params);
     }
 

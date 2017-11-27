@@ -107,6 +107,7 @@ class Modules
 			$class = $class.CI::$APP->config->item('controller_suffix');
 
             $file = ucfirst($class);
+
             if( !file_exists($path.$file) ) {
 
                 if( is_dir($system_module = realpath(SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory)) ){
@@ -138,7 +139,6 @@ class Modules
 		{
 			if (is_file($location = dirname(__FILE__).'/'.substr($class, 3).EXT))
 			{
-// 			    bug($location);
 				include_once $location;
 				return;
 			}
@@ -203,6 +203,8 @@ class Modules
 		$segments = explode('/', $file);
 
 		$file = array_pop($segments);
+        $filenamebases = [$file,strtolower($file),ucfirst($file)];
+
 		$file_ext = (pathinfo($file, PATHINFO_EXTENSION)) ? $file : $file.EXT;
         $extension_taget = pathinfo($file, PATHINFO_EXTENSION);
 		$path = ltrim(implode('/', $segments).'/', '/');
@@ -234,10 +236,19 @@ class Modules
 
 				$fullpath = $location.$module.'/'.$base.$subpath;
 				$fullpath = realpath($fullpath)."/";
-
-                if (($base == 'libraries/' OR $base == 'models/') AND is_file($fullpath.ucfirst($file_ext))) {
-                    return array($fullpath, ucfirst($file));
-                } else if ( is_file($fullpath.$file_ext) ) {
+				if( strlen($fullpath) > 1 ){
+                    $files = glob($fullpath.'*['.EXT.']');
+                    if( !empty($files) ) foreach ($files AS $f){
+                        $fname = pathinfo($f,PATHINFO_FILENAME);
+                        if( strtolower($fname.EXT) == strtolower($file_ext) ){
+                            return array($fullpath, $fname);
+                        }
+                    }
+                }
+//                if (($base == 'libraries/' OR $base == 'models/') AND is_file($fullpath.$file_ext) ) {
+//                    return array($fullpath, $file);
+//                } else
+                if ( is_file($fullpath.$file_ext) ) {
                     /* load non-class files */
                     return array($fullpath, $file_ext);
                 } else {

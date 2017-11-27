@@ -596,3 +596,20 @@ function is_uri($url=null){
     else return false;
 }
 endif;
+
+if ( !function_exists('url_to_edit') ):
+    function url_to_edit($uri=null,$editId=0) {
+        if( !$uri ){
+            $uri = uri_string();
+
+            if( $editId > 0 && strpos($uri,"/add") >= 0){
+                $uri .= "/$editId";
+            }
+        }
+        if( strpos($uri,"/edit") < 1 ){
+            $uri = str_replace(["/add"],'/edit',$uri);
+        }
+
+        return $uri;
+    }
+endif;
