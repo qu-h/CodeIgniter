@@ -211,7 +211,6 @@ class Modules
 
 		$module ? $modules[$module] = $path : $modules = array();
 
-
 		if ( ! empty($segments))
 		{
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
@@ -219,29 +218,34 @@ class Modules
 
 		if( is_file($file_ext) ){
 			$file_info = pathinfo($file_ext);
-			return array($file_info["dirname"].DS, $file_info["basename"] );
+			return array($file_info["dirname"].DS, $file_info["basename"] ,null);
 		}
 
 		foreach (Modules::$locations as $location => $offset) {
 
 			foreach($modules as $module => $subpath) {
+                $fullpath = $location.$module.DS.$base.$subpath;
+                $path_check1 = realpath($module.'/'.$base.$subpath).DS;
 
-				$path_check1 = realpath($module.'/'.$base.$subpath).DS;
+			    if( !is_dir($fullpath) && !is_dir($path_check1) ){
+			        continue;
+                }
 
- 				 if( is_file($path_check1.ucfirst($file_ext)) ){
+                if( is_file($path_check1.ucfirst($file_ext)) ){
 			        return array($path_check1, ucfirst($file_ext));
 			    }else if( is_file($path_check1.$file_ext) ){
 			        return array($path_check1, $file_ext);
 			    }
 
-				$fullpath = $location.$module.'/'.$base.$subpath;
 				$fullpath = realpath($fullpath)."/";
 				if( strlen($fullpath) > 1 ){
-                    $files = glob($fullpath.'*['.EXT.']');
+                    //$files = glob($fullpath.'*['.EXT.']');
+                    $files = glob($fullpath.'*');
                     if( !empty($files) ) foreach ($files AS $f){
-                        $fname = pathinfo($f,PATHINFO_FILENAME);
-                        if( strtolower($fname.EXT) == strtolower($file_ext) ){
-                            return array($fullpath, $fname);
+                        $fname = pathinfo($f);
+
+                        if( is_file($f) && strtolower($fname['filename'].EXT) == strtolower($file_ext) ){
+                            return array($fullpath, $fname['filename'],$fname['extension']);
                         }
                     }
                 }
@@ -250,7 +254,7 @@ class Modules
 //                } else
                 if ( is_file($fullpath.$file_ext) ) {
                     /* load non-class files */
-                    return array($fullpath, $file_ext);
+                    return array($fullpath, $file_ext,null);
                 } else {
                     $segments = explode(DS, $file);
                     $file_in_name = array_pop($segments);
@@ -261,7 +265,7 @@ class Modules
                         
                         if( $pathinfo["filename"]==$file_in_name AND strlen($pathinfo["filename"]) > 0 ){
   
-                           return array($pathinfo["dirname"].DS, $pathinfo["basename"]);
+                           return array($pathinfo["dirname"].DS, $pathinfo["basename"],$pathinfo["extension"]);
                         }
                     }
                 }
@@ -269,7 +273,7 @@ class Modules
 		}
 
 
-		return array(FALSE, $file);
+		return array(FALSE, $file,null);
 	}
 
 	/**
@@ -308,4 +312,16 @@ class Modules
 			}
 		}
 	}
+
+	public static function is_directory($directory,$module){
+	    $moduleFullPath = null;
+        foreach (glob($directory."/*",GLOB_ONLYDIR) as $dir) {
+            $folderName = pathinfo($dir,PATHINFO_BASENAME);
+            if( strtolower($folderName) == strtolower($module) ){
+                $module = $folderName;
+                $moduleFullPath = $dir;
+            }
+        }
+        return [$module,$moduleFullPath];
+    }
 }
