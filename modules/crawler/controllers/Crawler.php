@@ -150,9 +150,17 @@ class Crawler extends MX_Controller
                 $title = trim($titleObject->innertext);
             }
 
-            $content = trim($html->find($crawlerMask->content_element,0)->innertext);
+            $sourceContent = $html->find($crawlerMask->content_element,0);
+            if( $sourceContent ){
+                $content = trim($sourceContent->innertext);
+            }
+
             if( strlen($crawlerMask->thumbnail_element) > 3 ){
-                $thumbnail = trim($html->find($crawlerMask->thumbnail_element,0)->find("img",0)->src);
+                $thumbnailSource = $html->find($crawlerMask->thumbnail_element,0);
+                if( $thumbnailSource ){
+                    $thumbnail = trim($thumbnailSource->find("img",0)->src);
+                }
+
             }
 
         } catch (Exception $e){
