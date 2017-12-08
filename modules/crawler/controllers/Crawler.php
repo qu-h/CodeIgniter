@@ -135,6 +135,16 @@ class Crawler extends MX_Controller
 
         $title = $thumbnail = null;
         try{
+            foreach ($html->find('iframe') as $node)
+            {
+                $node->outertext = '';
+            }
+
+            $replace="textarea";
+            foreach($html->find($replace) as $key=>$element){
+                $html->find($replace,$key)->outertext="<div>".$element->innertext."</div>";
+            }
+
             $titleObject = $html->find($crawlerMask->title_element,0);
             if( $titleObject  ){
                 $title = trim($titleObject->innertext);
@@ -148,7 +158,6 @@ class Crawler extends MX_Controller
         } catch (Exception $e){
             bug($e);die;
         }
-
 
         return (object)['title'=>$title,'thumbnail'=>$thumbnail,'content'=>$content];
     }
