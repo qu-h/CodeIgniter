@@ -146,6 +146,12 @@ class Article extends MX_Controller {
                 }
             }
         }
+        if( $id > 0 ){
+
+            set_temp_val('formTitle',lang("Edit Article") );
+        } else {
+            set_temp_val('formTitle',lang("Add new Article") );
+        }
 
         $data = array(
             'fields' => $this->fields
