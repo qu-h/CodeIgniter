@@ -352,6 +352,9 @@ class smartadmin_ui
             ->where('status', 1);
         $menus = $db->order_by('order ASC')->get();
 
+        if( !$menus ){
+            return NULL;
+        }
         $html = '<ul>';
         if ($menus->num_rows() > 0)
             foreach ($menus->result() as $m1) {

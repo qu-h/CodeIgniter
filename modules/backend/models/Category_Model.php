@@ -54,10 +54,19 @@ class Category_Model extends CI_Model {
 	}
 
 	public function items_listview($parent = 0,$status = 1){
-        $query = $this->db
-            ->get($this->table." AS c");
+        $this->db
+            ->from($this->table." AS c");
         if( $status || is_numeric($status) ){
             $this->db->where("c.status",$status);
         }
+        $query = $this->db->get();
+        $items = [];
+
+        if( $query && $query->num_rows() > 0 ){
+            $items = $query->result_array();
+        } else {
+            bug( $this->db->last_query() );die;
+        }
+        return $items;
     }
 }

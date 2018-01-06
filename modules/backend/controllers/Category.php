@@ -15,10 +15,10 @@ class Category extends MX_Controller
 
     function items()
     {
-        $data = $this->Category_Model->items_listview(0);
+        $items = $this->Category_Model->items_listview(0);
         $this->template
             ->title(lang('welcome_to') . ' ' . config_item('company_name'))
-            ->build('backend/categorys', $data);
+            ->build('backend/categories', ['categories'=>$items]);
     }
 
     var $fields = array(

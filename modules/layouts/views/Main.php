@@ -20,7 +20,7 @@
     <div id="logo-group">
 
 	<!-- PLACE YOUR LOGO HERE -->
-	<span id="logo"> {img file="img/logo.png" alt="" }</span>
+	<span id="logo"> {img file="images/logo.png" alt="" }</span>
 	<!-- END LOGO PLACEHOLDER -->
 
 				<!-- Note: The activity badge color changes when clicked and resets the number to 0
@@ -108,7 +108,7 @@
 				<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
 					<li class="">
 						<a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
-						  {img src="img/avatars/sunny.png" alt="John Doe" class="online"}
+						  {img src="images/avatars/sunny.png" alt="John Doe" class="online"}
 
 						</a>
 						<ul class="dropdown-menu pull-right">
@@ -219,7 +219,7 @@
 				<span> <!-- User image size is adjusted inside CSS, it should stay as it -->
 
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-					   {img file="img/avatars/sunny.png" alt="me" class="online"}
+					   {img file="images/avatars/sunny.png" alt="me" class="online"}
 
 						<span>
 							john.doe
