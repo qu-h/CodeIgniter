@@ -342,6 +342,9 @@ class smartadmin_ui
 
     static function menu_navigation($params)
     {
+        if( !isset(get_instance()->db) ){
+            return;
+        }
         $db = get_instance()->db;
         $db->from('menus')
             ->where('parent', 0)

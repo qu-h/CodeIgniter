@@ -15,8 +15,10 @@ class Category extends MX_Controller
 
     function items()
     {
-        $data = array();
-        $this->template->title(lang('welcome_to') . ' ' . config_item('company_name'))->build('backend/categorys', $data);
+        $data = $this->Category_Model->items_listview(0);
+        $this->template
+            ->title(lang('welcome_to') . ' ' . config_item('company_name'))
+            ->build('backend/categorys', $data);
     }
 
     var $fields = array(
@@ -44,8 +46,6 @@ class Category extends MX_Controller
 
     public function form($id = 0)
     {
-
-
         if ($this->input->post()) {
             $data = array();
             foreach ($this->fields as $name => $field) {
@@ -57,8 +57,6 @@ class Category extends MX_Controller
             }
 
         }
-//         bug($this->session->flashdata('error'));
-
 
         $data = array(
             'fields' => $this->fields

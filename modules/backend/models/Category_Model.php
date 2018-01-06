@@ -52,4 +52,12 @@ class Category_Model extends CI_Model {
 		return $options;
 
 	}
+
+	public function items_listview($parent = 0,$status = 1){
+        $query = $this->db
+            ->get($this->table." AS c");
+        if( $status || is_numeric($status) ){
+            $this->db->where("c.status",$status);
+        }
+    }
 }
