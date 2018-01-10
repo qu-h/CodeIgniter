@@ -7,6 +7,7 @@ class Article extends MX_Controller {
         $this->load->model('backend/Article_Model');
         $this->load->model('backend/Category_Model');
         $this->load->module('layouts');
+        $this->fields = $this->Article_Model->fields();
         //$this->template->set_theme('smartadmin')->set_layout('main');
 
     }
@@ -64,40 +65,6 @@ class Article extends MX_Controller {
     private function items_json_data(){
         $this->Article_Model->items_json('edit');
     }
-
-    var $fields = array(
-        'id' => array(
-            'type' => 'hidden'
-        ),
-        'imgthumb' => array(
-            'type' => 'file',
-            "value"=>null
-        ),
-        'title' => array(
-            'label' => 'Category Name',
-            'desc' => null,
-            'icon' => 'send'
-        ),
-        'alias' => array(
-            'label' => 'Category Alias',
-            'desc' => null,
-            'icon' => 'link'
-        ),
-        'category' => array(
-            'type' => 'select',
-            'icon' => 'list'
-        ),
-        'source' => array(
-            'type' => 'crawler_link',
-            'icon' => 'link'
-        ),
-        'summary'=>array(
-            'type' => 'textarea'
-        ),
-        'content' => array(
-            'type' => 'textarea'
-        )
-    );
 
     public function form($id=0){
         if ($this->input->post()) {

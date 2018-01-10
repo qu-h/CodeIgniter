@@ -68,7 +68,7 @@ $config['js'] = array(
 
     //"$domain/js/plugin/summernote/summernote.min.js",
     //"$domain/js/plugin/ckeditor/ckeditor.js",
-    git_assets('ckeditor.js','ckeditor','4.7.3'),
+    git_assets('ckeditor.js','ckeditor','4.7.3',null,false),
 
     "$domain/js/ict.js",
 

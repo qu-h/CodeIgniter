@@ -2,11 +2,50 @@
 
 class Article_Model extends CI_Model {
 	var $table = 'article';
+    var $article_fields = array(
+        'id' => array(
+            'type' => 'hidden'
+        ),
+        'imgthumb' => array(
+            'type' => 'file',
+            "value"=>null
+        ),
+        'title' => array(
+            'label' => 'Category Name',
+            'desc' => null,
+            'icon' => 'send'
+        ),
+        'alias' => array(
+            'label' => 'Category Alias',
+            'desc' => null,
+            'icon' => 'link'
+        ),
+        'category' => array(
+            'type' => 'select',
+            'icon' => 'list'
+        ),
+        'source' => array(
+            'type' => 'crawler_link',
+            'icon' => 'link'
+        ),
+        'summary'=>array(
+            'type' => 'textarea'
+        ),
+        'content' => array(
+            'type' => 'textarea'
+        )
+    );
+
 	var $page_limit = 10;
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
 	}
+
+    function fields()
+    {
+        return $this->article_fields;
+    }
 
 	function get_item_by_id($id=0){
 	    return $this->db->where('id',$id)->get($this->table)->row();
@@ -23,10 +62,10 @@ class Article_Model extends CI_Model {
 
 	    }
 
-	    if( !isset($data['id']) ){
+	    if( !isset($data['id']) || strlen($data['id']) < 1 ){
 	        $data['id'] = 0;
 	    }
-	    if( is_null($data['category']) ){
+	    if( is_null($data['category']) || strlen($data['category']) < 1){
 	        $data['category'] = 0;
 	    }
 	    if( $this->check_exist($data['alias'],$data['id'],$data['category']) ){

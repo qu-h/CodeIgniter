@@ -10,7 +10,7 @@ var imgupload = {
 	fileupload : null,
 	ready:function(){
 		imgupload.fileupload = jQuery("input[type=file]");
-		console.log("check ready upload ",imgupload.fileupload.length);
+		//console.log("check ready upload ",imgupload.fileupload.length);
 		if( imgupload.fileupload.length ){
 			imgupload.click();
 			//imgupload.preview();

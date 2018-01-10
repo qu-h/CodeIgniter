@@ -32,7 +32,7 @@ function assets($vars=NULL,$folder=''){
     }
 }
 
-function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL){
+function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFileType=true){
     if( is_string($file) ){
 
         $dir = NULL;
@@ -50,15 +50,21 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL){
         }
         $type = get_mime_by_extension($file);
 
+        $dir = "$assets_dir/";
         switch ($type){
             case 'text/css':
-                $dir = "$assets_dir/css/";
+                if( $dirFileType ){
+                    $dir .= "css/";
+                }
+
                 break;
             case 'application/x-javascript':
-                $dir = "$assets_dir/js/";
+                if( $dirFileType ){
+                    $dir .= "js/";
+                }
                 break;
             default:
-                $dir = "$assets_dir/";
+                break;
         }
 
         if( !empty($attributes) && is_array($attributes)){
