@@ -66,6 +66,8 @@ class Article extends MX_Controller {
         $this->Article_Model->items_json('edit');
     }
 
+    var $formView = "backend/article-form";
+
     public function form($id=0){
         if ($this->input->post()) {
             
@@ -114,10 +116,9 @@ class Article extends MX_Controller {
             }
         }
         if( $id > 0 ){
-
-            set_temp_val('formTitle',lang("Edit Article") );
+            set_temp_val('formTitle',lang("Edit") );
         } else {
-            set_temp_val('formTitle',lang("Add new Article") );
+            set_temp_val('formTitle',lang("Add new") );
         }
 
         $data = array(
@@ -125,7 +126,7 @@ class Article extends MX_Controller {
         );
 
         add_js('crawler_form_actions.js');
-        temp_view('backend/article-form',$data);
+        temp_view($this->formView,$data);
     }
 
     public function crawler(){

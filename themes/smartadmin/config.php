@@ -19,8 +19,7 @@ $config['css'] = array(
 
     //Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp
     "$domain/css/demo.min.css",
-    "$domain/css/custome.css",
-    "$domain/css/ict.css",
+    "$domain/css/customize.css",
 //     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
 );
 
@@ -71,7 +70,6 @@ $config['js'] = array(
     git_assets('ckeditor.js','ckeditor','4.7.3',null,false),
 
     "$domain/js/ict.js",
-
     "$domain/js/tables.js",
 
 );

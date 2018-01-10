@@ -80,3 +80,20 @@ if ( ! function_exists('set_realpath'))
 		return is_dir($path) ? rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR : $path;
 	}
 }
+
+function mkdir_full($path,$mode = 0655) {
+    $path = str_replace("\\", "/", $path);
+    $path = explode("/", $path);
+
+    $rebuild = '';
+    foreach($path AS $p) {
+
+        if(strstr($p, ":") != false) {
+            $rebuild = $p;
+            continue;
+        }
+        $rebuild .= "/$p";
+
+        if(!is_dir($rebuild)) mkdir($rebuild,$mode);
+    }
+}
