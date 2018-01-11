@@ -104,10 +104,13 @@ class Article_Model extends CI_Model {
 	/*
 	 * Json return for Datatable
 	 */
-	function items_json($actions_allow=NULL){
-	    $this->db->select('id,title,category,source');
-	    $this->db->order_by('id ASC');
-	    $query = $this->db->get($this->table);
+	function items_json($category_id = null, $actions_allow=NULL){
+	    $this->db->select('a.id,a.title,a.category,a.source');
+	    if( $category_id !== null ){
+	        $this->db->where("a.category",$category_id);
+        }
+	    $this->db->order_by('a.id ASC');
+	    $query = $this->db->get($this->table." AS a");
         $items = array();
         foreach ($query->result() AS $ite){
             if( strlen($ite->source ) > 0 ){

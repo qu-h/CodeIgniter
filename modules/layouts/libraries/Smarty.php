@@ -72,12 +72,12 @@ class CI_Smarty extends SmartyBC {
         if( $path === FALSE) {
             // check module in application
             list($module,$moduleFullPath) = Modules::is_directory(APPPATH."/modules",$ci->router->class);
-            //bug("check module with name".$ci->router->class);
-//            bug("check module in path=".$moduleFullPath);
+            //bug("check find app module $module file =$resource_name");
             list($path, $_view, $extension) = Modules::find($resource_name, $module , 'views/');
             if( $path != null ){
                 $_view = $_view.".".$extension;
             }
+
         }
 
 		if( $path === FALSE) {
@@ -96,8 +96,8 @@ class CI_Smarty extends SmartyBC {
 		            break;
 
 		        //list($path, $_view) = Modules::find(APPPATH."views/".$file_name,"");
-//                bug("send dir appPath");
-				list($path, $_view) = Modules::find($file_name, APPPATH,"views/");
+
+				list($path, $_view) = Modules::find($resource_name, APPPATH,"views/");
 
 		        if ($path != FALSE)
 		            break;

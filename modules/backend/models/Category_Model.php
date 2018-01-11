@@ -7,7 +7,12 @@ class Category_Model extends CI_Model {
 	}
 	var $table = 'category';
 
-	function update($data=NULL){
+    function get_item_by_alias($alias=""){
+        return $this->db->where('alias',$alias)->get($this->table)->row();
+    }
+
+
+    function update($data=NULL){
 	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
 	        set_error('Please enter alias');
 	        return false;

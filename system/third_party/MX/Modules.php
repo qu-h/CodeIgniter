@@ -198,7 +198,6 @@ class Modules
 	public static function find($file, $module, $base=null)
 	{
 
-
 	    $file_in = $file;
 		$segments = explode('/', $file);
 
@@ -210,6 +209,14 @@ class Modules
 		$path = ltrim(implode('/', $segments).'/', '/');
 
 		$module ? $modules[$module] = $path : $modules = array();
+
+		if( is_dir($module) && is_dir($module.$base) ){
+            list($path_check, $file_ext) = self::check_return_find($module.$base,$file_in);
+            if( $path_check ){
+                return [$path_check, $file_ext];
+            }
+        }
+
 
 		if ( ! empty($segments))
 		{
@@ -243,7 +250,6 @@ class Modules
                     $files = glob($fullpath.'*');
                     if( !empty($files) ) foreach ($files AS $f){
                         $fname = pathinfo($f);
-
                         if( is_file($f) && strtolower($fname['filename'].EXT) == strtolower($file_ext) ){
                             return array($fullpath, $fname['filename'],$fname['extension']);
                         }
@@ -279,8 +285,24 @@ class Modules
 	/**
 	 * Return for Find a file
 	 **/
-	private function check_return_find(){
+	private static function check_return_find($path="",$fileCheck=""){
 
+        $segments = explode('/', $fileCheck);
+        if( count($segments) > 0 ){
+
+            $fileCheck = array_pop($segments);
+            $path = $path.ltrim(implode('/', $segments).'/', '/');
+        }
+
+        foreach (glob("$path*") as $filename) {
+            $pathinfo = pathinfo($filename);
+
+            if( strtolower($pathinfo["filename"])==strtolower($fileCheck) AND strlen($pathinfo["filename"]) > 0 ){
+                return array($pathinfo["dirname"].DS, $pathinfo["basename"],$pathinfo["extension"]);
+            }
+        }
+
+        return array(FALSE, $fileCheck,null);
 	}
 
 	/** Parse module routes **/

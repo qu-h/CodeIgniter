@@ -270,7 +270,8 @@ class Template
             list ($layout_path, $layout_view) = Modules::find('layouts/views/' . $this->_layout, SYSTEM_MODULE_PATH . "/");
 
             if ($layout_path != FALSE) {
-                $this->_body = self::_load_view('layouts/views/' . $this->_layout, $this->_data, $return, $layout_path);
+                //$this->_body = self::_load_view('layouts/views/' . $this->_layout, $this->_data, $return, $layout_path);
+                $this->_body = self::_load_view($layout_view, $this->_data, $return, $layout_path);
             }
 
         }

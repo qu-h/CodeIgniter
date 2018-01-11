@@ -63,7 +63,11 @@ class Article extends MX_Controller {
     }
 
     private function items_json_data(){
-        $this->Article_Model->items_json('edit');
+        $category_id = null;
+        if( isset($this->fields['category']['value']) && $this->fields['category']['value'] > 0 ){
+            $category_id = $this->fields['category']['value'];
+        }
+        $this->Article_Model->items_json($category_id);
     }
 
     var $formView = "backend/article-form";
