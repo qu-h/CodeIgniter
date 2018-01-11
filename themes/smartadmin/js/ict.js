@@ -26,32 +26,30 @@ var imgupload = {
 
 
         $('#images-manager').on('show.bs.modal', function() {
-            var modal = $(this);
-            var modalBody = $(this).find(".modal-body");
+            var formData = new FormData();
+            if( $(this).attr("img-path") !== "" ){
+                formData.append('folder', $(this).attr("img-path"));
+            }
+            imgupload.loadImagesForModal(formData,$(this));
 
-            var data = {};
-            if( $(this).attr("img-path") != "" ){
-                data['folder'] = $(this).attr("img-path");
+            var modal = $(this);
+            // modal.find("input[type=file]").change(function(event) {
+            //
+            // });
+            console.log(modal);
+            modal.find("input[type=file]").get(0).addEventListener('change', uploadListener, false);
+
+            function uploadListener() {
+                var formData = new FormData();
+                formData.append('file', $(this)[0].files[0]);
+                formData.append('folder', modal.attr("img-path"));
+                imgupload.loadImagesForModal(formData,modal);
             }
 
-            $.ajax({
-                url: "/images/manager.json",
-                dataType:"JSON",
-                method:"POST",
-                data: data
-            }).done(function(images) {
-                if( images.length > 0 ){
-                    $.each(images,function (index,name) {
-                        modalBody.append(imgupload.thumbModal(name,data['folder']));
-                    });
-                    imgupload.modalSelectCallback();
-                }
-            });
+
             //setModalMaxHeight(this);
         });
-        //$('#images-manager').modal("show");
 
-		
 	},
 	
 	click:function(){
@@ -74,6 +72,30 @@ var imgupload = {
 	    	reader.readAsDataURL(event.target.files[0]);
 		});
 	},
+
+    loadImagesForModal:function (data,modal) {
+        var modalBody = modal.find(".modal-body");
+        $.ajax({
+            url: "/images/manager.json",
+            dataType:"JSON", method:"POST",
+            processData: false, contentType: false,
+            data: data
+        }).done(function(images) {
+            if( images.length > 0 ){
+                modalBody.html("");
+                $.each(images,function (index,img) {
+                    modalBody.append(imgupload.thumbModal(img.file,img.folder));
+                });
+                imgupload.modalSelectCallback();
+                var inputfiles = modal.find("input[type=file]");
+                modal.find("button.upload").unbind('click').bind('click',function () {
+                    inputfiles.focus().trigger('click');
+                });
+            }
+
+
+        });
+    },
 
     thumbModal : function(fname,folder){
 	    var fileSrc = "/images/thumb/"+folder+"/w400/"+fname;
