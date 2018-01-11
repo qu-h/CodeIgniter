@@ -601,11 +601,15 @@ if ( !function_exists('url_to_edit') ):
     function url_to_edit($uri=null,$editId=0) {
         if( !$uri ){
             $uri = uri_string();
-
-            if( $editId > 0 && strpos($uri,"/add") >= 0){
-                $uri .= "/$editId";
-            }
         }
+        $ci = get_instance();
+        $uri_length = $ci->uri->total_segments();
+        $is_add = $ci->uri->rsegment($uri_length-1);
+
+        if( $editId > 0 && $is_add =='add'){
+            $uri .= "/$editId";
+        }
+
         if( strpos($uri,"/edit") < 1 ){
             $uri = str_replace(["/add"],'/edit',$uri);
         }

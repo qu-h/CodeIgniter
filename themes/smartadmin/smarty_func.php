@@ -63,7 +63,12 @@ class smartadmin_ui
         $name = isset($params['name']) ? $params['name'] : NULL;
         $field = isset($params['field']) ? $params['field'] : NULL;
         if( empty($field) ){
-            $field = array('type'=>'text');
+            $fields = get_instance()->smarty->getTemplateVars("fields");
+            if( array_key_exists($name,$fields) ){
+                $field = $fields[$name];
+            } else {
+                $field = ['type'=>'text'];
+            }
         }
 
         if (strlen($name) < 1 )
@@ -180,8 +185,6 @@ class smartadmin_ui
                 
         );
             
-
-
         if( isset($params['maxlength']) ) {
             $input_attributes["maxlength"] = $params['maxlength'];
         };
@@ -286,8 +289,11 @@ class smartadmin_ui
         $value = isset($params['value']) ? trim($params['value']) : "&nbsp;";
         if (strlen($value) < 1) {
             $value = "&nbsp;";
+            $value = "";
         }
-        $params['html'] = '<textarea name="' . $name . '"  class="summernote ckeditor">' . $value . '</textarea >';
+        $editor = isset($params['editor']) ? $params['editor'] : "ckeditor";
+
+        $params['html'] = '<textarea name="' . $name . '"  class="'.$editor.'">' . $value . '</textarea >';
         return self::input_lable($params);
     }
 
@@ -431,6 +437,27 @@ class smartadmin_ui
             
             $params['html'].= '<i class="icon-append fa fa-check submit"></i>';
             return self::row_input($params);
+    }
+
+    static function input_publish($params = null)
+    {
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if (strlen($name) < 1){
+            return NULL;
+        }
+        $input_attributes = array(
+            "type"=>"text",
+            "name"=>$name,
+            "value"=>isset($params['value']) ? $params['value'] : NULL,
+            "placeholder"=>isset($params['placeholder']) ? $params['placeholder'] : NULL
+
+        );
+        $checked = $input_attributes['value'] ? 'checked' : null;
+        $input = '<input type="checkbox" name="'.$name.'" '.$checked.'>';
+        $input.= '<i data-swchon-text="'.lang("Publish").'" data-swchoff-text="'.lang("Unpublish").'"></i>';
+
+        $params['html'] = '<header class="toggle">'.$input_attributes['placeholder'].$input.'</header>';
+        return self::row_input($params);
     }
 
 }

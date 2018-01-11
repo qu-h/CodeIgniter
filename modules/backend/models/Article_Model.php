@@ -29,10 +29,14 @@ class Article_Model extends CI_Model {
             'icon' => 'link'
         ),
         'summary'=>array(
-            'type' => 'textarea'
+            'type' => 'textarea',
+            'editor'=>'form-control'
         ),
         'content' => array(
             'type' => 'textarea'
+        ),
+        'status' => array(
+            'type' => 'publish'
         )
     );
 
@@ -68,6 +72,7 @@ class Article_Model extends CI_Model {
 	    if( is_null($data['category']) || strlen($data['category']) < 1){
 	        $data['category'] = 0;
 	    }
+        $data['status'] = $data['status']=='on' ? true:false;
 	    if( $this->check_exist($data['alias'],$data['id'],$data['category']) ){
 	        set_error('Dupplicate Article');
 	        return false;

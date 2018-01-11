@@ -332,6 +332,29 @@
   }
 }
 
+.smart-form header.toggle {
+	i {
+		height: 25px;
+		width: 90px;
+		margin-top: 4px;
+		&:before {
+			width: 15px;
+			height: 15px;
+			background-color :#999;
+		}
+		&:after {
+			top:5px;
+		}
+	}
+	input {
+		&:checked + i:before {
+			right: 69px;
+			background-color :#3276B1;
+		}
+	}
+
+}
+
 /*
  * ratings
  */
