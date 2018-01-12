@@ -4,6 +4,7 @@
 
 $( document ).ready(function() {
 	imgupload.ready();
+    formUpdateSubmit();
 });
 
 var imgupload = {
@@ -148,3 +149,12 @@ $(window).resize(function() {
         setModalMaxHeight($('.modal.in'));
     }
 });
+
+
+function formUpdateSubmit() {
+    $("form button.save-back").click(function () {
+        var form = $(this).parents('form');
+        form.find('input[name=back]').val(1);
+        form.submit();
+    })
+}

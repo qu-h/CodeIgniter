@@ -37,7 +37,8 @@ class Article_Model extends CI_Model {
         ),
         'status' => array(
             'type' => 'publish'
-        )
+        ),
+        'order_by'=>['type'=>'number']
     );
 
 	var $page_limit = 10;
@@ -110,10 +111,11 @@ class Article_Model extends CI_Model {
 	 * Json return for Datatable
 	 */
 	function items_json($category_id = null, $actions_allow=NULL){
-	    $this->db->select('a.id,a.title,a.category,a.source');
+	    $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.summary');
 	    if( $category_id !== null ){
 	        $this->db->where("a.category",$category_id);
         }
+        $this->db->where("a.status <>",-1);
 	    $this->db->order_by('a.id ASC');
 	    $query = $this->db->get($this->table." AS a");
         $items = array();
@@ -129,6 +131,8 @@ class Article_Model extends CI_Model {
 //             if( strlen($actions_allow) > 0 ) foreach (explode(',',$actions_allow) AS $act){
 //                 $ite->actions .= '<button class="btn btn-xs btn-default" ><i class="fa fa-pencil"></i></button>';
 //             }
+
+            $ite->summary = word_limiter($ite->summary,20);
             $items[] = $ite;
         }
 	    return jsonData(array('data'=>$items));
@@ -140,4 +144,9 @@ class Article_Model extends CI_Model {
 	    $query = $this->db->limit($this->page_limit)->get($this->table);
 	    return $query->result();
 	}
+
+	public function item_delete($id=0){
+        $this->db->where('id',$id)->update($this->table,['status'=>-1]);
+
+    }
 }

@@ -11,10 +11,9 @@ class Caroufredsel extends MX_Controller
     }
 
     var $table_fields = array(
-        'id'=>array("#"),
+        'id'=>array("#",5,true,'text-center'),
+        'image'=>array("Image",10,false,'text-center'),
         'title'=>array("Title"),
-        'category'=>array("Category"),
-        'source'=>array('Source'),
         'actions'=>array(NULL,5,false),
     );
     function items(){
@@ -23,34 +22,7 @@ class Caroufredsel extends MX_Controller
             return $this->SlideShow_Model->items_json();
         }
 
-        $data = array('fields'=>$this->table_fields,'columns_filter'=>true);
-        /*
-        $data['page_header'] = $this->template->view('layouts/page_header',null,true);
-        */
-        $data['data_json_url'] = base_url($this->uri->uri_string().'.json',NULL);
-
-        $data['columns_fields'] = "";
-        foreach ($this->table_fields AS $k=>$f){
-            /*
-             * https://datatables.net/reference/option/columns.render
-             */
-            $col_data = "data:'$k'";
-            $col_order = NULL;
-            if( isset($f[2]) &&  $f[2] != true ){
-                $col_order = ',"orderable": false';
-            }
-            $col_width = NULL;
-            if( isset($f[1]) &&  is_numeric($f[1]) ){
-                $col_width = ',"width": "'.$f[1].'%"';
-            }
-            $content_default = NULL;
-            if( $k=='actions' ){
-                $col_data = "data:null";
-                $content_default = ', "defaultContent" : \'<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>\'';
-            }
-            $data['columns_fields'] .= "{ $col_data $col_order $col_width $content_default},";
-        }
-        $data['columns_fields'] = substr($data['columns_fields'], 0,-1);
+        $data = columns_fields($this->table_fields);
 
 
         $this->template

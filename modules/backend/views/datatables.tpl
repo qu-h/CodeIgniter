@@ -1,10 +1,12 @@
+
+{*
 <div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 		<h1 class="page-title txt-color-blueDark">
 			<i class="fa fa-table fa-fw "></i> Table <span>> Data Tables </span>
 		</h1>
 	</div>
-	{*
+
 	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
 		<ul id="sparks" class="">
 			<li class="sparks-info">
@@ -37,9 +39,8 @@
 			</li>
 		</ul>
 	</div>
-	*}
-
 </div>
+*}
 <section id="widget-grid" class="">
 	<div class="row">
 
@@ -85,7 +86,6 @@
 								{if isset($columns_filter) AND $columns_filter }
 								<tr>
 								{foreach $fields AS $th}
-
 								<th class="hasinput" >
 									<input type="text" class="form-control" placeholder="Filter Name" />
 								</th>
@@ -94,8 +94,9 @@
 
 								</tr>
 								{/if}
-								<tr>{foreach $fields AS $th}
-									<th>{$th[0]}</th>
+								<tr>
+									{foreach $fields AS $th}
+									<th>{if isset($th[0])}{$th[0]}{/if}</th>
 									{/foreach}
 
 									{*

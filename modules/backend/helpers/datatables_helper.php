@@ -3,32 +3,57 @@ function columns_fields($fields= array()){
     /*
      * https://datatables.net/reference/option/columns.render
      */
-    $columns_fields = NULL;
+    $img_path = get_temp_val('img_path');
+    $columns_fields = "";
     foreach ($fields AS $k=>$f){
-        
-        $col_data = "data:'$k'";
-        $col_order = NULL;
+        /*
+         * https://datatables.net/reference/option/columns.render
+         */
+        $field = [
+            'data'=>"$k"
+        ];
+        if( isset($f[3]) ){
+            $field["className"] = $f[3];
+        }
+
         if( isset($f[2]) &&  $f[2] != true ){
-            $col_order = ',"orderable": false';
+            $field["orderable"] = false;
         }
         $col_width = NULL;
         if( isset($f[1]) &&  is_numeric($f[1]) ){
-            $col_width = ',"width": "'.$f[1].'%"';
+            $field["width"] = $f[1].'%';
         }
-    
-        $col_class=NULL;
-        if( isset($f[3]) &&  is_string($f[3]) ){
-            $col_class = ',"className": "'.$f[3].'"';
-        }
-    
-    
+
         $content_default = NULL;
-        if( $k=='actions' ){
-            $col_data = "data:null";
-            $content_default = ', "defaultContent" : \'<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>\'';
+        switch ($k){
+            case 'actions':
+                $field = [
+                    'data'=>null,
+                    'orderable'=>false,
+                    'className'=>'text-center',
+                    'width'=>'10%'
+                ];
+
+                $field["defaultContent"] = '<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>';
+                $field["defaultContent"].= '<button class="btn btn-xs btn-default" data-action="delete" ><i class="fa fa-times text-danger"></i></button>';
+                break;
+            case 'imgthumb':
+            case 'image':
+                $field["render_img"] = base_url()."images/thumb/$img_path/h50/";
+                break;
         }
-        $columns_fields .= "{ $col_data $col_order $col_width $content_default $col_class},";
+
+        $columns_fields .= json_encode($field).",";
     }
-    $columns_fields = substr($columns_fields, 0,-1);
-    return $columns_fields;
+
+    $ci = get_instance();
+    $data = array('fields'=>$fields,'columns_filter'=>false);
+    /*
+    $data['page_header'] = $this->template->view('layouts/page_header',null,true);
+    */
+    $data['data_json_url'] = base_url($ci->uri->uri_string().'.json',NULL);
+
+    $data['columns_fields'] = substr($columns_fields, 0,-1);
+    return $data;
+
 }

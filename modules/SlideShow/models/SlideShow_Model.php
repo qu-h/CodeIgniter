@@ -72,4 +72,26 @@ class SlideShow_Model extends CI_Model
 
         return ( $result->num_rows() > 0) ? true : false;
     }
+
+
+    function items_json($category_id = null, $actions_allow=NULL){
+        $this->db->select('*');
+        if( $category_id !== null ){
+            $this->db->where("a.category",$category_id);
+        }
+        $this->db->where("a.status <>",-1);
+        $this->db->order_by('a.id ASC');
+        $query = $this->db->get($this->table." AS a");
+        $items = array();
+        foreach ($query->result() AS $ite){
+
+            $ite->actions = "";
+//             if( strlen($actions_allow) > 0 ) foreach (explode(',',$actions_allow) AS $act){
+//                 $ite->actions .= '<button class="btn btn-xs btn-default" ><i class="fa fa-pencil"></i></button>';
+//             }
+
+            $items[] = $ite;
+        }
+        return jsonData(array('data'=>$items));
+    }
 }

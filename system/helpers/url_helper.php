@@ -616,4 +616,19 @@ if ( !function_exists('url_to_edit') ):
 
         return $uri;
     }
+
+    function url_to_list(){
+        $ci = get_instance();
+        $uri_length = $ci->uri->total_segments();
+        $action = $ci->uri->rsegment($uri_length-1);
+        $uri = uri_string();
+
+        if( in_array($action,['delete','edit','add']) ){
+            $uri = "";
+            for ($i=1;$i < $uri_length-1 ;$i++){
+                $uri .= $ci->uri->rsegment($i).DS;
+            }
+        }
+        return $uri;
+    }
 endif;

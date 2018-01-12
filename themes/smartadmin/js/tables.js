@@ -20,6 +20,21 @@ var breakpointDefinition = {
 };
 /* COLUMN FILTER  */
 
+function generate_uri(suburi){
+	if( typeof suburi === 'undefined'){
+		suburi = 'edit';
+	}
+	var url = '';
+    var href = window.location.href;
+    if( href.slice(-5)===".html"){
+        url = href.substring(0,href.length - 5) + '/'+suburi+'/';
+    }else if( href.slice(-4)===".htm"){
+        url = href.substring(0,href.length - 4) + '/'+suburi+'/';
+    } else {
+        url = href + '/'+suburi+'/';
+    }
+    return url;
+}
 
 var tables = {
 	url :null,
@@ -28,6 +43,16 @@ var tables = {
 	area:null,table:undefined,helper:undefined,
 	load:function(attribute){
 	    tables.area = $(attribute);
+
+        jQuery.each(tables.columns,function (index,setting) {
+
+            if( typeof setting.render_img !== 'undefined' ){
+                tables.columns[index].render = function (data, type, full, meta) {
+                    return '<img src="' + setting.render_img+data + '" />';
+                }
+            }
+
+        });
 
 	    tables.table  =  $(attribute).DataTable({
 		    ajax: { url: tables.url, dataSrc: 'data' },
@@ -50,22 +75,22 @@ var tables = {
 		    "initComplete": function () {
 	            var api = this.api();
 	            api.$('button').click( function () {
-	            	if( typeof $(this).attr('data-action') != undefined ){
-	            		if( $(this).attr('data-action')=='edit' ){
-	            			var href = window.location.href;
-	            			if( href.slice(-5) ==".html"){
-	            				url = href.substring(0,href.length - 5) + '/edit/';
-	            			}else if( href.slice(-4) ==".htm"){
-	            				url = href.substring(0,href.length - 4) + '/edit/';
-	            			} else {
-	            				url = href + '/edit/';
-	            			}
+	            	var url = '';
+	            	if( typeof $(this).attr('data-action') !== undefined ){
+	            		if( $(this).attr('data-action')==='edit' ){
+	            			url = generate_uri('edit');
 
             				row_data = tables.table.row( $(this).parents('tr') ).data();
             				if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
             					$(location).attr('href', url+ row_data.id);
             				}
-	            		}
+	            		} else if ($(this).attr('data-action')==='delete'){
+                            url = generate_uri('delete');
+                            row_data = tables.table.row( $(this).parents('tr') ).data();
+                            if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
+                                $(location).attr('href', url+ row_data.id);
+                            }
+						}
 	            	}
 	                //api.search( this.innerHTML ).draw();
 	            });
