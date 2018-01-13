@@ -599,6 +599,7 @@ endif;
 
 if ( !function_exists('url_to_edit') ):
     function url_to_edit($uri=null,$editId=0) {
+        $editId = intval($editId);
         if( !$uri ){
             $uri = uri_string();
         }
@@ -606,13 +607,11 @@ if ( !function_exists('url_to_edit') ):
         $uri_length = $ci->uri->total_segments();
         $is_add = $ci->uri->rsegment($uri_length-1);
 
-        if( $editId > 0 && $is_add =='add'){
+        if( $editId > 0 && ( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' )){
+            $uri = str_replace(["/add"],'/edit',$uri);
             $uri .= "/$editId";
         }
 
-        if( strpos($uri,"/edit") < 1 ){
-            $uri = str_replace(["/add"],'/edit',$uri);
-        }
 
         return $uri;
     }

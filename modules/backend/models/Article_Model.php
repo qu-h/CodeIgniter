@@ -1,5 +1,4 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script core allowed');
-
 class Article_Model extends CI_Model {
 	var $table = 'article';
     var $article_fields = array(
@@ -38,7 +37,7 @@ class Article_Model extends CI_Model {
         'status' => array(
             'type' => 'publish'
         ),
-        'order_by'=>['type'=>'number']
+        'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc']
     );
 
 	var $page_limit = 10;
@@ -111,12 +110,12 @@ class Article_Model extends CI_Model {
 	 * Json return for Datatable
 	 */
 	function items_json($category_id = null, $actions_allow=NULL){
-	    $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.summary');
+	    $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.summary,a.status, a.ordering');
 	    if( $category_id !== null ){
 	        $this->db->where("a.category",$category_id);
         }
         $this->db->where("a.status <>",-1);
-	    $this->db->order_by('a.id ASC');
+//	    $this->db->order_by('a.ordering DESC');
 	    $query = $this->db->get($this->table." AS a");
         $items = array();
         foreach ($query->result() AS $ite){
@@ -149,4 +148,12 @@ class Article_Model extends CI_Model {
         $this->db->where('id',$id)->update($this->table,['status'=>-1]);
 
     }
+
+    public function getAll($category_id=0){
+        $this->db->where('a.status', 1)->from($this->table." AS a")->select("a.*");
+        $this->db->where("a.category",$category_id);
+        $this->db->order_by("a.ordering ASC");
+        return $this->db->get()->result();
+    }
+
 }

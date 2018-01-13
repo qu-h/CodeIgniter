@@ -211,6 +211,7 @@ class Modules
 		$module ? $modules[$module] = $path : $modules = array();
 
 		if( is_dir($module) && is_dir($module.$base) ){
+
             list($path_check, $file_ext) = self::check_return_find($module.$base,$file_in);
             if( $path_check ){
                 return [$path_check, $file_ext];
@@ -293,10 +294,11 @@ class Modules
             $fileCheck = array_pop($segments);
             $path = $path.ltrim(implode('/', $segments).'/', '/');
         }
-
+        if( substr("$path", -1) != DS){
+            $path .= DS;
+        }
         foreach (glob("$path*") as $filename) {
             $pathinfo = pathinfo($filename);
-
             if( strtolower($pathinfo["filename"])==strtolower($fileCheck) AND strlen($pathinfo["filename"]) > 0 ){
                 return array($pathinfo["dirname"].DS, $pathinfo["basename"],$pathinfo["extension"]);
             }

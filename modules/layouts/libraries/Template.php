@@ -255,7 +255,7 @@ class Template
             $template['body'] = $this->_body;
             // Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
 
-            list ($layout_path, $layout_view) = Modules::find($this->_layout . '.htm', APPPATH . 'views/layouts');
+            list ($layout_path, $layout_view) = Modules::find($this->_layout, APPPATH . 'views/layouts');
 
             if ($layout_path != FALSE) {
                 $this->_body = self::_load_view($layout_view, $this->_data, $return, $layout_path);

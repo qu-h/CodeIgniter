@@ -96,27 +96,9 @@
 								{/if}
 								<tr>
 									{foreach $fields AS $th}
-									<th>{if isset($th[0])}{$th[0]}{/if}</th>
+									<th>{if isset($th[0])}{lang txt=$th[0]}{/if}</th>
 									{/foreach}
 
-									{*
-									<th data-hide="phone">ID</th>
-									<th data-class="expand"><i
-										class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-										Name</th>
-									<th data-hide="phone"><i
-										class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>
-										Phone</th>
-
-									<th>Company</th>
-									<th data-hide="phone,tablet"><i
-										class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i>
-										Zip</th>
-									<th data-hide="phone,tablet">City</th>
-									<th data-hide="phone,tablet"><i
-										class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i>
-										Date</th>
-										*}
 								</tr>
 							</thead>
 							<tbody>

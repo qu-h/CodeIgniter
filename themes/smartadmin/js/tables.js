@@ -45,17 +45,28 @@ var tables = {
 	    tables.area = $(attribute);
 
         jQuery.each(tables.columns,function (index,setting) {
-
             if( typeof setting.render_img !== 'undefined' ){
                 tables.columns[index].render = function (data, type, full, meta) {
                     return '<img src="' + setting.render_img+data + '" />';
+                }
+            } else if( typeof setting.status_label !== 'undefined' ){
+                tables.columns[index].render = function (data, type, full, meta) {
+                	var label = "<span class=\"btn btn-default disabled\"><i class=\"fa fa-eye-slash\"></i></span>";
+                	if( data == 1 ){
+                        label = "<span class=\"btn btn-primary btn-xs\"><i class=\"fa fa-gear fa-spin\"></i></span>";
+					}
+                    return label;
                 }
             }
 
         });
 
+        var tableAjax = false;
+        if( tables.url !== null ){
+            tableAjax = { url: tables.url, dataSrc: 'data' };
+		}
 	    tables.table  =  $(attribute).DataTable({
-		    ajax: { url: tables.url, dataSrc: 'data' },
+		    ajax: tableAjax,
 		    columns: tables.columns,
 		    "sDom" : "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"
 				+ "t"
@@ -74,31 +85,37 @@ var tables = {
 		    },
 		    "initComplete": function () {
 	            var api = this.api();
-	            api.$('button').click( function () {
-	            	var url = '';
-	            	if( typeof $(this).attr('data-action') !== undefined ){
-	            		if( $(this).attr('data-action')==='edit' ){
-	            			url = generate_uri('edit');
+                tables.row_ci_actions(api);
 
-            				row_data = tables.table.row( $(this).parents('tr') ).data();
-            				if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
-            					$(location).attr('href', url+ row_data.id);
-            				}
-	            		} else if ($(this).attr('data-action')==='delete'){
-                            url = generate_uri('delete');
-                            row_data = tables.table.row( $(this).parents('tr') ).data();
-                            if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
-                                $(location).attr('href', url+ row_data.id);
-                            }
-						}
-	            	}
-	                //api.search( this.innerHTML ).draw();
-	            });
 	        }
 	    });
 	    tables.columns_filter();
 
 	},
+	row_ci_actions:function (api) {
+        api.$('button').click( function () {
+
+            //api.search( this.innerHTML ).draw();
+            var url = '';
+            if( typeof $(this).attr('data-action') !== undefined ){
+                if( $(this).attr('data-action')==='edit' ){
+                    url = generate_uri('edit');
+
+                    row_data = tables.table.row( $(this).parents('tr') ).data();
+                    if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
+                        $(location).attr('href', url+ row_data.id);
+                    }
+                } else if ($(this).attr('data-action')==='delete'){
+                    url = generate_uri('delete');
+                    row_data = tables.table.row( $(this).parents('tr') ).data();
+                    if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
+                        $(location).attr('href', url+ row_data.id);
+                    }
+                }
+            }
+        });
+
+    },
 
 	columns_filter:function(){
 	    $("thead th input[type=text]",tables.area).on( 'keyup change', function () {

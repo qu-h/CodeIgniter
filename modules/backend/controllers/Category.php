@@ -13,12 +13,22 @@ class Category extends MX_Controller
 
     }
 
+    var $table_fields = array(
+        'id'=>array("#",9,true,'text-center'),
+        'title'=>array("Title"),
+//        'category'=>array("Category"),
+
+        'actions'=>array(),
+    );
+
     function items()
     {
         $items = $this->Category_Model->items_listview(0);
+        $data = columns_fields($this->table_fields);
+        $data['categories'] = $items;
         $this->template
             ->title(lang('welcome_to') . ' ' . config_item('company_name'))
-            ->build('backend/categories', ['categories'=>$items]);
+            ->build('backend/categories', $data);
     }
 
     var $fields = array(
@@ -39,6 +49,10 @@ class Category extends MX_Controller
             'type' => 'select',
             'icon' => 'list'
         ),
+        'summary'=>array(
+            'type' => 'textarea',
+            'editor'=>'form-control'
+        ),
         'description' => array(
             'type' => 'textarea'
         )
@@ -56,6 +70,13 @@ class Category extends MX_Controller
                 set_error(lang('Success.'));
             }
 
+        } else if ( $id > 0 ){
+            $item = $this->Category_Model->get_item_by_id($id);
+            foreach ($this->fields AS $field=>$val){
+                if( isset($item->$field) ){
+                    $this->fields[$field]['value']=$item->$field;
+                }
+            }
         }
 
         $data = array(

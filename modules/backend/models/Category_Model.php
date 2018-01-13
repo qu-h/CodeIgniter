@@ -7,22 +7,36 @@ class Category_Model extends CI_Model {
 	}
 	var $table = 'category';
 
-    function get_item_by_alias($alias=""){
-        return $this->db->where('alias',$alias)->get($this->table)->row();
+    function get_item_by_alias($alias="",$returnArray=false){
+        $row = $this->db->where('alias',$alias)->get($this->table);
+        return $returnArray ? $row->row_array() : $row->row();
     }
 
+    function get_item_by_id($id=0){
+        return $this->db->where('id',$id)->get($this->table)->row();
+    }
 
     function update($data=NULL){
 	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
 	        set_error('Please enter alias');
 	        return false;
 	    }
+        if( !isset($data['id']) || strlen($data['id']) < 1 ){
+            $data['id'] = 0;
+        }
+
         if( is_null($data['parent']) ){
             $data['parent'] = 0;
         }
-	    if( $this->check_exist($data['alias'],$data['id'],$data['parent']) ){
-	        set_error('Dupplicate Category');
-	        return false;
+	    if( $this->check_exist($data['alias'],$data['id'],$data['parent']) ) {
+            set_error('Dupplicate Category');
+            return false;
+        } elseif( intval($data['id']) > 0 ) {
+            $data['modified'] = date("Y-m-d H:i:s");
+            $id = $data['id'];
+            unset($data['id']);
+            $this->db->where('id',$id)->update($this->table,$data);
+            return $id;
 	    } else {
 	        $this->db->insert($this->table,$data);
 	        return $this->db->insert_id();

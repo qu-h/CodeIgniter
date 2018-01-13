@@ -41,6 +41,10 @@ function columns_fields($fields= array()){
             case 'image':
                 $field["render_img"] = base_url()."images/thumb/$img_path/h50/";
                 break;
+            case 'status':
+                $field["className"] = 'text-center';
+                $field["status_label"] = true;
+                break;
         }
 
         $columns_fields .= json_encode($field).",";

@@ -33,6 +33,23 @@ class DBConfig_Model extends CI_Model
         return $this->db->where('id',$id)->get($this->table)->row();
     }
 
+    function getAll($type=1){
+        $this->db->from($this->table." AS c")
+            ->where('c.status', 1)
+            ->where("c.type",$type)
+            ->select("c.name, c.value");
+        $result =  $this->db->get()->result();
+        $items = [];
+        if( $result ) foreach ($result AS $r){
+            $chars = explode("-",$r->name);
+            $chars = array_map(function($word) { return ucwords($word); }, $chars);
+            $key = implode("",$chars);
+            $items[$key] = $r->value;
+        }
+
+        return $items;
+    }
+
     function update($data=NULL){
 
         if( !isset($data['id']) || $data['id'] =="" ){
@@ -71,5 +88,18 @@ class DBConfig_Model extends CI_Model
             bug($this->db->last_query());die('query error');
         }
         return ( $result->num_rows() > 0) ? true : false;
+    }
+
+    function items_json($type=1){
+        $this->db->select('c.*, "" AS actions');
+        if( $type !== null ){
+            $this->db->where("c.type",$type);
+        }
+        $this->db->where("c.status <>",-1);
+	    $this->db->order_by('c.ordering DESC');
+
+        $query = $this->db->get($this->table." AS c");
+        $items = $query->result();
+        return jsonData(array('data'=>$items));
     }
 }

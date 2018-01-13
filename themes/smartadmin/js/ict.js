@@ -14,7 +14,7 @@ var imgupload = {
 		//console.log("check ready upload ",imgupload.fileupload.length);
 		if( imgupload.fileupload.length ){
 			imgupload.click();
-			//imgupload.preview();
+			imgupload.preview();
 		}
 
 
@@ -37,8 +37,13 @@ var imgupload = {
             // modal.find("input[type=file]").change(function(event) {
             //
             // });
-            console.log(modal);
+
             modal.find("input[type=file]").get(0).addEventListener('change', uploadListener, false);
+
+            var inputfiles = modal.find("input[type=file]");
+            modal.find("button.upload").unbind('click').bind('click',function () {
+                inputfiles.focus().trigger('click');
+            });
 
             function uploadListener() {
                 var formData = new FormData();
@@ -56,7 +61,7 @@ var imgupload = {
 	click:function(){
 		jQuery(".upload-imgthumb").click(function(){
 			var inputfiles = $(this).parents('div[class^="col-"]').find("input[type=file]");
-			console.log("input file",inputfiles);
+			//console.log("input file",inputfiles);
 	    	//imgupload.fileupload.focus().trigger('click');
 	    	inputfiles.focus().trigger('click');
 	    	return false;
@@ -88,10 +93,7 @@ var imgupload = {
                     modalBody.append(imgupload.thumbModal(img.file,img.folder));
                 });
                 imgupload.modalSelectCallback();
-                var inputfiles = modal.find("input[type=file]");
-                modal.find("button.upload").unbind('click').bind('click',function () {
-                    inputfiles.focus().trigger('click');
-                });
+
             }
 
 
