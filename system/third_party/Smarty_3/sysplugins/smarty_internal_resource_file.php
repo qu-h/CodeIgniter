@@ -47,6 +47,18 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
             // normalize path
             $path = $source->smarty->_realpath($path);
             // files relative to a template only get one shot
+            if( !is_file($path) ){
+                $path_info = pathinfo($path);
+                if( is_dir($path_info["dirname"]) ){
+                    foreach (glob($path_info["dirname"]."/*") as $subFilePath) {
+                        $fileName = pathinfo($subFilePath);
+                        if( strtolower($fileName["filename"]) == strtolower($path_info["filename"]) ){
+                            $path = $subFilePath;
+                            break;
+                        }
+                    }
+                }
+            }
             return is_file($path) ? $path : false;
         }
         // normalize DS
