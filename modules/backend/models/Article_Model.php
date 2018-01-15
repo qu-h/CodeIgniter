@@ -69,6 +69,10 @@ class Article_Model extends CI_Model {
 	    if( !isset($data['id']) || strlen($data['id']) < 1 ){
 	        $data['id'] = 0;
 	    }
+        if( !isset($data['ordering']) || strlen($data['ordering']) < 1 ){
+            $data['ordering'] = 0;
+        }
+
 	    if( is_null($data['category']) || strlen($data['category']) < 1){
 	        $data['category'] = 0;
 	    }
@@ -149,10 +153,15 @@ class Article_Model extends CI_Model {
 
     }
 
-    public function getAll($category_id=0){
-        $this->db->where('a.status', 1)->from($this->table." AS a")->select("a.*");
+    public function getAll($category_id=0,$limit=10){
+	    $this->db->select("a.title, a.imgthumb, a.alias, a.summary");
+	    $this->db->select("a.category AS category_id");
+        $this->db->where('a.status', 1)->from($this->table." AS a");
         $this->db->where("a.category",$category_id);
         $this->db->order_by("a.ordering ASC");
+        if( $limit > 0 ){
+            $this->db->limit($limit);
+        }
         return $this->db->get()->result();
     }
 
