@@ -140,7 +140,7 @@ class Category_Model extends CI_Model {
         if( $query ){
             $items = $query->result_array();
         } else {
-            bug( $this->db->last_query() );die;
+            bug( $this->db->last_query() );die("error");
         }
         return $items;
     }

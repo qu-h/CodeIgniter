@@ -35,7 +35,8 @@ class Article_Model extends CI_Model {
             'type' => 'textarea'
         ),
         'status' => array(
-            'type' => 'publish'
+            'type' => 'publish',
+            'value'=>1
         ),
         'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc']
     );
@@ -129,6 +130,9 @@ class Article_Model extends CI_Model {
 //	    $this->db->order_by('a.ordering DESC');
 	    $query = $this->db->get($this->table." AS a");
         $items = array();
+        if( !$query ){
+            bug($this->db->last_query());die("error");
+        }
         foreach ($query->result() AS $ite){
             if( strlen($ite->source ) > 0 ){
                 $parse = parse_url($ite->source );
