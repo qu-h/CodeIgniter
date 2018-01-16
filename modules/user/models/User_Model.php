@@ -59,4 +59,16 @@ class User_Model extends CI_Model
         }
         return jsonData(array('data'=>$items));
     }
+
+    public function load_options($status=1)
+    {
+        $options = array();
+        $this->db->from($this->table." AS u")->select("u.id, u.fullname");
+        $query = $this->db->where(array('u.status'=>$status))->get();
+        if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
+            $options[$row->id] = $row->fullname;
+        }}
+        return $options;
+
+    }
 }

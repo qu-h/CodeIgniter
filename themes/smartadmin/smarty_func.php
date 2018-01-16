@@ -477,4 +477,23 @@ class smartadmin_ui
         return self::row_input($params);
     }
 
+    static function input_date($params)
+    {
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        $label = isset($params['label']) ? $params['label'] : NULL;
+        if (strlen($name) < 1)
+            return NULL;
+
+        $value = isset($params['value']) ? trim($params['value']) : "&nbsp;";
+        if (strlen($value) < 1) {
+            $value = "";
+        }
+        $editor = isset($params['editor']) ? $params['editor'] : "ckeditor";
+
+        $params['html'] = '<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
+											<input type="text" name="request" placeholder="'.$label.'" class="datepicker" data-dateformat=\'dd/mm/yy\'>
+										</label>';
+        return self::input_lable($params);
+    }
+
 }
