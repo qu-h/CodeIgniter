@@ -42,8 +42,17 @@ class Category_Model extends CI_Model {
         return $this->category_fields;
     }
     function get_item_by_alias($alias="",$returnArray=false){
-        $row = $this->db->where('alias',$alias)->get($this->table);
+        $this->db->where('status',1);
+        $this->db->where('alias',$alias);
+        $row = $this->db->get($this->table);
         return $returnArray ? $row->row_array() : $row->row();
+    }
+
+    function get_items_by_type($type="",$returnArray=false){
+        $this->db->where('type',$type);
+        $this->db->where('status',1);
+        $row = $this->db->get($this->table);
+        return $returnArray ? $row->result_array() : $row->result();
     }
 
     function get_item_by_id($id=0){
@@ -84,6 +93,10 @@ class Category_Model extends CI_Model {
 
 	}
 
+    public function item_delete($id=0){
+        $this->db->where('id',$id)->update($this->table,['status'=>-1]);
+
+    }
 
 	function check_exist($alias,$id,$parent=0){
 	    if( !is_numeric($parent) ){

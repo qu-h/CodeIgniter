@@ -103,7 +103,6 @@ class Article extends MX_Controller {
         $data = array(
             'fields' => $this->fields
         );
-
         add_js('crawler_form_actions.js');
         temp_view($this->formView,$data);
     }

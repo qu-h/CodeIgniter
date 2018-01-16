@@ -150,14 +150,15 @@ class smartadmin_ui
             return NULL;
 
         $field = isset($params['field']) ? $params['field'] : NULL;
+        $value = NULL;
         if( empty($field) ){
             $fields = get_instance()->smarty->getTemplateVars("fields");
             if( array_key_exists($name,$fields) ){
                 $field = $fields[$name];
                 $value = isset($field['value']) ? $field['value'] : NULL;
             }
-        } else {
-            $value = isset($params['value']) ? $params['value'] : NULL;
+        } else if(isset($params['value'])) {
+            $value =  $params['value'];
         }
 
 

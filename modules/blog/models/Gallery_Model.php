@@ -43,8 +43,9 @@ class Gallery_Model extends CI_Model
     }
 
     function getAll(){
-        $this->db->where('t.status', 1)->from($this->table." AS t")->select("t.*");
-        return $this->db->get()->result();
+        $this->db->where('t.status', 1)->from($this->table." AS t")->select("t.image, t.summary");
+        $this->db->join("category AS c",'c.id=t.category','LEFT')->select("c.alias");
+        return $this->db->get()->result_array();
     }
 
     function update($data=NULL){

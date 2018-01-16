@@ -66,7 +66,7 @@ class Menu_Model extends CI_Model
 
     function update($data=NULL){
         if( !isset($data['uri']) OR  strlen($data['uri']) < 1 ){
-            if( strlen($data['uri']) > 0 ){
+            if( strlen($data['name']) > 0 ){
                 $data['uri'] = url_title($data['name'],'-',true);
             } else {
                 set_error('Please enter alias');
@@ -95,8 +95,21 @@ class Menu_Model extends CI_Model
             $this->db->insert($this->table,$data);
             return $this->db->insert_id();
         }
+    }
 
-
+    public function getAll($return_array=true,$limit=10,$backend=false,$parent=0){
+        $this->db->from($this->table." AS m")->select("m.name, m.uri");
+        $this->db->where([
+            'parent'=>$parent,
+            'status'=>1,
+            'backend'=>$backend
+        ]);
+        $this->db->order_by("m.order ASC");
+        if( $limit > 0 ){
+            $this->db->limit($limit);
+        }
+        $query = $this->db->get();
+        return $return_array ? $query->result_array() : $query->result();
     }
 
 }

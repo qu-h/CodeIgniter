@@ -54,6 +54,13 @@ class Article_Model extends CI_Model {
 	function get_item_by_id($id=0){
 	    return $this->db->where('id',$id)->get($this->table)->row();
 	}
+    function get_item_by_alias($alias=0,$cateogry_id=0){
+	    $this->db->where("alias",$alias);
+        $this->db->where("category",$cateogry_id);
+        $this->db->where("status",1);
+        $query = $this->db->get($this->table);
+        return $query->row_array();
+    }
 
 	function update($data=NULL){
 	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
@@ -157,6 +164,8 @@ class Article_Model extends CI_Model {
 	    $this->db->select("a.title, a.imgthumb, a.alias, a.summary");
 	    $this->db->select("a.category AS category_id");
         $this->db->where('a.status', 1)->from($this->table." AS a");
+        $this->db->join("category AS c",'c.id = a.category','LEFT')
+            ->select("c.alias AS category_alias");
         $this->db->where("a.category",$category_id);
         $this->db->order_by("a.ordering ASC");
         if( $limit > 0 ){

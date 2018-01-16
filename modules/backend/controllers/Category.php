@@ -58,4 +58,11 @@ class Category extends MX_Controller
         );
         $this->template->title(lang('welcome_to'))->build('backend/form', $data);
     }
+
+    public function delete($id=0){
+        $this->Category_Model->item_delete($id);
+        $newUri = url_to_list();
+
+        return redirect($newUri, 'refresh');
+    }
 }

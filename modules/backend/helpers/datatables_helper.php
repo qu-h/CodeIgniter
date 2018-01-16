@@ -39,7 +39,7 @@ function columns_fields($fields= array()){
                 break;
             case 'imgthumb':
             case 'image':
-                $field["render_img"] = base_url()."images/thumb/$img_path/h50/";
+                $field["render_img"] = base_url()."images/$img_path/s100/";
                 break;
             case 'status':
                 $field["className"] = 'text-center';
