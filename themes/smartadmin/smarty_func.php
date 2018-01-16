@@ -149,7 +149,18 @@ class smartadmin_ui
         if (strlen($name) < 1)
             return NULL;
 
-        $value = isset($params['value']) ? $params['value'] : NULL;
+        $field = isset($params['field']) ? $params['field'] : NULL;
+        if( empty($field) ){
+            $fields = get_instance()->smarty->getTemplateVars("fields");
+            if( array_key_exists($name,$fields) ){
+                $field = $fields[$name];
+                $value = isset($field['value']) ? $field['value'] : NULL;
+            }
+        } else {
+            $value = isset($params['value']) ? $params['value'] : NULL;
+        }
+
+
 
         $html = '<input type="hidden" name="' . $name . '" value="' . $value . '" >';
         return $html;
@@ -371,13 +382,15 @@ class smartadmin_ui
 
                 $current_uri = uri_string();
                 //if (strpos(uri_string(), strval($m1->uri), 0) !== false ) {
-                if( strlen($m1->uri) > 0 AND substr($current_uri, 0, strlen($m1->uri)) == $m1->uri ) {
+                if(
+                    strlen($m1->uri) > 0
+                    AND substr($current_uri, 0, strlen($m1->uri)) == $m1->uri
+                    //&& strpos($m1->uri, $current_uri) >=0
+                ) {
                     $html .= '<li class="active" >';
                 } else {
                     $html .= '<li>';
                 }
-
-
 
                 $submenus = $db->from('menus')
                     ->where(array(
@@ -398,7 +411,10 @@ class smartadmin_ui
                             $label = $m2->name;
                         }
                         $actived = NULL;
-                        if(  $current_uri == $m2->uri ) {
+                        if(  $current_uri == $m2->uri
+                            //|| strpos($m2->uri,$current_uri)>0
+                            || substr($current_uri, 0, strlen($m2->uri)) == $m2->uri
+                        ) {
                             $actived = 'class="active"';
                         }
                         $html .= "<li $actived>" . anchor($m2->uri, $label) . "</li>";

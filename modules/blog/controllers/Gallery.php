@@ -15,7 +15,7 @@ class Gallery extends MX_Controller
     var $table_fields = array(
         'id'=>array("#",5,true,'text-center'),
         'image'=>array("Image"),
-        'category'=>array("Category"),
+        'category_name'=>array("Category"),
         'actions'=>array(),
     );
     function items(){
@@ -76,71 +76,23 @@ class Gallery extends MX_Controller
      */
 
     public function category($action=NULL,$id=0){
-        add_site_structure('position',lang("Category Management") );
-        $this->positionFields = $this->Member_Model->positionFields();
+        add_site_structure('category',lang("Category Management") );
+        $this->load->module('backend/category');
+        $this->category->fields["type"]["value"] = "gallery";
+        $this->category->fields["parent"]["type"] = "hidden";
+        $this->category->fields["description"]["type"] = "hidden";
         if( strlen($action) > 0 ){
-            if( in_array($action,['edit','new','add']) ){
-                return $this->positionForm($id);
+            if( method_exists($this->category, $action) ){
+                return $this->category->$action($id);
+            } elseif( in_array($action,['edit','new','add']) ){
+                return $this->category->form($id);
             } else {
                 show_404();
             }
         } else {
-            return  $this->member->positionTable();
+            return  $this->category->items();
         }
     }
 
-    var $formPositionView = "backend/form";
-    public function positionForm($id=0){
 
-        if ($this->input->post()) {
-
-            $formdata = array();
-
-            foreach ($this->positionFields as $name => $field) {
-                $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
-            }
-
-            $add = $this->Member_Model->positionUpdate($formdata);
-            if( $add ){
-                set_error(lang('Success.'));
-                $newUri = url_to_edit(null,$add);
-                if( input_post('back') ){
-                    $newUri = url_to_list();
-                }
-                return redirect($newUri, 'refresh');
-            }
-
-        } else if( $id > 0 ) {
-            $item = $this->Member_Model->getPositionById($id);
-            foreach ($this->positionFields AS $field=>$val){
-                if( isset($item->$field) ){
-                    $this->positionFields[$field]['value']=$item->$field;
-                }
-            }
-        }
-        if( $id > 0 ){
-            set_temp_val('formTitle',lang("Edit") );
-        } else {
-            set_temp_val('formTitle',lang("Add new") );
-        }
-
-        temp_view($this->formPositionView,['fields' => $this->positionFields]);
-    }
-
-    var $postionTableFields = array(
-        'id'=>array("#",5,true,'text-center'),
-        'title'=>array("Title"),
-        'summary'=>array("Summary"),
-        'actions'=>array(),
-    );
-    function positionTable(){
-
-        if( $this->uri->extension =='json' ){
-            return $this->Member_Model->positions_json();
-        }
-
-        $data = columns_fields($this->postionTableFields);
-
-        $this->template->build('backend/datatables',$data);
-    }
 }

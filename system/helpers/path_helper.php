@@ -93,7 +93,7 @@ function mkdir_full($path,$mode = 0655) {
             continue;
         }
         $rebuild .= "/$p";
-
-        if(!is_dir($rebuild)) mkdir($rebuild,$mode);
+        if(!is_dir($rebuild))
+            mkdir($rebuild,$mode);
     }
 }

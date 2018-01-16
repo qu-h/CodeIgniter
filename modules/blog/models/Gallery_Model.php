@@ -33,6 +33,7 @@ class Gallery_Model extends CI_Model
     function fields()
     {
         $fields = $this->testimonial_fields;
+        $fields["category"]['options'] = $this->Category_Model->load_options("gallery");
         return $fields;
     }
 
@@ -70,9 +71,8 @@ class Gallery_Model extends CI_Model
     }
 
     function items_json(){
-        $this->db->select('m.*');
-
-        $this->db->where("m.status <>",-1);
+        $this->db->select('m.*')->where("m.status <>",-1);
+        $this->db->join("category AS c",'c.id = m.category','LEFT')->select("c.name AS category_name");
         $this->db->order_by('m.id ASC');
         $query = $this->db->get($this->table." AS m");
         $items = array();

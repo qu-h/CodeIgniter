@@ -10,6 +10,7 @@ class Category extends MX_Controller
         $this->load->module('layouts');
         $this->template->set_theme('smartadmin')->set_layout('main');
         $this->load->model('backend/Category_Model');
+        $this->fields = $this->Category_Model->fields();
 
     }
 
@@ -23,40 +24,13 @@ class Category extends MX_Controller
 
     function items()
     {
-        $items = $this->Category_Model->items_listview(0);
+        $items = $this->Category_Model->items_listview($this->fields["type"]["value"]);
         $data = columns_fields($this->table_fields);
         $data['categories'] = $items;
         $this->template
             ->title(lang('welcome_to') . ' ' . config_item('company_name'))
             ->build('backend/categories', $data);
     }
-
-    var $fields = array(
-        'id' => array(
-            'type' => 'hidden'
-        ),
-        'name' => array(
-            'label' => 'Category Name',
-            'desc' => null,
-            'icon' => 'send'
-        ),
-        'alias' => array(
-            'label' => 'Category Alias',
-            'desc' => null,
-            'icon' => 'link'
-        ),
-        'parent' => array(
-            'type' => 'select',
-            'icon' => 'list'
-        ),
-        'summary'=>array(
-            'type' => 'textarea',
-            'editor'=>'form-control'
-        ),
-        'description' => array(
-            'type' => 'textarea'
-        )
-    );
 
     public function form($id = 0)
     {

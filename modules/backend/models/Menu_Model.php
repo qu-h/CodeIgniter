@@ -23,6 +23,14 @@ class Menu_Model extends CI_Model
             'type' => 'select',
             'icon' => 'list'
         ),
+//        'summary'=>array(
+//            'type' => 'textarea',
+//            'editor'=>'form-control'
+//        ),
+//        'content' => array(
+//            'type' => 'textarea'
+//        ),
+
         'status' => array(
             'type' => 'publish',
             'value'=>1

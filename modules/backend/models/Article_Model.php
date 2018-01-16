@@ -153,7 +153,7 @@ class Article_Model extends CI_Model {
 
     }
 
-    public function getAll($category_id=0,$limit=10){
+    public function getAll($category_id=0,$return_array=false,$limit=10){
 	    $this->db->select("a.title, a.imgthumb, a.alias, a.summary");
 	    $this->db->select("a.category AS category_id");
         $this->db->where('a.status', 1)->from($this->table." AS a");
@@ -162,7 +162,8 @@ class Article_Model extends CI_Model {
         if( $limit > 0 ){
             $this->db->limit($limit);
         }
-        return $this->db->get()->result();
+        $query = $this->db->get();
+        return $return_array ? $query->result_array() : $query->result();
     }
 
 }
