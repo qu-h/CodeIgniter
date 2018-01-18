@@ -117,6 +117,7 @@ class Crawler extends MX_Controller
                 case '':
                     break;
             }
+            $content[] = null;
         }
 
         return $content;
