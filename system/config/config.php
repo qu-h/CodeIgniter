@@ -385,11 +385,17 @@ $config['encryption_key'] = '';
 $config['sess_driver'] = 'files';
 $config['sess_table_name']      = 'ci_sessions';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
-$config['sess_match_ip'] = FALSE;
-$config['sess_time_to_update'] = 300;
+$config['sess_expiration'] = 604800;
+//$config['sess_save_path'] = NULL;
+$config['sess_save_path'] = APPPATH.'/'.'ci_sessions';
+$config['sess_expire_on_close'] = FALSE;
+$config['sess_encrypt_cookie']  = FALSE;
+$config['sess_match_ip'] = TRUE;
+$config['sess_match_useragent'] = TRUE;
+$config['sess_time_to_update'] = 604800;
 $config['sess_regenerate_destroy'] = FALSE;
+$config['sess_use_database']    = TRUE;
+$config['sess_table_name']      = 'ci_sessions';
 
 // $config['sess_expire_on_close'] = FALSE;
 // $config['sess_encrypt_cookie']  = FALSE;
@@ -411,10 +417,13 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= 'sasasw';
-$config['cookie_domain']	= 'localhost';
+$config['cookie_prefix']	= 'sasasdsdssw';
+//$config['cookie_domain']	= 'lamdongbank.backend.loc';
+$config['cookie_domain'] = str_replace("http://","",str_replace("https://","", $config['base_url']));
+$config['cookie_domain'] = str_replace(["/"],null,$config['cookie_domain']);
+
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
+$config['cookie_secure']	= true;
 $config['cookie_httponly'] 	= TRUE;
 
 /*

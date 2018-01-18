@@ -161,7 +161,6 @@ class Article_Model extends CI_Model {
 
 	public function item_delete($id=0){
         $this->db->where('id',$id)->update($this->table,['status'=>-1]);
-
     }
 
     public function getAll($category_id=0,$return_array=false,$limit=10){

@@ -5,9 +5,23 @@ if ( !function_exists('set_error')) {
     {
         if ( $msg ) {
             $session = get_instance()->session;
-            $_SESSION['error'] = "aaaaa";
+            //$_SESSION['error'] = "aaaaa";
+            //$session->mark_as_flash('error');
+            //$session->flashdata('error');
+            //$session->set_flashdata(['error'=>$msg]);
+            $session->set_userdata("error",$msg);
             $session->mark_as_flash('error');
-            $session->set_flashdata('error', $msg);
+            //$_SESSION["aaa"] = "bbb";
+        }
+    }
+
+    function set_success($msg = NULL)
+    {
+        if ( $msg ) {
+            $session = get_instance()->session;
+            $session->mark_as_flash('success');
+            $session->set_flashdata('success', $msg);
+
         }
     }
 }

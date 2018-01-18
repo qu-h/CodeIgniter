@@ -688,6 +688,7 @@
 			<!-- MAIN CONTENT -->
 			<div id="content">
                 {if isset($page_header)}{$page_header}{/if}
+                {notification}
                 {$_body}
 			</div>
     </div>

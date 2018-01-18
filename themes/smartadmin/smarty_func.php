@@ -35,11 +35,15 @@ class smartadmin_ui
     static function notification($params = null)
     {
         $html = NULL;
-
         $session = get_instance()->session;
+
         if ($session->flashdata('error')) {
             $html .= self::msg(array(
                 'content' => $session->flashdata('error')
+            ));
+        } else if ($session->flashdata('success')) {
+            $html .= self::msg(array(
+                'content' => $session->flashdata('success')
             ));
         }
 
@@ -491,7 +495,7 @@ class smartadmin_ui
         $editor = isset($params['editor']) ? $params['editor'] : "ckeditor";
 
         $params['html'] = '<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
-											<input type="text" name="request" placeholder="'.$label.'" class="datepicker" data-dateformat=\'dd/mm/yy\'>
+											<input type="text" name="'.$name.'" placeholder="'.$label.'" class="datepicker" data-dateformat=\'dd/mm/yy\'>
 										</label>';
         return self::input_lable($params);
     }

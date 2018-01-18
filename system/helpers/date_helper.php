@@ -119,7 +119,24 @@ if ( ! function_exists('mdate'))
 		return date($datestr, $time);
 	}
 }
+if ( ! function_exists('mysqldate'))
+{
+    function mysqldate($time = '')
+    {
+       if (empty($time))
+        {
+            $time = now();
+        }
 
+        if( !is_numeric($time) ){
+            $time = strtotime($time);
+        }
+
+        $datestr = "Y-m-d";
+
+        return date($datestr, $time);
+    }
+}
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('standard_date'))
