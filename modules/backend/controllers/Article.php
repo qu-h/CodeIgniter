@@ -24,6 +24,7 @@ class Article extends MX_Controller {
         /*
         $js = add_js('test.js');
         */
+
         if( $this->uri->extension =='json' ){
             return $this->items_json_data(array_keys($this->table_fields));
         }

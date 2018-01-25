@@ -22,11 +22,35 @@ class User_Model extends CI_Model
     function __construct(){
         parent::__construct();
         $this->load->database();
+        $this->createTable();
     }
 
     function fields()
     {
         return $this->user_fields;
+    }
+
+    private function createTable(){
+        if (!$this->db->table_exists($this->table) )
+        {
+            $sql_create = "CREATE TABLE `user` (
+                  `id` int(11) NOT NULL,
+                  `username` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+                  `fullname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                  `password` varchar(50) NULL,
+                  `address` text COLLATE utf8_unicode_ci NOT NULL,
+                  `district` text COLLATE utf8_unicode_ci NOT NULL,
+                  `city` text COLLATE utf8_unicode_ci NOT NULL,
+                  `phone` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+                  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                  `status` tinyint(2) NOT NULL DEFAULT '1'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+
+            $this->db->query($sql_create);
+
+            $this->db->query("ALTER TABLE `".$this->table."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `Username_UNIQUE` (`username`);");
+            $this->db->query("ALTER TABLE `".$this->table."` MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;");
+        }
     }
 
     public function item_delete($id=0){

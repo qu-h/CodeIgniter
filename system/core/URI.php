@@ -148,6 +148,7 @@ class CI_URI {
 	 * @param 	string	$str
 	 * @return	void
 	 */
+    var $extension = "html";
 	protected function _set_uri_string($str)
 	{
 		// Filter out control characters and trim slashes
@@ -156,7 +157,16 @@ class CI_URI {
 		if ($this->uri_string !== '')
 		{
 			// Remove the URL suffix, if present
-			if (($suffix = (string) $this->config->item('url_suffix')) !== '')
+            if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), array('json','xml')) ){
+                $this->extension = $ext;
+                $ext = ".".$this->extension;
+                $slen = strlen($ext);
+                if (substr($this->uri_string, -$slen) === $ext)
+                {
+                    $this->uri_string = substr($this->uri_string, 0, -$slen);
+                }
+            }
+            else if (($suffix = (string) $this->config->item('url_suffix')) !== '')
 			{
 				$slen = strlen($suffix);
 
