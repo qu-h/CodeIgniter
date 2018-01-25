@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -102,7 +102,7 @@ if ( ! function_exists('character_limiter'))
 		}
 
 		// a bit complicated, but faster than preg_replace with \s+
-		$str = preg_replace('/ {2,}/', ' ', str_replace(array("\r", "\n", "\t", "\x0B", "\x0C"), ' ', $str));
+		$str = preg_replace('/ {2,}/', ' ', str_replace(array("\r", "\n", "\t", "\v", "\f"), ' ', $str));
 
 		if (mb_strlen($str) <= $n)
 		{
@@ -138,7 +138,10 @@ if ( ! function_exists('ascii_to_entities'))
 	function ascii_to_entities($str)
 	{
 		$out = '';
-		for ($i = 0, $s = strlen($str) - 1, $count = 1, $temp = array(); $i <= $s; $i++)
+		$length = defined('MB_OVERLOAD_STRING')
+			? mb_strlen($str, '8bit') - 1
+			: strlen($str) - 1;
+		for ($i = 0, $count = 1, $temp = array(); $i <= $length; $i++)
 		{
 			$ordinal = ord($str[$i]);
 
@@ -176,7 +179,7 @@ if ( ! function_exists('ascii_to_entities'))
 					$temp = array();
 				}
 				// If this is the last iteration, just output whatever we have
-				elseif ($i === $s)
+				elseif ($i === $length)
 				{
 					$out .= '&#'.implode(';', $temp).';';
 				}
@@ -398,27 +401,15 @@ if ( ! function_exists('convert_accented_characters'))
 
 		if ( ! is_array($array_from))
 		{
-		    $foreign_characters_using = array();
-		    if (file_exists(BASEPATH.'config/foreign_chars.php'))
-		    {
-		        include(BASEPATH.'config/foreign_chars.php');
-		        $foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
-		    }
-
 			if (file_exists(APPPATH.'config/foreign_chars.php'))
 			{
 				include(APPPATH.'config/foreign_chars.php');
-				include(BASEPATH.'config/foreign_chars.php');
-				$foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
 			}
 
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php'))
 			{
 				include(APPPATH.'config/'.ENVIRONMENT.'/foreign_chars.php');
-				include(BASEPATH.'config/foreign_chars.php');
-				$foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
 			}
-			$foreign_characters = $foreign_characters_using;
 
 			if (empty($foreign_characters) OR ! is_array($foreign_characters))
 			{
@@ -573,21 +564,4 @@ if ( ! function_exists('ellipsize'))
 
 		return $beg.$ellipsis.$end;
 	}
-}
-
-setlocale(LC_ALL, 'en_US.UTF8');
-function toAscii($str, $replace=array(), $delimiter='-') {
-    if( !empty($replace) ) {
-        $str = str_replace((array)$replace, ' ', $str);
-    }
-
-    $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-    
-    //$clean = preg_replace("/[^a-zA-Z0-9/_|+ -]/", '', $clean);
-    $clean = preg_replace("/[^a-zA-Z0-9|+ -]/", '', $clean);
-    $clean = strtolower(trim($clean, '-'));
-    //$clean = preg_replace("/[/_|+ -]+/", $delimiter, $clean);
-    $clean = preg_replace("/[|+ -]+/", $delimiter, $clean);
-
-    return $clean;
 }

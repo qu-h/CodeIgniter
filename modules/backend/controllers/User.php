@@ -30,10 +30,6 @@ class User extends MX_Controller {
         }
         
 //        $this->load->module('layouts')->library('layouts/template');
-    	$this->template
-    	->title( lang('welcome_to').' '.config_item('company_name') )
-    	->set_theme('smartadmin')
-    	->set_layout('login_layout')
-    	->build('backend/user_login');
+    	$this->template->build('backend/user_login');
     }
 }

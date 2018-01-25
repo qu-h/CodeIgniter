@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH') ) exit( 'No direct script access allowed' );
 
 // require_once( BASEPATH.'third_party/Smarty-3/SmartyBC.class.php' );
-require_once( BASEPATH.'third_party/Smarty_3/SmartyBC.class.php' );
+require_once( BASEPATH.'../application/third_party/Smarty_3/SmartyBC.class.php' );
 
 class CI_Smarty extends SmartyBC {
 

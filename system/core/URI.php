@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -96,7 +96,6 @@ class CI_URI {
 	 *
 	 * @return	void
 	 */
-	var $extension = 'html';
 	public function __construct()
 	{
 		$this->config =& load_class('Config', 'core');
@@ -156,18 +155,11 @@ class CI_URI {
 
 		if ($this->uri_string !== '')
 		{
-		    // Remove the URL suffix, if present
-		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), array('json','xml')) ){
-		        $this->extension = $ext;
-		        $ext = ".".$this->extension;
-		        $slen = strlen($ext);
-		        if (substr($this->uri_string, -$slen) === $ext)
-		        {
-		            $this->uri_string = substr($this->uri_string, 0, -$slen);
-		        }
-		    } elseif (($suffix = (string) $this->config->item('url_suffix')) !== '') {
-
+			// Remove the URL suffix, if present
+			if (($suffix = (string) $this->config->item('url_suffix')) !== '')
+			{
 				$slen = strlen($suffix);
+
 				if (substr($this->uri_string, -$slen) === $suffix)
 				{
 					$this->uri_string = substr($this->uri_string, 0, -$slen);

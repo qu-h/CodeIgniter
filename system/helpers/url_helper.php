@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -63,15 +63,7 @@ if ( ! function_exists('site_url'))
 	 */
 	function site_url($uri = '', $protocol = NULL)
 	{
-		$url = get_instance()->config->site_url($uri, $protocol);
-		$base_url = get_instance()->config->item('base_url');
-		$index_page = get_instance()->config->item('index_page');
-
-		$url_check = str_replace(array($base_url,$index_page), NULL, $url);
-		if( strlen($url_check) < 3 ){
-		    $url = "javascript:void(0);";
-		}
-		return $url;
+		return get_instance()->config->site_url($uri, $protocol);
 	}
 }
 
@@ -401,7 +393,7 @@ if ( ! function_exists('auto_link'))
 	function auto_link($str, $type = 'both', $popup = FALSE)
 	{
 		// Find and replace any URLs.
-		if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[^\s()<>;]+\w#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER))
+		if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[a-z0-9]+(-+[a-z0-9]+)*(\.[a-z0-9]+(-+[a-z0-9]+)*)+(/([^\s()<>;]+\w)?/?)?#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER))
 		{
 			// Set our target HTML if using popup links.
 			$target = ($popup) ? ' target="_blank"' : '';
@@ -506,12 +498,6 @@ if ( ! function_exists('url_title'))
 		);
 
 		$str = strip_tags($str);
-
-		if( !function_exists('convert_accented_characters') ){
-		    get_instance()->load->helper('text');
-		}
-		$str = convert_accented_characters($str);
-
 		foreach ($trans as $key => $val)
 		{
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);
@@ -521,7 +507,7 @@ if ( ! function_exists('url_title'))
 		{
 			$str = strtolower($str);
 		}
-		//$str = toAscii($str);
+
 		return trim(trim($str, $separator));
 	}
 }
@@ -581,53 +567,3 @@ if ( ! function_exists('redirect'))
 		exit;
 	}
 }
-
-if ( !function_exists('is_uri') ):
-function is_uri($url=null){
-    if($url==NULL) return false;
-
-    $protocol = '(http://|https://)';
-    $allowed = '([a-z0-9]([-a-z0-9]*[a-z0-9]+)?)';
-
-    $regex = "^". $protocol . // must include the protocol
-    '(' . $allowed . '{1,63}\.)+'. // 1 or several sub domains with a max of 63 chars
-    '[a-z]' . '{2,6}'; // followed by a TLD
-    if(preg_match("/^http/", $url)) return true;
-    else return false;
-}
-endif;
-
-if ( !function_exists('url_to_edit') ):
-    function url_to_edit($uri=null,$editId=0) {
-        $editId = intval($editId);
-        if( !$uri ){
-            $uri = uri_string();
-        }
-        $ci = get_instance();
-        $uri_length = $ci->uri->total_segments();
-        $is_add = $ci->uri->rsegment($uri_length-1);
-
-        if( $editId > 0 && ( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' )){
-            $uri = str_replace(["/add"],'/edit',$uri);
-            $uri .= "/$editId";
-        }
-
-
-        return $uri;
-    }
-
-    function url_to_list(){
-        $ci = get_instance();
-        $uri_length = $ci->uri->total_segments();
-        $action = $ci->uri->rsegment($uri_length-1);
-        $uri = uri_string();
-
-        if( in_array($action,['delete','edit','add']) ){
-            $uri = "";
-            for ($i=1;$i < $uri_length-1 ;$i++){
-                $uri .= $ci->uri->rsegment($i).DS;
-            }
-        }
-        return $uri;
-    }
-endif;

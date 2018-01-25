@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -157,14 +157,15 @@ class CI_Exceptions {
 	public function show_error($heading, $message, $template = 'error_general', $status_code = 500)
 	{
 		$templates_path = config_item('error_views_path');
+
+        if (empty($templates_path))
+        {
+            $templates_path = BASEPATH.'../application/views/errors'.DIRECTORY_SEPARATOR;
+        }
+
 		if (empty($templates_path))
 		{
-			if( realpath(VIEWPATH.'errors'.DIRECTORY_SEPARATOR) ){
-			    $templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
-			} else {
-			    $templates_path = BASEPATH.'views'.DIRECTORY_SEPARATOR.'errors'.DIRECTORY_SEPARATOR;
-			}
-
+			$templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
 		}
 
 		if (is_cli())
@@ -184,6 +185,7 @@ class CI_Exceptions {
 			ob_end_flush();
 		}
 		ob_start();
+
 		include($templates_path.$template.'.php');
 		$buffer = ob_get_contents();
 		ob_end_clean();
@@ -197,14 +199,16 @@ class CI_Exceptions {
 		$templates_path = config_item('error_views_path');
 		if (empty($templates_path))
 		{
-			if( realpath(VIEWPATH.'errors'.DIRECTORY_SEPARATOR) ){
-			    $templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
-			} else {
-			    $templates_path = BASEPATH.'views'.DIRECTORY_SEPARATOR.'errors'.DIRECTORY_SEPARATOR;
-			}
+			$templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
 		}
 
-		$message = $exception->getMessage();
+        if ( !is_dir($templates_path))
+        {
+            $templates_path = BASEPATH.'../application/views/errors'.DIRECTORY_SEPARATOR;
+        }
+
+
+        $message = $exception->getMessage();
 		if (empty($message))
 		{
 			$message = '(null)';
@@ -216,9 +220,9 @@ class CI_Exceptions {
 		}
 		else
 		{
-			set_status_header(500);
 			$templates_path .= 'html'.DIRECTORY_SEPARATOR;
 		}
+
 
 		if (ob_get_level() > $this->ob_level + 1)
 		{
@@ -241,21 +245,19 @@ class CI_Exceptions {
 	 * @param	string	$message	Error message
 	 * @param	string	$filepath	File path
 	 * @param	int	$line		Line number
-	 * @return	string	Error page output
+	 * @return	void
 	 */
 	public function show_php_error($severity, $message, $filepath, $line)
 	{
 		$templates_path = config_item('error_views_path');
 		if (empty($templates_path))
 		{
-		    if( realpath(VIEWPATH.'errors'.DIRECTORY_SEPARATOR) ){
-		        $templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
-		    } else {
-		        $templates_path = BASEPATH.'views'.DIRECTORY_SEPARATOR.'errors'.DIRECTORY_SEPARATOR;
-		    }
-
+			$templates_path = VIEWPATH.'errors'.DIRECTORY_SEPARATOR;
 		}
 
+		if( !is_dir($templates_path) ){
+            $templates_path = BASEPATH.'../application/views/errors'.DIRECTORY_SEPARATOR;
+        }
 		$severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
 
 		// For safety reasons we don't show the full file path in non-CLI requests

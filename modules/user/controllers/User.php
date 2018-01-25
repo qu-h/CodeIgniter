@@ -10,7 +10,48 @@ class User extends MX_Controller
         $this->load->module('layouts');
         $this->template->set_theme('smartadmin')->set_layout('main');
         $this->fields = $this->User_Model->fields();
+        $this->load->library('Session');
     }
+
+    function login(){
+
+        if ($this->session->userdata('user_id')) {
+            redirect('', 'location');
+        }
+
+        if ($this->input->post()) {
+
+            $post = array(
+                'username' => input_post('username'),
+                'password' => input_post('password')
+            );
+            $remember = input_post("remember");
+
+            $login = $this->User_Model->checklogin($post);
+
+            if ($login != NULL) {
+
+                if ($this->uri->segment(2)) {
+                    $back = base64_decode($this->uri->segment(2));
+                } else {
+                    $back = '';
+                }
+                $this->session->set_userdata('user_id', $login->id);
+
+
+                redirect($back, 'location');
+            }
+            bug($login);
+        }
+
+        $this->template->set_layout('smartadmin_login');
+        $this->template->build('user/login');
+    }
+
+    public function logout(){
+        $this->session->sess_destroy();
+    }
+
 
     var $table_fields = array(
         'id'=>array("#",5,true,'text-center'),

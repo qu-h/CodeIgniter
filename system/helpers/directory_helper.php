@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -99,33 +99,3 @@ if ( ! function_exists('directory_map'))
 		return FALSE;
 	}
 }
-
-if( !function_exists('check_directory') ):
-    function check_directory($fpath=NULL,$mode = 0777){
-
-        if( !is_string($fpath) OR strlen($fpath) < 3) return ;
-
-        if( !is_dir($fpath) ){
-            $forders = explode('/',$fpath);
-            $dir_check =  (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? '' : '/' ;
-
-            foreach ($forders AS $k=>$dir){
-                if( trim($dir) =='' )
-                    continue;
-
-                $parent = $dir_check;
-                $dir_check .= $dir.'/';
-
-                if( !is_dir($dir_check) ){
-                    //chmod($parent, intval($mode));
-                    mkdir($dir_check, $mode);
-                }
-            }
-        } else {
-            $dir_check = $fpath;
-        }
-
-        return realpath($dir_check);
-
-    }
-endif; //check_directory
