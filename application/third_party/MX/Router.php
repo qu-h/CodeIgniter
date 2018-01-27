@@ -122,8 +122,10 @@ class MX_Router extends CI_Router
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 
 		/* check modules */
-		foreach (Modules::$locations as $location => $offset)
+		//foreach (Modules::$locations as $location => $offset)
+        foreach (Modules::$locations as $location)
 		{
+            $offset = null;
             list($moduleCheck) = Modules::is_directory($location,$module);
             if( !empty($moduleCheck) ){
                 $module = $moduleCheck;

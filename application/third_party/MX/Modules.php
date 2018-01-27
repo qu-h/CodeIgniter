@@ -9,10 +9,10 @@ global $CFG;
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
 	APPPATH.'modules/' => '../modules/',
-	BASEPATH.'../modules/' => NULL
+	BASEPATH.'../application/modules/'
 );
 
-define('SYSTEM_MODULE_PATH', realpath(BASEPATH."../modules") );
+define('SYSTEM_MODULE_PATH', realpath(BASEPATH."../application/modules") );
 
 /* PHP5 spl_autoload */
 spl_autoload_register('Modules::autoload');
@@ -219,7 +219,7 @@ class Modules
         }
 
 
-		if ( ! empty($segments))
+		if ( !empty($segments))
 		{
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}
@@ -229,7 +229,8 @@ class Modules
 			return array($file_info["dirname"].DS, $file_info["basename"] ,null);
 		}
 
-		foreach (Modules::$locations as $location => $offset) {
+//		foreach (Modules::$locations as $location => $offset) {
+        foreach (Modules::$locations as $location) {
 
 			foreach($modules as $module => $subpath) {
                 $fullpath = $location.$module.DS.$base.$subpath;

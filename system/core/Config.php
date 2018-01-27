@@ -258,6 +258,9 @@ class CI_Config {
 
 		if (empty($uri))
 		{
+		    if( $uri === NULL ){
+                return "javascript:void(0);";
+            }
 			return $base_url.$this->item('index_page');
 		}
 
