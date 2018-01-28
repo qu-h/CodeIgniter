@@ -44,7 +44,7 @@ class User extends MX_Controller
             bug($login);
         }
 
-        $this->template->set_layout('smartadmin_login');
+        $this->template->set_layout('login');
         $this->template->build('user/login');
     }
 

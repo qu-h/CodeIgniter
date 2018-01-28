@@ -936,7 +936,12 @@ class Template
                         $reflection = new ReflectionClass($className);
                         $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
                         foreach ($methods as $plugin) {
-                            $this->_ci->smarty->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
+                            if (
+                                !isset($this->_ci->smarty->registered_plugins['function'])
+                            or  !array_key_exists($plugin->name, $this->_ci->smarty->registered_plugins['function'])) {
+                                $this->_ci->smarty->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
+                            }
+
                         }
                     }
                 }

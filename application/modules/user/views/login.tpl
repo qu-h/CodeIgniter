@@ -17,15 +17,14 @@
             <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                 <div class="well no-padding">
                     <form method="post" action="" id="login-form" class="smart-form client-form">
-                        <header>
-                            Sign In
-                        </header>
+                        <header>{lang txt="Sign In"}</header>
 
                         <fieldset>
 
                             <section>
-                                <label class="label">E-mail / Username </label>
-                                <label class="input"> <i class="icon-append fa fa-user"></i>
+                                <label class="label">{lang txt="E-mail"}/{lang txt="Username"}</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-user"></i>
                                     <input type="text" name="username">
                                     <b class="tooltip tooltip-top-right">
                                         <i class="fa fa-user txt-color-teal"></i>Please enter email address/username</b>
