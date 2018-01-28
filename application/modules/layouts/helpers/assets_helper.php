@@ -108,3 +108,8 @@ function add_asset($file=NULL,$folder=''){
 
     }
 }
+
+function theme_url($file=""){
+    $ci = get_instance();
+    return $ci->config->item('theme_url')."".$file;
+}

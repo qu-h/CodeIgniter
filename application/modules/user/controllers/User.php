@@ -11,6 +11,22 @@ class User extends MX_Controller
         $this->template->set_theme('smartadmin')->set_layout('main');
         $this->fields = $this->User_Model->fields();
         $this->load->library('Session');
+
+        $this->uid = $this->session->userdata('user_id');
+    }
+
+    function checkLogin($uriControl=""){
+        if ( $this->uid ) {
+            $user = $this->User_Model->get_item_by_id($this->uid);
+            if( strlen($user->avatar) < 1 ){
+                $user->avatar = theme_url("img/avatars/male.png");
+            }
+            set_temp_val("user",(array)$user);
+        } else {
+//            if ($this->uri->segment(2) != 'login') {
+//                redirect('admin/login/' . base64url_encode($this->uri->uri_string()), 'location');
+//            }
+        }
     }
 
     function login(){

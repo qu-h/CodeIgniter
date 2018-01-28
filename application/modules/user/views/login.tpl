@@ -32,28 +32,26 @@
                             </section>
 
                             <section>
-                                <label class="label">Password</label>
+                                <label class="label">{lang txt="Password"}</label>
                                 <label class="input"> <i class="icon-append fa fa-lock"></i>
                                     <input type="password" name="password">
                                     <b class="tooltip tooltip-top-right">
-                                        <i class="fa fa-lock txt-color-teal"></i> Enter your password
+                                        <i class="fa fa-lock txt-color-teal"></i> {lang txt="Enter your password"}
                                     </b>
                                 </label>
                                 <div class="note">
-                                    <a href="#">Forgot password?</a>
+                                    <a href="#">{lang txt="Forgot password"}?</a>
                                 </div>
                             </section>
 
                             <section>
                                 <label class="checkbox">
                                     <input type="checkbox" name="remember" checked="">
-                                    <i></i>Stay signed in</label>
+                                    <i></i>{lang txt="Stay signed in"}</label>
                             </section>
                         </fieldset>
                         <footer>
-                            <button type="submit" class="btn btn-primary">
-                                Sign in
-                            </button>
+                            <button type="submit" class="btn btn-primary">{lang txt="Sign in"}</button>
                         </footer>
                     </form>
 
@@ -83,11 +81,11 @@
             // Messages for form validation
             messages: {
                 email: {
-                    required: 'Please enter your email address',
-                    email: 'Please enter a VALID email address'
+                    required: '{lang txt="Please enter your email address"}',
+                    email: '{lang txt="Please enter a VALID email address"}'
                 },
                 password: {
-                    required: 'Please enter your password'
+                    required: '{lang txt="Please enter your password"}'
                 }
             },
 

@@ -2,7 +2,7 @@
 
 $domain = "//codeigniter.loc/themes/smartadmin";
 
-$config['theme_url'] = "//codeigniter.loc/themes/smartadmin";
+$config['theme_url'] = "http://codeigniter.loc/themes/smartadmin/";
 
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
@@ -50,14 +50,11 @@ $config['js'] = array(
     "$domain/js/app.min.js",
     "$domain/js/demo.min.js",
 
-
     "$domain/js/speech/voicecommand.min.js",
 
     //SmartChat UI : plugin
     "$domain/js/smart-chat-ui/smart.chat.ui.min.js",
     "$domain/js/smart-chat-ui/smart.chat.manager.min.js",
-
-
 
     "$domain/js/plugin/datatables/jquery.dataTables.min.js",
     "$domain/js/plugin/datatables/dataTables.colVis.min.js",

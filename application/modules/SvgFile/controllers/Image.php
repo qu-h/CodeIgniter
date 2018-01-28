@@ -25,7 +25,8 @@ class Image extends MX_Controller
                 'height' => $height,
                 'text'=>$width . "x" . $height,
         );
-
+        header('Content-type: image/svg+xml');
         $this->load->view('image-thumb', $data);
+
     }
 }

@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="">
 
     {assets type='css'}
-    {assets type='js'}
+    {*assets type='js'*}
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -18,88 +18,34 @@
 <body>
 <header id="header">
     <div id="logo-group">
-
         <!-- PLACE YOUR LOGO HERE -->
         <span id="logo"> {img file="images/logo.png" alt="" }</span>
         <!-- END LOGO PLACEHOLDER -->
 
-        <!-- Note: The activity badge color changes when clicked and resets the number to 0
-        Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-        <span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
-
-        <!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
-        <div class="ajax-dropdown">
-
-            <!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
-            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                <label class="btn btn-default">
-                    <input type="radio" name="activity" id="ajax/notify/mail.html">
-                    Msgs (14) </label>
-                <label class="btn btn-default">
-                    <input type="radio" name="activity" id="ajax/notify/notifications.html">
-                    notify (3) </label>
-                <label class="btn btn-default">
-                    <input type="radio" name="activity" id="ajax/notify/tasks.html">
-                    Tasks (4) </label>
-            </div>
-
-            <!-- notification content -->
-            <div class="ajax-notifications custom-scroll">
-
-                <div class="alert alert-transparent">
-                    <h4>Click a button to show messages here</h4>
-                    This blank page message helps protect your privacy, or you can show the first message here automatically.
-                </div>
-
-                <i class="fa fa-lock fa-4x fa-border"></i>
-
-            </div>
-            <!-- end notification content -->
-
-            <!-- footer: refresh area -->
-            <span> Last updated on: 12/12/2013 9:43AM
-						<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
-							<i class="fa fa-refresh"></i>
-						</button> </span>
-            <!-- end footer -->
-
-        </div>
+        {*
+        Note: The activity badge color changes when clicked and resets the number to 0
+        Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications
+        *}
+        {if isset($header.activities)}
+            {include file="block/activity-dropdown.tpl"}
+        {/if}
         <!-- END AJAX-DROPDOWN -->
     </div>
 
-    <!-- projects dropdown -->
-    <div class="project-context hidden-xs">
-
-        <span class="label">Projects:</span>
-        <span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
-
-        <!-- Suggestion: populate this list with fetch and push technique -->
-        <ul class="dropdown-menu">
-            <li>
-                <a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);">Notes on pipeline upgradee</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);">Assesment Report for merchant account</a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
-            </li>
-        </ul>
-        <!-- end dropdown-menu-->
-
-    </div>
-    <!-- end projects dropdown -->
+    {if isset($header.project)}
+        {include file="block/project-dropdown.tpl"}
+    {/if}
 
     <!-- pulled right: nav area -->
     <div class="pull-right">
 
         <!-- collapse menu button -->
         <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            <span>
+                <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu">
+                    <i class="fa fa-reorder"></i>
+                </a>
+            </span>
         </div>
         <!-- end collapse menu -->
 
@@ -108,8 +54,7 @@
         <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
             <li class="">
                 <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
-                    {img src="images/avatars/sunny.png" alt="John Doe" class="online"}
-
+                    {img src=$user.avatar alt="{$user.fullname}" class="online"}
                 </a>
                 <ul class="dropdown-menu pull-right">
                     <li>
@@ -137,41 +82,21 @@
 
         <!-- logout button -->
         <div id="logout" class="btn-header transparent pull-right">
-            <span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+            <span>
+                <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a>
+            </span>
         </div>
         <!-- end logout button -->
 
         <!-- search mobile button (this is hidden till mobile view port) -->
         <div id="search-mobile" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+            <span><a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a></span>
         </div>
         <!-- end search mobile button -->
 
         <!-- input: search field -->
-        <form action="search.html" class="header-search pull-right">
-            <input id="search-fld"  type="text" name="param" placeholder="Find reports and more" data-autocomplete='[
-					"ActionScript",
-					"AppleScript",
-					"Asp",
-					"BASIC",
-					"C",
-					"C++",
-					"Clojure",
-					"COBOL",
-					"ColdFusion",
-					"Erlang",
-					"Fortran",
-					"Groovy",
-					"Haskell",
-					"Java",
-					"JavaScript",
-					"Lisp",
-					"Perl",
-					"PHP",
-					"Python",
-					"Ruby",
-					"Scala",
-					"Scheme"]'>
+        <form action="" class="header-search pull-right">
+            <input id="search-fld"  type="text" name="param" placeholder="{lang txt="Find reports and more"}" data-autocomplete='[]'>
             <button type="submit">
                 <i class="fa fa-search"></i>
             </button>
@@ -185,27 +110,11 @@
         </div>
         <!-- end fullscreen button -->
 
-        <!-- #Voice Command: Start Speech -->
-        <div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
-            <div>
-                <a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a>
-                <div class="popover bottom"><div class="arrow"></div>
-                    <div class="popover-content">
-                        <h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
-                        <h4 class="vc-title-error text-center">
-                            <i class="fa fa-microphone-slash"></i> Voice command failed
-                            <br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
-                            <br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
-                        </h4>
-                        <a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a>
-                        <a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end voice command -->
 
-
+        {*
+        #Voice Command: Start Speech
+        include file="block/voices-command.tpl"
+        *}
 
     </div>
     <!-- end pulled right: nav area -->
@@ -215,21 +124,19 @@
 <aside id="left-panel">
 
     <!-- User info -->
+    {if isset($user)}
     <div class="login-info">
         <span>
             <!-- User image size is adjusted inside CSS, it should stay as it -->
-
             <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-               {img file="images/avatars/sunny.png" alt="me" class="online"}
-
-                <span>
-                    john.doe
-                </span>
+               {img file=$user.avatar alt="{$user.fullname}" class="online"}
+                <span>{$user.username}</span>
                 <i class="fa fa-angle-down"></i>
             </a>
 
         </span>
     </div>
+    {/if}
     <!-- end user info -->
 
     <!-- NAVIGATION : This navigation is also responsive-->
@@ -286,20 +193,96 @@
 
     <!-- MAIN CONTENT -->
     <div id="content">
-        {if isset($page_header)}{$page_header}{/if}
+        {if isset($page_header)}
+            {$page_header}
+        {/if}
+
         {notification}
         {$_body}
     </div>
 </div>
 {include file="modal/images-manager.tpl"}
+
+
+<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+<script data-pace-options='{ "restartOnRequestAfter": true }' src="{theme_url}js/plugin/pace/pace.min.js"></script>
+
+<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    if (!window.jQuery) {
+        document.write('<script src="{theme_url}js/libs/jquery-2.1.1.min.js"><\/script>');
+    }
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script>
+    if (!window.jQuery.ui) {
+        document.write('<script src="{theme_url}js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+    }
+</script>
+<!-- IMPORTANT: APP CONFIG -->
+<script src="{theme_url}js/app.config.js"></script>
+<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+<script src="{theme_url}js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+<!-- BOOTSTRAP JS -->
+<script src="{theme_url}js/bootstrap/bootstrap.min.js"></script>
+<!-- CUSTOM NOTIFICATION -->
+<script src="{theme_url}js/notification/SmartNotification.min.js"></script>
+<!-- JARVIS WIDGETS -->
+<script src="{theme_url}js/smartwidgets/jarvis.widget.min.js"></script>
+<!-- EASY PIE CHARTS -->
+<script src="{theme_url}js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+<!-- SPARKLINES -->
+<script src="{theme_url}js/plugin/sparkline/jquery.sparkline.min.js"></script>
+<!-- JQUERY VALIDATE -->
+<script src="{theme_url}js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<!-- JQUERY MASKED INPUT -->
+<script src="{theme_url}js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+<!-- JQUERY SELECT2 INPUT -->
+<script src="{theme_url}js/plugin/select2/select2.min.js"></script>
+<!-- JQUERY UI + Bootstrap Slider -->
+<script src="{theme_url}js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+<!-- browser msie issue fix -->
+<script src="{theme_url}js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+<!-- FastClick: For mobile devices -->
+<script src="{theme_url}js/plugin/fastclick/fastclick.min.js"></script>
+
+<!--[if IE 8]>
+<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+<![endif]-->
+
+<!-- Demo purpose only -->
+<script src="{theme_url}js/demo.min.js"></script>
+<!-- MAIN APP JS FILE -->
+<script src="{theme_url}js/app.min.js"></script>
+<!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+<!-- Voice command : plugin -->
+<script src="{theme_url}js/speech/voicecommand.min.js"></script>
+<!-- SmartChat UI : plugin -->
+<script src="{theme_url}js/smart-chat-ui/smart.chat.ui.min.js"></script>
+<script src="{theme_url}js/smart-chat-ui/smart.chat.manager.min.js"></script>
+
+<!-- PAGE RELATED PLUGIN(S) -->
+
+<!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip -->
+<script src="{theme_url}js/plugin/flot/jquery.flot.cust.min.js"></script>
+<script src="{theme_url}js/plugin/flot/jquery.flot.resize.min.js"></script>
+<script src="{theme_url}js/plugin/flot/jquery.flot.time.min.js"></script>
+<script src="{theme_url}js/plugin/flot/jquery.flot.tooltip.min.js"></script>
+<!-- Vector Maps Plugin: Vectormap engine, Vectormap language -->
+<script src="{theme_url}js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="{theme_url}js/plugin/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- Full Calendar -->
+<script src="{theme_url}js/plugin/moment/moment.min.js"></script>
+<script src="{theme_url}js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>
+
 <script type="text/javascript">
     // DO NOT REMOVE : GLOBAL FUNCTIONS!
     $(document).ready(function() {
         pageSetUp();
     })
-
 </script>
-
 
 </body>
 </html>
