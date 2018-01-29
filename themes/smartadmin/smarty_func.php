@@ -308,7 +308,10 @@ class smartadmin_ui
             $value = "";
         }
         $editor = isset($params['editor']) ? $params['editor'] : "ckeditor";
-
+        if( $editor=="ckeditor" ){
+            $js = git_assets('ckeditor.js','ckeditor','4.7.3',null,false);
+            add_js($js);
+        }
         $params['html'] = '<textarea name="' . $name . '"  class="'.$editor.'">' . $value . '</textarea >';
         return self::input_lable($params);
     }

@@ -71,12 +71,15 @@ class Article extends MX_Controller {
             if( !$crawler_source ){
                 $add = $this->Article_Model->update($formdata);
                 if( $add ){
-                    set_error(lang('Success.'));
+                    set_success(lang('Success.'));
                     $newUri = url_to_edit(null,$add);
                     if( input_post('back') ){
                         $newUri = url_to_list();
                     }
                     return redirect($newUri, 'refresh');
+                } else {
+                    
+                    //return redirect(uri_string(), 'refresh');
                 }
             } else {
                 $this->load->module('crawler');

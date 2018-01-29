@@ -37,6 +37,7 @@ class User_Model extends CI_Model
                   `id` int(11) NOT NULL,
                   `username` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
                   `fullname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                  `avatar` varchar(255) NULL,
                   `password` varchar(50) NULL,
                   `address` text COLLATE utf8_unicode_ci NOT NULL,
                   `district` text COLLATE utf8_unicode_ci NOT NULL,
@@ -51,6 +52,21 @@ class User_Model extends CI_Model
             $this->db->query("ALTER TABLE `".$this->table."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `Username_UNIQUE` (`username`);");
             $this->db->query("ALTER TABLE `".$this->table."` MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;");
         }
+        $sess_db_name = $this->config->item("sess_save_path");
+        if ( $this->config->item("sess_driver") =="database" && !$this->db->table_exists($sess_db_name) )
+        {
+            $sql_create = "CREATE TABLE `$sess_db_name` (
+                  `id` varchar(128) COLLATE utf8_bin NOT NULL,
+                  `ip_address` varchar(45) COLLATE utf8_bin NOT NULL,
+                  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
+                  `data` blob NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;";
+
+            $this->db->query($sql_create);
+            $this->db->query("ALTER TABLE `$sess_db_name` ADD KEY `ci_sessions_timestamp` (`timestamp`);");
+
+        }
+
     }
 
     public function item_delete($id=0){

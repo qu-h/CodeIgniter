@@ -93,13 +93,14 @@ class Article_Model extends CI_Model {
 	        $id = $data['id'];
 	        unset($data['id']);
 	        $this->db->where('id',$id)->update($this->table,$data);
-	        return $id;
 	    } else {
 	        $this->db->insert($this->table,$data);
-	        return $this->db->insert_id();
+	        $id = $this->db->insert_id();
 	    }
-
-
+	    if( !$id ){
+	        bug($this->db->last_query());
+        }
+	    return $id;
 	}
 
 
@@ -114,7 +115,10 @@ class Article_Model extends CI_Model {
 	    ->where("category = $category")
 	    ->where('id <>',$id);
 	    $result = $this->db->get($this->table);
-        //bug($this->db->last_query());die;
+	    if( !$result ){
+            bug($this->db->last_query());die;
+        }
+
 	    return ( $result->num_rows() > 0) ? true : false;
 	}
 
@@ -126,7 +130,7 @@ class Article_Model extends CI_Model {
 	    if( $category_id !== null ){
 	        $this->db->where("a.category",$category_id);
         }
-        $this->db->where("a.status <>",-1);
+        $this->db->where("(a.status <> -1 OR a.status IS NULL)");
 //	    $this->db->order_by('a.ordering DESC');
 	    $query = $this->db->get($this->table." AS a");
         $items = array();

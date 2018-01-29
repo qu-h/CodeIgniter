@@ -75,4 +75,5 @@ $config['js'] = array(
 //$config['js'][] = "{root_assets}/bootstrap-tagsinput/bootstrap-tagsinput.js";
 $config['css'][] = git_assets('css/bootstrap-tagsinput.css','bootstrap-tagsinput');
 $config['js'][] = git_assets('js/bootstrap-tagsinput.js','bootstrap-tagsinput');
+$config['js'] = [];
 

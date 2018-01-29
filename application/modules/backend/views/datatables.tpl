@@ -107,12 +107,15 @@
 						</table>
 						{*https://datatables.net/examples/ajax/*}
 						<script type="text/javascript">
-							tables.url = '{$data_json_url}';
-							tables.columns = [{$columns_fields}];
-							$(document).ready(function() {
-								pageSetUp();
-								tables.load('table#data_ajax');
+                            $(document).ready(function() {
+                                tables.url = '{$data_json_url}';
+                                tables.columns = [{$columns_fields}];
+                                $(document).ready(function() {
+                                    pageSetUp();
+                                    tables.load('table#data_ajax');
+                                });
 							});
+
 						</script>
 						{/if}
 

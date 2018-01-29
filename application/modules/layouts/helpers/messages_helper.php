@@ -11,7 +11,6 @@ if ( !function_exists('set_error')) {
             //$session->set_flashdata(['error'=>$msg]);
             $session->set_userdata("error",$msg);
             $session->mark_as_flash('error');
-            //$_SESSION["aaa"] = "bbb";
         }
     }
 

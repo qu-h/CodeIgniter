@@ -48,10 +48,7 @@ class CI_Smarty extends SmartyBC {
 
 	function view($resource_name, $params = array())   {
 		$alang = array();
-
-
 		$data = array('view'=>$resource_name);
-
 
         if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
             $this->assign($k, $d);
@@ -72,7 +69,10 @@ class CI_Smarty extends SmartyBC {
         if( $path === FALSE) {
             // check module in application
             list($module,$moduleFullPath) = Modules::is_directory(APPPATH."/modules",$ci->router->class);
-            //bug("check find app module $module file =$resource_name");
+            if( !$moduleFullPath ){
+                list($module,$moduleFullPath) = Modules::is_directory(APPPATH."/modules",$ci->router->module);
+            }
+//            bug("check find app module: <b>$module</b> moduleFullPath=<b>$moduleFullPath</b> resource_name=<b>$resource_name</b>");
             list($path, $_view, $extension) = Modules::find($resource_name, $module , 'views/');
             if( $path != null ){
                 $_view = $_view.".".$extension;
