@@ -5049,7 +5049,7 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text {
 .flag {
   width: 16px;
   height: 11px;
-  background: url("@{base-url}/flags/flags.png") no-repeat;
+  background: url("../img/flags.png") no-repeat;
   margin-top: -0.18em;
   display: inline-block; }
 
@@ -15036,5 +15036,3 @@ body.menu-on-top.fixed-header.fixed-navigation.fixed-ribbon #ribbon {
 
 .pl-0 {
   padding-left: 0 !important; }
-
-/*# sourceMappingURL=smartadmin-production.css.map */

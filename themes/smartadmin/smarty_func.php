@@ -119,7 +119,16 @@ class smartadmin_ui
         $html .= '<label class="' . $type_input . '">';
 
         if (isset($params['icon']) && strlen($params['icon']) > 0) {
-            $html .= '<i class="icon-prepend fa fa-' . $params['icon'] . '"></i>';
+            $icon = $params['icon'];
+            if( preg_match('#^flag-#i', $icon) ) {
+                $icon = "flag $icon";
+            } else if( preg_match('#^fa-#i', $icon) ){
+                    $icon = "fa $icon";
+
+            } else {
+                $icon = "fa fa-$icon";
+            }
+            $html .= '<i class="icon-prepend ' . $icon. '"></i>';
         }
         $html .= $params['html'];
         $html .= '</label>';

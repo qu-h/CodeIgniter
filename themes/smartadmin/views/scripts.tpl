@@ -47,8 +47,7 @@
 <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
 <![endif]-->
 
-<!-- Demo purpose only -->
-<script src="{theme_url}js/demo.min.js"></script>
+
 <!-- MAIN APP JS FILE -->
 <script src="{theme_url}js/app.min.js"></script>
 <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
@@ -81,6 +80,11 @@
 <script src="{theme_url}js/plugin/datatables/dataTables.tableTools.min.js"></script>
 <script src="{theme_url}js/plugin/datatables/dataTables.bootstrap.min.js"></script>
 <script src="{theme_url}js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+{*
+<!-- Demo purpose only -->
+<script src="{theme_url}js/demo.min.js"></script>
+*}
 
 <script src="{theme_url}js/ict.js"></script>
 <script src="{theme_url}js/tables.js"></script>
