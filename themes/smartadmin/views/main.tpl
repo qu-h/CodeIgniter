@@ -6,9 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     <link rel="icon" type="image/png" href="">
-
     {assets type='css'}
     {*assets type='js'*}
 
@@ -83,7 +81,9 @@
         <!-- logout button -->
         <div id="logout" class="btn-header transparent pull-right">
             <span>
-                <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a>
+                <a href="{if isset($SignOutLink)}{$SignOutLink}{else}/logout{/if}" title="{lang txt="Sign Out"}" data-action="userLogout" data-logout-msg="{lang txt="You can improve your security further after logging out by closing this opened browser"}">
+                    <i class="fa fa-sign-out"></i>
+                </a>
             </span>
         </div>
         <!-- end logout button -->

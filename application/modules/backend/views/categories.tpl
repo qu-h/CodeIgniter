@@ -1,21 +1,13 @@
-<div class="row">
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-        <h1 class="page-title txt-color-blueDark">
-            <i class="fa fa-table fa-fw "></i>
-            Table
-            <span>>
-				Data Tables
-			</span>
-        </h1>
-    </div>
-</div>
+
 <section class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
                 <header>
-                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                    <h2>Standard Data Tables </h2>
+                    {if isset($PageTitle)}
+                        <span class="widget-icon"> <i class="fa fa-table"></i></span>
+                        <h2>{$PageTitle}</h2>
+                    {/if}
                 </header>
                 <div>
                     <div class="jarviswidget-editbox"></div>

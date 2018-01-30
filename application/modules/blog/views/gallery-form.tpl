@@ -1,5 +1,3 @@
-{notification}
-
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-sm-12 col-md-12 col-lg-12">

@@ -13,6 +13,8 @@ class User extends MX_Controller
         $this->load->library('Session');
 
         $this->uid = $this->session->userdata('user_id');
+        set_temp_val("SignOutLink","user/logout");
+//        add_site_structure('users',lang("User Management") );
     }
 
     function checkLogin($uriControl=""){
@@ -29,7 +31,7 @@ class User extends MX_Controller
         }
     }
 
-    function login(){
+    function login($uriBack=""){
 
         if ($this->session->userdata('user_id')) {
             redirect('', 'location');
@@ -46,33 +48,29 @@ class User extends MX_Controller
             $login = $this->User_Model->checklogin($post);
 
             if ($login != NULL) {
-
-                if ($this->uri->segment(2)) {
-                    $back = base64_decode($this->uri->segment(2));
-                } else {
-                    $back = '';
+                if( strlen($uriBack) < 1 && $this->uri->segment(2) ){
+                    $uriBack = base64_decode($this->uri->segment(2));
                 }
+
                 $this->session->set_userdata('user_id', $login->id);
 
 
-                redirect($back, 'location');
+                redirect($uriBack, 'location');
             }
-            bug($login);
         }
 
         $this->template->set_layout('login');
-        $this->template->build('user/login');
+        $this->template->build('login');
     }
 
     public function logout(){
         $this->session->sess_destroy();
     }
 
-
     var $table_fields = array(
         'id'=>array("#",5,true,'text-center'),
         'fullname'=>array("Fullname"),
-        'email'=>array('email'),
+        'email'=>array('Email'),
         'actions'=>array(),
     );
     function items(){
@@ -95,6 +93,7 @@ class User extends MX_Controller
                 $this->fields[$name]['value'] = $data[$name] = $this->input->post($name);
             }
             $add = $this->User_Model->update($data);
+//            die("after post");
             if( $add ){
                 set_error(lang('Success.'));
             }
@@ -116,7 +115,7 @@ class User extends MX_Controller
 
     public function profile($id=0){
         $user = $this->User_Model->get_item_by_id($id);
-        $this->template->build('user/profile');
+        $this->template->build('profile');
     }
 
 

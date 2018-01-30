@@ -31,7 +31,10 @@ function url_to_list(){
     if( in_array($action,['delete','edit','add']) ){
         $uri = "";
         for ($i=1;$i < $uri_length-1 ;$i++){
-            $uri .= $ci->uri->rsegment($i).DS;
+            $uri .= $ci->uri->rsegment($i);
+            if( $i < $uri_length - 2 ){
+                $uri .= DS;
+            }
         }
     }
     return $uri;

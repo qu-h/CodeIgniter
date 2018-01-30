@@ -85,7 +85,6 @@ class User_Model extends CI_Model
     function items_json($fields=[]){
         $this->db->select('u.id,u.fullname,u.email, u.username');
         $this->db->where("u.status <>",-1);
-//	    $this->db->order_by('a.ordering DESC');
         $query = $this->db->get($this->table." AS u");
         $items = array();
         if( !$query ){
@@ -94,7 +93,7 @@ class User_Model extends CI_Model
         foreach ($query->result() AS $ite){
 
             $ite->actions = "";
-            $ite->fullname = anchor("users/profile/".$ite->username,$ite->fullname);
+            $ite->fullname = anchor(uri_string()."/profile/".$ite->username,$ite->fullname);
             $items[] = $ite;
         }
         return jsonData(array('data'=>$items));
@@ -124,5 +123,25 @@ class User_Model extends CI_Model
         } else {
             return NULL;
         }
+    }
+
+    function update($data=NULL){
+
+        if( !isset($data['id']) || $data['id'] =="" ){
+            $data['id'] = 0;
+        }
+        $data['status'] = $data['status']=='on' ? true:false;
+
+        if( intval($data['id']) > 0 ) {
+//            $data['modified'] = date("Y-m-d H:i:s");
+            $id = $data['id'];
+            unset($data['id']);
+            $this->db->where('id',$id)->update($this->table,$data);
+
+        } else {
+            $this->db->insert($this->table,$data);
+            $id = $this->db->insert_id();
+        }
+        return $id;
     }
 }

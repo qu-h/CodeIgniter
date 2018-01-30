@@ -1,23 +1,31 @@
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-sm-12 col-md-12 col-lg-12">
-			<div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+			<div class="jarviswidget" id="wid-id-0"
+				 data-widget-colorbutton="false"
+				 data-widget-editbutton="false"
+				 data-widget-custombutton="false"
+				 data-widget-deletebutton="false"
+				 data-widget-togglebutton="false"
+			>
 				{*
 				 widget options:
 				usage: <!-- <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false"> -->
 
 				data-widget-colorbutton="false"
 				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
+
+
 				data-widget-fullscreenbutton="false"
 				data-widget-custombutton="false"
 				data-widget-collapsed="true"
 				data-widget-sortable="false"
 				*}
 				<header>
-					<span class="widget-icon"> <i class="fa fa-edit"></i></span>
-					<h2>Form Grid </h2>
+					{if isset($formTitle)}
+						<span class="widget-icon"> <i class="fa fa-edit"></i></span>
+						<h2>{$formTitle}</h2>
+					{/if}
 				</header>
 				<div>
 					<div class="jarviswidget-editbox"></div>
@@ -26,12 +34,12 @@
 							<fieldset>
 							{if isset($fields) && $fields|@count > 0}
 								{foreach $fields AS $name=>$field }
-									{inputs name=$name field=$field}
+									{inputs name=$name}
 								{/foreach}
 							{/if}
 							</fieldset>
 							<footer class="smart-form" >
-								<button class="btn btn-primary" type="submit"> Submit Form </button>
+								<button class="btn btn-primary" type="submit">{lang txt="Submit Form"}</button>
 							</footer>
 						</form>
 					</div>

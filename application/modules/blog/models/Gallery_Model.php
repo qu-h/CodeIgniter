@@ -85,4 +85,8 @@ class Gallery_Model extends CI_Model
         }
         return jsonData(array('data'=>$items));
     }
+
+    public function item_delete($id=0){
+        $this->db->where('id',$id)->update($this->table,['status'=>-1]);
+    }
 }

@@ -98,6 +98,11 @@ class CI_Hooks {
 		}
 
 		// Grab the "hooks" definition file.
+        if (file_exists(BASEPATH.'../application/config/hooks.php'))
+        {
+            include(BASEPATH.'../application/config/hooks.php');
+        }
+
 		if (file_exists(APPPATH.'config/hooks.php'))
 		{
 			include(APPPATH.'config/hooks.php');
@@ -164,6 +169,7 @@ class CI_Hooks {
 	 */
 	protected function _run_hook($data)
 	{
+
 		// Closures/lambda functions and array($object, 'method') callables
 		if (is_callable($data))
 		{
@@ -193,14 +199,17 @@ class CI_Hooks {
 		// Set file path
 		// -----------------------------------
 
-		if ( ! isset($data['filepath'], $data['filename']))
+		if ( !isset($data['filepath'], $data['filename']))
 		{
 			return FALSE;
 		}
+        if( is_file($data['filepath'].'/'.$data['filename']) ){
+		    $filepath = $data['filepath'].'/'.$data['filename'];
+        } else {
+            $filepath = APPPATH.$data['filepath'].'/'.$data['filename'];
+        }
 
-		$filepath = APPPATH.$data['filepath'].'/'.$data['filename'];
-
-		if ( ! file_exists($filepath))
+		if ( !file_exists($filepath))
 		{
 			return FALSE;
 		}

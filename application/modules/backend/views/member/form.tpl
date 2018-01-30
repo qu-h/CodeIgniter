@@ -7,7 +7,7 @@
                 {if isset($fields.id.value) && $fields.id.value > 0}
                     <header>
                         <span class="widget-icon"><i class="fa fa-edit"></i></span>
-                        <h2>{$formTitle} : <i>{$fields.name.value}</i></h2>
+                        <h2>{$formTitle} : <b>{$fields.name.value}</b></h2>
                     </header>
                 {else}
                     <header>

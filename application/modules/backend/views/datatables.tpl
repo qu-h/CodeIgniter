@@ -64,9 +64,12 @@
 
 								-->
 
+
 				<header>
+					{if isset($PageTitle)}
 					<span class="widget-icon"> <i class="fa fa-table"></i></span>
-					<h2>Standard Data Tables</h2>
+					<h2>{$PageTitle}</h2>
+					{/if}
 
 				</header>
 

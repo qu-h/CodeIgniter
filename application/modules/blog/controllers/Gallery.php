@@ -46,7 +46,7 @@ class Gallery extends MX_Controller
                 if( input_post('back') ){
                     $newUri = url_to_list();
                 }
-                return redirect($newUri, 'refresh');
+                //return redirect($newUri, 'refresh');
             }
 
         } else {
@@ -92,6 +92,12 @@ class Gallery extends MX_Controller
         } else {
             return  $this->category->items();
         }
+    }
+
+    public function delete($id=0){
+        $this->Gallery_Model->item_delete($id);
+        $newUri = url_to_list();
+        //return redirect($newUri, 'refresh');
     }
 
 
