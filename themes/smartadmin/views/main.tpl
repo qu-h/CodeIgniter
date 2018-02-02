@@ -49,6 +49,7 @@
 
         <!-- #MOBILE -->
         <!-- Top menu profile link : this shows only when top menu is active -->
+        {if isset($user)}
         <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
             <li class="">
                 <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
@@ -77,7 +78,7 @@
                 </ul>
             </li>
         </ul>
-
+        {/if}
         <!-- logout button -->
         <div id="logout" class="btn-header transparent pull-right">
             <span>

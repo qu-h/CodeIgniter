@@ -354,6 +354,8 @@ abstract class CI_DB_driver {
 	 */
 	protected $_count_string = 'SELECT COUNT(*) AS ';
 
+    public $db_log_change		= FALSE;
+
 	// --------------------------------------------------------------------
 
 	/**
@@ -371,6 +373,10 @@ abstract class CI_DB_driver {
 				$this->$key = $val;
 			}
 		}
+
+        if( $this->db_log_change ){
+            $this->create_db_log_table();
+        }
 
 		log_message('info', 'Database Driver Class Initialized');
 	}
@@ -1474,6 +1480,10 @@ abstract class CI_DB_driver {
 	 */
 	protected function _insert($table, $keys, $values)
 	{
+        if( $this->db_log_change ){
+            $this->add_log_db(['table'=>$table,'action'=>"add",'data'=>array_combine($keys, $values)]);
+        }
+
 		return 'INSERT INTO '.$table.' ('.implode(', ', $keys).') VALUES ('.implode(', ', $values).')';
 	}
 
@@ -1525,6 +1535,9 @@ abstract class CI_DB_driver {
 			$valstr[] = $key.' = '.$val;
 		}
 
+		if( $this->db_log_change ){
+		    $this->add_log_db(['table'=>$table,'action'=>"update",'data'=>$values]);
+        }
 		return 'UPDATE '.$table.' SET '.implode(', ', $valstr)
 			.$this->_compile_wh('qb_where')
 			.$this->_compile_order_by()
@@ -1988,4 +2001,43 @@ abstract class CI_DB_driver {
 	{
 	}
 
+	public function add_log_db($data=[]){
+        $data['table'] = str_replace(['`','\''],null,$data['table']);
+        if(
+            !is_array($data)
+            || !isset($data['table'])
+            || !isset($data['action'])
+            || in_array($data['table'],['db_log','ci_sessions'])
+        )
+            return FALSE;
+
+
+        $data["uri_string"] = uri_string();
+        $ci =& get_instance();
+        if( isset($ci->session) ){
+            $data['uid'] = $ci->session->userdata('user_id');
+        }
+        if ( isset($data["data"]) ){
+            $data["data"] = json_encode($data["data"]);
+        }
+
+        foreach ($data AS $k=>$v){
+            unset($data[$k]);
+            $data[$this->protect_identifiers($k, FALSE, NULL)] = $this->escape($v);
+        }
+        $log_query = $this->_insert(
+            $this->protect_identifiers('db_log'),
+            array_keys($data),
+            array_values($data)
+        );
+        $this->query($log_query);
+    }
+
+    private function create_db_log_table(){
+        if (!$this->table_exists("db_log") )
+        {
+            die("create db");
+        }
+        die("call me");
+    }
 }

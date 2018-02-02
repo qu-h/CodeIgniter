@@ -78,7 +78,7 @@ class smartadmin_ui
         if (strlen($name) < 1 )
             return NULL;
 
-        if (! array_key_exists('type', $field)) {
+        if ( empty($field) || is_null($field) || !array_key_exists('type', $field)) {
             $field['type'] = 'text';
         }
 
