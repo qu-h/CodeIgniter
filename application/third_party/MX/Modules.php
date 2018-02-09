@@ -197,7 +197,9 @@ class Modules
 	**/
 	public static function find($file, $module, $base=null)
 	{
-
+/*
+ * can not return Module name upcase
+ */
 	    $file_in = $file;
 		$segments = explode('/', $file);
 

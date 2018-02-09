@@ -400,7 +400,10 @@
 	cursor: pointer;
 }
 
-.smart-form .icon-append, .smart-form .icon-prepend {
+.smart-form .icon-append,
+.smart-form .icon-prepend,
+.smart-form .text-prepend,
+.smart-form .text-append {
 	position: absolute;
 	top: 5px;
 	width: 22px;
@@ -409,17 +412,23 @@
 	line-height: 22px;
 	text-align: center;
 }
-.smart-form .icon-append {
+.smart-form .icon-append,
+.smart-form .text-append{
 	right: 5px;
 	padding-left: 3px;
 	border-left-width: 1px;
 	border-left-style: solid;
 }
-.smart-form .icon-prepend {
+.smart-form .icon-prepend,
+.smart-form .text-prepend {
 	left: 5px;
 	padding-right: 3px;
 	border-right-width: 1px;
 	border-right-style: solid;
+}
+.smart-form .text-prepend,
+.smart-form .text-append {
+	width: auto;
 }
 .smart-form .input .icon-prepend + input, .smart-form .textarea .icon-prepend + textarea { padding-left: 37px; }
 .smart-form .input .icon-append + input, .smart-form .textarea .icon-append + textarea { padding-right: 37px; }

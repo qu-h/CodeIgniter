@@ -142,7 +142,8 @@
 
     <!-- NAVIGATION : This navigation is also responsive-->
     <nav>
-        {menu_navigation}
+        {*menu_navigation*}
+        {moduleRun m="menu/navigation"}
     </nav>
     <span class="minifyme" data-action="minifyMenu">
         <i class="fa fa-arrow-circle-left hit"></i>
@@ -191,7 +192,7 @@
 -->
     </div>
     <!-- END RIBBON -->
-    {include file="scripts.tpl"}
+    {include file="../scripts.tpl"}
     {assets type='js'}
     <!-- MAIN CONTENT -->
     <div id="content">
@@ -203,9 +204,6 @@
         {$_body}
     </div>
 </div>
-{include file="modal/images-manager.tpl"}
-
-
-
+{include file="../modal/images-manager.tpl"}
 </body>
 </html>

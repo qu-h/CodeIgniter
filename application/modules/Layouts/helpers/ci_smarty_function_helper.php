@@ -69,8 +69,6 @@ function add_module_asset($file=NULL,$module_name=NULL){
     }
 }
 
-
-
 function add_root_asset($file=NULL){
     $path_info = pathinfo($file);
     switch ($path_info['extension']){

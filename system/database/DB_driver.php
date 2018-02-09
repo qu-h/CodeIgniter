@@ -2036,8 +2036,18 @@ abstract class CI_DB_driver {
     private function create_db_log_table(){
         if (!$this->table_exists("db_log") )
         {
-            die("create db");
+            $sql_create = "CREATE TABLE `db_log` (
+              `id` int(11) NOT NULL,
+              `action` char(50) COLLATE utf8_bin NOT NULL,
+              `table` char(50) COLLATE utf8_bin NOT NULL,
+              `uid` int(11) NULL,
+              `uri_string` varchar(255) COLLATE utf8_bin NOT NULL,
+              `data` text COLLATE utf8_bin NOT NULL,
+              `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;";
+            $this->db->query($sql_create);
+            $this->db->query("ALTER TABLE `db_log` ADD PRIMARY KEY (`id`);");
+            $this->db->query("ALTER TABLE `db_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;");
         }
-        die("call me");
     }
 }

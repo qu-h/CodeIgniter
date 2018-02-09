@@ -47,12 +47,11 @@ class CI_Smarty extends SmartyBC {
 	var $layout = 'template';
 
 	function view($resource_name, $params = array())   {
-		$alang = array();
-		$data = array('view'=>$resource_name);
 
         if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
             $this->assign($k, $d);
         }
+
         if( !empty($this->script['ready']) ){
             $this->assign('js_ready', $this->script['ready']);
         }
@@ -124,7 +123,7 @@ die('smarty 106 : check app');
 // 		    }
 		} else {
 		    $this->setTemplateDir( $path );
-
+//die($path);
 		    return parent::fetch("$path$_view");
 		}
 

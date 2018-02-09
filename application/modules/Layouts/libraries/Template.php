@@ -255,7 +255,7 @@ class Template
             // Added to $this->_data['template'] by refference
             $template['body'] = $this->_body;
             // Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
-            list ($layout_path, $layout_view) = self::find_theme_view($this->_layout);
+            list ($layout_path, $layout_view) = self::find_theme_view($this->_layout,'layouts');
 
             if ($layout_path == FALSE) {
                 list ($layout_path, $layout_view) = Modules::find($this->_layout, APPPATH . 'views/layouts');
@@ -741,6 +741,11 @@ class Template
                     }
                 }
             }
+
+            list ($view_path, $file_view) = self::find_theme_view($view);
+            if( $view_path ){
+                return self::_load_view("$view_path/$file_view", $this->_data + $data, $parse_view, $location);
+            }
         }
 
         // foreach (Modules::$locations AS $module_local=>$val){
@@ -949,9 +954,13 @@ class Template
         }
     }
 
-    private function find_theme_view($view){
+    private function find_theme_view($view,$folder=""){
         if ($this->_theme and is_dir($this->_theme_path)) {
-            $themeViewPath = realpath($this->_theme_path."/views");
+            $viewPath = $this->_theme_path."/views";
+            if( strlen($folder) > 0 ){
+                $viewPath .= "/$folder";
+            }
+            $themeViewPath = realpath($viewPath);
             foreach (glob("$themeViewPath/*") as $f) {
                 $pathinfo = pathinfo($f);
                 if( strtolower($pathinfo["filename"])==strtolower($view) AND strlen($pathinfo["filename"]) > 0 ){

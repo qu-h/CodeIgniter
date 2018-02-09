@@ -40,10 +40,17 @@ class Category extends MX_Controller
             }
             $add = $this->Category_Model->update($data);
             if( $add ){
-                set_error(lang('Success.'));
+                if( $id ){
+                    set_success(lang('Edit Category success'));
+                } else {
+                    set_success(lang('Add new Category success'));
+                }
+                $id = $add;
             }
 
-        } else if ( $id > 0 ){
+        }
+
+        if ( $id > 0 ){
             $item = $this->Category_Model->get_item_by_id($id);
             foreach ($this->fields AS $field=>$val){
                 if( isset($item->$field) ){

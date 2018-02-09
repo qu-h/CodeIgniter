@@ -49,19 +49,17 @@ var imgupload = {
             //
             // });
 
-            modal.find("input[type=file]").get(0).addEventListener('change', uploadListener, false);
 
             var inputfiles = modal.find("input[type=file]");
-            modal.find("button.upload").unbind('click').bind('click',function () {
-                inputfiles.focus().trigger('click');
-            });
-
-            function uploadListener() {
+            inputfiles.change(function() {
                 var formData = new FormData();
                 formData.append('file', $(this)[0].files[0]);
                 formData.append('folder', modal.attr("img-path"));
                 imgupload.loadImagesForModal(formData,modal);
-            }
+            });
+            modal.find("button.upload").unbind('click').bind('click',function () {
+                inputfiles.focus().trigger('click');
+            });
 
 
             //setModalMaxHeight(this);
@@ -92,6 +90,7 @@ var imgupload = {
 
     loadImagesForModal:function (data,modal) {
         var modalBody = modal.find(".modal-body");
+        console.log("send ajax form upload");
         $.ajax({
             url: "/images/manager.json",
             dataType:"JSON", method:"POST",
@@ -104,10 +103,9 @@ var imgupload = {
                     modalBody.append(imgupload.thumbModal(img.file,img.folder));
                 });
                 imgupload.modalSelectCallback();
-
+            } else if ( typeof images.error !== 'undefined' ){
+                alert(images.error);
             }
-
-
         });
     },
 

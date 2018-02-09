@@ -54,3 +54,9 @@ function get_temp_val($name=""){
         return get_instance()->smarty->getTemplateVars($name);
     }
 }
+
+function smarty_view($view,$params=[]){
+    if( strlen($view) > 0 ){
+        echo get_instance()->smarty->view($view,$params);
+    }
+}

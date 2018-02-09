@@ -25,11 +25,18 @@ class Category_Model extends CI_Model {
         ),
         'summary'=>array(
             'type' => 'textarea',
-            'editor'=>'form-control'
+            //'editor'=>'form-control',
+            'editor'=>"row_input",
+            "icon"=>"fa-comments"
         ),
         'description' => array(
             'type' => 'textarea'
-        )
+        ),
+        'status' => array(
+            'type' => 'publish',
+            'value' => 1
+        ),
+        'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc']
     );
 	function __construct(){
 		parent::__construct();
@@ -71,11 +78,14 @@ class Category_Model extends CI_Model {
         if( !isset($data['id']) || strlen($data['id']) < 1 ){
             $data['id'] = 0;
         }
+        if( !isset($data['ordering']) || strlen($data['ordering']) < 1 ){
+            $data['ordering'] = 1;
+        }
 
         if( is_null($data['parent']) || strlen($data['parent']) < 1){
             $data['parent'] = 0;
         }
-
+        $data['status'] = $data['status']=='on' ? true:false;
 	    if( $this->check_exist($data['alias'],$data['id'],$data['parent']) ) {
             set_error('Dupplicate Category');
             return false;
@@ -113,12 +123,35 @@ class Category_Model extends CI_Model {
         return ( $result->num_rows() > 0) ? true : false;
 	}
 
-	public function load_options($type='article',$status=1)
+	public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
 	{
 		$options = array();
-		$query = $this->db->where(array("c.type"=>$type,'c.status'=>$status))->get($this->table." AS c");
+		if( $level < 1 )
+		    return [];
+		if( is_numeric($level) && $level > 0  ){
+//		    if( $level <= 1 ){
+//                $parent_id = 0;
+//            }
+		    $this->db->where('c.parent',$parent_id);
+        }
+        if( is_numeric($using_id) ){
+            $using_id = [$using_id];
+        }
+        if( !empty($using_id) ){
+            $this->db->where_not_in('c.id',$using_id);
+        }
+
+        $this->db->where(array("c.type"=>$type,'c.status'=>$status));
+		$this->db->order_by("c.ordering ASC");
+		$query = $this->db->get($this->table." AS c");
+
 		if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
-			$options[$row->id] = $row->name;
+            $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
+			if( $level > 1 && !empty($subOptions) ){
+                $options[$row->name] = $subOptions;
+            } else {
+                $options[$row->id] = $row->name;
+            }
 		}}
 		return $options;
 
