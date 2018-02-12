@@ -34,7 +34,7 @@ class Category extends MX_Controller
     public function form($id = 0)
     {
         if ($this->input->post()) {
-            $submit = input_post('submit');
+
 
             $data = array();
             foreach ($this->fields as $name => $field) {
@@ -55,21 +55,7 @@ class Category extends MX_Controller
                 $id = $add;
             }
 
-            switch ($submit){
-                case 'save':
-                    $newUri = url_to_edit(null,$id);
-                    break;
-                case 'submit':
-                    $uriBack = input_get("back");
-                    if( strlen($uriBack) > 0 ){
-                        $newUri = base64url_decode($uriBack);
-                    } else {
-                        $newUri = url_to_list();
-                    }
-                    break;
-            }
-
-            return redirect($newUri, 'refresh');
+            return submit_redirect();
 
         }
 

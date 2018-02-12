@@ -37,6 +37,15 @@ class Menu_Model extends CI_Model
 //            'type' => 'textarea'
 //        ),
 
+        'summary'=>array(
+            'type' => 'textarea',
+            //'editor'=>'form-control',
+            'editor'=>"row_input",
+            "icon"=>"fa-comments"
+        ),
+        'description' => array(
+            'type' => 'textarea'
+        ),
         'status' => array(
             'type' => 'publish',
             'value'=>1
@@ -51,6 +60,13 @@ class Menu_Model extends CI_Model
 
     function get_item_by_id($id=0){
         return $this->db->where('id',$id)->get($this->table)->row();
+    }
+
+    function get_item_by_uri($uri="",$returnArray=false){
+        $this->db->where('status',1);
+        $this->db->where('uri',$uri);
+        $row = $this->db->get($this->table);
+        return $returnArray ? $row->row_array() : $row->row();
     }
 
     function items_json($backend = 0, $actions_allow=NULL){
@@ -89,6 +105,12 @@ class Menu_Model extends CI_Model
         }
         if( is_null($data['order']) || strlen($data['order']) < 1){
             $data['order'] = 0;
+        }
+        if( !isset($data['summary']) || is_null($data['summary']) || strlen($data['summary']) < 1){
+            $data['summary'] = "";
+        }
+        if( !isset($data['content']) || is_null($data['content']) || strlen($data['content']) < 1){
+            $data['content'] = "";
         }
         $data['status'] = $data['status']=='on' ? true:false;
         if( intval($data['id']) > 0 ) {

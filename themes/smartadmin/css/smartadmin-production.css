@@ -9638,7 +9638,7 @@ aside {
 }*/
 /* end slimscroll css change*/
 .minified.fixed-navigation nav {
-  -webkit-overflow-scrolling: none;
+  -webkit-overflow-scrolling: unset;
   overflow: visible;
   height: auto;
   padding-bottom: 0px; }
