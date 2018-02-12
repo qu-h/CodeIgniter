@@ -646,7 +646,7 @@ aside {
 /* end slimscroll css change*/
 
 .minified.fixed-navigation nav {
-	-webkit-overflow-scrolling: none;
+	-webkit-overflow-scrolling: unset;
 	overflow:visible;
 	height: auto;
 	padding-bottom: 0px;	
@@ -851,7 +851,7 @@ nav > ul ul ul li::before {
 }
 
 /* Second level and onwards > */
-nav > ul ul li a i, {
+nav > ul ul li a i {
 	font-size: $asideNavFontSize !important;
 	width: 18px !important;
 	text-align: center !important;
