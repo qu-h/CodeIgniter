@@ -253,7 +253,7 @@ class Template
         if ($this->_layout) {
 
             // Added to $this->_data['template'] by refference
-            $template['body'] = $this->_body;
+            //$template['body'] = $this->_body;
             // Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
             list ($layout_path, $layout_view) = self::find_theme_view($this->_layout,'layouts');
 

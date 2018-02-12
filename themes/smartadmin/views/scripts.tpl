@@ -81,6 +81,9 @@
 <script src="{theme_url}js/plugin/datatables/dataTables.bootstrap.min.js"></script>
 <script src="{theme_url}js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
 
+<!-- PAGE RELATED PLUGIN(S) -->
+<script src="{theme_url}js/plugin/jquery-nestable/jquery.nestable.min.js"></script>
+
 {*
 <!-- Demo purpose only -->
 <script src="{theme_url}js/demo.min.js"></script>

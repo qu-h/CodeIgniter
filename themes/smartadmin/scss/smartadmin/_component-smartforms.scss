@@ -278,13 +278,13 @@
   input {
 	  position: absolute;
 	  left: -9999px;
-    &:checked + i:after {
-	    content: attr(data-swchon-text);
-	    text-align: right;
-    }
-    &:checked + i:before {
-	    right: 36px;
-    }
+		&:checked + i:after {
+			content: attr(data-swchon-text);
+			text-align: right;
+		}
+		&:checked + i:before {
+			right: 36px;
+		}
   }
 
   i {

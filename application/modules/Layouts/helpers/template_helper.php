@@ -1,6 +1,6 @@
 <?php
 if ( !function_exists('temp_view')) {
-    function temp_view($view, $vars = array(), $return = FALSE){
+    function temp_view($view, $vars = array()){
         get_instance()->template->build($view,$vars);
     }
 }
@@ -58,5 +58,18 @@ function get_temp_val($name=""){
 function smarty_view($view,$params=[]){
     if( strlen($view) > 0 ){
         echo get_instance()->smarty->view($view,$params);
+    }
+}
+
+function temp_view($view,$params=[],$title=null,$page_icon=null){
+    if( strlen($view) > 0 ){
+        $template = get_instance()->template;
+        if( !empty($title) ){
+            $template->title($title);
+        }
+        if( !empty($page_icon) ){
+            $template->set('page_icon',$page_icon);
+        }
+        $template->build($view,$params);
     }
 }

@@ -13,9 +13,17 @@ function url_to_edit($uri=null,$editId=0) {
     $uri_length = $ci->uri->total_segments();
     $is_add = $ci->uri->rsegment($uri_length-1);
 
-    if( $editId > 0 && ( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' )){
-        $uri = str_replace(["/add"],'/edit',$uri);
-        $uri .= "/$editId";
+    if( $editId > 0 ){
+        if( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' ){
+            $uri = str_replace(["/add"],'/edit',$uri);
+        } else if( $is_add != 'edit' ) {
+            $uri .= "/edit";
+        }
+
+        if( $is_add != 'edit' && !is_numeric($ci->uri->rsegment($uri_length))  ){
+            $uri .= "/$editId";
+        }
+
     }
 
 

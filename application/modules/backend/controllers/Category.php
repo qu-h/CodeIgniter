@@ -23,21 +23,28 @@ class Category extends MX_Controller
 
     function items()
     {
-        $items = $this->Category_Model->items_listview($this->fields["type"]["value"]);
-        $data = columns_fields($this->table_fields);
+        if( input_post("update-order") ){
+            return $this->update_order(input_post('data'),0);
+        }
+        $items = $this->Category_Model->items_tree($this->fields["type"]["value"],0,2);
         $data['categories'] = $items;
-        $this->template
-            ->title(lang('welcome_to') . ' ' . config_item('company_name'))
-            ->build('backend/categories', $data);
+        temp_view("categories",$data);
     }
 
     public function form($id = 0)
     {
         if ($this->input->post()) {
+            $submit = input_post('submit');
+
             $data = array();
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $data[$name] = $this->input->post($name);
             }
+
+            if( $submit =='trash' ){
+                return $this->delete($data["id"]);
+            }
+
             $add = $this->Category_Model->update($data);
             if( $add ){
                 if( $id ){
@@ -47,6 +54,22 @@ class Category extends MX_Controller
                 }
                 $id = $add;
             }
+
+            switch ($submit){
+                case 'save':
+                    $newUri = url_to_edit(null,$id);
+                    break;
+                case 'submit':
+                    $uriBack = input_get("back");
+                    if( strlen($uriBack) > 0 ){
+                        $newUri = base64url_decode($uriBack);
+                    } else {
+                        $newUri = url_to_list();
+                    }
+                    break;
+            }
+
+            return redirect($newUri, 'refresh');
 
         }
 
@@ -62,7 +85,7 @@ class Category extends MX_Controller
         $data = array(
             'fields' => $this->fields
         );
-        $this->template->title(lang('welcome_to'))->build('backend/form', $data);
+        temp_view('form', $data);
     }
 
     public function delete($id=0){
@@ -70,5 +93,14 @@ class Category extends MX_Controller
         $newUri = url_to_list();
 
         return redirect($newUri, 'refresh');
+    }
+
+    private function update_order($items=[],$parent_id=0){
+        if( !empty($items) ) foreach ($items AS $i => $cate){
+            $this->Category_Model->update(['id'=>$cate["id"],"ordering"=>$i+1,'parent'=>$parent_id],false);
+            if( isset($cate["children"]) ){
+                $this->update_order($cate["children"],$cate["id"]);
+            }
+        }
     }
 }

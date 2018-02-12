@@ -43,9 +43,9 @@ if ( ! function_exists('_parse_attributes'))
 }
 
 function base64url_encode($data) {
-    bug(base64_encode($data));
-    bug(strtr(base64_encode($data), '+/', '-_'));
-    bug(strtr(base64_encode($data), '+/', '-_'), '=');
+//    bug(base64_encode($data));
+//    bug(strtr(base64_encode($data), '+/', '-_'));
+//    bug(strtr(base64_encode($data), '+/', '-_'), '=');
 
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }

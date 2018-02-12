@@ -40,6 +40,11 @@
 							</fieldset>
 							<footer class="smart-form" >
 								<button class="btn btn-primary" type="submit">{lang txt="Submit Form"}</button>
+								<button class="btn btn-labeled btn-success">
+									<span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>
+									Success
+								</button>
+
 							</footer>
 						</form>
 					</div>

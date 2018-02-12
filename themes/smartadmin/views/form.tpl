@@ -39,7 +39,24 @@
                                 {/if}
                             </fieldset>
                             <footer class="smart-form" >
-                                <button class="btn btn-primary" type="submit">{lang txt="Submit Form"}</button>
+                                <button type="submit" class="btn btn-labeled btn-success"  name="submit" value="save">
+                                 <span class="btn-label">
+                                  <i class="fa fa-save"></i>
+                                 </span> {lang txt="Save"}
+                                </button>
+
+                                <button class="btn btn-primary btn-labeled" name="submit" value="submit" >
+                                    <span class="btn-label">
+                                        <i class="fa fa-retweet"></i>
+                                    </span>
+                                     {lang txt="Submit Form"}
+                                </button>
+
+                                <button class="btn btn-labeled btn-danger" name="submit" value="trash">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>
+                                    {lang text="Trash"}
+                                </button>
+
                             </footer>
                         </form>
                     </div>

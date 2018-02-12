@@ -66,42 +66,59 @@ class Category_Model extends CI_Model {
         return $this->db->where('id',$id)->get($this->table)->row();
     }
 
-    function update($data=NULL){
-	    if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
-            if( strlen($data['name']) > 0 ){
-                $data['alias'] = url_title($data['name'],'-',true);
-            } else {
-                set_error('Please enter alias');
-                return false;
+
+    function update($data=NULL,$validation=true){
+	    if( $validation ){
+            if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
+                if( strlen($data['name']) > 0 ){
+                    $data['alias'] = url_title($data['name'],'-',true);
+                } else {
+                    set_error('Please enter alias');
+                    return false;
+                }
             }
-	    }
+
+            if( is_null($data['parent']) || strlen($data['parent']) < 1){
+                $data['parent'] = 0;
+            }
+            $data['status'] = $data['status']=='on' ? true:false;
+        }
+
         if( !isset($data['id']) || strlen($data['id']) < 1 ){
             $data['id'] = 0;
         }
+
+        if( !$validation && $data["id"] < 1 ){
+            set_error('Invalid data');
+            return false;
+        }
+
         if( !isset($data['ordering']) || strlen($data['ordering']) < 1 ){
             $data['ordering'] = 1;
         }
 
-        if( is_null($data['parent']) || strlen($data['parent']) < 1){
-            $data['parent'] = 0;
+        if( strlen($data['name']) > 0 ){
+            $data['name'] = trim_title($data['name']);
         }
-        $data['status'] = $data['status']=='on' ? true:false;
-	    if( $this->check_exist($data['alias'],$data['id'],$data['parent']) ) {
+
+
+        if( $validation && $this->check_exist($data['alias'],$data['id'],$data['parent']) ){
             set_error('Dupplicate Category');
             return false;
-        } elseif( intval($data['id']) > 0 ) {
+        }
+
+        if( intval($data['id']) > 0 ) {
             $data['modified'] = date("Y-m-d H:i:s");
             $id = $data['id'];
             unset($data['id']);
             $this->db->where('id',$id)->update($this->table,$data);
             return $id;
-	    } else {
+	    } elseif ($validation) {
 	        $this->db->insert($this->table,$data);
 	        return $this->db->insert_id();
 	    }
-
-
 	}
+
 
     public function item_delete($id=0){
         $this->db->where('id',$id)->update($this->table,['status'=>-1]);
@@ -122,6 +139,7 @@ class Category_Model extends CI_Model {
 
         return ( $result->num_rows() > 0) ? true : false;
 	}
+
 
 	public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
 	{
@@ -175,6 +193,38 @@ class Category_Model extends CI_Model {
         } else {
             bug( $this->db->last_query() );die("error");
         }
+        return $items;
+    }
+
+    public function items_tree($type='article',$parent_id=0,$level=1,$where=[],$using_id=[]){
+        $items = array();
+        if( $level < 1 )
+            return [];
+        if( is_numeric($level) && $level > 0  ){
+            $this->db->where('c.parent',$parent_id);
+        }
+        if( is_numeric($using_id) ){
+            $using_id = [$using_id];
+        }
+        if( !empty($using_id) ){
+            $this->db->where_not_in('id',$using_id);
+        }
+
+        $this->db->where(array("type"=>$type));
+        if( !empty($where) ){
+            //,$status=1
+            $this->db->where($where);
+        }
+        $this->db->select("id, name, status, ordering, type");
+        $this->db->order_by("c.ordering ASC");
+        $query = $this->db->get($this->table." AS c");
+
+        if( $query->num_rows() > 0 ){ foreach ($query->result_array() as $row) {
+            if( $level > 1 ){
+                $row['children'] = $this->items_tree($type,$row['id'],$level-1,$where,$using_id);
+            }
+            $items[] = $row;
+        }}
         return $items;
     }
 }

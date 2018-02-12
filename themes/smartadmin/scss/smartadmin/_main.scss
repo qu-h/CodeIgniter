@@ -2667,8 +2667,27 @@ img.away {
  * buttons with labels
  */
 
-.btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(red($black), green($black), blue($black),0.15);border-radius: 3px 0 0 3px;}
+.btn-label {
+	position:
+	relative;
+	left: -12px;
+	display: inline-block;
+	padding: 6px 12px;
+	background: rgba(red($black), green($black), blue($black),0.15);
+	border-radius: 3px 0 0 3px;
+}
 .btn-labeled {padding-top: 0;padding-bottom: 0;}
+
+.btn.btn-labeled {
+	text-align: left;
+	padding-left: 0 !important;
+
+	.btn-label {
+		left: 0;
+		padding: 0 6px;
+	}
+}
+
 
 .btn-link {
 	box-shadow: none;
