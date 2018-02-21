@@ -55,7 +55,7 @@ class Category extends MX_Controller
                 $id = $add;
             }
 
-            return submit_redirect();
+            return submit_redirect($id);
 
         }
 

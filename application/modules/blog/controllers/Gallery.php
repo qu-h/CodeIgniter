@@ -32,6 +32,7 @@ class Gallery extends MX_Controller
     var $formView = "blog/gallery-form";
     public function form($id=0){
         if ($this->input->post()) {
+            $submit = input_post('submit');
 
             $formdata = array();
 
@@ -39,17 +40,18 @@ class Gallery extends MX_Controller
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
             }
 
-            $add = $this->Gallery_Model->update($formdata);
-            if( $add ){
-                set_error(lang('Success.'));
-                $newUri = url_to_edit(null,$add);
-                if( input_post('back') ){
-                    $newUri = url_to_list();
-                }
-                //return redirect($newUri, 'refresh');
+            if( $submit=='crop' && $formdata["id"] > 0 ){
+
+                $newUri = str_replace('/edit/',"/$submit/",uri_string());
+                redirect($newUri, 'refresh');
             }
 
-        } else {
+            $add = $this->Gallery_Model->update($formdata);
+            return submit_redirect($add);
+
+        }
+
+        if ($id > 0){
             $item = $this->Gallery_Model->get_item_by_id($id);
             foreach ($this->fields AS $field=>$val){
                 if( isset($item->$field) ){
@@ -98,6 +100,20 @@ class Gallery extends MX_Controller
         $this->Gallery_Model->item_delete($id);
         $newUri = url_to_list();
         //return redirect($newUri, 'refresh');
+    }
+
+    public function crop($id=0){
+        $item = $this->Gallery_Model->get_item_by_id($id);
+        $fields = [
+            'x1'=>["title"=>"X top"],
+            'y1'=>["title"=>"Y top"],
+            'x2'=>["title"=>"X bottom"],
+            'y2'=>["title"=>"Y bottom"],
+            'w' =>["title"=>"Width"],
+            'h' =>["title"=>"Height"],
+        ];
+        set_temp_val("fields",$fields);
+        temp_view("gallery-img-edit",['img'=>"/images/gallery/".$item->image]);
     }
 
 

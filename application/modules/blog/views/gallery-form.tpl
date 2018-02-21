@@ -31,6 +31,12 @@
                                                 {/if}
                                                 {input_hidden name="image"}
                                             </div>
+                                            <p style="margin-top: 15px;">
+                                                <button name="submit" value="crop" class="btn btn-labeled btn-danger" name="submit" value="trash">
+                                                    <span class="btn-label"><i class="fa fa-crop"></i></span>
+                                                    {lang text="Crop Image"}
+                                                </button>
+                                            </p>
                                         </div>
                                         <div class="col-md-7">
                                             {foreach $fields AS $name=>$field }
@@ -44,7 +50,25 @@
                                 </fieldset>
 
                                 <footer class="smart-form" >
-                                    <button class="btn btn-primary" type="submit"> Submit Form </button>
+                                    {if isset($fields.id.value) && $fields.id.value > 0}
+                                    <button type="submit" class="btn btn-labeled btn-success"  name="submit" value="save">
+                                         <span class="btn-label">
+                                          <i class="fa fa-save"></i>
+                                         </span> {lang txt="Save"}
+                                    </button>
+                                    {/if}
+
+                                    <button class="btn btn-primary btn-labeled" name="submit" value="submit" >
+                                    <span class="btn-label">
+                                        <i class="fa fa-retweet"></i>
+                                    </span>
+                                        {lang txt="Submit Form"}
+                                    </button>
+
+                                    <button class="btn btn-labeled btn-danger" name="submit" value="trash">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>
+                                        {lang text="Trash"}
+                                    </button>
                                 </footer>
                             </form>
                         {/if}
