@@ -103,6 +103,9 @@ class Gallery extends MX_Controller
     }
 
     public function crop($id=0){
+        /*
+         * http://deepliquid.com/content/Jcrop_API.html
+         */
         $item = $this->Gallery_Model->get_item_by_id($id);
         $fields = [
             'x1'=>["title"=>"X top"],

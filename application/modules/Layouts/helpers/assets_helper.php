@@ -76,11 +76,18 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFil
     }
 }
 
+function add_git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFileType=true){
+    $file = git_assets($file,$folder,$version,$attributes,$dirFileType);
+
+    add_asset($file);
+}
+
 function add_asset($file=NULL,$folder=''){
     $ci = get_instance();
     if( !isset($ci->smarty) ){
         return ;
     }
+
     if( is_string($file) ){
 
         $dir = NULL;
@@ -89,21 +96,34 @@ function add_asset($file=NULL,$folder=''){
         }
         $type = get_mime_by_extension($file);
 
-
         switch ($type){
             case 'text/css':
                 $dir .="css/";
                 break;
             case 'application/x-javascript':
-                $old_config = config_item('js');
-                if( file_exists("$dir/js/$file") ){
-                    $old_config[] = "$dir/js/$file";    
-                } else if ( file_exists("$dir/$file") ){
-                    $old_config[] = "$dir/$file";
-                }
-                
-                $ci->config->set_item('js', $old_config);
+
+//                $old_config = config_item('js');
+//                if( file_exists("$dir/js/$file") ){
+//                    $old_config[] = "$dir/js/$file";
+//                } else if ( file_exists("$dir/$file") ){
+//                    $old_config[] = "$dir/$file";
+//                } else {
+//                    $old_config[] = "$dir/$file";
+//                }
+//
+//                $ci->config->set_item('js', $old_config);
+                add_js($file);
                 break;
+            default:
+                $fileInfo = pathinfo($file);
+                if( $fileInfo['extension'] == 'js' ){
+                    add_js($file);
+                } elseif ( $fileInfo['extension'] == 'css' ){
+                    add_css($file);
+                }
+
+                break;
+
         }
 
     }
