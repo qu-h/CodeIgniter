@@ -48,7 +48,8 @@ class SmartadminInputs extends CI_Smarty
         if (isset($params['note']) && strlen($params['note']) > 0) {
             $html .= '<div class="note">' . lang($params['note']) . '</div>';
         }
-        return '<div class="row"><section>' . $html . '</section></div>';
+        //return '<div class="row"><section>' . $html . '</section></div>';
+        return '<section>' . $html . '</section>';
     }
 
     static function form_group_bootstrap(array $params = null){
@@ -313,7 +314,8 @@ class SmartadminInputs extends CI_Smarty
         $params['html'] = $html;
 
         $params['label'] = NULL;
-        return self::input_lable($params);
+        //return self::input_lable($params);
+        return self::row_input($params);
     }
 
     static function input_tags($params = null)

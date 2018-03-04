@@ -48,12 +48,15 @@ class User extends MX_Controller
             $login = $this->User_Model->checklogin($post);
 
             if ($login != NULL) {
-                if( strlen($uriBack) < 1 && $this->uri->segment(2) ){
-                    $uriBack = base64_decode($this->uri->segment(2));
+                $uriReturn = "";
+                if( $this->uri->segment(2) ){
+                    $uriReturn = base64_decode($this->uri->segment(2));
+                }
+                if( strlen($uriReturn) < 1 ){
+                    $uriReturn = $uriBack;
                 }
 
                 $this->session->set_userdata('user_id', $login->id);
-
 
                 redirect($uriBack, 'location');
             }

@@ -27,7 +27,7 @@
                                     <i class="icon-append fa fa-user"></i>
                                     <input type="text" name="username">
                                     <b class="tooltip tooltip-top-right">
-                                        <i class="fa fa-user txt-color-teal"></i>Please enter email address/username</b>
+                                        <i class="fa fa-user txt-color-teal"></i> {lang txt="Please enter email address/username"}</b>
                                 </label>
                             </section>
 
@@ -39,19 +39,22 @@
                                         <i class="fa fa-lock txt-color-teal"></i> {lang txt="Enter your password"}
                                     </b>
                                 </label>
+                                {*
                                 <div class="note">
-                                    <a href="#">{lang txt="Forgot password"}?</a>
+                                    {anchor txt="Forgot password"}
                                 </div>
+                                *}
                             </section>
-
+                            {*
                             <section>
                                 <label class="checkbox">
                                     <input type="checkbox" name="remember" checked="">
                                     <i></i>{lang txt="Stay signed in"}</label>
                             </section>
+                            *}
                         </fieldset>
                         <footer>
-                            <button type="submit" class="btn btn-primary">{lang txt="Sign in"}</button>
+                            <button type="submit" class="btn btn-primary">{lang txt="Sign In"}</button>
                         </footer>
                     </form>
 
