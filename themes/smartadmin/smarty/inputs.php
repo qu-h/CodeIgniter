@@ -88,6 +88,7 @@ class SmartadminInputs extends CI_Smarty
         $name = isset($params['name']) ? $params['name'] : NULL;
         $title = isset($params['title']) ? $params['title'] : NULL;
         $value = isset($params['value']) ? $params['value'] : NULL;
+        $class = isset($params['class']) ? $params['class'] : NULL;
 
         if( isset($params['icon']) ){
             $icon = "<i class=\"fa ".$params['icon']."\"></i>";
@@ -96,7 +97,14 @@ class SmartadminInputs extends CI_Smarty
         }
         $icon = '<span class="input-group-addon">'.$icon.'</span>';
 
-        $html = "<div class=\"input-group\">$icon <input name=\"$name\" value=\"$value\" placeholder=\"$title\" type=\"text\" class=\"form-control\" ></div>";
+        $inputAttribute = [
+            'name'=>"$name",
+            'value'=>"$value",
+            'placeholder'=>"$title",
+            'type'=>"text",
+            'class'=>"form-control $class"
+        ];
+        $html = "<div class=\"input-group\">$icon <input "._stringify_attributes($inputAttribute)."/></div>";
         return $html;
     }
 
@@ -205,25 +213,47 @@ class SmartadminInputs extends CI_Smarty
 
     static function input_hidden(array $params = null)
     {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        if (strlen($name) < 1)
+        $inputAttribute = [
+            'name'=>'',
+            'value'=>'',
+            'type'=>'hidden',
+            'class'=>''
+        ];
+
+        $inputAttribute = array_merge($inputAttribute, $params);
+
+//        if( isset($params['name']) ){
+//            $inputAttribute['name'] = $params['name'];
+//
+//        }
+        if (strlen($inputAttribute['name']) < 1)
             return NULL;
 
         $field = isset($params['field']) ? $params['field'] : NULL;
+
         $value = NULL;
         if( empty($field) ){
             $fields = get_instance()->smarty->getTemplateVars("fields");
-            if( array_key_exists($name,$fields) ){
-                $field = $fields[$name];
+            if( array_key_exists($inputAttribute['name'],$fields) ){
+                $field = $fields[$inputAttribute['name']];
                 $value = isset($field['value']) ? $field['value'] : NULL;
+                $inputAttribute = array_merge($inputAttribute, $field);
+
+//                if( isset($field['class']) ){
+//                    $inputAttribute['class'] .= " ".$field['class'];
+//                }
             }
-        } else if(isset($params['value'])) {
-            $value =  $params['value'];
         }
 
+//        if(isset($params['value'])) {
+//            $inputAttribute['value'] =  $params['value'];
+//        }
+//
+//        if( isset($params['class']) ){
+//            $inputAttribute['class'] .= " ".$params['class'];
+//        }
 
-
-        $html = '<input type="hidden" name="' . $name . '" value="' . $value . '" >';
+        $html = '<input '._stringify_attributes($inputAttribute).' >';
         return $html;
     }
 
