@@ -307,6 +307,40 @@ class MX_Loader extends CI_Loader
 		return $this->_ci_load(array('_ci_view' => $view, '_ci_vars' => $this->_ci_prepare_view_vars($vars), '_ci_return' => $return));
 	}
 
+    /** Load a module smarty **/
+    public function smarty($module)
+    {
+        $seg = explode("/",$module);
+        if ( count($seg) > 0 ){
+            $module = $seg[0]; unset($seg[0]);
+        } else {
+            $module = $this->_module;
+        }
+        $file = implode("/",$seg);
+
+        list($path, $file, $ext) = Modules::find("smarty/$file", $module);
+        if( $path ){
+            $ci = get_instance();
+            include_once $path."$file.$ext";
+            $module_ui_class = strtolower($module."_".$file."_ui");
+            if( class_exists($module_ui_class) ){
+                $reflection = new ReflectionClass($module_ui_class);
+                $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
+
+                foreach ($methods as $plugin) {
+                    if( !$plugin->isPublic() ){
+                        continue;
+                    }
+
+                    if ( ! isset($ci->smarty->registered_plugins['function']) or ! array_key_exists($plugin->name, $ci->smarty->registered_plugins['function'])) {
+                        $ci->smarty->registerPlugin('function', $plugin->name, $module_ui_class . '::' . $plugin->name);
+                    }
+                }
+
+            }
+        }
+    }
+
 	protected function &_ci_get_component($component)
 	{
 		return CI::$APP->$component;
