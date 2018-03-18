@@ -6,7 +6,6 @@ $( document ).ready(function() {
 	imgupload.ready();
     formUpdateSubmit();
 
-
     // START AND FINISH DATE
     $('.datepicker').datepicker({
         //dateFormat : 'dd.mm.yy',
@@ -22,7 +21,6 @@ var imgupload = {
 	fileupload : null,
 	ready:function(){
 		imgupload.fileupload = jQuery("input[type=file]");
-		//console.log("check ready upload ",imgupload.fileupload.length);
 		if( imgupload.fileupload.length ){
 			imgupload.click();
 			imgupload.preview();
@@ -68,12 +66,11 @@ var imgupload = {
 	},
 	
 	click:function(){
-		jQuery(".upload-imgthumb").click(function(){
+		jQuery(".upload-imgthumb").unbind("click").click(function(){
 			var inputfiles = $(this).parents('div[class^="col-"]').find("input[type=file]");
-			//console.log("input file",inputfiles);
-	    	//imgupload.fileupload.focus().trigger('click');
-	    	inputfiles.focus().trigger('click');
-	    	return false;
+	    	//inputfiles.focus().trigger('click');
+            inputfiles.first().trigger('click');
+	    	//return false;
 	    });
 
 
@@ -90,7 +87,6 @@ var imgupload = {
 
     loadImagesForModal:function (data,modal) {
         var modalBody = modal.find(".modal-body");
-        console.log("send ajax form upload");
         $.ajax({
             url: "/images/manager.json",
             dataType:"JSON", method:"POST",
@@ -106,12 +102,14 @@ var imgupload = {
             } else if ( typeof images.error !== 'undefined' ){
                 alert(images.error);
             }
+        }).always(function() {
+            modal.find("input[type=file]").val("");
         });
     },
 
     thumbModal : function(fname,folder){
-	    var fileSrc = "/images/thumb/"+folder+"/w400/"+fname;
-        return "<a class=\"col-md-4 col-sm-3 col-xs-6 select-img\" href='javascript:void(0);' fname='"+fname+"' folder='"+folder+"' >" +
+	    var fileSrc = "/images/"+folder+"/s400/"+fname;
+        return "<a class=\"col-md-2 col-sm-3 col-xs-6 select-img\" href='javascript:void(0);' fname='"+fname+"' folder='"+folder+"' >" +
             "<img src=\""+fileSrc+"\" class=\"img-responsive img-thumbnail center-block\" >" +
             "</a>";
     },

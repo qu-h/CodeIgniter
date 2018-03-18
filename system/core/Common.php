@@ -341,12 +341,14 @@ if ( ! function_exists('get_mimes'))
 				? include(APPPATH.'config/mimes.php')
 				: array();
 
-			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
+            if (file_exists(BASEPATH."../application/config/mimes.php"))
+            {
+                $_mimes = array_merge($_mimes, include(BASEPATH."../application/config/mimes.php"));
+            } else if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
 			{
 				$_mimes = array_merge($_mimes, include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'));
 			}
 		}
-
 		return $_mimes;
 	}
 }
