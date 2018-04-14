@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH') ) exit( 'No direct script access allowed' );
 
-// require_once( BASEPATH.'third_party/Smarty-3/SmartyBC.class.php' );
-require_once( BASEPATH.'third_party/Smarty_3/SmartyBC.class.php' );
+require_once( BaseAppPath.'third_party/Smarty_3/SmartyBC.class.php' );
 
 class CI_Smarty extends SmartyBC {
 
@@ -17,29 +16,12 @@ class CI_Smarty extends SmartyBC {
 
 	public function __construct() {
 		parent::__construct();
-// 		$this->CI =& get_instance();
 		$config =& get_config();
 		$this->caching = false;
-// 		$this->setTemplateDir( APPPATH. 'views' );
 		$this->setCompileDir( APPPATH . 'compile' );
-// 		$this->setConfigDir(BASEPATH . 'libraries/Smarty-3.1.21/configs' );
 		$this->setCacheDir( BASEPATH . '../cache' );
 		$this->loadPlugin('smarty_compiler_switch');
-
-// 		if( !class_exists('SmartyPlugin') ){
-// 			$this->CI->load->library('SmartyPlugin');
-// 		}
-// 		$methods = get_class_methods('SmartyPlugin' );
-// 		foreach ($methods AS $plugin){
-// 			if( $plugin !='__construct' ){
-// 				$this->registerPlugin('function', $plugin, 'SmartyPlugin::'.$plugin);
-// 			}
-
-// 		}
-// 		$this->theme();
-
 		if ( ! defined('IMGPATH') ) define('IMGPATH', BASEPATH.'../images/');
-// 		define('IMGURL', $this->CI->config->item('images_url'));
 
 	}
 
@@ -54,73 +36,6 @@ class CI_Smarty extends SmartyBC {
 	var $layout = 'template';
 
 	function view($resource_name, $params = array())   {
-		$alang = array();
-
-
-// 		if( array_key_exists('theme_css', $params) ){
-// 		    foreach ($params['theme_css'] AS $k=>$file){
-//     			$this->css[] = self::checkResoure($file);
-//     		}
-//     		unset($params['theme_css']);
-
-
-// 		}
-
-// 		if( array_key_exists('theme_js', $params) ){
-// 		    foreach ($params['theme_js'] AS $k=>$file){
-// 		        $this->js[] = self::checkResoure($file);
-// 		    }
-// 		    unset($params['theme_js']);
-// 		}
-// 		if (strpos($resource_name, '.') === false) {
-// 			$resource_name .= '.htm';
-// 		}
-
-// 		if (!is_file($this->template_dir[0] . $resource_name)) {
-// 			show_error("template: [$resource_name] cannot be found.");
-// 		}
-
-// 		foreach ($this->js AS $k=>$file){
-// 			$this->js[$k] = self::checkResoure($file);
-// 		}
-
-// 		foreach ($this->css AS $k=>$file){
-// 			$this->css[$k] = self::checkResoure($file);
-// 		}
-
-//         foreach ($this->css_ie AS $k=>$file){
-// 			$this->css_ie[$k] = self::checkResoure($file);
-// 		}
-
-// 		foreach ($this->css_all_ie AS $k=>$file){
-// 			$this->css_all_ie[$k] = self::checkResoure($file);
-// 		}
-
-		$data = array('view'=>$resource_name,
-// 			'js'=>$this->js,
-// 			'css'=>$this->css,
-//             'css_ie'=>$this->css_ie,
-// 			'css_all_ie'=>$this->css_all_ie,
-// 			'script'=>$this->script,
-// 			'siteDir'=>$this->CI->config->item('base_url'),
-// 			'imgURL'=>$this->CI->config->item('image_url').DS,
-// 			'assetsURL'=>$this->CI->config->item('asset_url').'/assets/',
-// 			'siteurl'=>$this->CI->config->item('base_url'),
-		);
-
-
-// 		if( !empty($this->tpl_vars) ){
-// 			foreach ( $this->tpl_vars AS $index=>$val){
-// 				$data[$index] = $val;
-// 			}
-// 		}
-
-// 		if( isset($this->CI->title) ){
-// 			$data['pagetitle'] = $this->CI->title;
-// 		}
-
-
-// 		$data = array_merge ( $data ,$params );
         if( is_array($params) && !empty($params) ) foreach ($params AS $k=>$d){
             $this->assign($k, $d);
         }
@@ -131,11 +46,11 @@ class CI_Smarty extends SmartyBC {
             $this->assign('js_header', $this->script['header']);
         }
 
-
-		$ci = get_instance();
-
 		list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
 
+		if( $path === FALSE ){
+            list($path, $_view) = Modules::find($resource_name,APPPATH.'views/');
+        }
 
 		if( $path === FALSE) {
 
@@ -152,7 +67,7 @@ class CI_Smarty extends SmartyBC {
 		        if ($path != FALSE)
 		            break;
 
-		        list($path, $_view) = Modules::find($file_name, APPPATH, 'views/');
+
 
 		        if ($path != FALSE)
 		            break;
@@ -172,23 +87,6 @@ die('smarty 168 : check app');
 
 		    }
 		}
-
-// // 		    $file_load = APPPATH."views/$_view";
-// 		    $file_load = $_view;
-//             if( file_exists($file_load) ){
-//                 return parent::fetch("$file_load");
-//             } else {
-//                 bug($file_load);
-//                 foreach (array('.html','.htm') AS $ext){
-
-//                     if( file_exists($file_load .= $ext) ){
-//                         bug($file_load);
-//                         return parent::fetch("$file_load");
-//                     }
-
-//                 }
-//             }
-
 
 		return parent::fetch("$path$_view");
 
@@ -289,8 +187,6 @@ die('smarty 168 : check app');
 	    $this->script['header'].= $str;
 	}
 
-
-
 	function loadLibrariesPlugin($class=''){
 		if( !$class ) return false;
 
@@ -307,12 +203,4 @@ die('smarty 168 : check app');
 		}
 	}
 
-// 	function assign($index=null,$val=null){
-// 		if( $index ){
-// 			$this->tpl_vars[$index] = $val;
-// 			parent::assign($index,$val);
-// 		}
-
-
-// 	}
 }

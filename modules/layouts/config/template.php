@@ -85,7 +85,8 @@ $config['theme'] = 'ict';
 */
 
 $config['theme_locations'] = array(
-	BASEPATH.'themes/'
+	BASEPATH.'themes/',
+    APPPATH.'themes/'
 );
 
 $config['theme_locations'][] = realpath(SYSTEM_MODULE_PATH.'/../themes/')."/";

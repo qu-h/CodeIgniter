@@ -127,13 +127,13 @@ class Modules
 	{
 		/* don't autoload CI_ prefixed classes or those using the config subclass_prefix */
 		if (strstr($class, 'CI_') OR strstr($class, config_item('subclass_prefix'))) return;
-
+//        bug(dirname(__FILE__).'/'.substr($class, 3).EXT);
 		/* autoload Modular Extensions MX core classes */
 		if (strstr($class, 'MX_'))
 		{
 			if (is_file($location = dirname(__FILE__).'/'.substr($class, 3).EXT))
 			{
-// 			    bug($location);
+
 				include_once $location;
 				return;
 			}
@@ -192,9 +192,12 @@ class Modules
 	**/
 	public static function find($file, $module, $base=null)
 	{
-
-
 	    $file_in = $file;
+
+	    if( file_exists($file) ){
+	        $fileInfo = pathinfo($file);
+	        return [$fileInfo['dirname'].DS,$fileInfo['basename']];
+        }
 		$segments = explode('/', $file);
 
 		$file = array_pop($segments);
@@ -204,15 +207,35 @@ class Modules
 
 		$module ? $modules[$module] = $path : $modules = array();
 
-
 		if ( ! empty($segments))
 		{
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}
 
 		foreach (Modules::$locations as $location => $offset) {
+		    $folders = self::sub_directorys($location);
 
 			foreach($modules as $module => $subpath) {
+
+			    if( in_array($module,$folders) ){
+			        //die("check path in 217");
+                    //continue;
+
+                }
+                if( is_dir($module.DS.$subpath) ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($module.DS.$subpath,$file);
+                    if( $fileCheck ){
+                        return [$pathCheck,$fileCheck];
+                    }
+
+                }
+                $moduleFolders = self::sub_directorys($module.DS.$subpath);
+//			    bug($moduleFolders);
+//                bug("check modules=============== path=$module path=$subpath");
+
+                $realPath = $location.$module;
+
+
                 $path_check1 = $module.'/'.$base.$subpath;
 
 			    if( is_file($path_check1.ucfirst($file_ext)) ){
@@ -221,6 +244,7 @@ class Modules
 
 				$fullpath = $location.$module.'/'.$base.$subpath;
 				$fullpath = realpath($fullpath)."/";
+
 
                 if (($base == 'libraries/' OR $base == 'models/') AND is_file($fullpath.ucfirst($file_ext))) {
                     return array($fullpath, ucfirst($file));
@@ -232,10 +256,6 @@ class Modules
 			}
 		}
 // bug('app path='.APPPATH."views/$file_in");
-// 		if( file_exists(APPPATH."view/$file_in") ){
-// 		    die('check APPath');
-// 		}
-// 		bug("file in=$file_in");
 
 		return array(FALSE, $file);
 	}
@@ -276,4 +296,38 @@ class Modules
 			}
 		}
 	}
+
+    public static function is_directory($directory,$module){
+        $moduleFullPath = null;
+        foreach (glob($directory."/*",GLOB_ONLYDIR) as $dir) {
+            $folderName = pathinfo($dir,PATHINFO_BASENAME);
+            if( strtolower($folderName) == strtolower($module) ){
+                $module = $folderName;
+                $moduleFullPath = $dir;
+            }
+        }
+        return [$module,$moduleFullPath];
+    }
+
+    static function sub_directorys($path){
+        $folders = [];
+        foreach (glob($path."/*",GLOB_ONLYDIR) as $dir) {
+            $folderName = pathinfo($dir,PATHINFO_BASENAME);
+            $folders[] = $folderName;
+        }
+       // bug("========== check sub_directorys path=$path");
+        return $folders;
+    }
+
+    public static function is_file_in_dir($path,$file){
+        $moduleFullPath = $module = null;
+        foreach (glob($path."/*") as $dir) {
+            $folderName = pathinfo($dir);
+            if( strtolower($folderName['filename']) == strtolower($file) ){
+                $module = $folderName['basename'];
+                $moduleFullPath = $folderName['dirname'].DS;
+            }
+        }
+        return [$module,$moduleFullPath];
+    }
 }

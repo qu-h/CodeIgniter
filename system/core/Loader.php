@@ -70,7 +70,7 @@ class CI_Loader {
 	 *
 	 * @var	array
 	 */
-	protected $_ci_library_paths =	array(APPPATH, BASEPATH);
+	protected $_ci_library_paths =	array(APPPATH, BASEPATH,BASEPATH."../application/");
 
 	/**
 	 * List of paths to load models from
@@ -84,7 +84,7 @@ class CI_Loader {
 	 *
 	 * @var	array
 	 */
-	protected $_ci_helper_paths =	array(APPPATH, BASEPATH);
+	protected $_ci_helper_paths =	array(APPPATH, BASEPATH,BASEPATH."../application/");
 
 	/**
 	 * List of cached variables
@@ -1308,9 +1308,9 @@ class CI_Loader {
 	{
 	    $autoload_using = array();
 
-	    if (file_exists(BASEPATH.'config/autoload.php'))
+	    if (file_exists(BASEPATH.'../application/config/autoload.php'))
 	    {
-	        include(BASEPATH.'config/autoload.php');
+	        include(BASEPATH.'../application/config/autoload.php');
 	        $autoload_using = array_merge_recursive($autoload_using,$autoload);
 	    }
 

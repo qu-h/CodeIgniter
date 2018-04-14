@@ -241,7 +241,7 @@ if ( ! function_exists('get_config'))
 	function &get_config(Array $replace = array())
 	{
 		static $config;
-		require(BASEPATH.'config/config.php');
+		require(BASEPATH.'../application/config/config.php');
 		$config_base = $config;
 
 		if (file_exists(APPPATH.'config/config.php'))

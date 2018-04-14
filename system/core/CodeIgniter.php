@@ -36,7 +36,11 @@
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 date_default_timezone_set('Asia/Bangkok');
+
+define('BaseAppPath', realpath(BASEPATH."../application/")."/");
+
 if( !function_exists('bug') ){
     function bug($var=null){
         echo '<pre>';
@@ -44,6 +48,7 @@ if( !function_exists('bug') ){
         echo '</pre>';
     }
 }
+
 /**
  * System Initialization File
  *
@@ -69,10 +74,12 @@ if( !function_exists('bug') ){
  *  Load the framework constants
  * ------------------------------------------------------
  */
-require_once(BASEPATH.'config/constants.php');
 if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
 {
 	require_once(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
+} else if (file_exists(BaseAppPath.'config/constants.php'))
+{
+    require_once(BaseAppPath.'config/constants.php');
 }
 
 
