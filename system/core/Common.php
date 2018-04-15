@@ -334,9 +334,9 @@ if ( ! function_exists('get_mimes'))
 
 		if (empty($_mimes))
 		{
-		    if (file_exists(BASEPATH.'config/mimes.php'))
+		    if (file_exists(BaseAppPath.'config/mimes.php'))
 		    {
-		        $_mimes_default = include(BASEPATH.'config/mimes.php');
+		        $_mimes_default = include(BaseAppPath.'config/mimes.php');
 		    }
 
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))

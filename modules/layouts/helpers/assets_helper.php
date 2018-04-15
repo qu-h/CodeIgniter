@@ -53,6 +53,7 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFil
         $dir = "$assets_dir/";
         switch ($type){
             case 'text/css':
+            case 'css':
                 if( $dirFileType ){
                     $dir .= "css/";
                 }

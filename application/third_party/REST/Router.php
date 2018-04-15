@@ -1,41 +1,8 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
-/* load the MX core module class */
-require dirname(__FILE__).'/Modules.php';
 
-/**
- * Modular Extensions - HMVC
- *
- * Adapted from the CodeIgniter Core Classes
- * @link	http://codeigniter.com
- *
- * Description:
- * This library extends the CodeIgniter router class.
- *
- * Install this file as application/third_party/MX/Router.php
- *
- * @copyright	Copyright (c) 2015 Wiredesignz
- * @version 	5.5
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- **/
-class MX_Router extends CI_Router
+
+class REST_Router extends CI_Router
 {
 	public $module;
 	private $located = 0;
@@ -124,21 +91,12 @@ class MX_Router extends CI_Router
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset)
 		{
-		    //bug($location.$module.'/controllers/');
-            list($moduleFolder,$moduleReadPath) = Modules::is_file_in_dir($location,$module);
-            //bug("129 ====== module::locate val module:$module location=$location");
-            if( $moduleReadPath ){
-//                $location = $location;
-                $module = $moduleFolder;
-            }
-            //bug("134 ====== module::locate val module:$module location=$location");
-
-            if (is_dir($source = $location.$module.'/controllers/'))
+			/* module exists? */
+			if (is_dir($source = $location.$module.'/controllers/'))
 			{
-
 				$this->module = $module;
 				$this->directory = $offset.$module.'/controllers/';
-//bug("144===module:$module directory=$directory location=$location this->dirrectory:".$this->directory);
+
 				/* module sub-controller exists? */
 				if($directory)
 				{
@@ -159,14 +117,13 @@ class MX_Router extends CI_Router
 							else $this->located = -1;
 						}
 					}
-					else if(is_file($source.ucfirst($directory).$ext))
+					else
+					if(is_file($source.ucfirst($directory).$ext))
 					{
 						$this->located = 2;
 						return array_slice($segments, 1);
 					}
-					else {
-                        $this->located = -1;
-                    }
+					else $this->located = -1;
 				}
 
 				/* module controller exists? */

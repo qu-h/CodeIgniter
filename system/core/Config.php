@@ -70,7 +70,7 @@ class CI_Config {
 	 * @used-by	CI_Loader
 	 * @var		array
 	 */
-	public $_config_paths =	array(BASEPATH,APPPATH);
+	public $_config_paths =	array(BASEPATH."../application/",APPPATH);
 
 	// --------------------------------------------------------------------
 

@@ -96,22 +96,32 @@ class Modules
 
 			/* find the controller */
 			list($class) = CI::$APP->router->locate(explode('/', $module));
-
+            $moduleController = CI::$APP->router->directory;
 			/* controller cannot be located */
 			if (empty($class)) return;
 
 			/* set the module directory */
-			$path = APPPATH.'controllers/'.CI::$APP->router->directory;
-
+			$path = APPPATH.'controllers/'.$moduleController;
+            //bug("load module 104  route-directory=".$moduleController);
 			/* load the controller class */
 			$class = $class.CI::$APP->config->item('controller_suffix');
 
             $file = ucfirst($class);
+
             if( !file_exists($path.$file) ) {
-                $path = SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory;
+                //bug(Modules::$locations);
+                //bug("module load 113:".CI::$APP->router->directory);
+                foreach (Modules::$locations AS $modulePath => $moduleOffset){
+                    if( is_dir("$modulePath/$moduleController") ){
+                        //bug("moduel read path=".realpath("$modulePath/$moduleController"));
+                        $path = realpath("$modulePath/$moduleController").DS;
+                    }
+                }
+                //$path = SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory;
 
             }
-
+            //$path = realpath($path);
+            //bug("load module114  =$file path=$path");
 			self::load_file($file, $path);
 
 			/* create and register the new controller */
@@ -127,7 +137,7 @@ class Modules
 	{
 		/* don't autoload CI_ prefixed classes or those using the config subclass_prefix */
 		if (strstr($class, 'CI_') OR strstr($class, config_item('subclass_prefix'))) return;
-//        bug(dirname(__FILE__).'/'.substr($class, 3).EXT);
+
 		/* autoload Modular Extensions MX core classes */
 		if (strstr($class, 'MX_'))
 		{
@@ -168,6 +178,7 @@ class Modules
 				log_message('debug', "File already loaded: {$location}");
 				return $result;
 			}
+            //bug("module::load_file location=$location");
 			include_once $location;
 		}
 		else
@@ -190,8 +201,9 @@ class Modules
 	* Also scans application directories for models, plugins and views.
 	* Generates fatal error if file not found.
 	**/
-	public static function find($file, $module, $base=null)
+	public static function find($file, $module, $base=null,$returnBaseName=false)
 	{
+	    $fileNameDebug = 'babfdafdsafy_kids';
 	    $file_in = $file;
 
 	    if( file_exists($file) ){
@@ -216,12 +228,47 @@ class Modules
 		    $folders = self::sub_directorys($location);
 
 			foreach($modules as $module => $subpath) {
-
-			    if( in_array($module,$folders) ){
-			        //die("check path in 217");
-                    //continue;
+			    if( !is_dir($location.$module) ){
+                    list($moduleFolder,$modulePath) = self::is_directory($location,$module);
+                    if( $moduleFolder ){
+                        $module = $moduleFolder;
+                    }
+                    if( $file_in == $fileNameDebug ) {
+                        bug("check real location:$location module:$module $moduleFolder");
+                    }
+                }
+			    if( $file_in == $fileNameDebug ){
+                    //bug("======= check 230: $location module:$module subpath:$subpath file=$file");
+                    bug("======= check 231: dir=$location$subpath.DS.$base file=$file module=$module fileInput=$file_in base=$base");
 
                 }
+                $fileCheck = null;
+                if( is_dir($location.$module) ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($location.$module.DS.$base,$file,$returnBaseName);
+                } else if ( is_dir($module) ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($module.DS.$base,$file,$returnBaseName);
+                } else {
+                    if( $file_in == $fileNameDebug ) {
+                        bug("check ====252 :$location module:$module $moduleFolder");
+                    }
+
+                }
+
+                if( !$fileCheck ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($module,$file_in,$returnBaseName);
+                }
+			    //if( in_array($module,$folders) ){
+
+
+                if( $file_in == $fileNameDebug ) {
+                    bug("======= check 264: dir=".$location.$module.DS.$base." file=$fileCheck");
+                }
+                    if( $fileCheck ){
+                        return [$pathCheck,$fileCheck];
+                    }
+
+                //}
+
                 if( is_dir($module.DS.$subpath) ){
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($module.DS.$subpath,$file);
                     if( $fileCheck ){
@@ -229,12 +276,20 @@ class Modules
                     }
 
                 }
-                $moduleFolders = self::sub_directorys($module.DS.$subpath);
+
+                //$moduleFolders = self::sub_directorys($module.DS.$subpath);
 //			    bug($moduleFolders);
 //                bug("check modules=============== path=$module path=$subpath");
 
-                $realPath = $location.$module;
+                $realPath = ($module."/$subpath/$subpath");
 
+			    if( $realPath ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($realPath,$file,$returnBaseName);
+                    //bug("===check readpath module 252 pathCheck=$pathCheck fileCheck=$fileCheck");
+                    if( $fileCheck ){
+                        return [$pathCheck,$fileCheck];
+                    }
+                }
 
                 $path_check1 = $module.'/'.$base.$subpath;
 
@@ -315,18 +370,39 @@ class Modules
             $folderName = pathinfo($dir,PATHINFO_BASENAME);
             $folders[] = $folderName;
         }
-       // bug("========== check sub_directorys path=$path");
+//        bug("========== check sub_directorys path=$path");
         return $folders;
     }
 
-    public static function is_file_in_dir($path,$file){
+    public static function is_file_in_dir($path,$file,$returnBaseName=false){
         $moduleFullPath = $module = null;
+
+        $pathDebug = "/media/quanict/WWW/QuanNH/japanese/views/";
+
         foreach (glob($path."/*") as $dir) {
             $folderName = pathinfo($dir);
             if( strtolower($folderName['filename']) == strtolower($file) ){
-                $module = $folderName['basename'];
+                $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
                 $moduleFullPath = $folderName['dirname'].DS;
             }
+        }
+        if( $file=="baby_kids" ){
+            //bug("===390==".$module);
+        }
+        if( strlen($module) < 1 ){
+            $filescheck = glob($path."/$file*");
+            if( $path==$pathDebug ){
+                //bug($path."/$file");
+            }
+            if( !empty($filescheck) ){
+                foreach ($filescheck as $dir) {
+                    $folderName = pathinfo($dir);
+                    $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
+                    $moduleFullPath = $folderName['dirname'].DS;
+                }
+
+            }
+
         }
         return [$module,$moduleFullPath];
     }

@@ -1,0 +1,3 @@
+<?php
+
+$lang['json']="json";

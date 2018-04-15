@@ -16,7 +16,7 @@ class CI_Smarty extends SmartyBC {
 
 	public function __construct() {
 		parent::__construct();
-		$config =& get_config();
+
 		$this->caching = false;
 		$this->setCompileDir( APPPATH . 'compile' );
 		$this->setCacheDir( BASEPATH . '../cache' );
@@ -46,10 +46,18 @@ class CI_Smarty extends SmartyBC {
             $this->assign('js_header', $this->script['header']);
         }
 
-		list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
+        $ci = get_instance();
+
+        list($path, $_view) = Modules::find($resource_name, $ci->router->class,"views/",true );
+
+//bug("53===========bug SmartyPath:$path resoure:$resource_name");
+
+        if( $path === FALSE ){
+            list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
+        }
 
 		if( $path === FALSE ){
-            list($path, $_view) = Modules::find($resource_name,APPPATH.'views/');
+            list($path, $_view) = Modules::find($resource_name,APPPATH.'views/',null,true);
         }
 
 		if( $path === FALSE) {
@@ -78,16 +86,16 @@ class CI_Smarty extends SmartyBC {
 		if ( $path === FALSE )
 		{
 		    $segments = explode('/', $resource_name);
-bug($resource_name);
-// 		    unset($segments)
 		    $path = ltrim(implode('/', $segments).'/', '/');
-		    bug($path);
-die('smarty 168 : check app');
+		    bug("path:$path resouce_name:$resource_name");
+            die('smarty 168 : check app');
 		    if( file_exists(APPPATH."views/$resource_name") ){
 
 		    }
-		}
-
+		} else {
+            $this->setTemplateDir($path);
+        }
+//bug("show view $path$_view");
 		return parent::fetch("$path$_view");
 
 

@@ -248,7 +248,7 @@ class Template
 		{
 			$template['body'] = $this->_body;
 
-			list($layout_path, $layout_view) = Modules::find($this->_layout,APPPATH.'views/layouts');
+			list($layout_path, $layout_view) = Modules::find($this->_layout,APPPATH.'views/layouts',null,true);
 
 			if( $layout_path != FALSE ){
 			    $this->_body =  self::_load_view($layout_view, $this->_data, $return, $layout_path );
@@ -425,32 +425,7 @@ class Template
 		    $this->_ci->smarty->theme = $theme;
 		}
 
-
-		if( $this->_theme AND is_dir($this->_theme_path) ){
-
-		    if( file_exists($smart_func = $this->_theme_path."smarty_func.php") AND property_exists($this->_ci, 'smarty') ){
-		        include_once $smart_func;
-
-		        $ui_class_name = $this->_theme.'_ui';
-
-		        $reflection = new ReflectionClass($ui_class_name);
-
-		        $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
-
-// 		        $func1 = $reflection->getMethod('func1')
-
-// 		        $methods = get_class_methods($ui_class_name);
-		        foreach ($methods AS $plugin){
-
-// 		            if( $plugin !='__construct' AND $reflection->getMethod($plugin)->isStatic() ){
-                    if( !isset($this->_ci->smarty->registered_plugins['function']) OR  !array_key_exists($plugin->name, $this->_ci->smarty->registered_plugins['function']) ) {
-		                $this->_ci->smarty->registerPlugin('function', $plugin->name, $ui_class_name.'::'.$plugin->name);
-		            }
-// 		            bug($this->_ci->smarty->registered_plugins);die;
-		        }
-		    }
-
-		}
+        $this->_load_smarty_theme();
 
 		return $this;
 	}
@@ -767,6 +742,7 @@ class Template
 			}
 		}
 
+        //bug("template::find_view $view");
 		// Not found it yet? Just load, its either in the module or root view
 		return self::_load_view($view, $this->_data + $data, $parse_view);
 	}
@@ -852,6 +828,52 @@ class Template
 	{
 		return pathinfo($file, PATHINFO_EXTENSION) ? '' : '.php';
 	}
+
+
+    /*
+     * todo : load smarty function in theme
+     */
+
+    private function _load_smarty_theme(){
+        if ($this->_theme and is_dir($this->_theme_path)) {
+
+            if (file_exists($smart_func = $this->_theme_path . "smarty_func.php") and property_exists($this->_ci, 'smarty')) {
+                include_once $smart_func;
+                $ui_class_name = $this->_theme . '_ui';
+
+                $reflection = new ReflectionClass($ui_class_name);
+
+                $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
+                foreach ($methods as $plugin) {
+                    if (! isset($this->_ci->smarty->registered_plugins['function']) or ! array_key_exists($plugin->name, $this->_ci->smarty->registered_plugins['function'])) {
+                        $this->_ci->smarty->registerPlugin('function', $plugin->name, $ui_class_name . '::' . $plugin->name);
+                    }
+                }
+            }
+
+            if( is_dir($smartyDir = realpath($this->_theme_path."smarty")) ){
+
+                foreach (glob("$smartyDir/*.php") as $f) {
+                    $fileSmarty = pathinfo($f);
+
+                    include_once $f;
+                    $className = ucfirst($this->_theme).ucfirst($fileSmarty["filename"]);
+                    if( class_exists($className) ){
+                        $reflection = new ReflectionClass($className);
+                        $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
+                        foreach ($methods as $plugin) {
+                            if (
+                                !isset($this->_ci->smarty->registered_plugins['function'])
+                                or  !array_key_exists($plugin->name, $this->_ci->smarty->registered_plugins['function'])) {
+                                $this->_ci->smarty->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // END Template class
