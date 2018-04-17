@@ -50,8 +50,6 @@ class CI_Smarty extends SmartyBC {
 
         list($path, $_view) = Modules::find($resource_name, $ci->router->class,"views/",true );
 
-//bug("53===========bug SmartyPath:$path resoure:$resource_name");
-
         if( $path === FALSE ){
             list($path, $_view) = Modules::find($resource_name, SYSTEM_MODULE_PATH );
         }

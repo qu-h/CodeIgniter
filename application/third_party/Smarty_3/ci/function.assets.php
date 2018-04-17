@@ -11,8 +11,8 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
         $folder = $content->theme;
         $html = '';
         if($type=='css'){
-
-            foreach ($content->css AS $file){
+            $css = get_instance()->config->item('css');
+            foreach ($css AS $file){
                 if( is_array($file) ){
                     if( !isset($file['media']) ){
                         $file['media'] = 'all';
