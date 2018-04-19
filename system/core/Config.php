@@ -70,7 +70,7 @@ class CI_Config {
 	 * @used-by	CI_Loader
 	 * @var		array
 	 */
-	public $_config_paths =	array(BASEPATH."../application/",APPPATH);
+	public $_config_paths =	[];
 
 	// --------------------------------------------------------------------
 
@@ -84,7 +84,8 @@ class CI_Config {
 	public function __construct()
 	{
 		$this->config =& get_config();
-
+        $this->_config_paths[]=BASEPATH."../application/";
+        $this->_config_paths[]= APPPATH;
 		// Set the base_url automatically if none was provided
 		if (empty($this->config['base_url']))
 		{
