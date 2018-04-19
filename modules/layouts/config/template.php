@@ -89,4 +89,4 @@ $config['theme_locations'] = array(
     APPPATH.'themes/'
 );
 
-$config['theme_locations'][] = realpath(SYSTEM_MODULE_PATH.'/../themes/')."/";
+//$config['theme_locations'][] = realpath(SYSTEM_MODULE_PATH.'/../themes/')."/";

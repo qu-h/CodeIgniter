@@ -42,10 +42,13 @@ date_default_timezone_set('Asia/Bangkok');
 define('BaseAppPath', realpath(BASEPATH."../application/")."/");
 
 if( !function_exists('bug') ){
-    function bug($var=null){
+    function bug($var=null,$exit=''){
         echo '<pre>';
         print_r($var);
         echo '</pre>';
+        if( $exit ){
+            die($exit);
+        }
     }
 }
 

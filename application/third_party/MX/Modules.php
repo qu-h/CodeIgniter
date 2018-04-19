@@ -203,7 +203,7 @@ class Modules
 	**/
 	public static function find($file, $module, $base=null,$returnBaseName=false)
 	{
-	    $fileNameDebug = 'babfdafdsafy_kids';
+	    $fileNameDebug = 'front-end/formdsds';
 	    $file_in = $file;
 
 	    if( file_exists($file) ){
@@ -234,15 +234,33 @@ class Modules
                         $module = $moduleFolder;
                     }
                     if( $file_in == $fileNameDebug ) {
-                        bug("check real location:$location module:$module $moduleFolder");
+                        //list($fileCheck,$pathCheck) = Modules::is_file_in_dir($location.$module.DS.$base,$file,$returnBaseName);
+                        bug("check real location:$location module:$module moduleFolder=$moduleFolder base:$base file_in:$file_in");
                     }
                 }
+                $fileCheck = null;
 			    if( $file_in == $fileNameDebug ){
                     //bug("======= check 230: $location module:$module subpath:$subpath file=$file");
-                    bug("======= check 231: dir=$location$subpath.DS.$base file=$file module=$module fileInput=$file_in base=$base");
+
+
+                    $path = $location.$module.DS.$subpath.DS.$base;
+                    bug("======= check 251: dir=$path file=$file module=$module fileInput=$file_in base=$base");
+
 
                 }
-                $fileCheck = null;
+
+                if( is_dir($location.$subpath.DS.$base) ){
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($location.$subpath.DS.$base,$file,$returnBaseName);
+                    //bug('246');
+                } else if ( is_dir($checkDir=$location.$module.DS.$base.$subpath) ) {
+
+                    list($fileCheck,$pathCheck) = Modules::is_file_in_dir($checkDir,$file,$returnBaseName);
+                    //bug("250 checkPath:$checkDir pathCheck=$pathCheck fileCheck=$fileCheck");
+                    if( $fileCheck ){
+                        return [$pathCheck,$fileCheck];
+                    }
+                }
+
                 if( is_dir($location.$module) ){
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($location.$module.DS.$base,$file,$returnBaseName);
                 } else if ( is_dir($module) ){
@@ -262,6 +280,12 @@ class Modules
 
                 if( $file_in == $fileNameDebug ) {
                     bug("======= check 264: dir=".$location.$module.DS.$base." file=$fileCheck");
+                    if( is_dir(($checkDir=$location.$module.DS.$base) ) ){
+                        list($fileCheck,$pathCheck) = Modules::is_file_in_dir($checkDir,$file,$returnBaseName);
+                        if( $file_in == $fileNameDebug ) {
+                            bug("278 fileCheck=$fileCheck checkDir=$checkDir");
+                        }
+                    }
                 }
                     if( $fileCheck ){
                         return [$pathCheck,$fileCheck];

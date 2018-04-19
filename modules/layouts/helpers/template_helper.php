@@ -61,16 +61,16 @@ function smarty_view($view,$params=[]){
         echo get_instance()->smarty->view($view,$params);
     }
 }
-
-function temp_view($view,$params=[],$title=null,$page_icon=null){
-    if( strlen($view) > 0 ){
-        $template = get_instance()->template;
-        if( !empty($title) ){
-            $template->title($title);
-        }
-        if( !empty($page_icon) ){
-            $template->set('page_icon',$page_icon);
-        }
-        $template->build($view,$params);
-    }
-}
+//
+//function temp_view($view,$params=[],$title=null,$page_icon=null){
+//    if( strlen($view) > 0 ){
+//        $template = get_instance()->template;
+//        if( !empty($title) ){
+//            $template->title($title);
+//        }
+//        if( !empty($page_icon) ){
+//            $template->set('page_icon',$page_icon);
+//        }
+//        $template->build($view,$params);
+//    }
+//}

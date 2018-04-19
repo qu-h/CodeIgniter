@@ -384,6 +384,7 @@ class Template
 
 		foreach ($this->_theme_locations as $location)
 		{
+		    //bug("theme loaction=".$location.$this->_theme);
 			if ($this->_theme AND file_exists($location.$this->_theme))
 			{
 				$this->_theme_path = realpath(rtrim($location.$this->_theme.'/')).DS;
@@ -835,6 +836,7 @@ class Template
      */
 
     private function _load_smarty_theme(){
+        //bug($this->_theme_path);
         if ($this->_theme and is_dir($this->_theme_path)) {
 
             if (file_exists($smart_func = $this->_theme_path . "smarty_func.php") and property_exists($this->_ci, 'smarty')) {
