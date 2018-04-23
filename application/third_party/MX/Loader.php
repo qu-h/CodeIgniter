@@ -475,6 +475,43 @@ bug("path= $path view=$view");die;
 			}
 		}
 	}
+
+    /** Load a module smarty **/
+    public function smarty($module)
+    {
+        $seg = explode("/",$module);
+        if ( count($seg) > 0 ){
+            $module = $seg[0]; unset($seg[0]);
+        } else {
+            $module = $this->_module;
+        }
+        $file = implode("/",$seg);
+
+        list($path, $file) = Modules::find("smarty/$file", $module,null);
+
+        if( $path ){
+            $ci = get_instance();
+            include_once $path."$file.php";
+            $module_ui_class = strtolower($module."_".$file."_ui");
+//            bug($module_ui_class,'bug module smarty call');
+            if( class_exists($module_ui_class) ){
+                $reflection = new ReflectionClass($module_ui_class);
+                $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
+
+                foreach ($methods as $plugin) {
+                    if( !$plugin->isPublic() ){
+                        continue;
+                    }
+
+                    if ( ! isset($ci->smarty->registered_plugins['function']) or ! array_key_exists($plugin->name, $ci->smarty->registered_plugins['function'])) {
+                        $ci->smarty->registerPlugin('function', $plugin->name, $module_ui_class . '::' . $plugin->name);
+                    }
+                }
+
+            }
+//            bug($ci->smarty->registered_plugins['function'],'bug smarty');
+        }
+    }
 }
 
 /** load the CI class for Modular Separation **/

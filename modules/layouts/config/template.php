@@ -85,7 +85,7 @@ $config['theme'] = 'ict';
 */
 
 $config['theme_locations'] = array(
-	BASEPATH.'themes/',
+	BASEPATH.'../themes/',
     APPPATH.'themes/'
 );
 

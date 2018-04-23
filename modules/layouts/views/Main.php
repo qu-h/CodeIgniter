@@ -20,7 +20,7 @@
     <div id="logo-group">
 
 	<!-- PLACE YOUR LOGO HERE -->
-	<span id="logo"> {img file="img/logo.png" alt="" }</span>
+	<span id="logo"> {theme_img file="img/logo.png" alt="" return='img' }a</span>
 	<!-- END LOGO PLACEHOLDER -->
 
 				<!-- Note: The activity badge color changes when clicked and resets the number to 0

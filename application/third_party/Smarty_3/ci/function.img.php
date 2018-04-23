@@ -6,8 +6,12 @@ function smarty_function_img($params,$content,$template=null, &$repeat=null){
     $return = ( isset($params['return']) )?$params['return']:'img';
 
     $CI =& get_instance();
+    if (filter_var($file, FILTER_VALIDATE_URL)) {
+        $url = $file;
+    } else {
+        $url = $CI->config->item("base_url").($file);
+    }
 
-    $url = $CI->config->item("base_url").($file);
     $url = str_replace('index.php/', null, $url);
     switch ($return){
         case 'src':

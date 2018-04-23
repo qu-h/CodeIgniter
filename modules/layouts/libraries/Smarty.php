@@ -50,9 +50,10 @@ class CI_Smarty extends SmartyBC {
 
         list($path, $_view) = Modules::find($resource_name, $ci->router->class,"views/",true );
         if( $path === FALSE ){
-            list($path, $_view) = Modules::find($resource_name, $ci->router->class,"views/",true );
+            list($path, $_view) = Modules::find($resource_name, $ci->router->module,"views/",true );
         }
-        //bug("smarty 55 ==== path:".$path);
+        //bug($ci->router);
+        //bug("smarty 55 ==== path:".$path." modulue:find ".$ci->router->class);
         //bug($ci->router);
 
         //die($resource_name);
@@ -91,11 +92,9 @@ class CI_Smarty extends SmartyBC {
 		{
 		    $segments = explode('/', $resource_name);
 		    $path = ltrim(implode('/', $segments).'/', '/');
-		    bug("path:$path resouce_name:$resource_name");
-            die('smarty 168 : check app');
-		    if( file_exists(APPPATH."views/$resource_name") ){
+		    bug("path:$path resouce_name:$resource_name template:$path$_view");
+            //die('smarty 168 : check app');
 
-		    }
 		} else {
             //$this->setTemplateDir($path);
             $this->assign("tplPath", $path);

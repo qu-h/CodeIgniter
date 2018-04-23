@@ -22,7 +22,7 @@ function assets($vars=NULL,$folder=''){
                     } else if ( file_exists("$assets_dir/$folder/$vars") ){
                         return "$dir/$vars";
                     }
-                    bug($dir.DS.$vars);die;
+                    //bug($dir.DS.$vars);die;
                     break;
             }
         }
@@ -34,10 +34,8 @@ function assets($vars=NULL,$folder=''){
 
 function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFileType=true){
     if( is_string($file) ){
-
         $dir = NULL;
         $assets_dir = config_item("assets_git_url");
-
         if( strlen($folder) > 0 ) {
             if (substr($folder, 0, 7) === "jquery.") {
                 $folder = "/" . str_replace("jquery.", "jquery/", $folder);
@@ -132,5 +130,8 @@ function add_asset($file=NULL,$folder=''){
 
 function theme_url($file=""){
     $ci = get_instance();
+    if (filter_var($file, FILTER_VALIDATE_URL)) {
+        return $file;
+    }
     return $ci->config->item('theme_url')."".$file;
 }

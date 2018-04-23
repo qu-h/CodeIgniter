@@ -1,14 +1,5 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-$config['assets_url'] = '//ci.quannh.dev/assets/';
-$config['assets_dir'] = 'E:\PHP\QuanICT\CodeIgniter\assets';
-
-$config['resouce_dir'] = 'E:\PHP-www\Quannh\CodeIgniter\images';
-$config['resouce_url'] = '//quannh.dev/CodeIgniter/images';
-
-$config['assets_git_url'] = '//git-io.giaiphapict.loc/';
-
-
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -33,11 +24,8 @@ $config['assets_git_url'] = '//git-io.giaiphapict.loc/';
 |
 */
 
-$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-$config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
-$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-
-// $config['base_url'] = '';
+$config['base_url'] = '//'.$_SERVER["SERVER_NAME"].'/';
+$config['assets_git_url'] = '//git-io.giaiphapict.loc/';
 
 /*
 |--------------------------------------------------------------------------
@@ -78,8 +66,7 @@ $config['uri_protocol']	= 'REQUEST_URI';
 |
 | https://codeigniter.com/user_guide/general/urls.html
 */
-// $config['url_suffix'] = '';
-$config['url_suffix'] = '.html';
+$config['url_suffix'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -228,7 +215,7 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 4;
 
 /*
 |--------------------------------------------------------------------------
@@ -329,7 +316,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'dsddaefdsafdew';
 
 /*
 |--------------------------------------------------------------------------
@@ -382,19 +369,13 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'files';
-$config['sess_table_name']      = 'ci_sessions';
-$config['sess_cookie_name'] = 'ci_session';
+$config['sess_driver'] = 'database';
+$config['sess_cookie_name'] = 'easfsession';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
+$config['sess_save_path'] = "ci_sessions";
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
-
-// $config['sess_expire_on_close'] = FALSE;
-// $config['sess_encrypt_cookie']  = FALSE;
-// $config['sess_use_database']    = FALSE;
-// $config['sess_match_useragent'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -411,11 +392,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= 'sasasw';
-$config['cookie_domain']	= 'localhost';
+$config['cookie_prefix']	= '';
+$config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
 $config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= TRUE;
+$config['cookie_httponly'] 	= FALSE;
 
 /*
 |--------------------------------------------------------------------------

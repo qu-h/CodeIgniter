@@ -399,9 +399,9 @@ if ( ! function_exists('convert_accented_characters'))
 		if ( ! is_array($array_from))
 		{
 		    $foreign_characters_using = array();
-		    if (file_exists(BASEPATH.'config/foreign_chars.php'))
+		    if (file_exists(BaseAppPath.'config/foreign_chars.php'))
 		    {
-		        include(BASEPATH.'config/foreign_chars.php');
+		        include(BaseAppPath.'config/foreign_chars.php');
 		        $foreign_characters_using = array_merge($foreign_characters_using,$foreign_characters);
 		    }
 

@@ -1,6 +1,8 @@
 <?php
 
-$domain = "//ci.quannh.dev/themes/smartadmin";
+$domain = "http://ci-3-0-1.loc/themes/smartadmin";
+$config['theme_dir'] = BASEPATH."../themes/smartadmin/";
+$config['theme_url'] = "http://ci-3-0-1.loc/themes/smartadmin/";
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
     "$domain/css/font-awesome.min.css",
@@ -45,6 +47,7 @@ $config['js'] = array(
 
     //MAIN APP JS FILE
     "$domain/js/app.min.js",
+    "$domain/js/tables.js",
     "$domain/js/demo.min.js",
 
 

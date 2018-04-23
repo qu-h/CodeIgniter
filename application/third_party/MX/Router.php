@@ -124,14 +124,15 @@ class MX_Router extends CI_Router
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset)
 		{
+            //$location = realpath($location);
 		    //bug($location.$module.'/controllers/');
             list($moduleFolder,$moduleReadPath) = Modules::is_file_in_dir($location,$module);
-            //bug("129 ====== module::locate val module:$module location=$location");
+            //bug("129 ====== Router::locate val module:$module location=$location folder:$moduleFolder path:$moduleReadPath");
             if( $moduleReadPath ){
 //                $location = $location;
                 $module = $moduleFolder;
             }
-            //bug("134 ====== module::locate val module:$module location=$location");
+            //bug("134 ====== router::locate val module:$module location=$location source:$location$module/controllers/");
 
             if (is_dir($source = $location.$module.'/controllers/'))
 			{

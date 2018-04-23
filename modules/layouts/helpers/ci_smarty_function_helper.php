@@ -4,18 +4,30 @@ function add_js($file=NULL){
         return ;
     $ci = get_instance();
 
-    $js = $ci->config->item('js');
-    $js[] = $file;
-    $ci->config->set_item('js', $js);
+    $files = $ci->config->item('js');
+    if( is_null($files) ){
+        $files = [];
+    }
+    if (!in_array($file,$files)){
+        array_push($files,$file);
+    } else {
+
+    }
+    $ci->config->set_item('js', $files);
 }
 
 function add_css($file=NULL){
     if( strlen($file) < 4 )
         return ;
     $ci = get_instance();
-    $css = $ci->config->item('css');
-    $css[] = $file;
-    $ci->config->set_item('css', $css);
+    $files = $ci->config->item('css');
+    if( is_null($files) ){
+        $files = [];
+    }
+    if (!in_array($file,$files)){
+        array_push($files,$file);
+    }
+    $ci->config->set_item('css', $files);
 }
 
 function add_js_ready($script=''){
