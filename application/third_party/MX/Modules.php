@@ -409,9 +409,10 @@ class Modules
     }
 
     public static function is_file_in_dir($path,$file,$returnBaseName=false){
-        $moduleFullPath = $module = null;
+        $moduleFullPath = $module = FALSE;
 
-        $pathDebug = "/media/quanict/WWW/QuanNH/japanese/views/";
+        $pathDebug = "ssss";
+        $fileDebug = "dsdsds";
 
         foreach (glob($path."/*") as $dir) {
             $folderName = pathinfo($dir);
@@ -420,8 +421,8 @@ class Modules
                 $moduleFullPath = $folderName['dirname'].DS;
             }
         }
-        if( $file=="login" ){
-            bug("module::is_file_in_dir path: $path: file:$path$file");
+        if( $file==$fileDebug ){
+            bug("module::is_file_in_dir path: $path: file:$file");
           }
         if( strlen($module) < 1 ){
             $filescheck = glob($path."/$file*");

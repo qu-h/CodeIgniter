@@ -249,12 +249,13 @@ class Template
 			$template['body'] = $this->_body;
 
 			list($layout_path, $layout_view) = Modules::find($this->_layout,'views/layouts',null,true);
-            if( $layout_path != FALSE || strlen($layout_path) < 1 ){
+            //bug("Template::build 253 load thempath : layout_path=$layout_path layout_view=$layout_view");
+            if( $layout_path == FALSE || strlen($layout_path) < 1 ){
                 list($layout_view, $layout_path) = Modules::is_file_in_dir($this->_theme_path."views/layouts",$this->_layout,true);
-//                bug("load thempath : layout_path=$layout_path layout_view=$layout_view");
+                //bug("Template::build 255  load thempath : layout_path=$layout_path layout_view=$layout_view");
             }
 
-//            bug("template::build layout_path=$layout_path layoutView: $layout_path themePaht".$this->_theme_path." layout:".$this->_layout,'debug');
+            //bug("template::build layout_path=$layout_path layoutView:$layout_view themePaht".$this->_theme_path." layout:".$this->_layout,'debug');
 			if( $layout_path != FALSE ){
 			    $this->_body =  self::_load_view($layout_view, $this->_data, $return, $layout_path );
 //			    bug("load file by filePath :$layout_path");
