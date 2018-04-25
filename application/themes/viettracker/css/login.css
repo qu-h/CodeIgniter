@@ -1,0 +1,110 @@
+body {
+	background: url("../images/login_bg.jpg") no-repeat scroll center top transparent;
+}
+.wrappage {
+	width:900px;
+	background: none;
+}
+
+
+.collog {
+	background: transparent url("../images/login_form.png") top left no-repeat;
+	width: 900px; height: 495px;
+	position: relative;
+	top: 30px;
+
+	
+}
+.collog .logo {
+	height: 100px;
+	margin-left: 15px;
+	margin-top: 70px;
+ 	position: relative;
+    z-index: 9999;
+}
+.collog h2 {
+	color: #fff;
+	font-size: 15px;
+	position: relative;
+	top: 40px;
+	left: 40px;
+	
+}
+.collog h2 > span {
+	font-size: 13px;
+
+}
+
+.collog .support {
+	color: #FFFFFF;
+	text-align: right;
+	font-weight: bold;
+	position: relative;
+	top: 60px;
+	right: 280px;
+}
+.collog .support label {
+	font-weight: normal;
+	padding-right: 10px;
+}
+.collog  .ui-msg {
+	margin-left: 23px;
+	margin-top: 25px;
+	width: 700px;
+}
+.collog form {
+	margin: 230px 0 0 30px;
+	width: 400px;
+	
+}
+.collog fieldset {
+	padding: 0;
+	color: #333;
+}
+
+.collog fieldset label.icon25 {
+	margin-top:9px;
+	padding: 0;
+}
+
+.collog fieldset > div {
+	margin-left: 30px;
+}
+
+.collog form input[type=text],
+.collog form input[type=password] {
+	box-shadow:none;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset, 0 1px rgba(255, 255, 255, 0.06);
+    color: #BBBBBB;
+	background-color: #2E2E2E;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	border: none;
+}
+
+.collog form .button_bar {
+	padding: 0;
+	
+}
+.collog form input[type=submit] {
+	background: #2E2E2E;
+	color: #EEF1F2;
+	cursor: pointer;
+
+	height: 35px;
+	margin-top: 7px;
+	padding: 0 15px;
+	
+	outline: none;
+	
+	background-clip: padding-box;
+	
+	border: none;
+	-moz-border-radius: 6px;
+  	-webkit-border-radius: 6px;
+  	border-radius: 6px;
+	
+
+
+}
