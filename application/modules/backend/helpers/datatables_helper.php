@@ -15,6 +15,9 @@ function columns_fields($fields= array()){
         if( isset($f[3]) ){
             $field["className"] = $f[3];
         }
+        if( isset($f[4]) ){
+            $field["link"] = true;
+        }
 
         if( isset($f[2]) &&  $f[2] != true ){
             $field["orderable"] = false;

@@ -2,7 +2,7 @@
 
 $domain = "http://ci-3-0-1.loc/smartadmin";
 $config['theme_dir'] = BaseAppPath."themes/smartadmin/";
-$config['theme_url'] = "http://ci-3-0-1.loc/themes/smartadmin/";
+$config['theme_url'] = "$domain/";
 $config['css'] = array(
     "$domain/css/bootstrap.min.css",
     "$domain/css/font-awesome.min.css",

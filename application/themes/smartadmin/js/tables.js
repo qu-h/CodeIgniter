@@ -46,9 +46,18 @@ var tables = {
 
         jQuery.each(tables.columns,function (index,setting) {
         	console.log("bug",{setting});
-            if( typeof setting.render_img !== 'undefined' ){
+            if( typeof setting.render_img !== 'undefined' ) {
                 tables.columns[index].render = function (data, type, full, meta) {
-                    return '<img src="' + ((data.substring(0, 8) === "https://") ? data : setting.render_img+data) + '" />';
+                    return '<img src="' + ((data.substring(0, 8) === "https://") ? data : setting.render_img + data) + '" />';
+                }
+            }else if( typeof setting.link !== 'undefined' ){
+                tables.columns[index].render = function (data) {
+                	console.log('bug',{data});
+                    var out = "";
+                    data.map((ite)=>{
+                        out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
+					});
+					return out;
                 }
             } else if( typeof setting.status_label !== 'undefined' ){
                 tables.columns[index].render = function (data, type, full, meta) {

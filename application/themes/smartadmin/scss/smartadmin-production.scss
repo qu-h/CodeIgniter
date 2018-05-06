@@ -8792,6 +8792,7 @@ textarea.clone {
 }
 
 /*.smart-form *,*/
+
 .smart-form:after,
 .smart-form:before {
   margin: 0;
@@ -17581,3 +17582,5 @@ body.menu-on-top.fixed-header.fixed-navigation.fixed-ribbon #ribbon {
   border-radius: 3px;
   border: 1px solid #797979 !important
 }
+
+@import "inputs/custome";

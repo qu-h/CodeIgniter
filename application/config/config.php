@@ -227,6 +227,7 @@ $config['log_threshold'] = 4;
 |
 */
 $config['log_path'] = BaseAppPath.'/logs/';
+$config['log_path'] = '';
 
 /*
 |--------------------------------------------------------------------------

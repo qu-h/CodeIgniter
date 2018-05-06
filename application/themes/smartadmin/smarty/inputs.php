@@ -410,7 +410,7 @@ class SmartadminInputs extends CI_Smarty
         $attributes = [
             'name'=>$name,
             'class'=>$editor,
-            'rows'=>3
+            'rows'=>  isset($params['rows']) ? $params['rows'] : 3
         ];
         if( isset($params['rows']) ){
             $attributes['rows'] = $params['rows'];
