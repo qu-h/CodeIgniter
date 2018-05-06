@@ -45,9 +45,10 @@ var tables = {
 	    tables.area = $(attribute);
 
         jQuery.each(tables.columns,function (index,setting) {
+        	console.log("bug",{setting});
             if( typeof setting.render_img !== 'undefined' ){
                 tables.columns[index].render = function (data, type, full, meta) {
-                    return '<img src="' + setting.render_img+data + '" />';
+                    return '<img src="' + ((data.substring(0, 8) === "https://") ? data : setting.render_img+data) + '" />';
                 }
             } else if( typeof setting.status_label !== 'undefined' ){
                 tables.columns[index].render = function (data, type, full, meta) {

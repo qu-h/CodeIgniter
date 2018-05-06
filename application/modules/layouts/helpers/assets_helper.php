@@ -4,11 +4,14 @@ function assets($vars=NULL,$folder=''){
 
         $dir = NULL;
         $assets_dir = config_item("assets_dir");
-
+        if( !function_exists('get_mime_by_extension') ){
+            get_instance()->load->helper('file');
+        }
         if( is_dir($assets_dir.DS.$folder) ){
             if( strlen($folder) > 0 ){
                 $dir = config_item('assets_url').DS."$folder/";
             }
+
             $type = get_mime_by_extension($vars);
 
             switch ($type){
@@ -34,6 +37,10 @@ function assets($vars=NULL,$folder=''){
 
 function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFileType=true){
     if( is_string($file) ){
+        if( !function_exists('get_mime_by_extension') ){
+            get_instance()->load->helper('file');
+        }
+
         $dir = NULL;
         $assets_dir = config_item("assets_git_url");
         if( strlen($folder) > 0 ) {

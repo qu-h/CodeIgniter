@@ -38,7 +38,7 @@ require_once dirname(__FILE__).'/Config.php';
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  **/
-class CI
+class MXCI
 {
 	public static $APP;
 
@@ -56,4 +56,4 @@ class CI
 }
 
 /* create the application object */
-new CI;
+new MXCI;

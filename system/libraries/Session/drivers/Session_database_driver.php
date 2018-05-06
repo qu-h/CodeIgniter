@@ -84,7 +84,7 @@ class CI_Session_database_driver extends CI_Session_driver implements SessionHan
 		$CI =& get_instance();
 
         if( !isset($CI->db) ){
-            //bug($CI);die;
+            //bug($CI,'sessionDatabase 87');
             isset($CI->db) OR $CI->load->database();
         }
 

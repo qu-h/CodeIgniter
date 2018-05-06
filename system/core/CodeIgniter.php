@@ -413,16 +413,16 @@ if ( ! is_php('5.4'))
  *  controller methods that begin with an underscore.
  */
 
-	$e404 = FALSE;
-	$class = ucfirst($RTR->class);
-	$method = $RTR->method;
+$e404 = FALSE;
+$class = ucfirst($RTR->class);
+$method = $RTR->method;
 
-	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
-	{
-		$e404 = TRUE;
-	}
-	else
-	{
+if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+{
+    $e404 = TRUE;
+}
+else
+{
 		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
 
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
@@ -495,65 +495,65 @@ if ( ! is_php('5.4'))
 		}
 	}
 
-	if ($method !== '_remap')
-	{
-		$params = array_slice($URI->rsegments, 2);
-	}
+if ($method !== '_remap')
+{
+    $params = array_slice($URI->rsegments, 2);
+}
 
 /*
  * ------------------------------------------------------
  *  Is there a "pre_controller" hook?
  * ------------------------------------------------------
  */
-	$EXT->call_hook('pre_controller');
+$EXT->call_hook('pre_controller');
 
 /*
  * ------------------------------------------------------
  *  Instantiate the requested controller
  * ------------------------------------------------------
  */
-	// Mark a start point so we can benchmark the controller
-	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
+// Mark a start point so we can benchmark the controller
+$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
 
-	$CI = new $class();
+$CI = new $class();
 
 /*
  * ------------------------------------------------------
  *  Is there a "post_controller_constructor" hook?
  * ------------------------------------------------------
  */
-	$EXT->call_hook('post_controller_constructor');
+$EXT->call_hook('post_controller_constructor');
 
 /*
  * ------------------------------------------------------
  *  Call the requested method
  * ------------------------------------------------------
  */
-	call_user_func_array(array(&$CI, $method), $params);
+call_user_func_array(array(&$CI, $method), $params);
 
-	// Mark a benchmark end point
-	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_end');
+// Mark a benchmark end point
+$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_end');
 
 /*
  * ------------------------------------------------------
  *  Is there a "post_controller" hook?
  * ------------------------------------------------------
  */
-	$EXT->call_hook('post_controller');
+$EXT->call_hook('post_controller');
 
 /*
  * ------------------------------------------------------
  *  Send the final rendered output to the browser
  * ------------------------------------------------------
  */
-	if ($EXT->call_hook('display_override') === FALSE)
-	{
-		$OUT->_display();
-	}
+if ($EXT->call_hook('display_override') === FALSE)
+{
+    $OUT->_display();
+}
 
 /*
  * ------------------------------------------------------
  *  Is there a "post_system" hook?
  * ------------------------------------------------------
  */
-	$EXT->call_hook('post_system');
+$EXT->call_hook('post_system');

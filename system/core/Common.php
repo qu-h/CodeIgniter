@@ -154,13 +154,24 @@ if ( ! function_exists('load_class'))
 		// then in the native system/libraries folder
 		foreach (array(APPPATH, BASEPATH) as $path)
 		{
-			if (file_exists($path.$directory.'/'.$class.'.php'))
+		    $fileTry = $path.$directory.'/'.$class.'.php';
+		    $fileExist = false;
+            if (file_exists($fileTry)){
+                $fileExist = true;
+            }
+            if (!$fileExist){
+                if (file_exists($path.$directory.'/'.$class."/$class.php")){
+                    $fileTry = $path.$directory.'/'.$class."/$class.php";
+                    $fileExist = true;
+                }
+            }
+			if ($fileExist)
 			{
 				$name = 'CI_'.$class;
 
 				if (class_exists($name, FALSE) === FALSE)
 				{
-					require_once($path.$directory.'/'.$class.'.php');
+					require_once($fileTry);
 				}
 
 // 				if (class_exists($name, FALSE) === FALSE){
@@ -187,7 +198,7 @@ if ( ! function_exists('load_class'))
 			// Note: We use exit() rather than show_error() in order to avoid a
 			// self-referencing loop with the Exceptions class
 			set_status_header(503);
-			echo 'Common line 187 : Unable to locate the specified class: '.$class.'.php';
+			echo 'Common line 190 : Unable to locate the specified class: '.$class.'.php';
 			exit(5); // EXIT_UNK_CLASS
 		}
 

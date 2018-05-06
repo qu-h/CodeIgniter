@@ -226,7 +226,7 @@ $config['log_threshold'] = 4;
 | application/logs/ directory. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '';
+$config['log_path'] = BaseAppPath.'/logs/';
 
 /*
 |--------------------------------------------------------------------------
@@ -274,7 +274,7 @@ $config['log_date_format'] = 'Y-m-d H:i:s';
 | application/views/errors/ directory.  Use a full server path with trailing slash.
 |
 */
-$config['error_views_path'] = '';
+$config['error_views_path'] = BaseAppPath."views/errors/";
 
 /*
 |--------------------------------------------------------------------------
@@ -370,6 +370,7 @@ $config['encryption_key'] = 'dsddaefdsafdew';
 |
 */
 $config['sess_driver'] = 'database';
+//$config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'easfsession';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = "ci_sessions";

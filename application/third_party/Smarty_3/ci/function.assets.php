@@ -37,7 +37,7 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
             $js = get_instance()->config->item('js');
             if( !empty($js) ){
                 foreach ($js AS $file){
-                    $file = add_asset_file($file,'js',$theme_folder = $folder);
+                    $file = add_asset_file($file,'js',$folder);
                     if( strlen($file) > 0 ){
                         $html .= "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
                     }

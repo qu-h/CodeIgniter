@@ -113,61 +113,6 @@ class CI_Smarty extends SmartyBC {
 	var $theme_config = null;
 	public function theme($item=null){
 
-// 		if( file_exists(APPPATH.'config/themes.php')  ){
-// 			$file = APPPATH.'config/themes.php';
-// 		} else {
-// 			$file = null;
-// 		}
-
-// 		if( $file == null ) return;
-
-// 		include_once $file;
-// 		if ( !$this->theme_config ){
-// 		    $this->theme_config = $theme;
-// 		}
-
-
-// 		if( !$item ) {
-// 			$item = $this->theme_config['default'];
-// 			$this->theme = $item;
-// 		}
-
-
-// 		if( isset($this->theme_config[$item]) ){
-// 			if( isset($this->theme_config[$item]['css']) ){
-// 				$this->css = $this->theme_config[$item]['css'];
-// 			}
-
-// 			if( isset($this->theme_config[$item]['js']) ){
-// 				$this->js = $this->theme_config[$item]['js'];
-// 			}
-// 			if( isset($this->theme_config[$item]['layout']) ){
-// 			    $this->layout = $this->theme_config[$item]['layout'];
-// 			}
-
-// 		}
-
-// 		if( $this->theme ){
-// 		    $theme_function = $this->theme."_theme";
-// 		    $theme_file = BASEPATH.'third_party/Smarty_3/themes/'.$this->theme.'.php';
-
-// 		    if( !class_exists($theme_function) && file_exists($theme_file)){
-//     			include $theme_file;
-//     		}
-
-//     		if( class_exists($theme_function) ){
-//     		    $methods = get_class_methods($theme_function);
-
-//     		    foreach ($methods AS $plugin){
-
-//     		        if( $plugin !='__construct' ){
-//     		        				$this->registerPlugin('function', $plugin, "$theme_function::".$plugin);
-//     		        }
-
-//     		    }
-//     		}
-
-// 		}
 
 	}
 

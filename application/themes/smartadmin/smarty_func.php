@@ -65,4 +65,18 @@ class smartadmin_ui
         return $html;
     }
 
+    static function input_hidden($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if (strlen($name) < 1){
+            return NULL;
+        }
+        $attributes = [
+            'type'=>'hidden',
+            'name'=>$name
+        ];
+        if( isset($params['value']) ){
+            $attributes['value'] = $params['value'];
+        }
+        return '<input '._stringify_attributes($attributes).'>';
+    }
 }
