@@ -61,7 +61,6 @@ class MX_Loader extends CI_Loader
 		else
 		{
 			parent::initialize();
-
 			/* autoload module items */
 			$this->_autoloader(array());
 		}

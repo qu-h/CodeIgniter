@@ -317,7 +317,9 @@ class SmartadminInputs extends CI_Smarty
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
         $value = isset($params['value']) ? $params['value'] : NULL;
-
+        if( !is_array($value) ){
+            $value = [$value];
+        }
         if (strlen($name) < 1){
             return NULL;
         }
@@ -327,12 +329,13 @@ class SmartadminInputs extends CI_Smarty
                 if( is_array($t) ){
                     $options .= '<optgroup label="'.$v.'">';
                     foreach ($t AS $v2=>$t2){
-                        $selected = $value == $v2 ? 'selected="selected"' : NULL;
+
+                        $selected = in_array($v2,$value) ? 'selected="selected"' : NULL;
                         $options .= '<option value="'.$v2.'" '.$selected.' >'.$t2.'</option>';
                     }
                     $options .= '</optgroup>';
                 } else {
-                    $selected = $value == $v ? 'selected="selected"' : NULL;
+                    $selected = in_array($v,$value) ? 'selected="selected"' : NULL;
                     $options .= '<option value="'.$v.'" '.$selected.' >'.$t.'</option>';
                 }
 
@@ -346,6 +349,10 @@ class SmartadminInputs extends CI_Smarty
         $params['label'] = NULL;
         //return self::input_lable($params);
         return self::row_input($params);
+    }
+
+    static function input_multiselect($params){
+        return self::input_select($params);
     }
 
     static function input_tags($params = null)

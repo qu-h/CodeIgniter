@@ -25,9 +25,9 @@ class User extends MX_Controller
             }
             set_temp_val("user",(array)$user);
         } else {
-//            if ($this->uri->segment(2) != 'login') {
-//                redirect('admin/login/' . base64url_encode($this->uri->uri_string()), 'location');
-//            }
+            if ($this->uri->segment(2) != 'login') {
+                redirect('admin/login/' . base64url_encode($this->uri->uri_string()), 'location');
+            }
         }
     }
 
