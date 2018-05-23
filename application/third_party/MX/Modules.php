@@ -12,7 +12,7 @@ is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$loc
     BaseAppPath.'modules/' => NULL
 );
 
-define('SYSTEM_MODULE_PATH', realpath(BASEPATH."../modules") );
+define('SYSTEM_MODULE_PATH', realpath(BASEPATH."../application/modules") );
 
 /* PHP5 spl_autoload */
 spl_autoload_register('Modules::autoload');

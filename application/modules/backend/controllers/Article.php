@@ -9,6 +9,10 @@ class Article extends MX_Controller {
         $this->load->model('backend/Category_Model');
         $this->load->module('layouts');
         $this->fields = $this->Article_Model->fields();
+        if( !function_exists('columns_fields') ){
+            $this->load->helper("backend/datatables");
+        }
+
         //$this->template->set_theme('smartadmin')->set_layout('main');
 
     }
