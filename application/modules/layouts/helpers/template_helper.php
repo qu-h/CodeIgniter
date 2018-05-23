@@ -50,10 +50,15 @@ function add_site_structure($name,$title=null,$uri=null){
     add_temp_val($varname,['name'=>$name,'title'=>$title,'uri'=>$uri]);
 }
 
-function get_temp_val($name=""){
+function get_temp_val($name="",$default=""){
+    $value = null;
     if( strlen($name) > 0 ){
-        return get_instance()->smarty->getTemplateVars($name);
+        $value =  get_instance()->smarty->getTemplateVars($name);
     }
+    if( !$value ){
+        $value = $default;
+    }
+    return $value;
 }
 
 function smarty_view($view,$params=[]){
