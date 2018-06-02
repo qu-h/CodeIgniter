@@ -124,7 +124,7 @@ class SmartadminInputs extends CI_Smarty
         if (strlen($name) < 1 )
             return NULL;
 
-        if ( empty($field) || is_null($field) || !array_key_exists('type', $field)) {
+        if ( empty($field) || !is_array($field) || is_null($field) || !array_key_exists('type', $field)) {
             $field['type'] = 'text';
         }
 
