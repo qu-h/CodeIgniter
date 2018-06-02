@@ -8,7 +8,7 @@ class User extends MX_Controller
         parent::__construct();
         $this->load->model('User_Model');
         $this->load->module('layouts');
-        $this->template->set_theme('smartadmin')->set_layout('main');
+        //$this->template->set_theme('smartadmin')->set_layout('main');
         $this->fields = $this->User_Model->fields();
         $this->load->library('Session');
 

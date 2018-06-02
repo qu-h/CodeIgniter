@@ -18,34 +18,23 @@ class Template
 	private $_module = '';
 	private $_controller = '';
 	private $_method = '';
-
 	private $_theme = NULL;
 	private $_theme_path = NULL;
 	private $_layout = FALSE; // By default, dont wrap the view with anything
 	private $_layout_subdir = ''; // Layouts and partials will exist in views/layouts
 	// but can be set to views/foo/layouts with a subdirectory
-
 	private $_title = '';
 	private $_metadata = array();
-
 	private $_partials = array();
-
 	private $_breadcrumbs = array();
-
 	private $_title_separator = ' | ';
-
 	private $_parser_enabled = TRUE;
 	private $_parser_body_enabled = TRUE;
-
 	private $_theme_locations = array();
-
 	private $_is_mobile = FALSE;
-
 	// Minutes that cache will be alive for
 	private $cache_lifetime = 0;
-
 	private $_ci;
-
 	private $_data = array();
 
 	/**
@@ -56,12 +45,10 @@ class Template
 	function __construct($config = array())
 	{
 		$this->_ci =& get_instance();
-
 		if ( ! empty($config))
 		{
 			$this->initialize($config);
 		}
-
 		log_message('debug', 'Template class Initialized');
 	}
 
@@ -83,11 +70,9 @@ class Template
 				$this->set_theme($val);
 				continue;
 			}
-
 			$this->{'_'.$key} = $val;
 		}
-
-		// No locations set in config?
+        // No locations set in config?
 		if ($this->_theme_locations === array())
 		{
 			// Let's use this obvious default
@@ -170,7 +155,6 @@ class Template
 				$this->_data[$item] = $value;
 			}
 		}
-
 		// Just one thing, set that
 		else
 		{
@@ -194,7 +178,6 @@ class Template
 		is_array($data) OR $data = (array) $data;
 		// Merge in what we already have with the specific data
 		$this->_data = array_merge($this->_data, $data);
-
 
 		if( !array_key_exists('fields', $this->_data) AND isset($this->_ci->form) ){
 		    $this->_ci->smarty->assign("fields", $this->_ci->form->fields);
@@ -247,7 +230,6 @@ class Template
 		if ($this->_layout)
 		{
 			$template['body'] = $this->_body;
-
 			list($layout_path, $layout_view) = Modules::find($this->_layout,'views/layouts',null,true);
             //bug("Template::build 253 load thempath : layout_path=$layout_path layout_view=$layout_view");
             if( $layout_path == FALSE || strlen($layout_path) < 1 ){
@@ -394,16 +376,15 @@ class Template
 	public function set_theme($theme = NULL)
 	{
 		$this->_theme = $theme;
-
 		foreach ($this->_theme_locations as $location)
 		{
-
 			if ($this->_theme AND file_exists($location.$this->_theme))
 			{
 				$this->_theme_path = realpath(rtrim($location.$this->_theme.'/')).DS;
 				break;
 			}
 		}
+		bug($this->get_theme_path());
 		/*
 		 * 160823 QuanNH add Smarty Plugin
 		 */
