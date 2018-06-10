@@ -225,7 +225,7 @@ class Template
 
 		// Test to see if this file
 		$this->_body = $this->_find_view($view, array(), $this->_parser_body_enabled);
-//bug($this->_body,'bug view');
+
 		// Want this file wrapped with a layout file?
 		if ($this->_layout)
 		{
@@ -384,7 +384,7 @@ class Template
 				break;
 			}
 		}
-		bug($this->get_theme_path());
+
 		/*
 		 * 160823 QuanNH add Smarty Plugin
 		 */
@@ -734,10 +734,17 @@ class Template
 						return self::_load_view($theme_view, $this->_data + $data, $parse_view, $location);
 					}
 				}
+
+                $dirCheck = $location.$this->_theme . '/views/';
+                if( is_dir($dirCheck) ){
+                    list($file,$filePath) = Modules::is_file_in_dir($dirCheck,$view,true);
+                    if( $filePath ){
+                        return self::_load_view($filePath.$file, $this->_data + $data, $parse_view, $location);
+                    }
+                }
 			}
 		}
 
-        //bug("template::find_view $view");
 		// Not found it yet? Just load, its either in the module or root view
 		return self::_load_view($view, $this->_data + $data, $parse_view);
 	}
@@ -760,16 +767,10 @@ class Template
             $dir = "";
 	        if( !file_exists($file_path) ){
 	            list($file,$filePath) = Modules::is_file_in_dir($override_view_path,$view);
-	            //bug("Template:: _load_view 775 override_view_path:$override_view_path view:$view");
-//	            bug("Template:: _load_view 775 filePath:$filePath file=$file",'load file template');
-            } else {
-//	            $dir = getcwd();
-	            //bug("Template::loadView 778 file is exit:$dir.$file_path");
             }
-            //bug("Template::_load_view 780".$file_path);
 	        return $this->_ci->smarty->view($dir.$file_path,$data);
 	    }
-        //die("Layout template load view $file_path");
+
 		// Sevear hackery to load views from custom places AND maintain compatibility with Modular Extensions
 		if ($override_view_path !== NULL) {
 			if ($this->_parser_enabled === TRUE AND $parse_view === TRUE) {

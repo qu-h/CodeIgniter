@@ -92,7 +92,7 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
 
 
 function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
-    $resource_dir = get_instance()->config->item('assets_url');
+
     $theme_dir = get_instance()->config->item('theme_dir');
     $theme_url = get_instance()->config->item('theme_url');
 

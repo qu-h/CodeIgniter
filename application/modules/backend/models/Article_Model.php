@@ -55,11 +55,15 @@ class Article_Model extends CI_Model {
     function get_item_by_id($id=0){
         return $this->db->where('id',$id)->get($this->table)->row();
     }
-    function get_item_by_alias($alias=0,$cateogry_id=0){
+    function get_item_by_alias($alias=0,$cateogry_id=0,$status=1){
         $this->db->where("alias",$alias);
         $this->db->where("category",$cateogry_id);
-        $this->db->where("status",1);
+        if( is_numeric($status) ){
+            $this->db->where("status",$status);
+        }
+
         $query = $this->db->get($this->table);
+        bug($this->db->last_query());
         return $query->row_array();
     }
 
