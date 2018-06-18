@@ -40,6 +40,17 @@ function columns_fields($fields= array()){
                 $field["defaultContent"] = '<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>';
                 $field["defaultContent"].= '<button class="btn btn-xs btn-default" data-action="delete" ><i class="fa fa-times text-danger"></i></button>';
                 break;
+            case 'news_actions':
+                $field = [
+                    'data'=>null,
+                    'orderable'=>false,
+                    'className'=>'text-center',
+                    'width'=>'10%'
+                ];
+
+                $field["defaultContent"] = '<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>';
+                $field["defaultContent"].= '<button class="btn btn-xs btn-default" data-action="delete" ><i class="fa fa-times text-danger"></i></button>';
+                break;
             case 'imgthumb':
             case 'image':
                 $field["render_img"] = base_url()."images/$img_path/s100/";

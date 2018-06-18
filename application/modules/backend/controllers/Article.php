@@ -22,7 +22,7 @@ class Article extends MX_Controller {
         'title'=>array("Title"),
         'category'=>array("Category"),
         'source'=>array('Source'),
-        'actions'=>array(),
+        'news_actions'=>array('',5,false),
     );
     function items(){
         if( $this->uri->extension =='json' ){
@@ -30,7 +30,6 @@ class Article extends MX_Controller {
         }
 
         $data = columns_fields($this->table_fields);
-
         $this->template
             //->title( lang('welcome_to').' '.config_item('company_name') )
             ->build('backend/datatables',$data);
@@ -49,11 +48,8 @@ class Article extends MX_Controller {
     public function form($id=0){
         header('X-XSS-Protection:0');
         if ($this->input->post()) {
-
             $crawler_source = $this->input->post("crawler_source");
-
             $formdata = array();
-
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
             }
@@ -85,9 +81,6 @@ class Article extends MX_Controller {
                 }
 
             } else {
-                //$this->load->module('crawler');
-
-                //list($c_title,$c_content,$c_thumb) = $this->crawler->get_content($crawler_source);
                 list($c_title,$c_content,$c_thumb) = Modules::run('crawler/get_content',$crawler_source);
                 if( !is_null($c_title) AND strlen($this->fields["title"]['value']) < 2 ){
                     $this->fields["title"]['value'] = $c_title;

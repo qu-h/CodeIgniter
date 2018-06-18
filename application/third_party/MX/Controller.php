@@ -59,4 +59,38 @@ class MX_Controller
 	{
 		return CI::$APP->$class;
 	}
+
+	public function formFill($id){
+        if ($this->input->post()) {
+            $data = array();
+            foreach ($this->fields as $name => $field) {
+                $this->fields[$name]['value'] = $data[$name]= $this->input->post($name);
+                if( !isset($field['type']) ){
+                    $field['type'] = 'text';
+                }
+                switch ($field['type']){
+                    case 'publish':
+                        $data[$name] = ( $data[$name] =='on' || $data[$name] =='1' );
+                        break;
+                }
+            }
+            $add = $this->model->update($data);
+            $this->fieldFillRow($id);
+
+            if( $add ){
+
+            }
+        } else {
+            $this->fieldFillRow($id);
+        }
+    }
+
+    private function fieldFillRow($id){
+        $item = $this->model->get($id);
+        foreach ($this->fields AS $field=>$val){
+            if( isset($item->$field) ){
+                $this->fields[$field]['value']=$item->$field;
+            }
+        }
+    }
 }

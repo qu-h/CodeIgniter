@@ -61,9 +61,7 @@ class Article_Model extends CI_Model {
         if( is_numeric($status) ){
             $this->db->where("status",$status);
         }
-
         $query = $this->db->get($this->table);
-        bug($this->db->last_query());
         return $query->row_array();
     }
 
@@ -151,10 +149,6 @@ class Article_Model extends CI_Model {
 
             }
             $ite->actions = "";
-//             if( strlen($actions_allow) > 0 ) foreach (explode(',',$actions_allow) AS $act){
-//                 $ite->actions .= '<button class="btn btn-xs btn-default" ><i class="fa fa-pencil"></i></button>';
-//             }
-
             $ite->summary = word_limiter($ite->summary,20);
             $items[] = $ite;
         }

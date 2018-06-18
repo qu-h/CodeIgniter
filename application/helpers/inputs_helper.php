@@ -9,5 +9,6 @@ function input_get($index = NULL, $default=null, $xss_clean = NULL){
     return $value;
 }
 function input_post($index = NULL, $xss_clean = NULL){
-    return get_instance()->input->post($index, $xss_clean);
+    $value = get_instance()->input->post($index, $xss_clean);
+    return trim($value);
 }

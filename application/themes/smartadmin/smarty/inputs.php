@@ -112,12 +112,16 @@ class SmartadminInputs extends CI_Smarty
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
         $field = isset($params['field']) ? $params['field'] : NULL;
+
         if( empty($field) ){
             $fields = get_instance()->smarty->getTemplateVars("fields");
             if( array_key_exists($name,$fields) ){
                 $field = $fields[$name];
             } else {
                 $field = ['type'=>'text'];
+                if( $name=='tags' ) {
+                    $field['type'] = 'tags';
+                }
             }
         }
 
@@ -358,12 +362,16 @@ class SmartadminInputs extends CI_Smarty
     static function input_tags($params = null)
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
-        $value = isset($params['value']) ? $params['value'] : NULL;
+        $value = isset($params['value']) ? $params['value'] : [];
 
         if (strlen($name) < 1){
             return NULL;
         }
         $options = '';
+        if( !isset($params["options"]) ){
+            $ci = get_instance();
+            $params["options"] = [];
+        }
         if( isset($params["options"]) AND count($params["options"]) > 0 ){
             foreach ($params["options"] AS $v ){
 
@@ -503,26 +511,6 @@ class SmartadminInputs extends CI_Smarty
         return self::row_input($params);
     }
 
-    static function input_publish($params = null)
-    {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        if (strlen($name) < 1){
-            return NULL;
-        }
-        $input_attributes = array(
-            "type"=>"text",
-            "name"=>$name,
-            "value"=>isset($params['value']) ? $params['value'] : NULL,
-            "placeholder"=>isset($params['placeholder']) ? $params['placeholder'] : NULL
-        );
-        $checked = $input_attributes['value'] ? 'checked' : null;
-        $input = '<input type="checkbox" name="'.$name.'" '.$checked.'>';
-        $input.= '<i data-swchon-text="'.lang("Publish").'" data-swchoff-text="'.lang("Unpublish").'"></i>';
-
-        $params['html'] = '<header class="toggle">'.lang($input_attributes['placeholder']).$input.'</header>';
-        return self::row_input($params);
-    }
-
     static function input_date($params)
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
@@ -553,4 +541,5 @@ class SmartadminInputs extends CI_Smarty
         }
         return self::input_text($params);
     }
+
 }

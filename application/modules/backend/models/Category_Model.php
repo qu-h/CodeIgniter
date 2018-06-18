@@ -119,10 +119,8 @@ class Category_Model extends CI_Model {
         }
     }
 
-
     public function item_delete($id=0){
         $this->db->where('id',$id)->update($this->table,['status'=>-1]);
-
     }
 
     function check_exist($alias,$id,$parent=0){
@@ -139,7 +137,6 @@ class Category_Model extends CI_Model {
 
         return ( $result->num_rows() > 0) ? true : false;
     }
-
 
     public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
     {

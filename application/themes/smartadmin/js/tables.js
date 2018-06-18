@@ -40,19 +40,26 @@ var tables = {
 	url :null,
 	columns :[],
 	breakpointDefinition : { tablet : 1024, phone : 480 },
-	area:null,table:undefined,helper:undefined,
+	area:null,
+	table:undefined,
+	helper:undefined,
 	load:function(attribute){
 	    tables.area = $(attribute);
 
         jQuery.each(tables.columns,function (index,setting) {
-        	console.log("bug",{setting});
+
             if( typeof setting.render_img !== 'undefined' ) {
                 tables.columns[index].render = function (data, type, full, meta) {
-                    return '<img src="' + ((data.substring(0, 4) === "http") ? data : setting.render_img + data) + '" />';
+                	let imgSrc = "";
+                    data = data.toString().trim();
+                    if( data.length > 0 ){
+                        imgSrc = (data.substring(0, 4) === "http" ) ? data : setting.render_img + data;
+					};
+
+                    return '<img src="' + imgSrc + '" class="img-responsive" />';
                 }
             }else if( typeof setting.link !== 'undefined' ){
                 tables.columns[index].render = function (data) {
-                	console.log('bug',{data});
                     var out = "";
                     data.map((ite)=>{
                         out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
@@ -77,11 +84,20 @@ var tables = {
 		}
 	    tables.table  =  $(attribute).DataTable({
 		    ajax: tableAjax,
+            processing: true,
+			serverSide: true,
+            pageLength: 10,
+			paging: true,
+
 		    columns: tables.columns,
+
 		    "sDom" : "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"
 				+ "t"
 				+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+
 		    "autoWidth" : true,
+
+
 		    "preDrawCallback" : function() {
 			if (!tables.helper) {
 			    tables.helper = new ResponsiveDatatablesHelper( tables.area ,tables.breakpointDefinition);
@@ -104,7 +120,6 @@ var tables = {
 	},
 	row_ci_actions:function (api) {
         api.$('button').click( function () {
-
             //api.search( this.innerHTML ).draw();
             var url = '';
             if( typeof $(this).attr('data-action') !== undefined ){
