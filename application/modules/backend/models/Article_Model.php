@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script core allowed');
-class Article_Model extends CI_Model {
+class Article_Model extends MX_Model {
     var $table = 'article';
     var $article_fields = array(
         'id' => array(
@@ -129,30 +129,41 @@ class Article_Model extends CI_Model {
      * Json return for Datatable
      */
     function items_json($category_id = null, $actions_allow=NULL){
-        $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.summary,a.status, a.ordering');
+        $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.status, a.ordering');
         if( $category_id !== null ){
             $this->db->where("a.category",$category_id);
         }
         $this->db->where("(a.status <> -1 OR a.status IS NULL)");
-//	    $this->db->order_by('a.ordering DESC');
-        $query = $this->db->get($this->table." AS a");
-        $items = array();
-        if( !$query ){
-            bug($this->db->last_query());die("error");
-        }
-        foreach ($query->result() AS $ite){
-            if( strlen($ite->source ) > 0 ){
-                $parse = parse_url($ite->source );
-                if( isset($parse['host']) ){
-                    $ite->source = $parse['host'];
-                }
+        $this->db->from($this->table." AS a");
 
+        if( $this->orders ){
+            foreach ($this->orders AS $o){
+                $this->db->order_by("a.".$o[0],$o[1]);
             }
-            $ite->actions = "";
-            $ite->summary = word_limiter($ite->summary,20);
-            $items[] = $ite;
+        } else {
+            $this->db->order_by('id DESC');
         }
-        return jsonData(array('data'=>$items));
+
+        return $this->dataTableJson();
+
+//        $items = array();
+//        if( !$query ){
+//            bug($this->db->last_query());
+//            die("error");
+//        }
+//        foreach ($query->result() AS $ite){
+//            if( strlen($ite->source ) > 0 ){
+//                $parse = parse_url($ite->source );
+//                if( isset($parse['host']) ){
+//                    $ite->source = $parse['host'];
+//                }
+//
+//            }
+//            $ite->actions = "";
+//            $ite->summary = word_limiter($ite->summary,20);
+//            $items[] = $ite;
+//        }
+//        return jsonData(array('data'=>$items));
     }
 
     function get_items_latest(){

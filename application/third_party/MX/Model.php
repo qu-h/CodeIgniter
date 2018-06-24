@@ -56,8 +56,8 @@ class MX_Model extends CI_Model
         $tempdb = clone $db;
         $num_rows = $tempdb->count_all_results();
         $query = $db->limit($this->limit,$this->offset)->get();
-
-        return jsonData(array('data'=>$query->result_array(),'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
+        $data = $query->result_array();
+        return jsonData(array('data'=>$data,'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
     }
 
     function get($where=NULL){

@@ -6,12 +6,8 @@ function columns_fields($fields= array()){
     $img_path = get_temp_val('img_path');
     $columns_fields = "";
     foreach ($fields AS $k=>$f){
-        /*
-         * https://datatables.net/reference/option/columns.render
-         */
-        $field = [
-            'data'=>"$k"
-        ];
+        $field = [ 'data'=>"$k" ];
+
         if( isset($f[3]) ){
             $field["className"] = $f[3];
         }
@@ -50,6 +46,11 @@ function columns_fields($fields= array()){
 
                 $field["defaultContent"] = '<button class="btn btn-xs btn-default" data-action="edit" ><i class="fa fa-pencil"></i></button>';
                 $field["defaultContent"].= '<button class="btn btn-xs btn-default" data-action="delete" ><i class="fa fa-times text-danger"></i></button>';
+                $siteNews = config_item('news-site');
+                if( $siteNews ){
+                    $field["defaultContent"].= '<a class="btn btn-xs btn-default" href="javascript:void(0)" ><i class="fa fa-globe text-primary"></i></a>';
+                }
+
                 break;
             case 'imgthumb':
             case 'image':

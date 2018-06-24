@@ -28,11 +28,8 @@ class Article extends MX_Controller {
         if( $this->uri->extension =='json' ){
             return $this->items_json_data(array_keys($this->table_fields));
         }
-
         $data = columns_fields($this->table_fields);
-        $this->template
-            //->title( lang('welcome_to').' '.config_item('company_name') )
-            ->build('backend/datatables',$data);
+        temp_view('backend/datatables', $data);
     }
 
     private function items_json_data(){

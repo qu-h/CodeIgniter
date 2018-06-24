@@ -110,6 +110,7 @@
 						</table>
 						{*https://datatables.net/examples/ajax/*}
 						<script type="text/javascript">
+							var site_news  = '{config_item("news-site")}';
                             $(document).ready(function() {
                                 tables.url = '{$data_json_url}';
                                 tables.columns = [{$columns_fields}];
@@ -118,7 +119,6 @@
                                     tables.load('table#data_ajax');
                                 });
 							});
-
 						</script>
 						{/if}
 

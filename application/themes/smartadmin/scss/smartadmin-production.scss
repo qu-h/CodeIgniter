@@ -9116,47 +9116,7 @@ footer.smart-form:after {
   cursor: pointer
 }
 
-.smart-form .icon-append, .smart-form .icon-prepend {
-  position: absolute;
-  top: 5px;
-  width: 22px;
-  height: 22px;
-  font-size: 14px;
-  line-height: 22px;
-  text-align: center
-}
-
-.smart-form .icon-append {
-  right: 5px;
-  padding-left: 3px;
-  border-left-width: 1px;
-  border-left-style: solid
-}
-
-.smart-form .icon-prepend {
-  left: 5px;
-  padding-right: 3px;
-  border-right-width: 1px;
-  border-right-style: solid
-}
-
-.smart-form .input .icon-prepend + input,
-.smart-form .textarea .icon-prepend + textarea,
-.smart-form .select .icon-prepend + select {
-  padding-left: 37px
-}
-
-.smart-form .input .icon-append + input,
-.smart-form .textarea .icon-append + textarea,
-.smart-form .select .icon-prepend + select {
-  padding-right: 37px
-}
-
-.smart-form .input .icon-prepend + .icon-append + input,
-.smart-form .textarea .icon-prepend + .icon-append + textarea,
-.smart-form .select .icon-prepend + .icon-append + select {
-  padding-left: 37px
-}
+@import "inputs/input_with_icon";
 
 .smart-form .row {
   margin: 0 -15px

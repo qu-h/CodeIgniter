@@ -114,10 +114,11 @@ var tables = {
 		    },
 		    "drawCallback" : function(oSettings) {
 		    	tables.helper.respond();
+                var api = this.api();
+                tables.row_ci_actions(api);
 		    },
 		    "initComplete": function () {
-	            var api = this.api();
-                tables.row_ci_actions(api);
+
 
 	        }
 	    });
