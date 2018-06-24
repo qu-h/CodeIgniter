@@ -50,6 +50,9 @@ var tables = {
 
             if( typeof setting.render_img !== 'undefined' ) {
                 tables.columns[index].render = function (data, type, full, meta) {
+                    if( typeof data === 'undefined'){
+                        return null;
+                    }
                 	let imgSrc = "";
                     data = data.toString().trim();
                     if( data.length > 0 ){
@@ -60,16 +63,19 @@ var tables = {
                 }
             }else if( typeof setting.link !== 'undefined' ){
                 tables.columns[index].render = function (data) {
-                    var out = "";
-                    data.map((ite)=>{
-                        out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
-					});
+                    let out = "";
+                    if( data != null && data.length > 0 ){
+                        data.map((ite)=>{
+                            out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
+                        });
+					}
+
 					return out;
                 }
             } else if( typeof setting.status_label !== 'undefined' ){
                 tables.columns[index].render = function (data, type, full, meta) {
-                	var label = "<span class=\"btn btn-default disabled\"><i class=\"fa fa-eye-slash\"></i></span>";
-                	if( data == 1 ){
+                	let label = "<span class=\"btn btn-default disabled\"><i class=\"fa fa-eye-slash\"></i></span>";
+                	if( data === 1 ){
                         label = "<span class=\"btn btn-primary btn-xs\"><i class=\"fa fa-gear fa-spin\"></i></span>";
 					}
                     return label;

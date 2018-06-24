@@ -34,17 +34,20 @@ class SmartadminInput_element extends CI_Smarty {
         if (strlen($name) < 1){
             return NULL;
         }
-        $input_attributes = array(
-            "type"=>"text",
+        $inputAttributes = array(
+            "type"=>"checkbox",
             "name"=>$name,
             "value"=>isset($params['value']) ? $params['value'] : NULL,
             "placeholder"=>isset($params['placeholder']) ? $params['placeholder'] : NULL
         );
-        $checked = $input_attributes['value'] ? 'checked' : null;
-        $input = '<input type="checkbox" name="'.$name.'" '.$checked.'>';
+        if( $inputAttributes['value'] ){
+            $inputAttributes['checked'] = 'checked';
+        }
+
+        $input = '<input '._stringify_attributes($inputAttributes).'>';
         $input.= '<i data-swchon-text="'.lang("Publish").'" data-swchoff-text="'.lang("Unpublish").'"></i>';
 
-        $html = '<div class="toggle">'.lang($input_attributes['placeholder']).$input.'</div>';
+        $html = '<label class="toggle w80">'.$input.lang($inputAttributes['placeholder']).'</label>';
         //return self::row_input($params);
         return $html;
     }

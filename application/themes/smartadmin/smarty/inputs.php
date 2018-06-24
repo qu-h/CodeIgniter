@@ -1,7 +1,7 @@
 <?php
 class SmartadminInputs extends CI_Smarty
 {
-    static function row_input(array $params = null)
+    static function row_input($params = null, $template=null)
     {
         if (! isset($params['html']) || strlen($params['html']) < 1)
             return NULL;
@@ -119,9 +119,6 @@ class SmartadminInputs extends CI_Smarty
                 $field = $fields[$name];
             } else {
                 $field = ['type'=>'text'];
-                if( $name=='tags' ) {
-                    $field['type'] = 'tags';
-                }
             }
         }
 
@@ -130,6 +127,17 @@ class SmartadminInputs extends CI_Smarty
 
         if ( empty($field) || !is_array($field) || is_null($field) || !array_key_exists('type', $field)) {
             $field['type'] = 'text';
+            switch ($name){
+                case 'tags':
+                    $field['type'] = 'tags';
+                    break;
+                case 'rate':
+                    $field['type'] = 'stars';
+                    break;
+                case 'status':
+                    $field['type'] = 'publish';
+                    break;
+            }
         }
 
         if (! isset($field['label'])) {
@@ -140,12 +148,25 @@ class SmartadminInputs extends CI_Smarty
             $field['placeholder'] = $field['label'];
         }
         $field['name'] = $name;
+
+
+        if( isset($field['icon']) ){
+            $icon = $field['icon'];
+            if(  substr( $icon, 0, 3 ) === "fa-" ){
+                $icon = "fa $icon";
+            } else if ( substr( $icon, 0, 10 ) === 'glyphicon-') {
+                $icon = "glyphicon $icon";
+            } else {
+                $icon = "fa fa-$icon";
+            }
+            $field['icon'] = $icon;
+        }
+
         $params['field'] = $field;
 
         $input_func = "input_" . $field['type'];
 
         $function_registered = $template->registered_plugins['function'];
-
         if (array_key_exists($input_func, $function_registered)) {
             return call_user_func_array($function_registered[$input_func][0],array($params['field'],$template));
 
@@ -226,10 +247,6 @@ class SmartadminInputs extends CI_Smarty
 
         $inputAttribute = array_merge($inputAttribute, $params);
 
-//        if( isset($params['name']) ){
-//            $inputAttribute['name'] = $params['name'];
-//
-//        }
         if (strlen($inputAttribute['name']) < 1)
             return NULL;
 
@@ -315,48 +332,6 @@ class SmartadminInputs extends CI_Smarty
         $params['html'] = '<div class="input-group"><span class="input-group-addon">'.$addon.'</span><input type="text" class="'.$input_class.'" name="'.$name.'" value="'.$value.'"></div>';
 
         return self::input_lable($params);
-    }
-
-    static function input_select($params = null)
-    {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        $value = isset($params['value']) ? $params['value'] : NULL;
-        if( !is_array($value) ){
-            $value = [$value];
-        }
-        if (strlen($name) < 1){
-            return NULL;
-        }
-        $options = '<option value="0" > -- No Value --</option>';
-        if( isset($params["options"]) AND count($params["options"]) > 0 ){
-            foreach ($params["options"] AS $v=>$t){
-                if( is_array($t) ){
-                    $options .= '<optgroup label="'.$v.'">';
-                    foreach ($t AS $v2=>$t2){
-
-                        $selected = in_array($v2,$value) ? 'selected="selected"' : NULL;
-                        $options .= '<option value="'.$v2.'" '.$selected.' >'.$t2.'</option>';
-                    }
-                    $options .= '</optgroup>';
-                } else {
-                    $selected = in_array($v,$value) ? 'selected="selected"' : NULL;
-                    $options .= '<option value="'.$v.'" '.$selected.' >'.$t.'</option>';
-                }
-
-            }
-        }
-
-        $input = '<select name="'.$name.'" >'.$options.'</select>';
-        $html = '<section class="select">'.$input.'<i></i></section>';
-        $params['html'] = $html;
-
-        $params['label'] = NULL;
-        //return self::input_lable($params);
-        return self::row_input($params);
-    }
-
-    static function input_multiselect($params){
-        return self::input_select($params);
     }
 
     static function input_tags($params = null)
@@ -493,22 +468,10 @@ class SmartadminInputs extends CI_Smarty
         if (strlen($name) < 1)
             return NULL;
 
-        $placeholder = isset($params['placeholder']) ? $params['placeholder'] : NULL;
+        $params['placeholder'] = isset($params['placeholder']) ? $params['placeholder'] : NULL;
         $maxlength = isset($params['maxlength']) ? $params['maxlength'] : 0;
-        $value = isset($params['value']) ? $params['value'] : NULL;
-
-//             $params['class_type'] = "input-group";
-
-        $params["html"] = "";
-//             if( strlen($params['icon']) > 0 ){
-//                 $params["html"].= '<span class="input-group-addon"><i class="fa fa-'.$params['icon'].'"></i></span>';
-//                 $params['icon'] = NULL;
-//             }
-
-        $params['html'].= '<input type="text" name="' . $name . '" value="' . $value . '" placeholder="' . $placeholder . '"  ' . (intval($maxlength) > 0 ? ' maxlength="' . $maxlength . '"' : null) . ' >';
-
-        $params['html'].= '<i class="icon-append fa fa-check submit"></i>';
-        return self::row_input($params);
+        $params['value'] = isset($params['value']) ? $params['value'] : NULL;
+        return parent::fetchView("inputs/crawler_link",$params);
     }
 
     static function input_date($params)

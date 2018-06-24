@@ -4,6 +4,8 @@ class MX_Model extends CI_Model
 {
     public $limit = 50, $page = 1;
     public $table=NULL;
+    var $search, $orders = '';
+    var $tableFields = [];
     public function __construct()
     {
         parent::__construct();
@@ -14,6 +16,27 @@ class MX_Model extends CI_Model
         $this->offset = input_get('start');
         if( $this->offset > 0 ){
             $this->limit += $this->offset;
+        }
+
+        $search = input_get('search');
+        if( $search ){
+            $this->search = $search['value'];
+        }
+
+        $columns = input_get('columns');
+        if( is_array($columns) && !empty($columns) ){
+            foreach ($columns AS $f){
+                $this->tableFields[] = $f['data'];
+            }
+
+            $order = input_get('order');
+
+            if( $order ){
+                foreach ($order AS $o){
+                    $this->orders[] = [$this->tableFields[$o['column']],$o['dir']];
+                }
+            }
+
         }
     }
 
@@ -26,16 +49,13 @@ class MX_Model extends CI_Model
         return $row;
     }
 
-    function dataTableJson($query){
-        $tempdb = clone $query;
+    function dataTableJson($db=null){
+        if( is_null($db) ){
+            $db = $this->db;
+        }
+        $tempdb = clone $db;
         $num_rows = $tempdb->count_all_results();
-
-        $query = $query->limit($this->limit,$this->offset)->get();
-//        $items = array();
-//        foreach ($query->result() AS $ite){
-//            $ite->actions = "";
-//            $items[] = $ite;
-//        }
+        $query = $db->limit($this->limit,$this->offset)->get();
 
         return jsonData(array('data'=>$query->result_array(),'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
     }

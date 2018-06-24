@@ -8959,38 +8959,7 @@ footer.smart-form:after {
   opacity: 0
 }
 
-.smart-form .select i.icon {
-  position: absolute;
-  top: 10px;
-  right: 11px;
-  width: 5px;
-  height: 11px;
-  background: #fff;
-  box-shadow: 0 0 0 9px #fff
-}
-
-.smart-form .select i.icon:after,
-.smart-form .select i.icon:before {
-  content: '';
-  position: absolute;
-  right: 0;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent
-}
-
-.smart-form .select i.icon:after {
-  bottom: 0;
-  border-top: 4px solid #404040
-}
-
-.smart-form .select i.icon:before {
-  top: 0;
-  border-bottom: 4px solid #404040
-}
-
-.smart-form .select-multiple select {
-  height: auto
-}
+@import "inputs/select";
 
 .smart-form .textarea textarea {
   height: auto;
@@ -9104,78 +9073,7 @@ footer.smart-form:after {
   margin-bottom: 4px
 }
 
-.smart-form .toggle {
-  margin-bottom: 4px;
-  padding-right: 61px;
-  font-size: 15px;
-  line-height: 25px;
-  color: #404040;
-  cursor: pointer
-}
-
-.smart-form .toggle:last-child {
-  margin-bottom: 0
-}
-
-.smart-form .toggle input {
-  position: absolute;
-  left: -9999px
-}
-
-.smart-form .toggle i {
-  content: '';
-  position: absolute;
-  top: 4px;
-  right: 0;
-  display: block;
-  width: 49px;
-  height: 17px;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 12px;
-  background: #fff
-}
-
-.smart-form .toggle i:after {
-  content: attr(data-swchoff-text);
-  position: absolute;
-  top: 2px;
-  right: 8px;
-  left: 8px;
-  font-style: normal;
-  font-size: 9px;
-  line-height: 13px;
-  font-weight: 700;
-  text-align: left;
-  color: #5f5f5f
-}
-
-.smart-form .toggle i:before {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  top: 4px;
-  right: 4px;
-  display: block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  opacity: 1;
-  transition: right .2s;
-  -o-transition: right .2s;
-  -ms-transition: right .2s;
-  -moz-transition: right .2s;
-  -webkit-transition: right .2s
-}
-
-.smart-form .toggle input:checked + i:after {
-  content: attr(data-swchon-text);
-  text-align: right
-}
-
-.smart-form .toggle input:checked + i:before {
-  right: 36px
-}
+@import "inputs/radio_toggles";
 
 .smart-form .rating {
   margin-bottom: 4px;
@@ -17584,3 +17482,4 @@ body.menu-on-top.fixed-header.fixed-navigation.fixed-ribbon #ribbon {
 }
 
 @import "inputs/custome";
+@import "plugins/datatables";

@@ -510,14 +510,14 @@ if ( ! function_exists('url_title'))
 		if( !function_exists('convert_accented_characters') ){
 		    get_instance()->load->helper('text');
 		}
-        $str = preg_replace("/(\p{Z}|\p{P}|\p{Han}|\p{Katakana}|\p{Hiragana})+/u", null, $str );
+
+        $str = preg_replace("/(\p{Z}|\p{P}|\p{Han}|\p{Katakana}|\p{Hiragana})+/u", $separator, $str );
 		$str = convert_accented_characters($str);
+
 		foreach ($trans as $key => $val)
 		{
 			$str = preg_replace('#'.$key.'#i'.(UTF8_ENABLED ? 'u' : ''), $val, $str);
 		}
-
-
 
 		if ($lowercase === TRUE)
 		{

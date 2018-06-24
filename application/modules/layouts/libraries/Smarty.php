@@ -96,17 +96,21 @@ class CI_Smarty extends SmartyBC {
             //die('smarty 168 : check app');
 
 		} else {
-            //$this->setTemplateDir($path);
             $this->assign("tplPath", $path);
-//            bug("set temDir:$path");
         }
-//bug("show view $path$_view");
+
 		return parent::fetch("$path$_view");
+    }
 
+    static function fetchView($resource_name,$data){
+	    $dirDefault = config_item('theme_dir')."views/";
+        list($view, $path) = Modules::is_file_in_dir($dirDefault, $resource_name,true );
+        $smarty = get_instance()->smarty;
+        if( $view ){
+            return $smarty->fetch("$path$view",$data);
+        }
+    }
 
-
-
-}
 	function layout($file){
 		$this->layout = $file;
 	}
