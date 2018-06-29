@@ -79,12 +79,14 @@ class Article extends MX_Controller {
 
             } else {
                 list($c_title,$c_content,$c_thumb) = Modules::run('crawler/get_content',$crawler_source);
-                if( !is_null($c_title) AND strlen($this->fields["title"]['value']) < 2 ){
+
+                if( !is_null($c_title) ){
                     $this->fields["title"]['value'] = $c_title;
                     $this->fields["content"]['value'] = $c_content;
                     $this->fields["imgthumb"]['value'] = $c_thumb;
                 }
             }
+
         } else {
             $item = $this->Article_Model->get_item_by_id($id);
             foreach ($this->fields AS $field=>$val){

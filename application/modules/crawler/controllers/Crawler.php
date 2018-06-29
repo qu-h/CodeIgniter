@@ -120,15 +120,15 @@ class Crawler extends MX_Controller
             }
             $content[] = null;
         }
-
         return $content;
     }
 
+    //http://simplehtmldom.sourceforge.net/manual.htm
     private function findArticleObject($url,$crawlerMask){
         $html = new simple_html_dom();
         $html->load(get_site_html_curl($url));
 
-        $title = $thumbnail = null;
+        $title = $thumbnail = $content = null;
         try{
             foreach ($html->find('iframe') as $node)
             {
@@ -145,9 +145,11 @@ class Crawler extends MX_Controller
                 $title = trim($titleObject->innertext);
             }
 
-            $sourceContent = $html->find($crawlerMask->content_element,0);
-            if( $sourceContent ){
-                $content = trim($sourceContent->innertext);
+            $contents = $html->find($crawlerMask->content_element);
+            if( count($contents) > 0 ){
+                foreach ($contents AS $b ){
+                    $content .= trim($b->innertext);
+                }
             }
 
             if( strlen($crawlerMask->thumbnail_element) > 3 ){
