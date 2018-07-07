@@ -6,7 +6,7 @@ class Article extends MX_Controller {
     {
         parent::__construct();
         $this->load->model('backend/Article_Model');
-        $this->load->model('backend/Category_Model');
+        $this->load->model('category/Category_Model');
         $this->load->module('layouts');
         $this->fields = $this->Article_Model->fields();
         if( !function_exists('columns_fields') ){
@@ -20,30 +20,33 @@ class Article extends MX_Controller {
     var $table_fields = array(
         'id'=>array("#",5,true,'text-center'),
         'title'=>array("Title"),
-        'category'=>array("Category"),
+        'category_name'=>array("Category"),
         'source'=>array('Source'),
         'news_actions'=>array('',5,false),
     );
     function items(){
         if( $this->uri->extension =='json' ){
-            return $this->items_json_data(array_keys($this->table_fields));
+            $category_id = null;
+            if( isset($this->fields['category']['value']) && $this->fields['category']['value'] > 0 ){
+                $category_id = $this->fields['category']['value'];
+            }
+            return $this->Article_Model->items_json($category_id);
+//
+//            return $this->items_json_data(array_keys($this->table_fields));
         }
         $data = columns_fields($this->table_fields);
         temp_view('backend/datatables', $data);
     }
 
     private function items_json_data(){
-        $category_id = null;
-        if( isset($this->fields['category']['value']) && $this->fields['category']['value'] > 0 ){
-            $category_id = $this->fields['category']['value'];
-        }
-        $this->Article_Model->items_json($category_id);
+
     }
 
     var $formView = "backend/article-form";
 
     public function form($id=0){
         header('X-XSS-Protection:0');
+
         if ($this->input->post()) {
             $crawler_source = $this->input->post("crawler_source");
             $formdata = array();
@@ -73,10 +76,8 @@ class Article extends MX_Controller {
                     }
                     return redirect($newUri, 'refresh');
                 } else {
-
                     return redirect(uri_string(), 'refresh');
                 }
-
             } else {
                 list($c_title,$c_content,$c_thumb) = Modules::run('crawler/get_content',$crawler_source);
 

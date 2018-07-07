@@ -66,6 +66,8 @@ $config['js'] = array(
     "$domain/js/plugin/datatable-responsive/datatables.responsive.min.js",
 
     "$domain/js/plugin/summernote/summernote.min.js",
+    "$domain/js/plugin/select2/select2.min.js",
+
 
     "$domain/js/ict.js",
 

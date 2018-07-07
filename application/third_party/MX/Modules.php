@@ -412,7 +412,7 @@ class Modules
         $moduleFullPath = $module = FALSE;
 
         $pathDebug = "ssss";
-        $fileDebug = "dsdsds";
+        $fileDebug = "dsdsdsdsd";
 
         foreach (glob($path."/*") as $dir) {
             $folderName = pathinfo($dir);
@@ -421,25 +421,33 @@ class Modules
                 $moduleFullPath = $folderName['dirname'].DS;
             }
         }
+
         if( $file==$fileDebug ){
-            bug("module::is_file_in_dir path: $path: file:$file");
-          }
+            bug("module::is_file_in_dir path: $path: file:$file module=$module");
+        }
         if( strlen($module) < 1 ){
-            $filescheck = glob($path."/$file*");
+            $filescheck = glob($path."/$file.*");
 
             if( $path==$pathDebug ){
                 //bug($path."/$file");
             }
             if( !empty($filescheck) ){
                 foreach ($filescheck as $dir) {
+                    if( strlen($module) > 0 ){
+                        break;
+                    }
                     $folderName = pathinfo($dir);
                     $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
                     $moduleFullPath = $folderName['dirname'].DS;
                 }
 
             }
-
         }
+
+        if( $file==$fileDebug ){
+            bug("module::is_file_in_dir module: $module: moduleFullPath:$moduleFullPath");
+        }
+
         return [$module,$moduleFullPath];
     }
 }

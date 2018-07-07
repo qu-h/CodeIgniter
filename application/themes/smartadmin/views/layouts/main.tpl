@@ -205,5 +205,14 @@
     </div>
 </div>
 {include file="../modal/images-manager.tpl"}
-</body>
+<script type="text/javascript">
+
+    // DO NOT REMOVE : GLOBAL FUNCTIONS!
+
+    $(document).ready(function() {
+        pageSetUp();
+    });
+</script>
+
+    </body>
 </html>

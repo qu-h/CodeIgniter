@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script coess allowed');
-class Category_Model extends CI_Model {
+
+class Category_Model extends MX_Model {
 
     var $table = 'category';
 
@@ -40,7 +41,7 @@ class Category_Model extends CI_Model {
     );
     function __construct(){
         parent::__construct();
-        $this->load->database();
+        $this->checkTableExist($this->table,'sql/create-category.sql','backend');
     }
 
 

@@ -81,4 +81,41 @@ class Tag_Model extends MX_Model
         }
         return $id;
     }
+
+    public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
+    {
+        $options = array();
+        if( $level < 1 )
+            return [];
+        if( is_numeric($level) && $level > 0  ){
+            $this->db->where('k.group_id',$parent_id);
+        }
+        if( is_numeric($using_id) ){
+            $using_id = [$using_id];
+        }
+        if( !empty($using_id) ){
+            $this->db->where_not_in('k.id',$using_id);
+        }
+
+        if( $type ){
+            $this->db->where(["k.type"=>$type,'c.status'=>$status]);
+        }
+        if( $status ){
+            $this->db->where('k.status',$status);
+        }
+
+        $this->db->order_by("k.word ASC");
+        $query = $this->db->get($this->table." AS k");
+
+        if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
+            $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
+            if( $level > 1 && !empty($subOptions) ){
+                $options[$row->name] = $subOptions;
+            } else {
+                $options[$row->id] = $row->word;
+            }
+        }}
+        return $options;
+
+    }
 }

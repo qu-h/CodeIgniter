@@ -3,35 +3,11 @@ class SmartadminInput_select extends CI_Smarty {
 
     static function input_select($params = null)
     {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        $value = isset($params['value']) ? $params['value'] : NULL;
-        if( !is_array($value) ){
-            $value = [$value];
+        if( !isset($params['value']) ){
+            $params['value'] = [];
+        } else if ( is_numeric($params['value']) || is_string($params['value']) ){
+            $params['value'] = [$params['value']];
         }
-        if (strlen($name) < 1){
-            return NULL;
-        }
-
-        $options = '<option value="0" > -- No Value --</option>';
-        if( isset($params["options"]) AND count($params["options"]) > 0 ){
-            foreach ($params["options"] AS $v=>$t){
-                if( is_array($t) ){
-                    $options .= '<optgroup label="'.$v.'">';
-                    foreach ($t AS $v2=>$t2){
-                        $selected = in_array($v2,$value) ? 'selected="selected"' : NULL;
-                        $options .= '<option value="'.$v2.'" '.$selected.' >'.$t2.'</option>';
-                    }
-                    $options .= '</optgroup>';
-                } else {
-                    $selected = in_array($v,$value) ? 'selected="selected"' : NULL;
-                    $options .= '<option value="'.$v.'" '.$selected.' >'.$t.'</option>';
-                }
-            }
-        }
-
-        $input = '<select name="'.$name.'" >'.$options.'</select>';
-        $html = '<section class="select">'.$input.'<i></i></section>';
-        $params['html'] = $html;
         $params['label'] = NULL;
         $params['state'] = "state-success";
         return parent::fetchView("inputs/select",$params);
@@ -39,6 +15,40 @@ class SmartadminInput_select extends CI_Smarty {
 
     static function input_multiselect($params){
         return self::input_select($params);
+    }
+
+    static function input_select_category($params){
+        $ci = get_instance();
+        $ci->load->model('Category/Category_Model');
+        if( !isset($params['category-type']) ){
+            $params['category-type'] = 'category';
+        }
+        $params['options'] = $ci->Category_Model->load_options($params['category-type'],1,[],2);
+
+        return self::input_select($params);
+    }
+
+    static function input_select2($params = null){
+        if( !isset($params['value']) ){
+            $params['value'] = [];
+        } else if ( is_numeric($params['value']) || is_string($params['value']) ){
+            $params['value'] = [$params['value']];
+        }
+
+        $params['label'] = NULL;
+        $params['state'] = "state-success";
+        return parent::fetchView("inputs/select2",$params);
+
+    }
+    static function input_tags($params = null)
+    {
+        $ci = get_instance();
+        $ci->load->model('Tag/Tag_Model');
+        if( !array_key_exists('tag-type',$params) ){
+            $params['tag-type'] = FALSE;
+        }
+        $params['options'] = $ci->Tag_Model->load_options($params['tag-type'],1,[],2);
+        return self::input_select2($params);
     }
 
 }

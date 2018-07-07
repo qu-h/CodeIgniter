@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script core allowed');
 class Article_Model extends MX_Model {
     var $table = 'article';
+    var $table_tags = 'article_tags';
     var $article_fields = array(
         'id' => array(
             'type' => 'hidden'
@@ -10,18 +11,19 @@ class Article_Model extends MX_Model {
             "value"=>null
         ),
         'title' => array(
-            'label' => 'Category Name',
+            'label' => 'Article Name',
             'desc' => null,
             'icon' => 'send'
         ),
         'alias' => array(
-            'label' => 'Category Alias',
+            'label' => 'Article Alias',
             'desc' => null,
             'icon' => 'link'
         ),
         'category' => array(
-            'type' => 'select',
-            'icon' => 'list'
+            'type' => 'select_category',
+            'icon' => 'list',
+            'category-type'=>'article'
         ),
         'source' => array(
             'type' => 'crawler_link',
@@ -34,11 +36,9 @@ class Article_Model extends MX_Model {
         'content' => array(
             'type' => 'textarea'
         ),
-        'status' => array(
-            'type' => 'publish',
-            'value'=>1
-        ),
-        'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc']
+        'status' => [ 'type' => 'publish', 'value'=>1 ],
+        'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc'],
+        'tags'=>['type'=>'tags']
     );
 
     var $page_limit = 10;
@@ -53,8 +53,13 @@ class Article_Model extends MX_Model {
     }
 
     function get_item_by_id($id=0){
-        return $this->db->where('id',$id)->get($this->table)->row();
+
+        $row = $this->db->where('id',$id)->get($this->table)->row();
+        $row->tags = $this->getTags($row->id);
+
+        return $row;
     }
+
     function get_item_by_alias($alias=0,$cateogry_id=0,$status=1){
         $this->db->where("alias",$alias);
         $this->db->where("category",$cateogry_id);
@@ -73,7 +78,6 @@ class Article_Model extends MX_Model {
                 set_error('Please enter alias');
                 return false;
             }
-
         }
 
         if( !isset($data['id']) || strlen($data['id']) < 1 ){
@@ -87,6 +91,7 @@ class Article_Model extends MX_Model {
             $data['category'] = 0;
         }
         $data['status'] = $data['status']=='on' ? true:false;
+        $tags = $data['tags']; unset($data['tags']);
 
         if( $this->check_exist($data['alias'],$data['id'],$data['category']) ){
             set_error('Dupplicate Article');
@@ -103,9 +108,12 @@ class Article_Model extends MX_Model {
         if( !$id ){
             bug($this->db->last_query());
         }
+        if( is_array($tags) && !empty($tags) ){
+            $this->updateTags($id,$tags);
+        }
+
         return $id;
     }
-
 
     function check_exist($alias,$id,$category=0){
         if( !is_numeric($category) ){
@@ -130,6 +138,7 @@ class Article_Model extends MX_Model {
      */
     function items_json($category_id = null, $actions_allow=NULL){
         $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.status, a.ordering');
+        $this->db->join("category AS c",'c.id=a.category','LEFT')->select('c.name AS category_name');
         if( $category_id !== null ){
             $this->db->where("a.category",$category_id);
         }
@@ -143,27 +152,7 @@ class Article_Model extends MX_Model {
         } else {
             $this->db->order_by('id DESC');
         }
-
         return $this->dataTableJson();
-
-//        $items = array();
-//        if( !$query ){
-//            bug($this->db->last_query());
-//            die("error");
-//        }
-//        foreach ($query->result() AS $ite){
-//            if( strlen($ite->source ) > 0 ){
-//                $parse = parse_url($ite->source );
-//                if( isset($parse['host']) ){
-//                    $ite->source = $parse['host'];
-//                }
-//
-//            }
-//            $ite->actions = "";
-//            $ite->summary = word_limiter($ite->summary,20);
-//            $items[] = $ite;
-//        }
-//        return jsonData(array('data'=>$items));
     }
 
     function get_items_latest(){
@@ -192,4 +181,33 @@ class Article_Model extends MX_Model {
         return $return_array ? $query->result_array() : $query->result();
     }
 
+    private function updateTags($article_id=0,$tags=[]){
+        $tagsMapping = $this->db->where('article_id',$article_id)->select("keyword_id")->get($this->table_tags);
+        $exist = [];
+        if( $tagsMapping->num_rows() > 0 ){
+            foreach ($tagsMapping->result() AS $r){
+                $exist[] = $r->keyword_id;
+            }
+        }
+
+        $available = [];
+        foreach ($tags AS $k){
+            if( !in_array($k,$exist) ){
+                $this->db->insert($this->table_tags,['article_id'=>$article_id,'keyword_id'=>$k]);
+                $available[] = $k;
+            }
+        }
+        $this->db->where('article_id',$article_id)->where_not_in('keyword_id',$tags)->delete($this->table_tags);
+    }
+
+    private function getTags($article_id=0){
+        $tagsMapping = $this->db->where('article_id',$article_id)->select("keyword_id")->get($this->table_tags);
+        $exist = [];
+        if( $tagsMapping->num_rows() > 0 ){
+            foreach ($tagsMapping->result() AS $r){
+                $exist[] = $r->keyword_id;
+            }
+        }
+        return $exist;
+    }
 }

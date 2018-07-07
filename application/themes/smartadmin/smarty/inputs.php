@@ -334,31 +334,6 @@ class SmartadminInputs extends CI_Smarty
         return self::input_lable($params);
     }
 
-    static function input_tags($params = null)
-    {
-        $name = isset($params['name']) ? $params['name'] : NULL;
-        $value = isset($params['value']) ? $params['value'] : [];
-
-        if (strlen($name) < 1){
-            return NULL;
-        }
-        $options = '';
-        if( !isset($params["options"]) ){
-            $ci = get_instance();
-            $params["options"] = [];
-        }
-        if( isset($params["options"]) AND count($params["options"]) > 0 ){
-            foreach ($params["options"] AS $v ){
-
-                $options .= '<option value="'.$v.'" >'.$v.'</option>';
-            }
-        }
-
-        $input = '<select name="'.$name.'[]" multiple="multiple" data-role="tagsinput"  >'.$options.'</select>';
-        $html = '<section class="select" >'.$input.'</section>';
-        return $html;
-    }
-
     static function input_select_fromDB($params = null)
     {
         $name = isset($params['name']) ? $params['name'] : NULL;

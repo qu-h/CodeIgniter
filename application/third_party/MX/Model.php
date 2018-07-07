@@ -3,14 +3,13 @@
 class MX_Model extends CI_Model
 {
     public $limit = 50, $page = 1;
-    public $table=NULL;
+    public $table = NULL;
     var $search, $orders = '';
     var $tableFields = [];
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
-
         $this->draw = input_get('draw');
         $this->limit = input_get('length');
         $this->offset = input_get('start');
@@ -45,7 +44,7 @@ class MX_Model extends CI_Model
             $table = $this->table;
         }
 
-        $row = $this->db->where("id",$id)->limit(1)->get($table)->row();
+        $row = $this->db->from($table)->where("id",$id)->limit(1)->get()->row();
         return $row;
     }
 
@@ -57,6 +56,7 @@ class MX_Model extends CI_Model
         $num_rows = $tempdb->count_all_results();
         $query = $db->limit($this->limit,$this->offset)->get();
         $data = $query->result_array();
+//bug($db->last_query(),'bug query');
         return jsonData(array('data'=>$data,'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
     }
 
@@ -80,5 +80,27 @@ class MX_Model extends CI_Model
         }
 
         return $result->num_rows() > 0;
+    }
+
+    function checkTableExist($tableName,$file=null,$module=null){
+        if (!$this->db->table_exists($tableName)) {
+            list($path,$file) = Modules::find($file,$module,null,true);
+            if( $path ){
+                if( !function_exists('read_file') ){
+                    get_instance()->load->helper('file');
+                }
+                $data = read_file($path.$file);
+                $sqls = preg_split('/;/', $data);
+                if( count($sqls) > 0 ) foreach ($sqls AS $sql){
+                    $sql = trim($sql);
+                    if( strlen($sql) > 0 ){
+                        $this->db->query($sql);
+                    }
+
+                }
+            }
+        }
+
+
     }
 }

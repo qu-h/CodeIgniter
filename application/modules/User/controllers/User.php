@@ -49,11 +49,13 @@ class User extends MX_Controller
 
             if ($login != NULL) {
                 $uriReturn = "";
-                if( $this->uri->segment(2) ){
-                    $uriReturn = base64_decode($this->uri->segment(2));
-                }
-                if( strlen($uriReturn) < 1 ){
+                if( $uriBack ){
                     $uriReturn = $uriBack;
+                } else {
+                    $uriReturn = "";
+                    if( $this->uri->segment(2) ){
+                        $uriReturn = base64_decode($this->uri->segment(2));
+                    }
                 }
 
                 $this->session->set_userdata('user_id', $login->id);

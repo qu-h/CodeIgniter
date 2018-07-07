@@ -29,10 +29,21 @@ class Tag extends MX_Controller {
     }
 
     public function form($id=0){
+        $fields = $this->fields;
         if( $this->input->post() ){
             if( isset($_POST['cancel']) ){
                 redirect('keyword');
                 return FALSE;
+            }
+
+            $formdata = array();
+            foreach ($fields as $name => $field) {
+                $fields[$name]['value'] = $formdata[$name] = input_post($name);
+            }
+            $add = $this->Tag_Model->update($formdata);
+            if( $add ){
+                $newUri = url_to_edit(null,$add);
+                return redirect($newUri, 'refresh');
             }
         }
         $this->formFill($id);

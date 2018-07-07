@@ -10,5 +10,5 @@ function input_get($index = NULL, $default=null, $xss_clean = NULL){
 }
 function input_post($index = NULL, $xss_clean = NULL){
     $value = get_instance()->input->post($index, $xss_clean);
-    return trim($value);
+    return is_string($value) ? trim($value) : $value;
 }

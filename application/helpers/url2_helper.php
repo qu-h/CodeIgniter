@@ -98,3 +98,12 @@ function str_replace_last( $search , $replace , $str ) {
     }
     return $str;
 }
+
+
+if ( ! function_exists('trim_title'))
+{
+    function trim_title($str)
+    {
+        return trim($str," \t\n\r".chr(0xC2).chr(0xA0));;
+    }
+}
