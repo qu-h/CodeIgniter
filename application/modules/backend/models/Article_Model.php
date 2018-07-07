@@ -55,7 +55,11 @@ class Article_Model extends MX_Model {
     function get_item_by_id($id=0){
 
         $row = $this->db->where('id',$id)->get($this->table)->row();
-        $row->tags = $this->getTags($row->id);
+
+        if( !is_null($row) && isset($row->id) ){
+            $row->tags = $this->getTags($row->id);
+        }
+
 
         return $row;
     }

@@ -23,7 +23,11 @@ class SmartadminInput_select extends CI_Smarty {
         if( !isset($params['category-type']) ){
             $params['category-type'] = 'category';
         }
-        $params['options'] = $ci->Category_Model->load_options($params['category-type'],1,[],2);
+        $without_ids = [];
+        if( array_key_exists('without_ids',$params) ){
+            $without_ids = $params['without_ids'];
+        }
+        $params['options'] = $ci->Category_Model->load_options($params['category-type'],1,$without_ids,2);
 
         return self::input_select($params);
     }

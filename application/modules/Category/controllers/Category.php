@@ -4,13 +4,13 @@ if (! defined('BASEPATH'))
 
 class Category extends MX_Controller
 {
-
-    function __construct()
+    function __construct($type='category')
     {
-
         $this->load->model('Category/Category_Model');
         $this->fields = $this->Category_Model->fields();
-        add_git_assets('jquery.nestable.min.js','jquery/nestable');
+        $this->fields["type"]["value"] = $type;
+        $this->fields["parent"]["category-type"] = $type;
+
     }
 
     var $table_fields = array(
@@ -27,6 +27,8 @@ class Category extends MX_Controller
         }
         $items = $this->Category_Model->items_tree($this->fields["type"]["value"],0,2);
         $data['categories'] = $items;
+
+        add_git_assets('jquery.nestable.min.js','jquery/nestable');
         temp_view("categories",$data);
     }
 
@@ -59,6 +61,7 @@ class Category extends MX_Controller
                     $this->fields[$field]['value']=$item->$field;
                 }
             }
+            $this->fields["parent"]["without_ids"] = [$id];
         }
         $data = array(
             'fields' => $this->fields

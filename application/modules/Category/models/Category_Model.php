@@ -20,8 +20,8 @@ class Category_Model extends MX_Model {
             'icon' => 'link'
         ),
         'parent' => array(
-            'type' => 'select',
-            'icon' => 'list',
+            'type' => 'select_category',
+            //'icon' => 'list',
             'value'=>0
         ),
         'summary'=>array(
@@ -49,6 +49,7 @@ class Category_Model extends MX_Model {
     {
         return $this->category_fields;
     }
+
     function get_item_by_alias($alias="",$returnArray=false){
         $this->db->where('status',1);
         $this->db->where('alias',$alias);
@@ -66,7 +67,6 @@ class Category_Model extends MX_Model {
     function get_item_by_id($id=0){
         return $this->db->where('id',$id)->get($this->table)->row();
     }
-
 
     function update($data=NULL,$validation=true){
         if( $validation ){

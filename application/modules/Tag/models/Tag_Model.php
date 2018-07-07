@@ -64,6 +64,10 @@ class Tag_Model extends MX_Model
             }
         }
 
+        if( !isset($data['status']) ){
+            $data['status'] = 0;
+        }
+
         if( $this->isExist(['alias'=>$data['alias'],'group_id'=>$data['group_id']],$data['id']) ){
             set_error('Dupplicate Article');
             return false;
