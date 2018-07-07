@@ -33,10 +33,7 @@ class Category_Model extends MX_Model {
         'description' => array(
             'type' => 'textarea'
         ),
-        'status' => array(
-            'type' => 'publish',
-            'value' => 1
-        ),
+        'status' => [ 'type' => 'publish', 'value' => 1 ],
         'ordering'=>['type'=>'number','icon'=>'sort-numeric-desc']
     );
     function __construct(){
@@ -82,7 +79,7 @@ class Category_Model extends MX_Model {
             if( is_null($data['parent']) || strlen($data['parent']) < 1){
                 $data['parent'] = 0;
             }
-            $data['status'] = $data['status']=='on' ? true:false;
+            $data['status'] = ($data['status']=='on' || $data['status']) ? true: false;
         }
 
         if( !isset($data['id']) || strlen($data['id']) < 1 ){
@@ -101,7 +98,6 @@ class Category_Model extends MX_Model {
         if( strlen($data['name']) > 0 ){
             $data['name'] = trim_title($data['name']);
         }
-
 
         if( $validation && $this->check_exist($data['alias'],$data['id'],$data['parent']) ){
             set_error('Dupplicate Category');
