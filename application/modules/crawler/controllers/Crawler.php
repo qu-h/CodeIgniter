@@ -142,7 +142,7 @@ class Crawler extends MX_Controller
 
             $titleObject = $html->find($crawlerMask->title_element,0);
             if( $titleObject  ){
-                $title = trim($titleObject->innertext);
+                $title = trim( strip_tags($titleObject->innertext) );
             }
 
             $contents = $html->find($crawlerMask->content_element);
