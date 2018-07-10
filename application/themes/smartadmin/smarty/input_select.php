@@ -51,7 +51,7 @@ class SmartadminInput_select extends CI_Smarty {
         if( !array_key_exists('tag-type',$params) ){
             $params['tag-type'] = FALSE;
         }
-        $params['options'] = $ci->Tag_Model->load_options(1,[],2);
+        $params['options'] = $ci->Tag_Model->load_options(1,[],1);
         return self::input_select2($params);
     }
 
