@@ -20,11 +20,11 @@ class Tag_Model extends MX_Model
             'icon' => 'link'
         ),
         'group_id' => array(
-            'type' => 'select',
+            'type' => 'multiselect',
             'icon' => 'list',
             'value' => 0
         ),
-        'rate' => ['type' => 'stars','value'=>0],
+        'rate' => ['type' => 'stars','value'=>1],
 
         'status' => array(
             'type' => 'publish',
@@ -41,7 +41,9 @@ class Tag_Model extends MX_Model
 
     function fields()
     {
-        return $this->keyword_fields;
+        $fields = $this->keyword_fields;
+        $fields['group_id']['options'] = $this->load_options(1,[],2);
+        return $fields;
     }
 
     function dataTableJson($group_id = 0)
@@ -86,7 +88,7 @@ class Tag_Model extends MX_Model
         return $id;
     }
 
-    public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
+    public function load_options($status=1,$using_id=[],$level=1,$parent_id=0)
     {
         $options = array();
         if( $level < 1 )
@@ -101,9 +103,6 @@ class Tag_Model extends MX_Model
             $this->db->where_not_in('k.id',$using_id);
         }
 
-        if( $type ){
-            $this->db->where(["k.type"=>$type,'c.status'=>$status]);
-        }
         if( $status ){
             $this->db->where('k.status',$status);
         }
@@ -112,9 +111,9 @@ class Tag_Model extends MX_Model
         $query = $this->db->get($this->table." AS k");
 
         if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
-            $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
+            $subOptions = $this->load_options($status,$using_id,$level-1,$row->id);
             if( $level > 1 && !empty($subOptions) ){
-                $options[$row->name] = $subOptions;
+                $options[$row->word] = $subOptions;
             } else {
                 $options[$row->id] = $row->word;
             }
