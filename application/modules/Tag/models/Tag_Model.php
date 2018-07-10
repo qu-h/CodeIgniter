@@ -42,7 +42,7 @@ class Tag_Model extends MX_Model
     function fields()
     {
         $fields = $this->keyword_fields;
-        $fields['group_id']['options'] = $this->load_options(1,[],2);
+        $fields['group_id']['options'] = $this->load_options(1,[],1);
         return $fields;
     }
 
