@@ -149,6 +149,10 @@ class Article_Model extends MX_Model {
         $this->db->where("(a.status <> -1 OR a.status IS NULL)");
         $this->db->from($this->table." AS a");
 
+        if( $this->search ){
+            $this->db->like('LOWER(a.title)',strtolower($this->search) );
+        }
+
         if( $this->orders ){
             foreach ($this->orders AS $o){
                 $this->db->order_by("a.".$o[0],$o[1]);
