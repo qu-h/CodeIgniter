@@ -480,4 +480,8 @@ class SmartadminInputs extends CI_Smarty
         return self::input_text($params);
     }
 
+    static function input_editable($params){
+        return parent::fetchView("inputs/editable",$params);
+    }
+
 }

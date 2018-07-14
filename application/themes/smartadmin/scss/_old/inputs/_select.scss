@@ -1,0 +1,36 @@
+
+.smart-form .select {
+	i.icon {
+		position: absolute;
+		top: 10px;
+		right: 11px;
+		width: 5px;
+		height: 11px;
+		//background: #fff;
+		//box-shadow: 0 0 0 9px #fff
+
+		&:after,
+		&:before {
+			content: '';
+			position: absolute;
+			right: 0;
+			border-right: 4px solid transparent;
+			border-left: 4px solid transparent
+		}
+
+		&:after {
+			bottom: 0;
+			border-top: 4px solid #404040
+		}
+
+		&:before {
+			top: 0;
+			border-bottom: 4px solid #404040
+		}
+
+	}
+}
+
+.smart-form .select-multiple select {
+	height: auto
+}

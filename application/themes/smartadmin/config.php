@@ -4,13 +4,12 @@ $domain = "http://ci-3-0-1.loc/smartadmin";
 $config['theme_dir'] = BaseAppPath."themes/smartadmin/";
 $config['theme_url'] = "$domain/";
 $config['css'] = array(
-    "$domain/css/bootstrap.min.css",
-    "$domain/css/font-awesome.min.css",
+    "bootstrap.min.css",
+    "font-awesome.min.css",
 
     //SmartAdmin Styles : Caution! DO NOT change the order
-    "$domain/css/smartadmin-production-plugins.min.css",
-    "$domain/css/smartadmin-production.css",
-    "$domain/css/smartadmin-skins.min.css",
+    "smartadmin-production.css",
+
 
     //SmartAdmin RTL Support
     "$domain/css/smartadmin-rtl.min.css",
@@ -58,19 +57,26 @@ $config['js'] = array(
     "$domain/js/smart-chat-ui/smart.chat.manager.min.js",
 
 
+//    "",
+    //"$domain/js/plugin/datatables/dataTables.colVis.min.js",
+    //"$domain/js/plugin/datatables/dataTables.tableTools.min.js",
+//    "plugin/datatables/dataTables.bootstrap.min.js",
+    //"$domain/js/plugin/datatable-responsive/datatables.responsive.min.js",
 
-    "$domain/js/plugin/datatables/jquery.dataTables.min.js",
-    "$domain/js/plugin/datatables/dataTables.colVis.min.js",
-    "$domain/js/plugin/datatables/dataTables.tableTools.min.js",
-    "$domain/js/plugin/datatables/dataTables.bootstrap.min.js",
-    "$domain/js/plugin/datatable-responsive/datatables.responsive.min.js",
 
     "$domain/js/plugin/summernote/summernote.min.js",
     "$domain/js/plugin/select2/select2.min.js",
+    'smartwidgets/jarvis.widget.min.js',
 
-
-    "$domain/js/ict.js",
+    "ict.js",
 
 
 
 );
+$config['js'][] = "plugin/datatables/jquery.dataTables.min.js";
+$config['js'][] = "plugin/datatables/dataTables.bootstrap.min.js";
+//$config['js'][] = git_assets('jquery.dataTables.js','themes\SmartAdmin\DEVELOPER\COMMON_ASSETS\UNMINIFIED_JS\plugin\datatables',null,null,false);
+//$config['js'][] = git_assets('dataTables.bootstrap.js','themes\SmartAdmin\DEVELOPER\COMMON_ASSETS\UNMINIFIED_JS\plugin\datatables',null,null,false);
+
+//$config['js'][] = git_assets('popper.min.js','popper','1.14.3',null,false);
+//$config['js'][] = git_assets('datatables.min.js','DataTables',null,null,false);

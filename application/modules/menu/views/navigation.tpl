@@ -1,9 +1,9 @@
 {function name="menu_anchor" showspan=true showURL=true }
     {if isset($menu)}
         {if isset($showURL) && $showURL==false}
-        <a href="{site_url}">
+            <a href="{site_url}">
         {else}
-        <a href="{site_url uri=$menu->uri isNull=true }">
+            <a href="{site_url uri=$menu->uri isNull=true }">
         {/if}
 
             {if $menu->icon|count > 0}
@@ -12,12 +12,8 @@
                         <em class="bg-color-pink flash animated">{$menu->notify->total}</em>
                     {/if}
                 </i>
-                {$menu->name}
-            {elseif $showspan == true}
-                <span class="menu-item-parent">{$menu->name}</span>
-            {else}
-                {$menu->name}
             {/if}
+            <span class="menu-item-parent">{$menu->name}</span>
         </a>
     {/if}
 {/function}

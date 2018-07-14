@@ -41,11 +41,48 @@ var tables = {
 	columns :[],
 	breakpointDefinition : { tablet : 1024, phone : 480 },
 	area:null,
-	table:undefined,
-	helper:undefined,
+	table:undefined, helper:undefined,columnDefs:undefined,
+
+    opts:{
+        processing: true, serverSide: true,
+        "autoWidth" : true,
+        aLengthMenu: [ 5, 10, 25, 50 ],
+        ajax:false,
+        "sDom" : "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"
+        + "t"
+        + "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+        "initComplete": function () {},
+        "rowCallback" : function(nRow) {
+           // console.log('rowcallback',{nRow});
+            ///tables.helper.createExpandIcon(nRow);
+        },
+         "drawCallback" : function(oSettings) {
+
+            // tables.helper.respond();
+            let api = this.api();
+            tables.row_ci_actions(api);
+        },
+        "preDrawCallback" : function() {
+            if (!tables.helper) {
+                //tables.helper = new ResponsiveDatatablesHelper( tables.area ,tables.breakpointDefinition);
+            }
+        },
+    },
+
 	load:function(attribute){
 	    tables.area = $(attribute);
-
+	    if( typeof tables.area.attr('data-page-start') !== 'undefined'){
+            tables.opts.iDisplayStart = tables.area.attr('data-page-start');
+        }
+        if( typeof tables.area.attr('data-page-length') !== 'undefined'){
+            tables.opts.iDisplayLength = tables.area.attr('data-page-length');
+        }
+        if( this.columnDefs !== undefined ){
+	        tables.opts.columnDefs = this.columnDefs;
+        }
+	    //console.log('bug',tables.area,tables.area.attr('data-page-start'));
+        // iDisplayStart:10,
+        //     iDisplayLength:10,
         jQuery.each(tables.columns,function (index,setting) {
 
             if( typeof setting.render_img !== 'undefined' ) {
@@ -69,7 +106,6 @@ var tables = {
                             out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
                         });
 					}
-
 					return out;
                 }
             } else if( typeof setting.status_label !== 'undefined' ){
@@ -84,47 +120,15 @@ var tables = {
 
         });
 
-        var tableAjax = false;
         if( tables.url !== null ){
-            tableAjax = { url: tables.url, dataSrc: 'data' };
+            tables.opts.ajax = { url: tables.url, dataSrc: 'data' };
 		}
-	    tables.table  =  $(attribute).DataTable({
-		    ajax: tableAjax,
-            processing: true,
-			serverSide: true,
-            pageLength: 10,
-			paging: true,
-
-		    columns: tables.columns,
-
-		    "sDom" : "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"
-				+ "t"
-				+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-
-		    "autoWidth" : true,
-
-
-		    "preDrawCallback" : function() {
-			if (!tables.helper) {
-			    tables.helper = new ResponsiveDatatablesHelper( tables.area ,tables.breakpointDefinition);
-			}
-		    },
-		    "rowCallback" : function(nRow) {
-		    	tables.helper.createExpandIcon(nRow);
-		    },
-		    "drawCallback" : function(oSettings) {
-		    	tables.helper.respond();
-                var api = this.api();
-                tables.row_ci_actions(api);
-		    },
-		    "initComplete": function () {
-
-
-	        }
-	    });
-	    tables.columns_filter();
+        tables.opts.columns = tables.columns;
+	    tables.table  =  $(attribute).DataTable(tables.opts);
+	    //tables.columns_filter();
 
 	},
+
 	row_ci_actions:function (api) {
         api.$('button').click( function () {
             //api.search( this.innerHTML ).draw();
@@ -151,11 +155,9 @@ var tables = {
 
 	columns_filter:function(){
 	    $("thead th input[type=text]",tables.area).on( 'keyup change', function () {
-		tables.table
-	            .column( $(this).parent().index()+':visible' )
-	            .search( this.value )
-	            .draw();
-
+    		tables.table.column( $(this).parent()
+                .index()+':visible' )
+                .search( this.value ) .draw();
 	    } );
 
 	}

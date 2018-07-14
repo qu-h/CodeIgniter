@@ -17,6 +17,7 @@ class Article_Model extends MX_Model {
         ),
         'alias' => array(
             'label' => 'Article Alias',
+            'required'=>true,
             'desc' => null,
             'icon' => 'link'
         ),
@@ -27,7 +28,7 @@ class Article_Model extends MX_Model {
         ),
         'source' => array(
             'type' => 'crawler_link',
-            'icon' => 'link'
+            'icon' => 'globe'
         ),
         'summary'=>array(
             'type' => 'textarea',
@@ -66,7 +67,11 @@ class Article_Model extends MX_Model {
 
     function get_item_by_alias($alias=0,$cateogry_id=0,$status=1){
         $this->db->where("alias",$alias);
-        $this->db->where("category",$cateogry_id);
+
+        if( $cateogry_id != null ){
+            $this->db->where("category",$cateogry_id);
+        }
+
         if( is_numeric($status) ){
             $this->db->where("status",$status);
         }
@@ -141,8 +146,12 @@ class Article_Model extends MX_Model {
      * Json return for Datatable
      */
     function items_json($category_id = null, $actions_allow=NULL){
-        $this->db->select('a.id,a.title,a.category,a.source, a.imgthumb, a.status, a.ordering');
-        $this->db->join("category AS c",'c.id=a.category','LEFT')->select('c.name AS category_name');
+        $this->db->select('a.id,a.title,a.alias, a.source, a.imgthumb, a.status, a.ordering');
+        $this->db->join("category AS c",'c.id=a.category','LEFT')->select('c.name AS category_name,a.category AS category_id');
+
+        $this->db->select("(SELECT GROUP_CONCAT(tag.keyword_id) FROM article_tags AS tag WHERE tag.article_id = a.id) AS tag_ids",FALSE);
+        $this->db->select("(SELECT GROUP_CONCAT(k.word) FROM keywords AS k LEFT JOIN article_tags AS tag ON k.id = tag.keyword_id WHERE tag.article_id = a.id) AS tag_names",FALSE);
+
         if( $category_id !== null ){
             $this->db->where("a.category",$category_id);
         }

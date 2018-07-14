@@ -12,18 +12,17 @@ class Article extends MX_Controller {
         if( !function_exists('columns_fields') ){
             $this->load->helper("backend/datatables");
         }
-
-        //$this->template->set_theme('smartadmin')->set_layout('main');
-
     }
 
     var $table_fields = array(
         'id'=>array("#",5,true,'text-center'),
-        'title'=>array("Title"),
-        'category_name'=>array("Category"),
-        'source'=>array('Source'),
+        'title'=>array("Title",30),
+        'category_name'=>array("Category",10),
+        'source'=>['Source',5,false,'text-center'],
+        'tag_names'=>['Keywords',10,false],
         'news_actions'=>array('',5,false),
     );
+
     function items(){
         if( $this->uri->extension =='json' ){
             $category_id = null;
@@ -31,15 +30,9 @@ class Article extends MX_Controller {
                 $category_id = $this->fields['category']['value'];
             }
             return $this->Article_Model->items_json($category_id);
-//
-//            return $this->items_json_data(array_keys($this->table_fields));
         }
         $data = columns_fields($this->table_fields);
         temp_view('backend/datatables', $data);
-    }
-
-    private function items_json_data(){
-
     }
 
     var $formView = "backend/article-form";
@@ -90,6 +83,8 @@ class Article extends MX_Controller {
 
         } else {
             $item = $this->Article_Model->get_item_by_id($id);
+            $this->fields['source']['type'] = 'editable';
+            $this->fields['alias']['type'] = 'editable';
             foreach ($this->fields AS $field=>$val){
                 if( isset($item->$field) ){
                     $this->fields[$field]['value']=$item->$field;

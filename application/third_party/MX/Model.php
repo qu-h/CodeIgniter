@@ -9,13 +9,18 @@ class MX_Model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+        $ci = get_instance();
         $this->load->database();
         $this->draw = input_get('draw');
-        $this->limit = input_get('length');
-        $this->offset = input_get('start');
-        if( $this->offset > 0 ){
-            $this->limit += $this->offset;
+        if( $ci->uri->extension =='json' ){
+            $length = input_get('length');
+            $ci->session->set_userdata('page_length',$length);
+            $start = input_get('start');
+            $ci->session->set_userdata('page_start',$start);
         }
+        $this->limit = $ci->session->userdata('page_length');
+        $this->offset = $ci->session->userdata('page_start');
+
 
         $search = input_get('search');
         if( $search ){
