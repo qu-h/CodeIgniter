@@ -11,4 +11,5 @@
         {/if}
         {$value}
     </a>
+    <input type="hidden" name="{$name}" value="{$value}" />
 </section>
