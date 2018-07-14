@@ -481,6 +481,9 @@ class SmartadminInputs extends CI_Smarty
     }
 
     static function input_editable($params){
+        if( !array_key_exists('value',$params) ){
+            $params['value'] = null;
+        }
         return parent::fetchView("inputs/editable",$params);
     }
 
