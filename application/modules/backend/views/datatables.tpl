@@ -87,10 +87,10 @@
 						<table
 								id="data_ajax"
 								class="table table-striped table-bordered table-hover"
-								data-order='[[ 1, "desc" ]]'
 								width="100%"
 								{if isset($dataLength)} data-page-length='{$dataLength}' {/if}
 								{if isset($dataStart)} data-page-start='{$dataStart}' {/if}
+								{if isset($page_order)} data-order='[{$page_order}]' {/if}
 						>
 							<thead>
 								{if isset($columns_filter) AND $columns_filter }
@@ -99,9 +99,7 @@
 								<th class="hasinput" >
 									<input type="text" class="form-control" placeholder="Filter Name" />
 								</th>
-
 								{/foreach}
-
 								</tr>
 								{/if}
 								<tr>

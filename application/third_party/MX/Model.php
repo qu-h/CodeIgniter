@@ -17,6 +17,8 @@ class MX_Model extends CI_Model
             $ci->session->set_userdata('page_length',$length);
             $start = input_get('start');
             $ci->session->set_userdata('page_start',$start);
+            $order = input_get('order');
+            $ci->session->set_userdata('page_order',$order);
         }
         $this->limit = $ci->session->userdata('page_length');
         $this->offset = $ci->session->userdata('page_start');

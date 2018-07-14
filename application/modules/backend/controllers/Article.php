@@ -41,7 +41,7 @@ class Article extends MX_Controller {
         header('X-XSS-Protection:0');
 
         if ($this->input->post()) {
-            $crawler_source = $this->input->post("crawler_source");
+                $crawler_source = $this->input->post("crawler_source");
             $formdata = array();
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
