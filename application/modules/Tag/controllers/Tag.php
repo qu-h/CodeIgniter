@@ -25,7 +25,7 @@ class Tag extends MX_Controller {
             return $this->Tag_Model->dataTableJson();
         }
         $data = columns_fields($this->table_fields);
-        temp_view('backend/datatables',$data);
+        temp_view('datatables',$data);
     }
 
     public function form($id=0){
