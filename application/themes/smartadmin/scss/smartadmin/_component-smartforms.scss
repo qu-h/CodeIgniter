@@ -434,6 +434,19 @@
 .smart-form .input .icon-append + input, .smart-form .textarea .icon-append + textarea { padding-right: 37px; }
 .smart-form .input .icon-prepend + .icon-append + input, .smart-form .textarea .icon-prepend + .icon-append + textarea { padding-left: 37px; }
 
+.smart-form .input-group .input {
+	margin-bottom: 0;
+	i[class^="icon-"] {
+		z-index: 9;
+	}
+	input[type=text].form-control {
+		width: 100%;
+
+	}
+	.icon-prepend + input.form-control {
+		padding-left: 37px;
+	}
+}
 /*
  * grid
  */

@@ -83,8 +83,11 @@ class Article extends MX_Controller {
 
         } else {
             $item = $this->Article_Model->get_item_by_id($id);
-            $this->fields['source']['type'] = 'editable';
-            $this->fields['alias']['type'] = 'editable';
+            if( $id > 0 ){
+                $this->fields['source']['type'] = 'editable';
+                $this->fields['alias']['type'] = 'editable';
+            }
+
             foreach ($this->fields AS $field=>$val){
                 if( isset($item->$field) ){
                     $this->fields[$field]['value']=$item->$field;

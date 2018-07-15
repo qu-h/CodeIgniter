@@ -53,6 +53,7 @@ class Tag_Model extends MX_Model
             $this->db->where("w.group_id", $group_id);
         }
         $this->db->where("(w.status <> -1 OR w.status IS NULL)");
+
         return parent::dataTableJson($this->db);
     }
 
