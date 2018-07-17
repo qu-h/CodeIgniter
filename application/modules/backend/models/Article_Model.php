@@ -101,9 +101,11 @@ class Article_Model extends MX_Model {
         }
         $data['status'] = $data['status']=='on' ? true:false;
         $tags = $data['tags']; unset($data['tags']);
+        $exist = $this->check_exist($data['alias'],$data['id'],$data['category']);
 
-        if( $this->check_exist($data['alias'],$data['id'],$data['category']) ){
-            set_error('Dupplicate Article');
+        if( $exist ){
+            $link = anchor(url_to_edit(null,$exist->id),$exist->title);
+            set_error('Dupplicate Article '.$link.' ');
             return false;
         } elseif( intval($data['id']) > 0 ) {
             $data['modified'] = date("Y-m-d H:i:s");
@@ -114,6 +116,7 @@ class Article_Model extends MX_Model {
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }
+
         if( !$id ){
             bug($this->db->last_query());
         }
@@ -139,7 +142,7 @@ class Article_Model extends MX_Model {
             bug($this->db->last_query());die;
         }
 
-        return ( $result->num_rows() > 0) ? true : false;
+        return ( $result->num_rows() > 0) ? $result->row() : false;
     }
 
     /*
