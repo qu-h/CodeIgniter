@@ -119,6 +119,40 @@
                             $(document).ready(function() {
                                 tables.url = '{$data_json_url}';
                                 tables.columns = [{$columns_fields}];
+                                tables.columnDefs = [
+                                    { "targets": 2, "render": function ( data, type, row, meta ) {
+										if( row.category_name !== null ){
+											return '<a href="?category-id='+row.category_id+'">'+row.category_name+'</a>';
+										}
+										return null;
+									}},
+                                    { "targets": 3, "render": function ( data, type, row, meta ) {
+										if( row.source !== null ){
+											return '<a href="'+row.source+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-globe"></i></a>';
+										}
+										return null;
+									}},
+                                    { "targets": 4, "render": function ( data, type, row, meta ) {
+										if( row.tag_names !== null ){
+                                            let tags = '',tag_names = row.tag_names.split(','), tag_ids = row.tag_ids.split(',');
+											if( tag_names.length > 0 ){
+                                                tag_names.map( function(tag,i) {
+                                                    tags += ' <a href="?keyword='+tag_ids[i]+'" >'+tag+'</a>';
+                                                })
+											}
+                                            //console.log('bug',{ row, tag_names,tag_ids },typeof tag_names);
+											return tags;
+										}
+										return null;
+									}},
+                                    { "targets": 5, "render": function ( data, type, row, meta ) {
+										let control = '';
+										control += '<button class="btn btn-xs btn-default" data-action="edit"><i class="fa fa-pencil"></i></button>';
+										control += '<button class="btn btn-xs btn-default" data-action="delete"><i class="fa fa-times text-danger"></i></button>';
+										control += '<a class="btn btn-xs btn-default" href="'+site_news+'/'+row.alias+'" target="_blank" ><i class="fa fa-globe text-primary"></i></a>';
+										return control;
+									}}
+                                ];
                                 $(document).ready(function() {
                                     pageSetUp();
                                     tables.load('table#data_ajax');

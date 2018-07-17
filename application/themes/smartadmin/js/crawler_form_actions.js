@@ -9,12 +9,12 @@ $( document ).ready(function() {
                 if( regexp.test(value) ){
                     form.append('<input type="hidden" name="crawler_source" value="'+value+'"/>');
                     form.submit();
-                    return;
+                    return false;
                 }
             } else if (value.length > 0){
                 form.append('<input type="hidden" name="crawler_'+input[0].name+'" value="'+value+'"/>');
                 form.submit();
-                return;
+                return false;
             }
         }
     };
@@ -40,14 +40,15 @@ $( document ).ready(function() {
 
 
 
-	jQuery(".input-crawler .data-crawler").click(function(){
-        var input = $(this).closest(".input-crawler").find('input[type=text]');
+	jQuery(".input-crawler .data-crawler").click(function(e){
+        let input = $(this).closest(".input-crawler").find('input[type=text]');
         crawlerGet(input);
+        e.preventDefault();
 	});
 
     jQuery(".input-crawler .data-paste").click(function(e){
-        //e.preventDefault();
-        var input = $(this).closest(".input-crawler").find('input[type=text]');
+
+        let input = $(this).closest(".input-crawler").find('input[type=text]');
         input.focus();
         document.execCommand('paste');
         // var event = $.Event('paste');

@@ -102,7 +102,7 @@ var tables = {
                 tables.columns[index].render = function (data) {
                     let out = "";
                     if( data != null && data.length > 0 ){
-                        data.map((ite)=>{
+                        data.map(function(ite){
                             out += '<a href="' + ite.link + '" target="_blank" >'+ite.label+'</a>';
                         });
 					}

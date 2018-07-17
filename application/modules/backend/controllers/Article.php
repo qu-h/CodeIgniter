@@ -32,7 +32,7 @@ class Article extends MX_Controller {
             return $this->Article_Model->items_json($category_id);
         }
         $data = columns_fields($this->table_fields);
-        temp_view('backend/datatables', $data);
+        temp_view('backend/articles', $data);
     }
 
     var $formView = "backend/article-form";
@@ -41,7 +41,8 @@ class Article extends MX_Controller {
         header('X-XSS-Protection:0');
 
         if ($this->input->post()) {
-                $crawler_source = $this->input->post("crawler_source");
+            $crawler_source = $this->input->post("crawler_source");
+
             $formdata = array();
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
