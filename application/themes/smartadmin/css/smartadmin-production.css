@@ -6924,6 +6924,8 @@ textarea.clone {
     position: relative; }
     .smart-form fieldset + fieldset {
       border-top: 1px solid rgba(0, 0, 0, 0.1); }
+    .smart-form fieldset.no-padding {
+      padding: 0; }
   .smart-form section {
     margin-bottom: 15px;
     position: relative; }

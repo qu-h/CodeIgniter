@@ -119,6 +119,9 @@
                             $(document).ready(function() {
                                 tables.url = '{$data_json_url}';
                                 tables.columns = [{$columns_fields}];
+                                {if isset($uri_edit)}
+                                tables.uri_edit = "{$uri_edit}";
+								{/if}
                                 $(document).ready(function() {
                                     pageSetUp();
                                     tables.load('table#data_ajax');

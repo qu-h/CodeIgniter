@@ -6,14 +6,11 @@ $config['theme_url'] = "$domain/";
 $config['css'] = array(
     "bootstrap.min.css",
     "font-awesome.min.css",
-
     //SmartAdmin Styles : Caution! DO NOT change the order
     "smartadmin-production.css",
 
-
     //SmartAdmin RTL Support
     "$domain/css/smartadmin-rtl.min.css",
-
     //Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp
     "$domain/css/demo.min.css",
     "$domain/css/ict.css",
@@ -49,7 +46,6 @@ $config['js'] = array(
     "$domain/js/tables.js",
     "$domain/js/demo.min.js",
 
-
     "$domain/js/speech/voicecommand.min.js",
 
     //SmartChat UI : plugin
@@ -64,7 +60,7 @@ $config['js'] = array(
     //"$domain/js/plugin/datatable-responsive/datatables.responsive.min.js",
 
 
-    "$domain/js/plugin/summernote/summernote.min.js",
+    //"$domain/js/plugin/summernote/summernote.min.js",
     "$domain/js/plugin/select2/select2.min.js",
     'smartwidgets/jarvis.widget.min.js',
 

@@ -80,9 +80,6 @@ var tables = {
         if( this.columnDefs !== undefined ){
 	        tables.opts.columnDefs = this.columnDefs;
         }
-	    //console.log('bug',tables.area,tables.area.attr('data-page-start'));
-        // iDisplayStart:10,
-        //     iDisplayLength:10,
         jQuery.each(tables.columns,function (index,setting) {
 
             if( typeof setting.render_img !== 'undefined' ) {
@@ -129,22 +126,28 @@ var tables = {
 
 	},
 
+    uri_edit:null,
 	row_ci_actions:function (api) {
         api.$('button').click( function () {
             //api.search( this.innerHTML ).draw();
             var url = '';
             if( typeof $(this).attr('data-action') !== undefined ){
                 if( $(this).attr('data-action')==='edit' ){
-                    url = generate_uri('edit');
+                    if( tables.uri_edit !== null && tables.uri_edit.toString().length > 0 ){
+                        url = tables.uri_edit.toString()+"/";
+                    } else {
+                        url = generate_uri('edit');
+                    }
+
 
                     row_data = tables.table.row( $(this).parents('tr') ).data();
-                    if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
+                    if( typeof(row_data) !== undefined && typeof(row_data.id) != undefined ){
                         $(location).attr('href', url+ row_data.id);
                     }
                 } else if ($(this).attr('data-action')==='delete'){
                     url = generate_uri('delete');
                     row_data = tables.table.row( $(this).parents('tr') ).data();
-                    if( typeof(row_data) != undefined && typeof(row_data.id) != undefined ){
+                    if( typeof(row_data) !== undefined && typeof(row_data.id) != undefined ){
                         $(location).attr('href', url+ row_data.id);
                     }
                 }

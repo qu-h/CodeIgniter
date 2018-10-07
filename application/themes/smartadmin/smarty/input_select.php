@@ -55,4 +55,16 @@ class SmartadminInput_select extends CI_Smarty {
         return self::input_select2($params);
     }
 
+    static function input_multiple_image($params = null){
+        if( !isset($params['value']) ){
+            $params['value'] = [];
+        } else if ( is_numeric($params['value']) || is_string($params['value']) ){
+            $params['value'] = [$params['value']];
+        }
+
+        $params['label'] = NULL;
+        $params['state'] = "state-success";
+        return parent::fetchView("inputs/multiple_image",$params);
+    }
+
 }

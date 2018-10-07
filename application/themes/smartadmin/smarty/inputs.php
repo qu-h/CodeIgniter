@@ -108,7 +108,7 @@ class SmartadminInputs extends CI_Smarty
         return $html;
     }
 
-    static function inputs($params = null, Smarty_Internal_Template $template)
+    static function inputs($params, Smarty_Internal_Template $template)
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
         $field = isset($params['field']) ? $params['field'] : NULL;
@@ -140,7 +140,9 @@ class SmartadminInputs extends CI_Smarty
             }
         }
 
-        if (! isset($field['label'])) {
+        if( array_key_exists('label',$params) ){
+            $field['label'] = $params['label'];
+        } else if ( isset($field['label'])  ) {
             $field['label'] = ucfirst($name);
         }
 
@@ -148,7 +150,6 @@ class SmartadminInputs extends CI_Smarty
             $field['placeholder'] = $field['label'];
         }
         $field['name'] = $name;
-
 
         if( isset($field['icon']) ){
             $icon = $field['icon'];
@@ -225,14 +226,12 @@ class SmartadminInputs extends CI_Smarty
 
         $row = isset($params['row']) ? $params['row'] : TRUE;
         $content = $params['html'];
-        $label = isset($params['label']) ? "<header>".$params['label']."</header>" : NULL;
+        $label = isset($params['label']) && strlen($params['label']) > 0 ? "<header>".$params['label']."</header>" : NULL;
 
-
-
-        if( $row ){
+        if( $row && strlen($label) > 0 ){
             return "<div class=\"row\" >$label $content</div>";
         } else {
-            return "<div class=\"row\" >$label $content</div>";
+            return $content;
         }
     }
 
@@ -257,23 +256,9 @@ class SmartadminInputs extends CI_Smarty
             $fields = get_instance()->smarty->getTemplateVars("fields");
             if( array_key_exists($inputAttribute['name'],$fields) ){
                 $field = $fields[$inputAttribute['name']];
-                $value = isset($field['value']) ? $field['value'] : NULL;
                 $inputAttribute = array_merge($inputAttribute, $field);
-
-//                if( isset($field['class']) ){
-//                    $inputAttribute['class'] .= " ".$field['class'];
-//                }
             }
         }
-
-//        if(isset($params['value'])) {
-//            $inputAttribute['value'] =  $params['value'];
-//        }
-//
-//        if( isset($params['class']) ){
-//            $inputAttribute['class'] .= " ".$params['class'];
-//        }
-
         $html = '<input '._stringify_attributes($inputAttribute).' >';
         return $html;
     }
@@ -366,11 +351,13 @@ class SmartadminInputs extends CI_Smarty
             $value = "";
         }
 
-        $editor = isset($params['editor']) ? $params['editor'] : "ckeditor";
+        $editor = isset($params['editor']) ? $params['editor'] : "ict-ckeditor";
 
-        if( $editor=="ckeditor" ){
-            $js = git_assets('ckeditor.js','ckeditor','4.7.3',null,false);
+        if( in_array($editor,['ckeditor','ict-ckeditor'])){
+            $js = git_assets('ckeditor.js','ckeditor','4.10.0',null,false);
             add_js($js);
+            $editor_config = git_assets('config/giaiphapict.js','ckeditor','4.10.0',null,false);
+            add_js("ckeditor.config.js");
         }
         $attributes = [
             'name'=>$name,
@@ -386,6 +373,7 @@ class SmartadminInputs extends CI_Smarty
             $params["class_type"] = "textarea";
             return self::row_input($params);
         }
+
         return self::input_lable($params);
     }
 
