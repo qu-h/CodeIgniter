@@ -66,13 +66,6 @@ $config['js'] = array(
 
     "ict.js",
 
-
-
 );
 $config['js'][] = "plugin/datatables/jquery.dataTables.min.js";
 $config['js'][] = "plugin/datatables/dataTables.bootstrap.min.js";
-//$config['js'][] = git_assets('jquery.dataTables.js','themes\SmartAdmin\DEVELOPER\COMMON_ASSETS\UNMINIFIED_JS\plugin\datatables',null,null,false);
-//$config['js'][] = git_assets('dataTables.bootstrap.js','themes\SmartAdmin\DEVELOPER\COMMON_ASSETS\UNMINIFIED_JS\plugin\datatables',null,null,false);
-
-//$config['js'][] = git_assets('popper.min.js','popper','1.14.3',null,false);
-//$config['js'][] = git_assets('datatables.min.js','DataTables',null,null,false);

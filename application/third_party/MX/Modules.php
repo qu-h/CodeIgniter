@@ -216,7 +216,7 @@ class Modules
 	**/
 	public static function find($file, $module, $base=null,$returnBaseName=false)
 	{
-	    $fileNameDebug = 'login';
+	    $fileNameDebug = 'logindsds';
 	    $file_in = $file;
 
 	    if( file_exists($file) ){
@@ -278,7 +278,7 @@ class Modules
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($module.DS.$base,$file,$returnBaseName);
                 } else {
                     if( $file_in == $fileNameDebug ) {
-                        bug("check ====252 :$location module:$module $moduleFolder");
+                        bug("check ====".__LINE__." :$location module:$module $moduleFolder");
                     }
 
                 }

@@ -13,7 +13,6 @@ class CI_Smarty extends SmartyBC {
     var $tpl_vars = array();
     var $theme = 'default';
 
-
 	public function __construct() {
 		parent::__construct();
 
@@ -80,8 +79,6 @@ class CI_Smarty extends SmartyBC {
 		        if ($path != FALSE)
 		            break;
 
-
-
 		        if ($path != FALSE)
 		            break;
 		    }
@@ -98,7 +95,7 @@ class CI_Smarty extends SmartyBC {
 		} else {
             $this->assign("tplPath", $path);
         }
-
+//bug("path : $path | view : $_view");
 		return parent::fetch("$path$_view");
     }
 

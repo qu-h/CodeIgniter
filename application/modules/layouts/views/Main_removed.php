@@ -6,8 +6,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-	<link rel="icon" type="image/png" href="">
+	<link rel="icon" type="image/png" href="{theme_url file="favicon.ico"}" layout-module="" />
 
     {assets type='css'}
     {assets type='js'}
