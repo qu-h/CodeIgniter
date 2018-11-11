@@ -4,17 +4,19 @@ $domain = "http://ci-3-0-1.loc/smartadmin";
 $config['theme_dir'] = BaseAppPath."themes/smartadmin/";
 $config['theme_url'] = "$domain/";
 $config['css'] = array(
-    "bootstrap.min.css",
-    "font-awesome.min.css",
+//    "bootstrap.min.css",
+//    "font-awesome.min.css",
     //SmartAdmin Styles : Caution! DO NOT change the order
-    "smartadmin-production.css",
+//    "smartadmin-production.css",
 
     //SmartAdmin RTL Support
-    "$domain/css/smartadmin-rtl.min.css",
+//    "$domain/css/smartadmin-rtl.min.css",
     //Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp
-    "$domain/css/demo.min.css",
-    "$domain/css/ict.css",
+//    "$domain/css/demo.min.css",
+//    "$domain/css/ict.css",
 //     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
+
+    "$domain/css/styles.min.css"
 );
 
 $config['js'] = array(

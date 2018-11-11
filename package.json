@@ -1,0 +1,28 @@
+{
+  "name": "smart-sdv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.1",
+    "gulp-util": "^3.0.8",
+    "uglify-es": "^3.3.9"
+  },
+  "dependencies": {
+    "archy": "^1.0.0",
+    "global": "^4.3.2",
+    "gulp-ci": "0.0.0",
+    "gulp-uglify": "^3.0.1",
+    "process-nextick-args": "^2.0.0",
+    "readable-stream": "^3.0.6",
+    "through2": "^3.0.0",
+    "tildify": "^1.2.0"
+  }
+}
