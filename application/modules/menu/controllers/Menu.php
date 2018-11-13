@@ -82,7 +82,6 @@ class Menu extends MX_Controller
 
     public function navigation(){
         $items = $this->Menu_Model->get_menus($backend = 1, $level = 2);
-        //bug($items);die;
         smarty_view("navigation",['items'=>$items,"uri_string"=>uri_string()]);
     }
 

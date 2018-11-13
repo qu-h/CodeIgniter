@@ -4,7 +4,7 @@ class MX_Model extends CI_Model
 {
     public $limit = 50, $page = 1;
     public $table = NULL;
-    var $search, $orders = '';
+    var $search, $orders = [];
     var $tableFields = [];
     public function __construct()
     {

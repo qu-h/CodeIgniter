@@ -88,7 +88,18 @@ class Modules
 	public static function load($module)
 	{
 	    $aliasBug = 'crawler';
-		(is_array($module)) ? list($module, $params) = each($module) : $params = NULL;
+        if (version_compare(phpversion(), '7.2', '<')) {
+            (is_array($module)) ? list($module, $params) = each($module) : $params = NULL;
+        } else {
+            if( is_array($module) ){
+                $params  = reset($module);
+                $module = key($module);
+            } else {
+                $params = NULL;
+            }
+
+        }
+
 
 		/* get the requested controller class name */
 		$alias = strtolower(basename($module));

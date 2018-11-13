@@ -75,7 +75,16 @@ abstract class Smarty_Internal_CompileBase
                 }
                 // named attribute
             } else {
-                $kv = each($mixed);
+
+                if (version_compare(phpversion(), '7', '<')) {
+                    $kv = [
+                        'key' => key($mixed),
+                        'value'=>reset($mixed)
+                    ];
+                } else {
+                    each($mixed);
+                }
+
                 // option flag?
                 if (in_array($kv['key'], $this->option_flags)) {
                     if (is_bool($kv['value'])) {

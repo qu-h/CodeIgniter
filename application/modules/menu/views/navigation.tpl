@@ -6,7 +6,7 @@
             <a href="{site_url uri=$menu->uri isNull=true }">
         {/if}
 
-            {if $menu->icon|count > 0}
+            {if $menu->icon|count_characters > 0}
                 <i class="fa fa-lg fa-fw {$menu->icon}">
                     {if isset($menu->notify)}
                         <em class="bg-color-pink flash animated">{$menu->notify->total}</em>
