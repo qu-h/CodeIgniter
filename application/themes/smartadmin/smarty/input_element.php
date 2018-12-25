@@ -6,6 +6,7 @@ class SmartadminInput_element extends CI_Smarty {
     {
         $name = isset($params['name']) ? $params['name'] : NULL;
         $value = isset($params['value']) ? $params['value'] : [];
+        $label = isset($params['label']) ? $params['label'] : NULL;
 
         if (strlen($name) < 1){
             return NULL;
@@ -24,7 +25,7 @@ class SmartadminInput_element extends CI_Smarty {
             $stars .= '<input '._stringify_attributes($inputAttributes).' ><label for="'.$name.$i.'"><i class="fa fa-star"></i></label>';
         }
 
-        $html = "<section><div class=\"rating\">$stars ".$params['label']."</div></section>";
+        $html = "<section><div class=\"rating\">$stars ".$label."</div></section>";
         return $html;
     }
 

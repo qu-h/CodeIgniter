@@ -27,14 +27,16 @@
         {foreach $items AS $k=>$m1}
             <li class="{$m1->uri} {is_active uri=$m1->uri }"  >
                 {if isset($m1->childrens) && $m1->childrens|count > 0}
-                    {menu_anchor menu=$m1 showURL=false}
-                    <ul>
-                    {foreach $m1->childrens AS $m2}
-                        <li class="{is_active uri=$m2->uri }" >
-                            {menu_anchor menu=$m2}
-                        </li>
-                    {/foreach}
-                    </ul>
+                    {if ($m1->hidden == 1 && $m1->uri|uri_begin_with_uri_first) || $m1->hidden == 0}
+                        {menu_anchor menu=$m1 showURL=false}
+                        <ul>
+                        {foreach $m1->childrens AS $m2}
+                            <li class="{is_active uri=$m2->uri }" >
+                                {menu_anchor menu=$m2}
+                            </li>
+                        {/foreach}
+                        </ul>
+                    {/if}
                 {else}
                     {menu_anchor menu=$m1 }
                 {/if}
