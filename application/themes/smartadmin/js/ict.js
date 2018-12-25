@@ -15,5 +15,23 @@ $( document ).ready(function() {
 	}
 
     });
-
+	pasteClipboard();
 });
+
+function pasteClipboard() {
+
+	let readBtn = document.querySelector('#paste-clipboard');
+	if( readBtn != null ){
+		readBtn.addEventListener('click', () => {
+			navigator.clipboard.readText()
+				.then(text => {
+					console.log(text);
+				})
+				.catch(err => {
+					console.log('Something went wrong', err);
+				})
+		});
+	}
+
+}
+

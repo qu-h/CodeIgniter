@@ -93,9 +93,7 @@ function add_asset($file=NULL,$folder=''){
     if( !isset($ci->smarty) ){
         return ;
     }
-
     if( is_string($file) ){
-
         $dir = NULL;
         if( strlen($folder) > 0 ){
             $dir = config_item('assets_url').DS."$folder/";

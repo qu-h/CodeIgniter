@@ -264,20 +264,14 @@ class Modules
                 }
                 $fileCheck = null;
 			    if( $file_in == $fileNameDebug ){
-                    //bug("======= check 230: $location module:$module subpath:$subpath file=$file");
-
-
                     $path = $location.$module.DS.$subpath.DS.$base;
-//                    bug("======= check 251: dir=$path file=$file module=$module fileInput=$file_in base=$base");
                 }
 
                 if( is_dir($location.$subpath.DS.$base) ){
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($location.$subpath.DS.$base,$file,$returnBaseName);
                     //bug('246');
                 } else if ( is_dir($checkDir=$location.$module.DS.$base.$subpath) ) {
-
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($checkDir,$file,$returnBaseName);
-                    //bug("250 checkPath:$checkDir pathCheck=$pathCheck fileCheck=$fileCheck");
                     if( $fileCheck ){
                         return [$pathCheck,$fileCheck];
                     }
@@ -291,7 +285,6 @@ class Modules
                     if( $file_in == $fileNameDebug ) {
                         bug("check ====".__LINE__." :$location module:$module $moduleFolder");
                     }
-
                 }
 
                 if( !$fileCheck ){
@@ -322,12 +315,7 @@ class Modules
                     }
 
                 }
-
-                //$moduleFolders = self::sub_directorys($module.DS.$subpath);
-//			    bug($moduleFolders);
-//                bug("check modules=============== path=$module path=$subpath");
-
-                $realPath = ($module."/$subpath/$subpath");
+                $realPath = $module."/$subpath/$subpath";
 
 			    if( $realPath ){
                     list($fileCheck,$pathCheck) = Modules::is_file_in_dir($realPath,$file,$returnBaseName);
@@ -356,8 +344,6 @@ class Modules
 
 			}
 		}
-// bug('app path='.APPPATH."views/$file_in");
-
 		return array(FALSE, $file);
 	}
 
@@ -451,7 +437,6 @@ class Modules
                     $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
                     $moduleFullPath = $folderName['dirname'].DS;
                 }
-
             }
         }
 

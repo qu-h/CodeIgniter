@@ -36,8 +36,7 @@ gulp.task('sass', function() {
 // Minifies JS
 gulp.task('js', function(){
     return gulp.src([resourcePath+'javascript/lib/*.js',resourcePath+'javascript/*.js'])
-        .pipe(concat('sdv.js'))
-        .pipe(gulp.dest('public/js'))
+        .pipe(concat('smart-admin-ict.js'))
         //.pipe(uglify())
         // .on('error', function (err) {
         //     gutil.log(gutil.colors.red('[Error]'), err.toString());
