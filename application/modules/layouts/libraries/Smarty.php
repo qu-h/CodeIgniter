@@ -95,7 +95,8 @@ class CI_Smarty extends SmartyBC {
 		} else {
             $this->assign("tplPath", $path);
         }
-//bug("path : $path | view : $_view");
+
+        $this->addTemplateDir($path);
 		return parent::fetch("$path$_view");
     }
 

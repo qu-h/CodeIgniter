@@ -20,18 +20,22 @@ class smartadmin_ui
         } else {
             $uri = isset($template['uri']) ? $template['uri'] : NULL;
         }
-
+        $attributes = [
+            'class'=>$is_btn ? "btn btn-success btn-xs" : null
+        ];
+        if( isset($template['id']) ){
+            $attributes['id'] = $template['id'];
+        }
         if ($txt) {
-            $anchor_class = $is_btn ? "btn btn-success btn-xs" : null;
-            if( array_key_exists('class',$template) ){
-                $anchor_class .= " ".$template['class'];
-            }
-            $html =  "<a class=\"$anchor_class\" href=\"" . site_url($uri) . "\">" ;
+            $title = lang($txt);
             if( strlen($icon) > 0 ){
-                $html .= "<i class=\"glyphicon glyphicon-$icon\"></i>";
+                $title = "<i class=\"glyphicon glyphicon-$icon\"></i>$title";
             }
-            $html .= lang($txt) . '</a>';
-            return $html;
+            return anchor($uri,$title,$attributes);
+        } else if ( isset($template['btn-template']) ){
+            $template_return = $template['btn-template'];
+            $template_return['is_btn'] = true;
+            return self::button_anchor($template_return);
         }
     }
 

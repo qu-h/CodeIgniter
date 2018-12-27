@@ -165,6 +165,12 @@
                         {button_anchor icon=plus txt="Add New" uri=$uri_add is_btn=true class="key-ctr-n" }
                     </li>
                 {/if}
+
+                {if isset($breadcrumbButtons)} {foreach $breadcrumbButtons AS $btn}
+                    <li>
+                        {button_anchor btn-template=$btn }
+                    </li>
+                {/foreach} {/if}
             </ol>
         {/if}
         <!-- end breadcrumb -->

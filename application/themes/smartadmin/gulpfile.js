@@ -43,6 +43,7 @@ gulp.task('js', function(){
     ])
         .pipe(concat('scripts.min.js'))
         .pipe(gulp.dest('js'))
+
         //.pipe(uglify())
         // .on('error', function (err) {
         //     gutil.log(gutil.colors.red('[Error]'), err.toString());
