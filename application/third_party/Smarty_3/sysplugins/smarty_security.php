@@ -44,7 +44,7 @@ class Smarty_Security
     public $secure_dir = array();
 
     /**
-     * This is an array of directories where trusted php scripts reside.
+     * This is an array of directories where trusted php _scripts reside.
      * {@link $security} is disabled during their inclusion/execution.
      *
      * @var array

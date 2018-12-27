@@ -44,9 +44,9 @@ $config['js'] = array(
 
 
     //MAIN APP JS FILE
-    "$domain/js/app.min.js",
-    "$domain/js/tables.js",
-    "$domain/js/demo.min.js",
+//    "$domain/js/app.min.js",
+    "tables.js",
+//    "$domain/js/demo.min.js",
 
     "$domain/js/speech/voicecommand.min.js",
 
@@ -66,7 +66,8 @@ $config['js'] = array(
     "$domain/js/plugin/select2/select2.min.js",
     'smartwidgets/jarvis.widget.min.js',
 
-    "ict.js",
+//    "ict.js",
+    "_scripts.min.js"
 
 );
 $config['js'][] = "plugin/datatables/jquery.dataTables.min.js";

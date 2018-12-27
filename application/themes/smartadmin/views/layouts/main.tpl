@@ -162,7 +162,7 @@
 
                 {if isset($uri_add)}
                     <li>
-                        {button_anchor icon=plus txt="Add New" uri=$uri_add is_btn=true }
+                        {button_anchor icon=plus txt="Add New" uri=$uri_add is_btn=true class="key-ctr-n" }
                     </li>
                 {/if}
             </ol>
@@ -182,7 +182,7 @@
 -->
     </div>
     <!-- END RIBBON -->
-    {*include file="../scripts.tpl"*}
+    {*include file="../_scripts.tpl"*}
     {assets type='js'}
     <!-- MAIN CONTENT -->
     <div id="content">

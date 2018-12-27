@@ -425,10 +425,10 @@ function themerex_ready_actions() {
     // Show system message
 	themerex_show_system_message();
 
-	// Init post format specific scripts
+	// Init post format specific _scripts
 	themerex_init_post_formats();
 
-	// Init shortcodes scripts
+	// Init shortcodes _scripts
 	themerex_init_shortcodes(jQuery('body').eq(0));
 
 	// Init hidden elements (if exists)

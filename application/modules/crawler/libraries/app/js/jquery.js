@@ -502,11 +502,11 @@ jQuery.fn = jQuery.prototype = {
 					jQuery( this ).clone( true )[0] :
 					this;
 
-				// execute all scripts after the elements have been injected
+				// execute all _scripts after the elements have been injected
 				if ( jQuery.nodeName( elem, "script" ) ) {
 					scripts = scripts.add( elem );
 				} else {
-					// Remove any inner scripts for later evaluation
+					// Remove any inner _scripts for later evaluation
 					if ( elem.nodeType == 1 )
 						scripts = scripts.add( jQuery( "script", elem ).remove() );
 
@@ -2408,7 +2408,7 @@ jQuery.fn.extend({
 					self.html( selector ?
 						// Create a dummy div to hold the results
 						jQuery("<div/>")
-							// inject the contents of the document in, removing the scripts
+							// inject the contents of the document in, removing the _scripts
 							// to avoid any 'Permission Denied' errors in IE
 							.append(res.responseText.replace(/<script(.|\s)*?\/script>/g, ""))
 

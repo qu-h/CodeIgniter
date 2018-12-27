@@ -35,14 +35,19 @@ gulp.task('sass', function() {
 
 // Minifies JS
 gulp.task('js', function(){
-    return gulp.src([resourcePath+'javascript/lib/*.js',resourcePath+'javascript/*.js'])
-        .pipe(concat('sdv.js'))
-        .pipe(gulp.dest('public/js'))
+    return gulp.src([
+        'js/app.min.js',
+        'js/tables.js',
+        'js/demo.min.js',
+        'js/ict.js',
+    ])
+        .pipe(concat('scripts.min.js'))
+        .pipe(gulp.dest('js'))
         //.pipe(uglify())
         // .on('error', function (err) {
         //     gutil.log(gutil.colors.red('[Error]'), err.toString());
         // })
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('js'))
 });
 
 gulp.task('default', function() {

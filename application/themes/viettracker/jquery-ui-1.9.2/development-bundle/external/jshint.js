@@ -1084,7 +1084,7 @@ var JSHINT = (function () {
         }, a, b, c, d);
     }
 
-    // Tracking of "internal" scripts, like eval containing a static string
+    // Tracking of "internal" _scripts, like eval containing a static string
     function addInternalSrc(elem, src) {
         var i;
         i = {
@@ -1236,7 +1236,7 @@ var JSHINT = (function () {
                 }
 
                 // If the first line is a shebang (#!), make it a blank and move on.
-                // Shebangs are used by Node scripts.
+                // Shebangs are used by Node _scripts.
                 if (lines[0] && lines[0].substr(0, 2) === "#!")
                     lines[0] = "";
 

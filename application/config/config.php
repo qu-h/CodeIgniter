@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $config['base_url'] = '//'.$_SERVER["SERVER_NAME"].'/';
-$config['assets_git_url'] = '//github.giaiphapict.loc/';
+$config['assets_git_url'] = '//github.giaiphapict.com/';
 
 /*
 |--------------------------------------------------------------------------
@@ -464,7 +464,7 @@ $config['csrf_exclude_uris'] = array();
 |
 | VERY IMPORTANT:  If you are getting a blank page when compression is enabled it
 | means you are prematurely outputting something to your browser. It could
-| even be a line of whitespace at the end of one of your scripts.  For
+| even be a line of whitespace at the end of one of your _scripts.  For
 | compression to work, nothing can be sent before the output buffer is called
 | by the output class.  Do not 'echo' any values with compression enabled.
 |

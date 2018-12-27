@@ -375,7 +375,7 @@ var Demo = function() {
                });
             }
             // DISABLED BY DEFAULT
-            // cacheCheck(scripts);
+            // cacheCheck(_scripts);
       });
    }
 

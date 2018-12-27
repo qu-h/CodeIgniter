@@ -374,7 +374,7 @@ class CI_Migration {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Retrieves list of available migration scripts
+	 * Retrieves list of available migration _scripts
 	 *
 	 * @return	array	list of migration file paths sorted by version
 	 */

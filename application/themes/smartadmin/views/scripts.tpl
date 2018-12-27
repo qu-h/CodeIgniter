@@ -89,10 +89,10 @@
 <script src="{theme_url}js/demo.min.js"></script>
 *}
 
-<script src="{theme_url}js/ict.js"></script>
-<script src="{theme_url}js/tables.js"></script>
+{*<script src="{theme_url}js/ict.js"></script>*}
+{*<script src="{theme_url}js/tables.js"></script>*}
 
-<script type="text/javascript">
+<script type="text/javascript" src="{theme_url}js/scripts.js" >
     // DO NOT REMOVE : GLOBAL FUNCTIONS!
     $(document).ready(function() {
         pageSetUp();

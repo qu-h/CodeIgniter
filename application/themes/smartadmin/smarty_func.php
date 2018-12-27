@@ -8,7 +8,7 @@ class smartadmin_ui
 
     }
 
-    static function button_anchor($template = null, $params = null)
+    static function button_anchor($template = null)
     {
         $icon = (isset($template['icon']) and $template['icon'] != "") ? $template['icon'] : null;
         $txt = isset($template['txt']) ? $template['txt'] : NULL;
@@ -23,6 +23,9 @@ class smartadmin_ui
 
         if ($txt) {
             $anchor_class = $is_btn ? "btn btn-success btn-xs" : null;
+            if( array_key_exists('class',$template) ){
+                $anchor_class .= " ".$template['class'];
+            }
             $html =  "<a class=\"$anchor_class\" href=\"" . site_url($uri) . "\">" ;
             if( strlen($icon) > 0 ){
                 $html .= "<i class=\"glyphicon glyphicon-$icon\"></i>";

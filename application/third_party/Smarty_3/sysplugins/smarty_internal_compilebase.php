@@ -76,7 +76,7 @@ abstract class Smarty_Internal_CompileBase
                 // named attribute
             } else {
 
-                if (version_compare(phpversion(), '7', '<')) {
+                if (version_compare(phpversion(), '5.6', '>')) {
                     $kv = [
                         'key' => key($mixed),
                         'value'=>reset($mixed)
