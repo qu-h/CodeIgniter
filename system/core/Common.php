@@ -345,9 +345,9 @@ if ( ! function_exists('get_mimes'))
 
 		if (empty($_mimes))
 		{
-		    if (file_exists(BaseAppPath.'config/mimes.php'))
+		    if (file_exists(BASE_APP_PATH.'config/mimes.php'))
 		    {
-		        $_mimes_default = include(BaseAppPath.'config/mimes.php');
+		        $_mimes_default = include(BASE_APP_PATH.'config/mimes.php');
 		    }
 
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
@@ -883,4 +883,11 @@ if ( ! function_exists('function_usable'))
 
 		return FALSE;
 	}
+}
+
+if( !function_exists('env') ){
+    function env($env_name) {
+        $ENV =& load_class('Env', 'core');
+        return $ENV->get($env_name);
+    }
 }

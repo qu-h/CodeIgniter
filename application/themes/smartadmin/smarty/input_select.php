@@ -19,7 +19,7 @@ class SmartadminInput_select extends CI_Smarty {
 
     static function input_select_category($params){
         $ci = get_instance();
-        $ci->load->model('Category/Category_Model');
+        $ci->load->model('SystemCategory/SystemCategoryModel');
         if( !isset($params['category-type']) ){
             $params['category-type'] = 'category';
         }
@@ -27,7 +27,7 @@ class SmartadminInput_select extends CI_Smarty {
         if( array_key_exists('without_ids',$params) ){
             $without_ids = $params['without_ids'];
         }
-        $params['options'] = $ci->Category_Model->load_options($params['category-type'],1,$without_ids,2);
+        $params['options'] = $ci->SystemCategoryModel->load_options($params['category-type'],1,$without_ids,2);
 
         return self::input_multiselect($params);
     }
@@ -47,11 +47,11 @@ class SmartadminInput_select extends CI_Smarty {
     static function input_tags($params = null)
     {
         $ci = get_instance();
-        $ci->load->model('Tag/Tag_Model');
+        $ci->load->model('SystemTag/SystemTagModel');
         if( !array_key_exists('tag-type',$params) ){
             $params['tag-type'] = FALSE;
         }
-        $params['options'] = $ci->Tag_Model->load_options(1,[],2);
+        $params['options'] = $ci->SystemTagModel->load_options(1,[],2);
         return self::input_select2($params);
     }
 

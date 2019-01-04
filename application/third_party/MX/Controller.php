@@ -39,8 +39,9 @@ require dirname(__FILE__).'/Base.php';
 class MX_Controller
 {
 	public $autoload = array();
+	var $model;
     var $url_suffix = 'html';
-    var $msg = array();
+    var $msg = [];
 	public function __construct()
 	{
 		$class = str_replace(CI::$APP->config->item('controller_suffix'), '', get_class($this));

@@ -12,6 +12,7 @@ class MX_Model extends CI_Model
         $ci = get_instance();
         $this->load->database();
         $this->draw = input_get('draw');
+
         if( $ci->uri->extension =='json' ){
             $length = input_get('length');
             $ci->session->set_userdata('page_length',$length);
@@ -34,9 +35,7 @@ class MX_Model extends CI_Model
             foreach ($columns AS $f){
                 $this->tableFields[] = $f['data'];
             }
-
             $order = input_get('order');
-
             if( $order ){
                 foreach ($order AS $o){
                     $this->orders[] = [$this->tableFields[$o['column']],$o['dir']];
@@ -63,7 +62,7 @@ class MX_Model extends CI_Model
         $num_rows = $tempdb->count_all_results();
         $query = $db->limit($this->limit,$this->offset)->get();
         $data = $query->result_array();
-//bug($db->last_query(),'bug query');
+
         return jsonData(array('data'=>$data,'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
     }
 
@@ -107,7 +106,28 @@ class MX_Model extends CI_Model
                 }
             }
         }
+    }
 
 
+    public function where($params,$value = NULL){
+        if( is_string($params) ){
+            $this->db->where($params,$value);
+        } elseif ( is_array($params)) {
+            $this->db->where($params);
+        }
+
+        return $this;
+    }
+
+    public function count(){
+        $this->db->from($this->table);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function get_row(){
+        $this->db->from($this->table);
+        $query = $this->db->get();
+        return $query->row();
     }
 }

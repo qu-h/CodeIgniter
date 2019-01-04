@@ -23,7 +23,7 @@ class SmartadminInputs extends CI_Smarty
                 $icon = "fa $icon";
 
             } else {
-                $icon = "fa fa-$icon";
+                $icon = "$icon";
             }
             $html .= '<i class="icon-prepend ' . $icon. '"></i>';
         }
@@ -91,7 +91,17 @@ class SmartadminInputs extends CI_Smarty
         $class = isset($params['class']) ? $params['class'] : NULL;
 
         if( isset($params['icon']) ){
-            $icon = "<i class=\"fa ".$params['icon']."\"></i>";
+            $icon = $params['icon'];
+            if(  strpos($icon,'fa-') !== FALSE ){
+                $icon = "fa $icon";
+            } elseif ( strpos($icon,'glyphicon') !== FALSE ) {
+                $icon = "glyphicon $icon";
+            } else {
+                $icon = "fa fa-$icon";
+            }
+            $params['icon'] = $icon;
+
+            $icon = "<i class=\"".$params['icon']."\"></i>";
         } elseif (isset($params['txt_pre'])) {
             $icon = $params['txt_pre'];
         }
@@ -153,9 +163,9 @@ class SmartadminInputs extends CI_Smarty
 
         if( isset($field['icon']) ){
             $icon = $field['icon'];
-            if(  substr( $icon, 0, 3 ) === "fa-" ){
+            if(  strpos($icon,'fa-') !== FALSE ){
                 $icon = "fa $icon";
-            } else if ( substr( $icon, 0, 10 ) === 'glyphicon-') {
+            } elseif ( strpos($icon,'glyphicon') !== FALSE ) {
                 $icon = "glyphicon $icon";
             } else {
                 $icon = "fa fa-$icon";
@@ -269,14 +279,13 @@ class SmartadminInputs extends CI_Smarty
         if (strlen($name) < 1){
             return NULL;
         }
-        $input_attributes = array(
+        $input_attributes = [
             "type"=>"text",
             "name"=>$name,
             "value"=>isset($params['value']) ? $params['value'] : NULL,
             "placeholder"=>isset($params['placeholder']) ? $params['placeholder'] : NULL,
             //"class"=>isset($params['class']) ? $params['class'] : NULL
-
-        );
+        ];
 
         if( isset($params['maxlength']) ) {
             $input_attributes["maxlength"] = $params['maxlength'];
@@ -287,6 +296,10 @@ class SmartadminInputs extends CI_Smarty
 
         if( isset($params['class']) ) {
             $input_attributes["class"] = $params['class'];
+        };
+
+        if( isset($params['readonly']) ) {
+            $input_attributes["readonly"] = $params['readonly'];
         };
 
         $attributes_params = isset($params['attributes']) ? $params['attributes'] : [];
@@ -346,10 +359,7 @@ class SmartadminInputs extends CI_Smarty
             return NULL;
 
         $value = isset($params['value']) ? trim($params['value']) : "&nbsp;";
-        if (strlen($value) < 1) {
-            $value = "&nbsp;";
-            $value = "";
-        }
+        $value = "";
 
         $editor = isset($params['editor']) ? $params['editor'] : "ict-ckeditor";
 
@@ -368,13 +378,17 @@ class SmartadminInputs extends CI_Smarty
             $attributes['rows'] = $params['rows'];
         }
 
+        if( isset($params['placeholder']) ){
+            $attributes['placeholder'] = $params['placeholder'];
+        }
+
         $params['html'] = '<textarea '._stringify_attributes($attributes).'>' . $value . '</textarea >';
         if( $editor =='row_input' ){
             $params["class_type"] = "textarea";
             return self::row_input($params);
         }
-
-        return self::input_lable($params);
+        return self::row_input($params);
+//        return self::input_lable($params);
     }
 
     static function input_MultiImage($params)

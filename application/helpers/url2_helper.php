@@ -11,7 +11,7 @@ function url_to_edit($uri=null,$editId=0) {
     }
     $ci = get_instance();
     $uri_length = $ci->uri->total_segments();
-    $is_add = $ci->uri->rsegment($uri_length-1);
+    $is_add = $ci->uri->rsegment($uri_length-2);
 
     if( $editId > 0 ){
         if( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' ){
@@ -25,7 +25,6 @@ function url_to_edit($uri=null,$editId=0) {
         }
 
     }
-
 
     return $uri;
 }

@@ -9,7 +9,8 @@ global $CFG;
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
 	APPPATH.'modules/' => '../modules/',
-    BaseAppPath.'modules/' => NULL
+    BASE_APP_PATH.'modules/' => "",
+    APPPATH.'../modules/' => '../../modules/',
 );
 
 define('SYSTEM_MODULE_PATH', realpath(BASEPATH."../application/modules") );
@@ -50,6 +51,7 @@ spl_autoload_register('Modules::autoload');
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  **/
+
 class Modules
 {
 	public static $routes, $registry, $locations;
@@ -68,26 +70,22 @@ class Modules
 			$module = substr($module, 0, $pos);
 		}
 
-		if($class = self::load($module))
-		{
-			if (method_exists($class, $method))	{
-				ob_start();
-				$args = func_get_args();
-				$output = call_user_func_array(array($class, $method), array_slice($args, 1));
-				$buffer = ob_get_clean();
-				return ($output !== NULL) ? $output : $buffer;
-			}
+		if( ($class = self::load($module)) && method_exists($class, $method))	{
+            ob_start();
+            $args = func_get_args();
+            $output = call_user_func_array(array($class, $method), array_slice($args, 1));
+            $buffer = ob_get_clean();
+            return ($output !== NULL) ? $output : $buffer;
 		} else {
-		    bug("can not run module:$module",'Module:run 81');
+		    dd("can not run module:$module",'Module:run 81');
         }
 
-		log_message('error', "Module controller failed to run: {$module}/{$method}");
+		log_message('error', "MX/Modules ".__LINE__.": Module controller failed to run: {$module}/{$method}");
 	}
 
 	/** Load a module controller **/
 	public static function load($module)
 	{
-	    $aliasBug = 'crawler';
         if (version_compare(phpversion(), '7.2', '<')) {
             (is_array($module)) ? list($module, $params) = each($module) : $params = NULL;
         } else {
@@ -97,9 +95,8 @@ class Modules
             } else {
                 $params = NULL;
             }
-
         }
-
+        log_message('DEBUG', "MX/Modules::load ".__LINE__.": module: {$module}");
 
 		/* get the requested controller class name */
 		$alias = strtolower(basename($module));
@@ -107,48 +104,43 @@ class Modules
 		/* create or return an existing controller from the registry */
 		if ( ! isset(self::$registry[$alias]))
 		{
-//bug("\"Modules::load 99 module:$module alias:$alias");
 			/* find the controller */
 			list($class) = CI::$APP->router->locate(explode('/', $module));
             $moduleController = CI::$APP->router->directory;
 			/* controller cannot be located */
-//            bug("Modules::load 104 module:$module alias:$alias class:$class");
-			if( $class == $aliasBug ){
-//                bug("load alias:$alias class:$class");
-            }
 
 			if (empty($class)) return;
 
 			/* set the module directory */
 			$path = APPPATH.'controllers/'.$moduleController;
-            //bug("load module 104  route-directory=".$moduleController);
 			/* load the controller class */
-			$class = $class.CI::$APP->config->item('controller_suffix');
+			$class = $class . CI::$APP->config->item('controller_suffix');
 
             $file = ucfirst($class);
-//bug("Modules load :$path$file");
+
             if( !file_exists($path.$file) ) {
-                //bug(Modules::$locations);
-                //bug("module load 113:".CI::$APP->router->directory);
                 foreach (Modules::$locations AS $modulePath => $moduleOffset){
-
-
                     if( is_dir("$modulePath/$moduleController") ){
-                        //bug("moduel read path=".realpath("$modulePath/$moduleController"));
                         $path = realpath("$modulePath/$moduleController").DS;
                     }
                 }
                 //$path = SYSTEM_MODULE_PATH.DS.CI::$APP->router->directory;
-
             }
 
-            //$path = realpath($path);
-            //bug("load module114  =$file path=$path");
 			self::load_file($file, $path);
-
 			/* create and register the new controller */
 			$controller = ucfirst($class);
+
 			self::$registry[$alias] = new $controller($params);
+
+			$fileModel = $controller."Model";
+			$fileModelPath = $path."../models/";
+			if( file_exists($fileModelPath.$fileModel.".php") ){
+                self::load_file($fileModel, $fileModelPath);
+                self::$registry[$alias]->model = new $fileModel();
+//			    dd("controller = $controller ".$fileModel);
+            }
+//			dd("file : $file, path : $path",false);
 		} else {
 		    //bug(self::$registry,"has registry alias:$alias");
         }
@@ -408,26 +400,17 @@ class Modules
     public static function is_file_in_dir($path,$file,$returnBaseName=false){
         $moduleFullPath = $module = FALSE;
 
-        $pathDebug = "ssss";
-        $fileDebug = "dsdsdsdsd";
-
         foreach (glob($path."/*") as $dir) {
             $folderName = pathinfo($dir);
             if( strtolower($folderName['filename']) == strtolower($file) ){
                 $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
-                $moduleFullPath = $folderName['dirname'].DS;
+                $moduleFullPath = realpath($folderName['dirname']).DS;
             }
         }
 
-        if( $file==$fileDebug ){
-            bug("module::is_file_in_dir path: $path: file:$file module=$module");
-        }
         if( strlen($module) < 1 ){
             $filescheck = glob($path."/$file.*");
 
-            if( $path==$pathDebug ){
-                //bug($path."/$file");
-            }
             if( !empty($filescheck) ){
                 foreach ($filescheck as $dir) {
                     if( strlen($module) > 0 ){
@@ -435,15 +418,10 @@ class Modules
                     }
                     $folderName = pathinfo($dir);
                     $module = $returnBaseName ? $folderName['basename'] : $folderName['filename'];
-                    $moduleFullPath = $folderName['dirname'].DS;
+                    $moduleFullPath = realpath($folderName['dirname']).DS;
                 }
             }
         }
-
-        if( $file==$fileDebug ){
-            bug("module::is_file_in_dir module: $module: moduleFullPath:$moduleFullPath");
-        }
-
         return [$module,$moduleFullPath];
     }
 }

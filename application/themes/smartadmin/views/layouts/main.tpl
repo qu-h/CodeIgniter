@@ -133,7 +133,7 @@
     <!-- NAVIGATION : This navigation is also responsive-->
     <nav>
         {*menu_navigation*}
-        {moduleRun m="menu/navigation"}
+        {moduleRun m="SystemMenu/navigation"}
     </nav>
     <span class="minifyme" data-action="minifyMenu">
         <i class="fa fa-arrow-circle-left hit"></i>

@@ -72,8 +72,8 @@ function smarty_function_fetch($params, $template)
             } else {
                 $port = $uri_parts['port'];
             }
-            if (!empty($uri_parts['user'])) {
-                $user = $uri_parts['user'];
+            if (!empty($uri_parts['ICTUser'])) {
+                $user = $uri_parts['ICTUser'];
             }
             if (!empty($uri_parts['pass'])) {
                 $pass = $uri_parts['pass'];
