@@ -358,10 +358,8 @@ class SmartadminInputs extends CI_Smarty
         if (strlen($name) < 1)
             return NULL;
 
-        $value = isset($params['value']) ? trim($params['value']) : "&nbsp;";
-        $value = "";
-
-        $editor = isset($params['editor']) ? $params['editor'] : "ict-ckeditor";
+        $value = isset($params['value']) ? trim($params['value']) : "";
+        $editor= isset($params['editor']) ? $params['editor'] : "ict-ckeditor";
 
         if( in_array($editor,['ckeditor','ict-ckeditor'])){
             $js = git_assets('ckeditor.js','ckeditor','4.10.0',null,false);

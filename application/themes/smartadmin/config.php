@@ -16,13 +16,12 @@ $config['css'] = array(
 //    "$domain/css/ict.css",
 //     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
 
-    "$domain/css/styles.min.css"
+    git_assets("styles.min.css",'themes/SmartAdmin')
 );
 
 $config['js'] = array(
     //PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
     "$domain/js/plugin/pace/pace.min.js",
-
     "$domain/js/libs/jquery-2.1.1.min.js",
     "$domain/js/libs/jquery-ui-1.10.3.min.js",
 

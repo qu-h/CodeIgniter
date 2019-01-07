@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     // uglify = require('gulp-uglify'),
     gutil = require('gulp-util');
 var resourcePath = '';
+var gitPublicResource = 'D:/WWW/quanict.github.io/themes/SmartAdmin';
 
 // Minifies SCSS
 gulp.task('sass', function() {
@@ -30,7 +31,7 @@ gulp.task('sass', function() {
         //     spaceAfterClosingBrace: true
         // }))
         //.pipe(rename({ suffix: '.min' })) // Append our suffix to the name
-        .pipe(gulp.dest('css'))
+        .pipe(gulp.dest(gitPublicResource+'/css'))
 });
 
 // Minifies JS
@@ -41,9 +42,18 @@ gulp.task('js', function(){
         // .on('error', function (err) {
         //     gutil.log(gutil.colors.red('[Error]'), err.toString());
         // })
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest(gitPublicResource+'/js'))
 });
+
+gulp.task('copy-resource', function(){
+    gulp.src(resourcePath+'img/*').pipe(gulp.dest(gitPublicResource+'/img'));
+    gulp.src(resourcePath+'images/*').pipe(gulp.dest(gitPublicResource+'/images'));
+    gulp.src(resourcePath+'fonts/*').pipe(gulp.dest(gitPublicResource+'/fonts'));
+
+});
+
 
 gulp.task('default', function() {
     gulp.start(['sass','js']);
+    gulp.start(['copy-resource']);
 });
