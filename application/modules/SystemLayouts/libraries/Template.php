@@ -276,6 +276,18 @@ class Template
         return $this->_body;
     }
 
+    public function build_subview($view, $data = []){
+        // Set whatever values are given. These will be available to all view files
+        is_array($data) OR $data = (array)$data;
+        // Merge in what we already have with the specific data
+        $this->_data = array_merge($this->_data, $data);
+
+        $body = $this->_find_view($view, array(), $this->_parser_body_enabled);
+
+//        dd("subview body=".$body);
+        return $body;
+    }
+
     /**
      * Set the title of the page
      *

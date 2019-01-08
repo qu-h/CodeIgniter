@@ -3,6 +3,11 @@ if ( !function_exists('temp_view')) {
     function temp_view($view, $vars = array()){
         get_instance()->template->build($view,$vars);
     }
+
+    function temp_subview($view, $vars = array()){
+        return get_instance()->template->build_subview($view,$vars);
+    }
+
 }
 
 /**
@@ -78,3 +83,10 @@ function smarty_view($view,$params=[]){
 //        $template->build($view,$params);
 //    }
 //}
+
+function set_layout($layoutName){
+    $ci = get_instance();
+    if( isset($ci->template) ){
+        $ci->template->set_layout($layoutName);
+    }
+}

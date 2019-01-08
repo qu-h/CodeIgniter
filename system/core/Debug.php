@@ -5,7 +5,7 @@ if (!function_exists('bug')) {
     {
         echo '<pre>';
         print_r($var);
-        echo '</pre>';
+        echo '</pre>'.PHP_EOL;
 
         if ($exit) {
             die("exit:" . $exit);

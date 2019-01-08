@@ -36,7 +36,52 @@ gulp.task('sass', function() {
 
 // Minifies JS
 gulp.task('js', function(){
-    return gulp.src([resourcePath+'javascript/lib/*.js',resourcePath+'javascript/*.js'])
+    $script_files = [
+
+        //PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+        'js/libs/jquery-2.1.1.min.js',
+        'js/plugin/pace/pace.min.js',
+        'js/libs/jquery-ui-1.10.3.min.js',
+
+
+
+        'js/plugin/jquery-validate/jquery.validate.min.js',
+        'js/plugin/masked-input/jquery.maskedinput.min.js',
+
+        // EASY PIE CHARTS
+        'js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js',
+
+        // SPARKLINES
+        'js/plugin/sparkline/jquery.sparkline.min.js',
+
+        //IMPORTANT: APP CONFIG
+        'js/app.config.js',
+
+        //MAIN APP JS FILE
+        'js/app.min.js',
+        'js/tables.js',
+        'js/demo.min.js',
+
+        'js/speech/voicecommand.min.js',
+
+        //SmartChat UI : plugin
+        'js/smart-chat-ui/smart.chat.ui.min.js',
+        'js/smart-chat-ui/smart.chat.manager.min.js',
+
+        'js/plugin/select2/select2.min.js',
+        'js/smartwidgets/jarvis.widget.min.js',
+
+
+        'js/plugin/datatables/jquery.dataTables.min.js',
+        'js/plugin/datatables/dataTables.bootstrap.min.js',
+
+
+
+        'js/bootstrap/bootstrap.min.js',
+        "js/ict.js",
+
+    ];
+    return gulp.src($script_files)
         .pipe(concat('smart-admin-ict.js'))
         //.pipe(uglify())
         // .on('error', function (err) {
@@ -47,9 +92,9 @@ gulp.task('js', function(){
 
 gulp.task('copy-resource', function(){
     gulp.src(resourcePath+'img/*').pipe(gulp.dest(gitPublicResource+'/img'));
+    gulp.src(resourcePath+'img/avatars/*').pipe(gulp.dest(gitPublicResource+'/img/avatars'));
     gulp.src(resourcePath+'images/*').pipe(gulp.dest(gitPublicResource+'/images'));
     gulp.src(resourcePath+'fonts/*').pipe(gulp.dest(gitPublicResource+'/fonts'));
-
 });
 
 

@@ -21,7 +21,10 @@ class MX_Model extends CI_Model
             $order = input_get('order');
             $ci->session->set_userdata('page_order',$order);
         }
-        $this->limit = $ci->session->userdata('page_length');
+        if( ($limit = $ci->session->userdata('page_length')) != null ){
+            $this->limit = $limit;
+        }
+
         $this->offset = $ci->session->userdata('page_start');
 
 
@@ -72,7 +75,28 @@ class MX_Model extends CI_Model
         } else if( is_numeric($where) ) {
             $this->db->where('id',$where);
         }
-        return $this->db->get($this->table)->row();
+        $query = $this->db->get($this->table);
+        return $query->result();
+    }
+
+    function pagination_get($page){
+        if( !$page || $page < 1 ){
+            $page = 1;
+        }
+        $ci = get_instance();
+        $this->db->from($this->table);
+        $db = $this->db;
+        $tempdb = clone $db;
+
+        $itemTotal = $tempdb->count_all_results();
+
+        $query = $db->limit($this->limit,$this->limit*($page-1))->get();
+        $data = $query->result_array();
+
+        $pageTotal = round($itemTotal/$this->limit, 0, PHP_ROUND_HALF_UP);
+
+        set_temp_val("pagination",['total'=>$itemTotal,'page_last'=>$pageTotal,'limit'=>$this->limit,'current'=>$page]);
+        return $data;
     }
 
     function isExist($where,$id=0){
@@ -108,7 +132,6 @@ class MX_Model extends CI_Model
         }
     }
 
-
     public function where($params,$value = NULL){
         if( is_string($params) ){
             $this->db->where($params,$value);
@@ -130,4 +153,10 @@ class MX_Model extends CI_Model
         $query = $this->db->get();
         return $query->row();
     }
+
+    public function page($number=1){
+        $this->db->limit($this->limit,$this->limit*($number-1));
+        return $this;
+    }
+
 }

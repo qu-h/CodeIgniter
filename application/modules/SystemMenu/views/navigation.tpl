@@ -23,9 +23,10 @@
     {if $uriLenght > 0 && $uri_string|truncate:$uriLenght:false == $uri }active {/if}
 {/function}
 {if isset($items) && $items|count > 0 }
+    {strip}
     <ul>
         {foreach $items AS $k=>$m1}
-            <li class="{$m1->uri} {is_active uri=$m1->uri }"  >
+            <li class="{is_active uri=$m1->uri }"  >
                 {if isset($m1->childrens) && $m1->childrens|count > 0}
                     {if ($m1->hidden == 1 && $m1->uri|uri_begin_with_uri_first) || $m1->hidden == 0}
                         {menu_anchor menu=$m1 showURL=false}
@@ -43,4 +44,5 @@
             </li>
         {/foreach}
     </ul>
+    {/strip}
 {/if}

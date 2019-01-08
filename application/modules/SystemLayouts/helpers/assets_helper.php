@@ -42,7 +42,7 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFil
         }
 
         $dir = NULL;
-        $assets_dir = config_item("assets_git_url");
+        $assets_dir = env('ASSETS_GIT_PATH',config_item("assets_git_url"));
         if( strlen($folder) > 0 ) {
             if (substr($folder, 0, 7) === "jquery.") {
                 $folder = "/" . str_replace("jquery.", "jquery/", $folder);

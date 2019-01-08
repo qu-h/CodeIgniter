@@ -5,6 +5,7 @@ function smarty_function_site_url($params){
     $uri_change_to = isset($params['change']) ? $params['change'] : NULL;
     $id = isset($params['id']) ? $params['id'] : 0;
     $uriBack = isset($params['uriBack']) ? $params['uriBack'] : NULL;
+    $query = isset($params['q']) ? $params['q'] : [];
 
     if( strlen($uri) < 1 && $isNull ){
         $uri = NULL;
@@ -15,9 +16,15 @@ function smarty_function_site_url($params){
     }
 
     if( strlen($uriBack) > 0 ){
+        $query['back'] = base64url_encode($uriBack);
         return site_url($uri)."?back=".base64url_encode($uriBack);
     } else {
-        return site_url($uri);
+        $q = "";
+        if( !empty($query) ){
+            $q = "?"._stringify_attributes($query,true);
+        }
+
+        return site_url($uri).$q;
     }
 
 

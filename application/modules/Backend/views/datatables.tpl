@@ -41,6 +41,7 @@
 	</div>
 </div>
 *}
+
 <section id="widget-grid" class="">
 	<div class="row">
 
@@ -83,7 +84,9 @@
 					</div>
 
 					<div class="widget-body no-padding">
+
 						{if isset($fields)}
+
 						<table
 								id="data_ajax"
 								class="table table-striped table-bordered table-hover"
@@ -109,10 +112,9 @@
 
 								</tr>
 							</thead>
-							<tbody>
-
-							</tbody>
+							<tbody></tbody>
 						</table>
+
 						{*https://datatables.net/examples/ajax/*}
 						<script type="text/javascript">
 							var site_news  = '{config_item("news-site")}';

@@ -22,7 +22,12 @@ class CI_Smarty extends SmartyBC {
 		$this->loadPlugin('smarty_compiler_switch');
 		if ( ! defined('IMGPATH') ) define('IMGPATH', BASEPATH.'../images/');
 
-	}
+		if( env('TRIM_HTML'))
+            $this->loadFilter('output', 'trimwhitespace');
+
+
+
+    }
 
 	public function useCached( $tpl, $data = null ) {
 		if ( $this->isCached( $tpl, $data ) ) {
