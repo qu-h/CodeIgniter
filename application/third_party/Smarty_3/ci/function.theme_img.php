@@ -11,7 +11,6 @@ function smarty_function_theme_img($params,$content,$template=null, &$repeat=nul
         $url = $theme_url."/images/$file";
     }
 
-
     switch ($return){
         case 'src':
             $html = $url; break;
