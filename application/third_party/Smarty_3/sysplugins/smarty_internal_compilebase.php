@@ -82,7 +82,7 @@ abstract class Smarty_Internal_CompileBase
                         'value'=>reset($mixed)
                     ];
                 } else {
-                    each($mixed);
+                    $kv = each($mixed);
                 }
 
                 // option flag?

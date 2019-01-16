@@ -23,7 +23,6 @@ function smarty_function_site_url($params){
         if( !empty($query) ){
             $q = "?"._stringify_attributes($query,true);
         }
-
         return site_url($uri).$q;
     }
 

@@ -58,8 +58,13 @@ class MX_Router extends CI_Router
         $segmentsInput = $segments;
 		$segments = $this->locate($segments);
 
+		/**
+		 * update check Controller with application folder
+		 */
+
         if($this->located == -1 && $this->module)
         {
+            dd("go here");
             $appDir = strtolower(pathinfo(APPPATH,PATHINFO_BASENAME));
 
             $segmentsCheck = $segmentsInput;
@@ -69,18 +74,13 @@ class MX_Router extends CI_Router
                 $segmentsCheck[1] = ucfirst($segmentsInput[0]).ucfirst($appDir);
             }
             $segments = $this->locate($segmentsCheck);
-
+            dd($appDir);
             if( $this->located == -1 && count($segmentsInput) == 2 ){
                 $segmentsCheck = $segmentsInput;
                 $segmentsCheck[2] = $segmentsInput[1];
                 $segmentsCheck[1] = ucfirst($segmentsInput[0]).ucfirst($appDir);
                 $segments = $this->locate($segmentsCheck);
             }
-        }
-
-        if($this->located == -1 )
-        {
-            $segments = $this->_check_backend_frontend_structure($segmentsInput);
         }
 
 		if($this->located == -1)
@@ -94,7 +94,6 @@ class MX_Router extends CI_Router
 			$this->_set_default_controller();
 			return;
 		}
-
 		$this->set_class($segments[0]);
 
 		if (isset($segments[1]))
@@ -105,7 +104,6 @@ class MX_Router extends CI_Router
 		{
 			$segments[1] = 'index';
 		}
-
 		array_unshift($segments, NULL);
 		unset($segments[0]);
 		$this->uri->rsegments = $segments;
@@ -146,6 +144,7 @@ class MX_Router extends CI_Router
 
 		/* get the segments array elements */
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
+        $appDir = strtolower(pathinfo(APPPATH,PATHINFO_BASENAME));
 
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset)
@@ -189,10 +188,20 @@ class MX_Router extends CI_Router
 						$this->located = 2;
 						return array_slice($segments, 1);
 					}
-					else {
+                    else if(is_file($source. ucfirst($directory).ucfirst($appDir).$ext))
+                    {
+                        $this->located = 2;
+                        $segments[1] = ucfirst($segments[1]).ucfirst($appDir);
+                        return array_slice($segments, 1);
+                    }
+                    else {
                         $this->located = -1;
                     }
-				}
+				} elseif (is_file($source. ucfirst($module).ucfirst($appDir).$ext)) {
+                    $this->located = 2;
+                    $segments[0] = ucfirst($segments[0]).ucfirst($appDir);
+                    return array_slice($segments, 0);
+                }
 
 				/* module controller exists? */
 				if(is_file($source.ucfirst($module).$ext))
@@ -280,17 +289,38 @@ class MX_Router extends CI_Router
     /**
      * Update 20181230 directory structure backend/frontend/public
      */
-	private function _check_backend_frontend_structure($segments){
+	private function _check_backend_frontend_structure($segments,$pathCheck=''){
 
         if( in_array( ($dirName = basename(APPPATH)),['backend','frontend']) ){
-            $this->directory = null;
             $controllerFile = $segments[0];
+            if( !empty($this->directory) ){
+                    $check = is_dir($this->directory) ? $this->directory : APPPATH."controllers".DS.$this->directory;
+                    $check = realpath($check);
+                    if( $check ){
+                        list($file,$path) = Modules::is_file_in_dir($check,ucfirst($controllerFile).ucfirst($dirName));
+                        if( $file ){
+                            $this->located = 1;
+                            $segments[0] = $file;
+                            return $segments;
+                        }
+                    }
+            }
+
             list($file,$path) = Modules::is_file_in_dir(APPPATH.DS."controllers",ucfirst($dirName).ucfirst($controllerFile));
+            if( $file ){
+//                $this->directory = null;
+                $this->located = 1;
+                $segments[0] = $file;
+                return $segments;
+            }
+//dd($this);
+            list($file,$path) = Modules::is_file_in_dir(ROOT_PATH,ucfirst($dirName).ucfirst($controllerFile));
             if( $file ){
                 $this->located = 1;
                 $segments[0] = $file;
                 return $segments;
             }
+
             return $segments;
         }
     }

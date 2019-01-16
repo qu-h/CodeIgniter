@@ -6,7 +6,15 @@ function smarty_function_anchor($params){
             $CI->load->helper('url');
         }
         $uri = ( isset($params['uri']) )?$params['uri']:null;
-        return anchor( $uri,lang($params['txt']) );
+        $attributes = [];
+        if( isset($params['class']) ){
+            $attributes['class'] = $params['class'];
+        }
+        $title = $uri;
+        if( array_key_exists('txt',$params) ){
+            $title = lang($params['txt']);
+        }
+        return anchor( $uri,$title,$attributes );
     }
 
 
