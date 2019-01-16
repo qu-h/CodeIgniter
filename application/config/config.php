@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 
-$config['base_url'] = '//'.$_SERVER["SERVER_NAME"].'/';
+$config['base_url'] = '//'.$_SERVER["HTTP_HOST"].'/';
 $config['assets_git_url'] = '//github.giaiphapict.com/';
 
 /*
