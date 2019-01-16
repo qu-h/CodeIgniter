@@ -37,4 +37,8 @@
 
 {/php}
 {assets type='css'}
-{*assets type='js'*}
+{if isset($js_header)}
+<script type="text/javascript" language="JavaScript">
+    {$js_header}
+</script>
+{/if}

@@ -20,7 +20,7 @@ class CI_Env
     public function read()
     {
         if (empty($env_data)) {
-            $env_file = realpath(FCPATH . DS . ".env");
+            $env_file = realpath(FCPATH . DIRECTORY_SEPARATOR . ".env");
             if( empty($env_file) ){
                 $env_file = realpath(FCPATH . "/../.env");
             }
