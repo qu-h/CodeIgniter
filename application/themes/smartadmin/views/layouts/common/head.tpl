@@ -4,7 +4,7 @@
 <meta name="description" content="{site_description_func}" />
 <meta name="author" content="{site_author_func}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/png" href="{theme_url file="favicon.ico"}" />
+<link rel="icon" type="image/png" href="/favicon.ico" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 

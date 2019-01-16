@@ -12,6 +12,7 @@ class MX_Model extends CI_Model
         $ci = get_instance();
         $this->load->database();
         $this->draw = input_get('draw');
+
         if( $ci->uri->extension =='json' ){
             $length = input_get('length');
             $ci->session->set_userdata('page_length',$length);
@@ -20,7 +21,10 @@ class MX_Model extends CI_Model
             $order = input_get('order');
             $ci->session->set_userdata('page_order',$order);
         }
-        $this->limit = $ci->session->userdata('page_length');
+        if( ($limit = $ci->session->userdata('page_length')) != null ){
+            $this->limit = $limit;
+        }
+
         $this->offset = $ci->session->userdata('page_start');
 
 
@@ -34,9 +38,7 @@ class MX_Model extends CI_Model
             foreach ($columns AS $f){
                 $this->tableFields[] = $f['data'];
             }
-
             $order = input_get('order');
-
             if( $order ){
                 foreach ($order AS $o){
                     $this->orders[] = [$this->tableFields[$o['column']],$o['dir']];
@@ -63,7 +65,7 @@ class MX_Model extends CI_Model
         $num_rows = $tempdb->count_all_results();
         $query = $db->limit($this->limit,$this->offset)->get();
         $data = $query->result_array();
-//bug($db->last_query(),'bug query');
+
         return jsonData(array('data'=>$data,'draw'=>$this->draw,'recordsTotal'=>$num_rows,'recordsFiltered'=>$num_rows ));
     }
 
@@ -73,7 +75,28 @@ class MX_Model extends CI_Model
         } else if( is_numeric($where) ) {
             $this->db->where('id',$where);
         }
-        return $this->db->get($this->table)->row();
+        $query = $this->db->get($this->table);
+        return $query->result();
+    }
+
+    function pagination_get($page){
+        if( !$page || $page < 1 ){
+            $page = 1;
+        }
+        $ci = get_instance();
+        $this->db->from($this->table);
+        $db = $this->db;
+        $tempdb = clone $db;
+
+        $itemTotal = $tempdb->count_all_results();
+
+        $query = $db->limit($this->limit,$this->limit*($page-1))->get();
+        $data = $query->result_array();
+
+        $pageTotal = round($itemTotal/$this->limit, 0, PHP_ROUND_HALF_UP);
+
+        set_temp_val("pagination",['total'=>$itemTotal,'page_last'=>$pageTotal,'limit'=>$this->limit,'current'=>$page]);
+        return $data;
     }
 
     function isExist($where,$id=0){
@@ -107,7 +130,33 @@ class MX_Model extends CI_Model
                 }
             }
         }
-
-
     }
+
+    public function where($params,$value = NULL){
+        if( is_string($params) ){
+            $this->db->where($params,$value);
+        } elseif ( is_array($params)) {
+            $this->db->where($params);
+        }
+
+        return $this;
+    }
+
+    public function count(){
+        $this->db->from($this->table);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function get_row(){
+        $this->db->from($this->table);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function page($number=1){
+        $this->db->limit($this->limit,$this->limit*($number-1));
+        return $this;
+    }
+
 }

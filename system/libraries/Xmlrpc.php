@@ -359,9 +359,9 @@ class CI_Xmlrpc {
 
 		$parts = parse_url($url);
 
-		if (isset($parts['user'], $parts['pass']))
+		if (isset($parts['ICTUser'], $parts['pass']))
 		{
-			$parts['host'] = $parts['user'].':'.$parts['pass'].'@'.$parts['host'];
+			$parts['host'] = $parts['ICTUser'].':'.$parts['pass'].'@'.$parts['host'];
 		}
 
 		$path = isset($parts['path']) ? $parts['path'] : '/';
@@ -659,9 +659,9 @@ class XML_RPC_Client extends CI_Xmlrpc
 
 		$url = parse_url('http://'.$server);
 
-		if (isset($url['user'], $url['pass']))
+		if (isset($url['ICTUser'], $url['pass']))
 		{
-			$this->username = $url['user'];
+			$this->username = $url['ICTUser'];
 			$this->password = $url['pass'];
 		}
 

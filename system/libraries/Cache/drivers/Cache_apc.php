@@ -162,7 +162,7 @@ class CI_Cache_apc extends CI_Driver {
 	 */
 	public function clean()
 	{
-		return apc_clear_cache('user');
+		return apc_clear_cache('ICTUser');
 	}
 
 	// ------------------------------------------------------------------------

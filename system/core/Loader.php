@@ -70,7 +70,7 @@ class CI_Loader {
 	 *
 	 * @var	array
 	 */
-	protected $_ci_library_paths =	array(APPPATH, BASEPATH,BaseAppPath);
+	protected $_ci_library_paths =	array(APPPATH, BASEPATH,BASE_APP_PATH);
 
 	/**
 	 * List of paths to load models from
@@ -84,7 +84,7 @@ class CI_Loader {
 	 *
 	 * @var	array
 	 */
-	protected $_ci_helper_paths =	array(APPPATH, BASEPATH,BaseAppPath);
+	protected $_ci_helper_paths =	array(APPPATH, BASEPATH,BASE_APP_PATH);
 
 	/**
 	 * List of cached variables

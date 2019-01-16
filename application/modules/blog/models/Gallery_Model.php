@@ -33,7 +33,7 @@ class Gallery_Model extends CI_Model
     function fields()
     {
         $fields = $this->testimonial_fields;
-        $fields["category"]['options'] = $this->Category_Model->load_options("gallery");
+        $fields["category"]['options'] = $this->SystemCategoryModel->load_options("gallery");
         return $fields;
     }
 

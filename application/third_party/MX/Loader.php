@@ -44,6 +44,9 @@ class MX_Loader extends CI_Loader
 	{
 		/* set the module name */
 		$this->_module = CI::$APP->router->fetch_module();
+		if( is_null($controller) ){
+            $controller = "";
+        }
 
 		if ($controller instanceof MX_Controller)
 		{
@@ -186,8 +189,6 @@ class MX_Loader extends CI_Loader
 
 			    $this->_ci_classes[$library] = $_alias;
 			}
-
-
 		}
 		return $this;
     }
@@ -251,8 +252,15 @@ class MX_Loader extends CI_Loader
 	{
 		if (is_array($module)) return $this->modules($module);
 
-		$_alias = strtolower(basename($module));
+        log_message('DEBUG', "MX/MX_Loader::module (line :".__LINE__.")");
+
+        $_alias = ucfirst(basename($module));
 		CI::$APP->$_alias = Modules::load(array($module => $params));
+		if( $_alias =='SystemArticle' ){
+//		    dd(CI::$APP->$_alias);
+//            dd($_alias);
+        }
+
 		return $this;
 	}
 
@@ -366,7 +374,7 @@ class MX_Loader extends CI_Loader
 			include($_ci_path);
 		}
 
-		log_message('debug', 'File loaded: '.$_ci_path);
+		log_message('debug', 'MX/Loader (line '.__LINE__.') | File loaded: '.$_ci_path);
 
 		if ($_ci_return == TRUE) return ob_get_clean();
 

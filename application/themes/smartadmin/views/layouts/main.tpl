@@ -4,6 +4,7 @@
     {include file=$tplPath|cat:"common/head.tpl"}
 </head>
 <body>
+
 <header id="header">
     <div id="logo-group">
         <!-- PLACE YOUR LOGO HERE -->
@@ -40,39 +41,48 @@
         <!-- #MOBILE -->
         <!-- Top menu profile link : this shows only when top menu is active -->
         {if isset($user)}
-        <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
-            <li class="">
-                <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
-                    {img src=$user.avatar alt="{$user.fullname}" class="online"}
-                </a>
-                <ul class="dropdown-menu pull-right">
-                    <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+                <li class="">
+                    <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                        {img src=$user.avatar alt="{$user.fullname}" class="online"}
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i
+                                        class="fa fa-cog"></i> Setting</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i
+                                        class="fa fa-user"></i> <u>P</u>rofile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
+                               data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
+                               data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full
+                                <u>S</u>creen</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="login.html" class="padding-10 padding-top-5 padding-bottom-5"
+                               data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i>
+                                <strong><u>L</u>ogout</strong></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         {/if}
         <!-- logout button -->
         <div id="logout" class="btn-header transparent pull-right">
             <span>
-                <a href="{if isset($SignOutLink)}{$SignOutLink}{else}/logout{/if}" title="{lang txt="Sign Out"}" data-action="userLogout" data-logout-msg="{lang txt="You can improve your security further after logging out by closing this opened browser"}">
+                <a href="{if isset($SignOutLink)}{$SignOutLink}{else}/logout{/if}" title="{lang txt="Sign Out"}"
+                   data-action="userLogout"
+                   data-logout-msg="{lang txt="You can improve your security further after logging out by closing this opened browser"}">
                     <i class="fa fa-sign-out"></i>
                 </a>
             </span>
@@ -87,17 +97,20 @@
 
         <!-- input: search field -->
         <form action="" class="header-search pull-right">
-            <input id="search-fld"  type="text" name="param" placeholder="{lang txt="Find reports and more"}" data-autocomplete='[]'>
+            <input id="search-fld" type="text" name="param" placeholder="{lang txt="Find reports and more"}"
+                   data-autocomplete='[]'>
             <button type="submit">
                 <i class="fa fa-search"></i>
             </button>
-            <a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+            <a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i
+                        class="fa fa-times"></i></a>
         </form>
         <!-- end input: search field -->
 
         <!-- fullscreen button -->
         <div id="fullscreen" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+                <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
+                                class="fa fa-arrows-alt"></i></a> </span>
         </div>
         <!-- end fullscreen button -->
 
@@ -111,12 +124,11 @@
     <!-- end pulled right: nav area -->
 
 </header>
-
 <aside id="left-panel">
 
     <!-- User info -->
     {if isset($user)}
-    <div class="login-info">
+        <div class="login-info">
         <span>
             <!-- User image size is adjusted inside CSS, it should stay as it -->
             <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
@@ -126,26 +138,28 @@
             </a>
 
         </span>
-    </div>
+        </div>
     {/if}
     <!-- end user info -->
 
     <!-- NAVIGATION : This navigation is also responsive-->
     <nav>
         {*menu_navigation*}
-        {moduleRun m="menu/navigation"}
+        {moduleRun m="SystemMenu/navigation"}
     </nav>
     <span class="minifyme" data-action="minifyMenu">
         <i class="fa fa-arrow-circle-left hit"></i>
     </span>
 
 </aside>
-
 <div id="main" role="main">
     <!-- RIBBON -->
     <div id="ribbon">
         <span class="ribbon-button-alignment">
-            <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> {lang txt="Warning! This will reset all your widget settings."}" data-html="true">
+            <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip"
+                  data-placement="bottom"
+                  data-original-title="<i class='text-warning fa fa-warning'></i> {lang txt="Warning! This will reset all your widget settings."}"
+                  data-html="true">
                 <i class="fa fa-refresh"></i>
             </span>
         </span>
@@ -202,13 +216,11 @@
 </div>
 {include file="../modal/images-manager.tpl"}
 <script type="text/javascript">
-
-    // DO NOT REMOVE : GLOBAL FUNCTIONS!
-
-    $(document).ready(function() {
+    /* DO NOT REMOVE : GLOBAL FUNCTIONS! */
+    $(document).ready(function () {
         pageSetUp();
     });
 </script>
 
-    </body>
+</body>
 </html>
