@@ -2,7 +2,7 @@
 
 $domain = "http://ci-3-0-1.loc/smartadmin";
 $config['theme_dir'] = BASE_APP_PATH."themes/smartadmin/";
-$config['theme_url'] = env('ASSETS_GIT_PATH')."/themes/SmartAdmin/";
+$config['theme_url'] = env('ASSETS_GIT_PATH')."/sites-template/smart-admin/";
 $config['css'] = array(
 //    "bootstrap.min.css",
 //    "font-awesome.min.css",
@@ -16,7 +16,7 @@ $config['css'] = array(
 //    "$domain/css/ict.css",
 //     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
 
-    git_assets("styles.min.css",'themes/SmartAdmin')
+    'styles.min.css'
 );
 
-$config['js'] = [ git_assets("smart-admin-ict.js",'themes/SmartAdmin')];
+$config['js'] = [ 'smart-admin-ict.js'];

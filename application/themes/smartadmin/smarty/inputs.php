@@ -364,8 +364,8 @@ class SmartadminInputs extends CI_Smarty
         if( in_array($editor,['ckeditor','ict-ckeditor'])){
             $js = git_assets('ckeditor.js','ckeditor','4.10.0',null,false);
             add_js($js);
-            $editor_config = git_assets('config/giaiphapict.js','ckeditor','4.10.0',null,false);
-            add_js("ckeditor.config.js");
+//            $editor_config = git_assets('config/giaiphapict.js','ckeditor','4.10.0',null,false);
+//            add_js("ckeditor.config.js");
         }
         $attributes = [
             'name'=>$name,

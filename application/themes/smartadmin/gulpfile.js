@@ -6,8 +6,8 @@ var gulp = require('gulp'),
     //uglify = composer(uglifyes, console),
     // uglify = require('gulp-uglify'),
     gutil = require('gulp-util');
-var resourcePath = '/home/quannh/PHP-Development/quannh/CodeIgniter/application/themes/smartadmin/';
-var gitPublicResource = '/home/quannh/PHP-Development/quannh/sites-template/SmartAdmin';
+var resourcePath = 'D:\\WWW\\CI-3.0.1/application/themes/smartadmin/';
+var gitPublicResource = 'D:\\WWW\\sites-template-git/smart-admin';
 
 // Minifies SCSS
 gulp.task('sass', function() {
@@ -43,8 +43,6 @@ gulp.task('js', function(){
         'js/plugin/pace/pace.min.js',
         'js/libs/jquery-ui-1.10.3.min.js',
 
-
-
         'js/plugin/jquery-validate/jquery.validate.min.js',
         'js/plugin/masked-input/jquery.maskedinput.min.js',
 
@@ -76,9 +74,9 @@ gulp.task('js', function(){
         'js/plugin/datatables/dataTables.bootstrap.min.js',
 
 
-
         'js/bootstrap/bootstrap.min.js',
-        "js/ict.js",
+        "js/_scripts/ckeditor.config.js",
+        "js/_scripts/ict.js",
 
     ];
     return gulp.src($script_files)
@@ -102,6 +100,6 @@ gulp.task('copy-resource', function(){
 
 
 gulp.task('default', function() {
-    // gulp.start(['sass','js']);
+    gulp.start(['sass','js']);
     gulp.start(['copy-resource']);
 });

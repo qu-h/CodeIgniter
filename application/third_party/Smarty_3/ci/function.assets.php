@@ -117,7 +117,7 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
         $file = str_replace('{root_assets}', $root_assets_url, $file);
     } else {
         //$file = base_url()."assets/$sub_directory/$file";
-        $file = base_url()."$sub_directory/$file";
+        $file = $theme_url."$sub_directory/$file";
     }
 
     return $file;

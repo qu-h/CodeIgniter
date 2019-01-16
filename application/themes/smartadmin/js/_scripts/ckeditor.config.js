@@ -39,6 +39,7 @@ $(document).ready(function() {
     $( '.ict-ckeditor' ).each( function() {
         CKEDITOR.inline( this,ckEditerConfig);
     } );
+    console.log('call me');
     // console.log('call me',ckEditerConfig);
     // CKEDITOR.editorConfig = function( config ) {
     //     // Define changes to default configuration here.
