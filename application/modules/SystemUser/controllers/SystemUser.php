@@ -36,7 +36,6 @@ class SystemUser extends MX_Controller
                 uri_string() != $redirectLogin
                 && (strpos(uri_string(),$redirectLogin) === FALSE)  )
             {
-                //dd('xx');
                 redirect($redirectLogin . base64url_encode($this->uri->uri_string()), 'location');
             }
         }
@@ -48,7 +47,6 @@ class SystemUser extends MX_Controller
         if ($this->session->userdata('user_id')) {
             redirect('', 'location');
         }
-
         if ($this->input->post()) {
             $post = array(
                 'username' => input_post('username'),
@@ -59,11 +57,14 @@ class SystemUser extends MX_Controller
             $login = $this->SystemUserModel->checklogin($post);
 
             if ($login != NULL) {
-                $uriReturn = "";
-                if ($uriBack) {
+
+                if( $this->uri->segment(1)=='admin' && $this->uri->segment(2)=='login' ){
+                    $uriReturn = base64_decode($this->uri->segment(3));
+                } elseif ($this->uri->segment(1)=='login') {
+                    $uriReturn = base64_decode($this->uri->segment(2));
+                } elseif ($uriBack) {
                     $uriReturn = $uriBack;
                 } else {
-                    $uriReturn = "";
                     if ($this->uri->segment(2)) {
                         $uriReturn = base64_decode($this->uri->segment(2));
                     }

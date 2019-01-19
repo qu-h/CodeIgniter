@@ -1,9 +1,6 @@
-<?php
+<?php if (! defined('BASEPATH')) exit('No direct script access allowed');
 
-if (! defined('BASEPATH'))
-    exit('No direct script access allowed');
-
-class Crawler extends MX_Controller
+class SystemCrawler extends MX_Controller
 {
     function __construct()
     {
@@ -22,7 +19,6 @@ class Crawler extends MX_Controller
         $parse = parse_url($url);
         $parse['host'] = str_replace("www.",null,$parse['host']);
         $crawlerMask = $this->CrawlerMask_Model->get_site($parse['host']);
-
         if( $crawlerMask ){
             $articleObject = $this->findArticleObject($url,$crawlerMask);
             $content = [

@@ -80,8 +80,7 @@ class SystemArticle extends MX_Controller
                     set_error('Dupplicate Article ' .  anchor($uriEdit, $row->title));
                     redirect($uriEdit);
                 } else {
-                    list($c_title, $c_content, $c_thumb) = Modules::run('crawler/get_content', $crawlerSource);
-
+                    list($c_title, $c_content, $c_thumb) = Modules::run('SystemCrawler/get_content', $crawlerSource);
                     if (!is_null($c_title)) {
                         $this->model->fields["title"]['value'] = $c_title;
                         $this->model->fields["content"]['value'] = $c_content;
@@ -117,10 +116,10 @@ class SystemArticle extends MX_Controller
 
     public function crawler()
     {
-        $this->load->module('crawler');
+        $this->load->module('SystemCrawler');
 
         if (strlen($source = $this->input->get('s')) > 0) {
-            list($c_title, $c_content) = $this->crawler->get_content($source);
+            list($c_title, $c_content) = $this->SystemCrawler->get_content($source);
 
             if (is_string($c_title)) {
                 $this->model->fields['title']['value'] = $c_title;
@@ -141,7 +140,6 @@ class SystemArticle extends MX_Controller
             if (!empty($formdata) AND ($add = $this->SystemArticleModel->update($formdata))) {
                 set_error(lang('Success.'));
             }
-
         }
 
         $data = array(
