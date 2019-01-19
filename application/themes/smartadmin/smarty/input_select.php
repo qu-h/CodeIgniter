@@ -13,7 +13,7 @@ class SmartadminInput_select extends CI_Smarty {
         return parent::fetchView("inputs/select",$params);
     }
 
-    static function input_multiselect($params){
+    static function input_multi_select($params){
         return self::input_select($params);
     }
 
@@ -29,7 +29,7 @@ class SmartadminInput_select extends CI_Smarty {
         }
         $params['options'] = $ci->SystemCategoryModel->load_options($params['category-type'],1,$without_ids,2);
 
-        return self::input_multiselect($params);
+        return self::input_multi_select($params);
     }
 
     static function input_select2($params = null){
