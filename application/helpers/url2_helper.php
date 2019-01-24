@@ -11,10 +11,15 @@ function url_to_edit($uri=null,$editId=0) {
     }
     $ci = get_instance();
     $uri_length = $ci->uri->total_segments();
-    $is_add = $ci->uri->rsegment($uri_length-2);
+    $segment_last = $ci->uri->rsegment($uri_length-1);
+    if( is_numeric($segment_last) || is_null($segment_last) ){
+        $is_add = $ci->uri->rsegment($uri_length-2);
+    } else {
+        $is_add = $ci->uri->rsegment($uri_length-1);
+    }
 
     if( $editId > 0 ){
-        if( $is_add =='add' || $ci->uri->rsegment($uri_length) =='add' ){
+        if( $is_add =='add' ){
             $uri = str_replace(["/add"],'/edit',$uri);
         } else if( $is_add != 'edit' ) {
             $uri .= "/edit";
