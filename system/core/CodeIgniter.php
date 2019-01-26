@@ -380,7 +380,7 @@ $BM->mark('loading_time:_base_classes_end');
 $e404 = FALSE;
 $class = ucfirst($RTR->class);
 $method = $RTR->method;
-
+//dd($RTR);
 if (empty($class) OR !file_exists(APPPATH . 'controllers/' . $RTR->directory . $class . '.php')) {
     $e404 = TRUE;
 } else {
@@ -400,8 +400,11 @@ if (empty($class) OR !file_exists(APPPATH . 'controllers/' . $RTR->directory . $
         $e404 = TRUE;
     }
 }
-//dd($RTR);
+
 if ($e404) {
+    if( env('IS_DEV') ){
+        dd($RTR);
+    }
     if (!empty($RTR->routes['404_override'])) {
         if (sscanf($RTR->routes['404_override'], '%[^/]/%s', $error_class, $error_method) !== 2) {
             $error_method = 'index';

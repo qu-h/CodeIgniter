@@ -39,9 +39,9 @@ function add_temp_val($name="",$val=NULL){
 }
 
 function add_site_structure($name,$title=null,$uri=null){
-    $varname = "site_structure";
+    $varName = "site_structure";
     if( is_null($uri) ){
-        $site_structure = get_instance()->smarty->getTemplateVars($varname);
+        $site_structure = get_instance()->smarty->getTemplateVars($varName);
 
         if( !empty($site_structure) ){
             $last_item = array_pop($site_structure);
@@ -49,9 +49,8 @@ function add_site_structure($name,$title=null,$uri=null){
         } else {
             $uri = $name;
         }
-
     }
-    add_temp_val($varname,['name'=>$name,'title'=>$title,'uri'=>$uri]);
+    add_temp_val($varName,['name'=>$name,'title'=>$title,'uri'=>$uri]);
 }
 
 function get_temp_val($name="",$default=""){
