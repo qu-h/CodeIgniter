@@ -831,6 +831,9 @@ if ( ! function_exists('_stringify_attributes'))
 
 		foreach ($attributes as $key => $val)
 		{
+		    if( is_array($val) ){
+		        $val = implode(" ",$val);
+            }
 			$atts .= ($js) ? $key.'='.$val.',' : ' '.$key.'="'.$val.'"';
 		}
 
