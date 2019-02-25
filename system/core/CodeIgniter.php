@@ -403,6 +403,7 @@ if (empty($class) OR !file_exists(APPPATH . 'controllers/' . $RTR->directory . $
 
 if ($e404) {
     if( env('IS_DEV') ){
+        dd("return 404 page",false,0);
         dd($RTR);
     }
     if (!empty($RTR->routes['404_override'])) {

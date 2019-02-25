@@ -10,8 +10,29 @@ let ckEditerConfig = {
     autoGrow_bottomSpace : 50,
     autoGrow_onStartup: true,
     removePlugins : 'resize',
+    disableAutoInline : true,
 
-    disableAutoInline : true
+    allowedContent : 'img[!src,alt,width,height,data-src,class]{float};', // Note no {width,height}
+    //allowedContent : 'img[!src,!class,class]{*}',
+    disallowedContent : '*[on*]',
+    on: {
+        instanceReady: function (evt ) {
+            console.log('in ready',{evt} );
+            evt.editor.dataProcessor.htmlFilter.addRules( {
+                elements: {
+                    img: function( el ) {
+                        console.log('debug img',{el});
+                        // Add an attribute.
+                        //if ( !el.attributes.alt )
+                            //el.attributes.alt = 'An image';
+
+                        // Add some class.
+                        el.addClass( 'img-responsive2' );
+                    }
+                }
+            } );
+        }
+    }
 
 };
 
@@ -39,7 +60,7 @@ $(document).ready(function() {
     $( '.ict-ckeditor' ).each( function() {
         CKEDITOR.inline( this,ckEditerConfig);
     } );
-    console.log('call me');
+
     // console.log('call me',ckEditerConfig);
     // CKEDITOR.editorConfig = function( config ) {
     //     // Define changes to default configuration here.

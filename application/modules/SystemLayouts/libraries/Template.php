@@ -369,10 +369,8 @@ class Template
 
     /**
      * Which theme are we using here?
-     *
-     * @access    public
-     * @param    string $theme Set a theme for the template library to use
-     * @return    void
+     * @param string $theme Set a theme for the template library to use
+     * @return $this
      */
     public function set_theme($theme = NULL)
     {

@@ -153,10 +153,9 @@ class MX_Router extends CI_Router
                 if ($directory) {
                     /* module sub-directory exists? */
 
-                    if (is_dir($source . $directory . '/')) {
+                    if ( is_dir($source . $directory . '/') ) {
                         $source .= $directory . '/';
                         $this->directory .= $directory . '/';
-
                         /* module sub-directory controller exists? */
                         if ($controller) {
                             if (is_file($source . ucfirst($controller) . $ext)) {
@@ -173,7 +172,17 @@ class MX_Router extends CI_Router
                         $this->located = 2;
                         $segments[1] = ucfirst($segments[1]) . ucfirst($appDir);
                         return array_slice($segments, 1);
+                    } else if (is_file($source . ucfirst($module) . ucfirst($appDir) . $ext)) {
+                        /**
+                         * TODO fix url "word/edit/277" for call module in app directory backend/frontend
+                         */
+                        $this->located = 2;
+                        $segments[0] = ucfirst($module) . ucfirst($appDir);
+                        return $segments;
+
                     } else {
+                        dd("source=$source");
+                        dd('go here');
                         $this->located = -1;
                     }
                 } elseif (is_file($source . ucfirst($module) . ucfirst($appDir) . $ext)) {

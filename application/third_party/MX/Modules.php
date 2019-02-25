@@ -1,7 +1,6 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 (defined('EXT')) OR define('EXT', '.php');
-
 (defined('DS')) OR define('DS', DIRECTORY_SEPARATOR);
 
 global $CFG;
@@ -56,10 +55,12 @@ class Modules
 {
 	public static $routes, $registry, $locations;
 
-	/**
-	* Run a module controller method
-	* Output from module is buffered and returned.
-	**/
+    /**
+     * Run a module controller method
+     * Output from module is buffered and returned.
+     * @param $module
+     * @return false|mixed|string
+     */
 	public static function run($module)
 	{
 		$method = 'index';
@@ -83,7 +84,10 @@ class Modules
 		log_message('error', "MX/Modules ".__LINE__.": Module controller failed to run: {$module}/{$method}");
 	}
 
-	/** Load a module controller **/
+    /**
+     * Load a module controller
+     * @param $module
+     */
 	public static function load($module)
 	{
         if (version_compare(phpversion(), '7.2', '<')) {
@@ -109,7 +113,8 @@ class Modules
             $moduleController = CI::$APP->router->directory;
 			/* controller cannot be located */
 
-			if (empty($class)) return;
+			if (empty($class))
+			    return;
 
 			/* set the module directory */
 			$path = APPPATH.'controllers/'.$moduleController;
@@ -148,7 +153,10 @@ class Modules
 		return self::$registry[$alias];
 	}
 
-	/** Library base class autoload **/
+    /**
+     * Library base class autoload
+     * @param $class
+     */
 	public static function autoload($class)
 	{
 		/* don't autoload CI_ prefixed classes or those using the config subclass_prefix */

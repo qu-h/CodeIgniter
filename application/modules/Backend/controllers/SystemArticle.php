@@ -1,16 +1,22 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Class SystemArticle
+ * @property SystemArticleModel $SystemArticleModel
+ * @property SystemCrawler $SystemCrawler
+ */
 class SystemArticle extends MX_Controller
 {
-
+    var $lazyLoad = false;
     function __construct()
     {
         parent::__construct();
         $this->load->module('layouts');
-//        $this->model->fields = $this->SystemArticleModel->fields();
         if (!function_exists('columns_fields')) {
             $this->load->helper("backend/datatables");
         }
+        $this->load->module('SystemCrawler');
+        // $this->model->fields = $this->SystemArticleModel->fields();
     }
 
     var $table_fields = [
@@ -37,16 +43,18 @@ class SystemArticle extends MX_Controller
 
     var $formView = "backend/article-form";
 
+    /**
+     * @param int $id
+     */
     public function form($id = 0)
     {
         header('X-XSS-Protection:0');
-
         if ($this->input->post()) {
             $crawlerSource = $this->input->post("crawler_source");
 
-            $formdata = array();
+            $formData = [];
             foreach ($this->model->fields as $name => $field) {
-                $this->model->fields[$name]['value'] = $formdata[$name] = $this->input->post($name);
+                $this->model->fields[$name]['value'] = $formData[$name] = $this->input->post($name);
             }
 
             $config['upload_path'] = APPPATH . "/uploads/article/";
@@ -55,14 +63,15 @@ class SystemArticle extends MX_Controller
 
             if ($this->upload->do_upload('imgthumbUpload')) {
                 $upload_data = $this->upload->data();
-                $formdata["imgthumb"] = $upload_data['file_name'];
+                $formData["imgthumb"] = $upload_data['file_name'];
             } else {
                 //$formdata["imgthumb"] = NULL;
                 //bug($this->upload->display_errors());die;
             }
 
             if (!$crawlerSource) {
-                $add = $this->SystemArticleModel->update($formdata);
+
+                $add = $this->SystemArticleModel->update($formData);
                 if ($add) {
                     set_success(lang('Success.'));
                     $newUri = url_to_edit(null, $add);
@@ -94,7 +103,6 @@ class SystemArticle extends MX_Controller
                 $this->model->fields['source']['type'] = 'editable';
                 $this->model->fields['alias']['type'] = 'editable';
             }
-
             foreach ($this->model->fields AS $field => $val) {
                 if (isset($item->$field)) {
                     $this->model->fields[$field]['value'] = $item->$field;
@@ -106,7 +114,7 @@ class SystemArticle extends MX_Controller
         } else {
             set_temp_val('formTitle', lang("Add new"));
         }
-
+        $this->LazyLoadImage();
         $data = array(
             'fields' => $this->model->fields
         );
@@ -133,11 +141,11 @@ class SystemArticle extends MX_Controller
         }
 
         if ($this->input->post()) {
-            $formdata = array();
+            $formData = [];
             foreach ($this->model->fields as $name => $field) {
-                $formdata[$name] = $this->input->post($name);
+                $formData[$name] = $this->input->post($name);
             }
-            if (!empty($formdata) AND ($add = $this->SystemArticleModel->update($formdata))) {
+            if (!empty($formData) AND ($add = $this->SystemArticleModel->update($formData))) {
                 set_error(lang('Success.'));
             }
         }
@@ -156,5 +164,21 @@ class SystemArticle extends MX_Controller
         $newUri = url_to_list();
 
         return redirect($newUri, 'refresh');
+    }
+
+    private function LazyLoadImage(){
+        if( $this->lazyLoad && !empty($this->model->fields) && array_key_exists('content',$this->model->fields) ){
+            $html = $this->model->fields['content']['value'];
+            $htmlDom = str_get_html($html);
+            // Find all images
+            foreach($htmlDom->find('img') as $img){
+                $img->{'data-src'} = $img->src;
+                $img->src = $this->config->item('theme_url').DS."images/no-image.svg";
+                $img->class = "img-responsive";
+                $img->style = null;
+            }
+            $this->model->fields['content']['value'] = $htmlDom->save();
+            //dd($this->model->fields['content']['value']);
+        }
     }
 }

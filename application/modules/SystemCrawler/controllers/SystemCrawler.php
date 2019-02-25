@@ -1,5 +1,9 @@
 <?php if (! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Class SystemCrawler
+ * @property CrawlerMask_Model $CrawlerMask_Model
+ */
 class SystemCrawler extends MX_Controller
 {
     function __construct()
