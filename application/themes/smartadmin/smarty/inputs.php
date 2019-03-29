@@ -48,7 +48,6 @@ class SmartadminInputs extends CI_Smarty
         if (isset($params['note']) && strlen($params['note']) > 0) {
             $html .= '<div class="note">' . lang($params['note']) . '</div>';
         }
-        //return '<div class="row"><section>' . $html . '</section></div>';
         return '<section>' . $html . '</section>';
     }
 
