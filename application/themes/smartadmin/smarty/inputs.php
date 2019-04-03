@@ -135,7 +135,12 @@ class SmartadminInputs extends CI_Smarty
             return NULL;
 
         if ( empty($field) || !is_array($field) || is_null($field) || !array_key_exists('type', $field)) {
-            $field['type'] = 'text';
+            if( !is_array($field) ){
+                $field = ['type' => 'text','placeholder'=>ucfirst($name)];
+            } else {
+                $field['type'] = 'text';
+            }
+
             switch ($name){
                 case 'tags':
                     $field['type'] = 'tags';
@@ -155,9 +160,15 @@ class SmartadminInputs extends CI_Smarty
             $field['label'] = ucfirst($name);
         }
 
-        if (isset($field['label']) && ! isset($field['placeholder'])) {
-            $field['placeholder'] = $field['label'];
+        if( ! isset($field['placeholder']) ){
+            if (isset($field['label']) ) {
+                $field['placeholder'] = $field['label'];
+            } else {
+                $field['placeholder'] = ucfirst($name);
+            }
         }
+
+
         $field['name'] = $name;
 
         if( isset($field['icon']) ){

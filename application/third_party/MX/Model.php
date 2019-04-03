@@ -67,9 +67,8 @@ class MX_Model extends CI_Model
         return $row;
     }
 
-    function items_json($fields)
+    function items_json($fields=[])
     {
-        $fieldSelect = '';
         foreach ($fields AS $i=>$k){
             if( !array_key_exists($k,$this->fields) ){
                 unset($fields[$i]);
