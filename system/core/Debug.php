@@ -13,18 +13,23 @@ if (!function_exists('bug')) {
     }
 }
 
-function dd($value,$die=null,$traceFull = false){
+function dd($value,$die=null,$traceStep = 2){
     $backtrace = debug_backtrace();
     if( count($backtrace) > 0 ) {
-        if( $traceFull ){
+        if( $traceStep ){
             krsort($backtrace);
         } else {
             $backtraceLast = $backtrace[0];
             $backtrace = [$backtraceLast];
         }
-        if( $traceFull > 0 ){
+        if( $traceStep > 0 ){
+            $count = 1;
             bug("=========================================BEGIN BACK-TRACE",false);
             foreach ($backtrace AS $b){
+                if( $count > $traceStep ){
+                    break;
+                }
+
                 $file = $b['file'];
                 $file = str_replace(BASEPATH,'[BASEPATH]',$file);
                 $file = str_replace(BASEPATH,'[BASEPATH]',$file);
@@ -32,7 +37,7 @@ function dd($value,$die=null,$traceFull = false){
                 $class = array_key_exists('class',$b) ? $b['class'] : null;
                 $function = array_key_exists('function',$b) ? $b['function'] : null;
 
-
+                $count++;
                 bug($file."[$line]",false);
             }
             bug("========================================================END BACK-TRACE",false);

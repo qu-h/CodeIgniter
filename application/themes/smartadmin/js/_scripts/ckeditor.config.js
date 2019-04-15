@@ -12,25 +12,13 @@ let ckEditerConfig = {
     removePlugins : 'resize',
     disableAutoInline : true,
 
-    allowedContent : 'img[!src,alt,width,height,data-src,class]{float};', // Note no {width,height}
-    //allowedContent : 'img[!src,!class,class]{*}',
-    disallowedContent : '*[on*]',
+    //allowedContent : 'img[!src,alt,width,height,data-src,class]{float};', // Note no {width,height}
+    ignoreEmptyParagraph: false,
+    allowedContent : true,
+    extraAllowedContent : '*(*)',
+    //disallowedContent : '*[on*]',
     on: {
         instanceReady: function (evt ) {
-            console.log('in ready',{evt} );
-            evt.editor.dataProcessor.htmlFilter.addRules( {
-                elements: {
-                    img: function( el ) {
-                        console.log('debug img',{el});
-                        // Add an attribute.
-                        //if ( !el.attributes.alt )
-                            //el.attributes.alt = 'An image';
-
-                        // Add some class.
-                        el.addClass( 'img-responsive2' );
-                    }
-                }
-            } );
         }
     }
 

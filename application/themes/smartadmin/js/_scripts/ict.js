@@ -16,6 +16,7 @@ $( document ).ready(function() {
 
     });
 	pasteClipboard();
+	footerFixed();
 });
 
 function pasteClipboard() {
@@ -32,6 +33,20 @@ function pasteClipboard() {
 				})
 		});
 	}
+}
+
+function footerFixed() {
+	var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer").get(0);
+	$(footer).css({'position':'absolute','top':0,'width':'100%'});
+
+	$(window).scroll(function() {
+		var footerToTop = $(window).scrollTop() + $(window).height() - footer.offsetHeight - contentArea.offset().top;
+		if ( footerToTop > 0  ) {
+			$(footer).css('top',footerToTop);
+		} else {
+			$(footer).css('top',0);
+		}
+	});
 
 }
 

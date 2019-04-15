@@ -4,6 +4,8 @@
  * Class SystemArticle
  * @property SystemArticleModel $SystemArticleModel
  * @property SystemCrawler $SystemCrawler
+ * @property SystemArticleModel $model
+ * @property CI_Upload $upload
  */
 class SystemArticle extends MX_Controller
 {
@@ -85,7 +87,8 @@ class SystemArticle extends MX_Controller
             } else {
                 $check = $this->model->where('source',$crawlerSource);
                 if( ($row = $check->get_row()) != null ){
-                    $uriEdit = url_to_edit(null, $row->id);
+//                    $uriEdit = url_to_edit(null, $row->id);
+                    $uriEdit  = "article/edit/".$row->id;
                     set_error('Dupplicate Article ' .  anchor($uriEdit, $row->title));
                     redirect($uriEdit);
                 } else {
@@ -100,8 +103,8 @@ class SystemArticle extends MX_Controller
         } else {
             $item = $this->model->get_item_by_id($id);
             if ($id > 0) {
-                $this->model->fields['source']['type'] = 'editable';
-                $this->model->fields['alias']['type'] = 'editable';
+                $this->model->fields['source']['type'] = 'source_link';
+                $this->model->fields['alias']['type'] = env('ARTICLE_SITE') ? 'news_link': 'editable';
             }
             foreach ($this->model->fields AS $field => $val) {
                 if (isset($item->$field)) {
@@ -172,9 +175,12 @@ class SystemArticle extends MX_Controller
             $htmlDom = str_get_html($html);
             // Find all images
             foreach($htmlDom->find('img') as $img){
-                $img->{'data-src'} = $img->src;
-                $img->src = $this->config->item('theme_url').DS."images/no-image.svg";
-                $img->class = "img-responsive";
+                //$img->{'data-src'} = $img->src;
+                //$img->src = $this->config->item('theme_url').DS."images/no-image.svg";
+                if( !isset($img->class) || strpos('img-fluid',$img->class) < 0 ){
+                    $img->class = "img-fluid img-thumbnail text-center";
+                }
+
                 $img->style = null;
             }
             $this->model->fields['content']['value'] = $htmlDom->save();

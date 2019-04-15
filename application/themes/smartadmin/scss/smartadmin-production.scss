@@ -6,9 +6,9 @@
  */
 
 // Core variables and mixins
-@import "variables";
+@import "sub/variables";
 @import "bootstrap/mixins";
-@import "custom"; // custom variable overrides
+@import "sub/custom"; // custom variable overrides
 
 // Plugins have been moved to "smartadmin-production-plugins.less" file (because IE cannot handle more than 4096 selectors in a stylesheet)
 
@@ -62,10 +62,10 @@
 @import "smartadmin/top-menu";
 @import "smartadmin/no-menu";
 
-@import "smartadmin-production-plugins";
-@import "smartadmin-skins";
+@import "sub/smartadmin-production-plugins";
+@import "sub/smartadmin-skins";
 
 // Overrides
-@import "overrides";
+@import "sub/overrides";
 @import "smartadmin/bootstrap_quannh";
 

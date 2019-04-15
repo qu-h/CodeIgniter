@@ -100,7 +100,6 @@ class CI_Smarty extends SmartyBC {
 		} else {
             $this->assign("tplPath", $path);
         }
-
         $this->addTemplateDir($path);
 		return parent::fetch("$path$_view");
     }
@@ -110,7 +109,6 @@ class CI_Smarty extends SmartyBC {
         list($view, $path) = Modules::is_file_in_dir($dirDefault, $resource_name,true );
         $smarty = get_instance()->smarty;
         if( $view ){
-//            bug("$resource_name path:$path$view");
             return $smarty->fetch("$path$view",$data);
         }
     }

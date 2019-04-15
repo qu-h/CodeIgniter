@@ -487,4 +487,18 @@ class SmartadminInputs extends CI_Smarty
         return parent::fetchView("inputs/editable",$params);
     }
 
+    static function input_news_link($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if (strlen($name) < 1)
+            return NULL;
+        return parent::fetchView("inputs/news_link",$params);
+    }
+
+    static function input_source_link($params){
+        $name = isset($params['name']) ? $params['name'] : NULL;
+        if (strlen($name) < 1)
+            return NULL;
+        return parent::fetchView("inputs/source_link",$params);
+    }
+
 }
