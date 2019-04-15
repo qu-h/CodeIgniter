@@ -519,6 +519,10 @@ class MX_Loader extends CI_Loader
 //            bug($ci->smarty->registered_plugins['function'],'bug smarty');
         }
     }
+
+    public function getModule(){
+        return $this->_module;
+    }
 }
 
 /** load the CI class for Modular Separation **/

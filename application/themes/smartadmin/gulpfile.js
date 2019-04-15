@@ -1,16 +1,17 @@
-var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    concat = require('gulp-concat'),
+const gulp = require("gulp"),
+    sass = require("gulp-sass"),
+    concat = require("gulp-concat"),
     // uglifyes = require('uglify-es'),
     // composer = require('gulp-uglify/composer'),
     //uglify = composer(uglifyes, console),
     // uglify = require('gulp-uglify'),
-    gutil = require('gulp-util');
+    gutil = require("gulp-util");
+
 var resourcePath = 'D:\\WWW\\CI-3.0.1/application/themes/smartadmin/';
 var gitPublicResource = 'D:\\WWW\\sites-template-git/smart-admin';
 
 // Minifies SCSS
-gulp.task('sass', function() {
+gulp.task("sass", function() {
     return gulp.src(resourcePath+'scss/*.scss') // Gets all files ending with .scss in app/scss and children dirs
         // .pipe(uglify({mangle: false}))
         .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })

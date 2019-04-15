@@ -1,6 +1,5 @@
 <?php
 
-$domain = "http://ci-3-0-1.loc/smartadmin";
 $config['theme_dir'] = BASE_APP_PATH."themes/smartadmin/";
 $config['theme_url'] = env('ASSETS_GIT_PATH')."/sites-template/smart-admin/";
 $config['css'] = array(

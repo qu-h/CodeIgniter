@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * Class MX_Model
+ * @property CI_DB_query_builder $db
+ */
 class MX_Model extends CI_Model
 {
     public $limit = 50, $page = 1;
     public $table = NULL;
     var $search, $orders = [];
-    var $tableFields = [];
+    var $tableFields, $fields = [];
 
     public function __construct()
     {
@@ -49,6 +53,10 @@ class MX_Model extends CI_Model
         }
     }
 
+    public function fields(){
+        return $this->fields;
+    }
+
     function row_get($id = 0, $table = null)
     {
         if (strlen($table) < 0) {
@@ -59,13 +67,39 @@ class MX_Model extends CI_Model
         return $row;
     }
 
+    function items_json($fields=[])
+    {
+        foreach ($fields AS $i=>$k){
+            if( !array_key_exists($k,$this->fields) ){
+                unset($fields[$i]);
+            }
+        }
+
+        $this->db->from($this->table)->select(implode(',',$fields));
+
+        if ($this->search) {
+            foreach ($fields AS $field){
+                $this->db->like($field, $this->search);
+            }
+        }
+
+        if ($this->orders) {
+            foreach ($this->orders AS $o) {
+                $this->db->order_by($o[0], $o[1]);
+            }
+        } else {
+            $this->db->order_by('id DESC');
+        }
+        return $this->dataTableJson();
+    }
+
     function dataTableJson($db = null)
     {
         if (is_null($db)) {
             $db = $this->db;
         }
-        $tempdb = clone $db;
-        $num_rows = $tempdb->count_all_results();
+        $tempDb = clone $db;
+        $num_rows = $tempDb->count_all_results();
         $query = $db->limit($this->limit, $this->offset)->get();
         $data = $query->result_array();
 
@@ -73,8 +107,8 @@ class MX_Model extends CI_Model
     }
 
     protected function count_ajax(){
-        $tempdb = clone $this->db;
-        return $tempdb->count_all_results();
+        $tempDb = clone $this->db;
+        return $tempDb->count_all_results();
     }
 
 
@@ -135,6 +169,34 @@ class MX_Model extends CI_Model
         }
     }
 
+    public function updateRow($data,$id=0){
+        if( array_key_exists('id',$data) ){
+            $id = $data['id'];
+        }
+
+        if (!isset($data['id']) || strlen($data['id']) < 1) {
+            $data['id'] = 0;
+        }
+
+        $this->db->from($this->table)->where('id',$id);
+
+        if( $this->db->count_all_results() < 1 ){
+            $this->db->insert($this->table, $data);
+            $id = $this->db->insert_id();
+            set_success('Success add new data.');
+        } else {
+            $this->db->where('id',$id)->update($this->table,$data);
+            set_success('Success Update data.');
+        }
+        return $id;
+    }
+
+
+    /**
+     * @param $params
+     * @param null $value
+     * @return $this
+     */
     public function where($params, $value = NULL)
     {
         if (is_string($params)) {
@@ -232,5 +294,18 @@ class MX_Model extends CI_Model
         return $query->row_array();
     }
 
+
+
+    public function findRow($id){
+        $this->db->from($this->table)->where('id',$id);
+
+        $tempDb = clone $this->db;
+
+        if( $tempDb->count_all_results() > 0 ){
+            return $this->db->get()->row();
+        } else {
+            return [];
+        }
+    }
 
 }
