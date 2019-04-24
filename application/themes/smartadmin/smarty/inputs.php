@@ -1,7 +1,7 @@
 <?php
 class SmartadminInputs extends CI_Smarty
 {
-    static function row_input($params = null, $template=null)
+    static function row_input($params = null)
     {
         if (! isset($params['html']) || strlen($params['html']) < 1)
             return NULL;
@@ -13,6 +13,9 @@ class SmartadminInputs extends CI_Smarty
 
         $type_input = isset($params['class_type']) ? $params['class_type'] : 'input';
 
+        if( array_key_exists('show-label',$params) ){
+            $html .= '<label class="label">'.$params['label'].'</label>';
+        }
         $html .= '<label class="' . $type_input . '">';
 
         if (isset($params['icon']) && strlen($params['icon']) > 0) {
@@ -156,7 +159,7 @@ class SmartadminInputs extends CI_Smarty
 
         if( array_key_exists('label',$params) ){
             $field['label'] = $params['label'];
-        } else if ( isset($field['label'])  ) {
+        } else if ( !array_key_exists('label',$field) ) {
             $field['label'] = ucfirst($name);
         }
 
@@ -167,7 +170,6 @@ class SmartadminInputs extends CI_Smarty
                 $field['placeholder'] = ucfirst($name);
             }
         }
-
 
         $field['name'] = $name;
 
@@ -183,6 +185,10 @@ class SmartadminInputs extends CI_Smarty
             $field['icon'] = $icon;
         }
 
+        if( array_key_exists('show-label',$params) ){
+            $field['show-label'] = $params['show-label'];
+        }
+
         $params['field'] = $field;
 
         $input_func = "input_" . $field['type'];
@@ -190,7 +196,6 @@ class SmartadminInputs extends CI_Smarty
         $function_registered = $template->registered_plugins['function'];
         if (array_key_exists($input_func, $function_registered)) {
             return call_user_func_array($function_registered[$input_func][0],array($params['field'],$template));
-
         } else {
             return self::input_text($params['field']);
         }
@@ -240,7 +245,7 @@ class SmartadminInputs extends CI_Smarty
         }
     }
 
-    static function input_lable(array $params){
+    static function input_label(array $params){
         if (! isset($params['html']) || strlen($params['html']) < 1)
             return NULL;
 
@@ -396,7 +401,6 @@ class SmartadminInputs extends CI_Smarty
             return self::row_input($params);
         }
         return self::row_input($params);
-//        return self::input_lable($params);
     }
 
     static function input_MultiImage($params)
