@@ -848,16 +848,14 @@ class Template
 
                         foreach ($methods as $plugin) {
                             $registered_plugins = $this->_ci->smarty->registered_plugins;
-                            if (strpos($plugin->name, 'modifier_') === 0) {
+                            if (strpos($plugin->name, 'modifier_') === 0 ) {
                                 $func_name = substr($plugin->name, strlen("modifier_"));
-                                $this->_ci->smarty->registerPlugin('modifier', $func_name, $className . '::' . $plugin->name);
-                            } else {
-                                if (!isset($registered_plugins['function'])
-                                    ||
-                                    !array_key_exists($plugin->name, $registered_plugins['function'])
-                                ) {
-                                    $this->_ci->smarty->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
+                                if( !array_key_exists('modifier',$registered_plugins) || !array_key_exists($func_name,$registered_plugins['modifier']) ){
+                                    $this->_ci->smarty->registerPlugin('modifier', $func_name, $className . '::' . $plugin->name);
                                 }
+
+                            } else if (!isset($registered_plugins['function']) || !array_key_exists($plugin->name, $registered_plugins['function']) ) {
+                                $this->_ci->smarty->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
                             }
 
                         }
