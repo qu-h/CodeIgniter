@@ -3,6 +3,7 @@
 /**
  * Class MX_Model
  * @property CI_DB_query_builder $db
+ * @property CI_Loader $load
  */
 class MX_Model extends CI_Model
 {
@@ -69,6 +70,9 @@ class MX_Model extends CI_Model
 
     function items_json($fields=[])
     {
+        if( !$this->table ){
+            return [];
+        }
         foreach ($fields AS $i=>$k){
             if( !array_key_exists($k,$this->fields) ){
                 unset($fields[$i]);
@@ -126,7 +130,7 @@ class MX_Model extends CI_Model
 
         $query = $db->limit($this->limit, $this->limit * ($page - 1))->get();
         $data = $query->result_array();
-
+//dd($db->last_query());
         $pageTotal = round($itemTotal / $this->limit, 0, PHP_ROUND_HALF_UP);
 
         set_temp_val("pagination", ['total' => $itemTotal, 'page_last' => $pageTotal, 'limit' => $this->limit, 'current' => $page]);
@@ -204,7 +208,16 @@ class MX_Model extends CI_Model
         } elseif (is_array($params)) {
             $this->db->where($params);
         }
+        return $this;
+    }
 
+    public function where_like($params, $value = NULL)
+    {
+        if (is_string($params)) {
+            $this->db->like($params, $value);
+        } elseif (is_array($params)) {
+            $this->db->like($params);
+        }
         return $this;
     }
 
@@ -214,7 +227,6 @@ class MX_Model extends CI_Model
         $query = $this->db->get();
         return $query->num_rows();
     }
-
 
     public function page($number = 1)
     {
@@ -293,8 +305,6 @@ class MX_Model extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
-
-
 
     public function findRow($id){
         $this->db->from($this->table)->where('id',$id);
