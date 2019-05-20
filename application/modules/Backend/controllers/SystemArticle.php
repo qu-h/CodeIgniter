@@ -24,10 +24,10 @@ class SystemArticle extends MX_Controller
     var $table_fields = [
         'id' => array("#", 5, true, 'text-center'),
         'title' => array("Title", 30),
-        'category_name' => array("Category", 10),
+        'category_name' => array("Category", 10,false,'hidden-sm hidden-xs'),
         'source' => ['Source', 5, false, 'text-center'],
-        'tag_names' => ['Keywords', 10, false],
-        'news_actions' => array('', 5, false),
+        'tag_names' => ['Keywords', 10, false,'hidden-xs'],
+        'news_actions' => array('', 5, false,'hidden-xs'),
     ];
 
     function items()
@@ -171,6 +171,9 @@ class SystemArticle extends MX_Controller
 
     private function LazyLoadImage(){
         if( $this->lazyLoad && !empty($this->model->fields) && array_key_exists('content',$this->model->fields) ){
+            if( array_key_exists('value',$this->model->fields['content']) != true ){
+                return;
+            }
             $html = $this->model->fields['content']['value'];
             $htmlDom = str_get_html($html);
             // Find all images

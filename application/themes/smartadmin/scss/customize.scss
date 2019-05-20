@@ -55,7 +55,7 @@ img.maxw_50 {
 }
 
 .br0 {
-  border-radius: 0px !important;
+  border-radius: 0 !important;
 }
 
 .br-dashed {
@@ -69,7 +69,8 @@ img.maxw_50 {
 
 .table>tbody>tr>td {
   vertical-align:middle;
-  button.btn {
+  button.btn,
+  a.btn {
     margin: 5px;
   }
 

@@ -1,22 +1,63 @@
 /**
  *
  */
+var ict = {
+	init:function(){
+		this.footerFixed();
+		this.summerNote();
+		this.crawlerActions();
+	},
+	footerFixed:function(){
+		var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer");
+		if( footer.length > 0 ){
+			footer = footer.get(0);
+			$(footer).css({'position':'absolute','top':0,'width':'100%'});
+
+			$(window).scroll(function() {
+				var footerToTop = $(window).scrollTop() + $(window).height() - footer.offsetHeight - contentArea.offset().top;
+				if ( footerToTop > 0  ) {
+					$(footer).css('top',footerToTop);
+				} else {
+					$(footer).css('top',0);
+				}
+			});
+		}
+	},
+	summerNote:function () {
+		$('.summernote').each(function () {
+			var target = $(this);
+			if( target.is('textarea') ){
+				target.summernote({
+					onKeyup: function (e) {
+						target.val($(this).code());
+						target.change(); //To update any action binded on the control
+					}
+				});
+			}
+
+		});
+	},
+
+	crawlerActions:function () {
+		$('input[type=text][name=source]').on('keydown', function(e) {
+			var input = $(this), group = input.parents('.input-crawler');
+			if( group.length > 0 ){
+				var btnCrawler = group.find('.btn.data-crawler');
+				if( btnCrawler.length > 0 ){
+					if ($(this).val().length > 0 && e.keyCode === 67 && e.ctrlKey === true) {
+						btnCrawler.click();
+						e.preventDefault();
+					}
+				}
+			}
+
+		});
+	}
+};
 
 $( document ).ready(function() {
-    $('.summernote').each(function () {
-	var target = $(this);
-	if( target.is('textarea') ){
-	    target.summernote({
-		onKeyup: function (e) {
-		    target.val($(this).code());
-		    target.change(); //To update any action binded on the control
-		}
-	    });
-	}
-
-    });
 	pasteClipboard();
-	footerFixed();
+	ict.init();
 });
 
 function pasteClipboard() {
@@ -34,19 +75,3 @@ function pasteClipboard() {
 		});
 	}
 }
-
-function footerFixed() {
-	var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer").get(0);
-	$(footer).css({'position':'absolute','top':0,'width':'100%'});
-
-	$(window).scroll(function() {
-		var footerToTop = $(window).scrollTop() + $(window).height() - footer.offsetHeight - contentArea.offset().top;
-		if ( footerToTop > 0  ) {
-			$(footer).css('top',footerToTop);
-		} else {
-			$(footer).css('top',0);
-		}
-	});
-
-}
-

@@ -67,6 +67,12 @@
                                 tables.url = '{$data_json_url}';
                                 tables.columns = [{$columns_fields}];
                                 tables.columnDefs = [
+									{ "targets": 1, "render": function ( data, type, row, meta ) {
+											if( row.title !== null ){
+												return "<a href=\"article/edit/%s\">%s</a>".format(row.id,row.title);
+											}
+											return null;
+									}},
                                     { "targets": 2, "render": function ( data, type, row, meta ) {
 										if( row.category_name !== null ){
 											return '<a href="?category-id='+row.category_id+'">'+row.category_name+'</a>';
@@ -96,7 +102,7 @@
 										let control = '';
 										control += '<button class="btn btn-xs btn-default" data-action="edit"><i class="fa fa-pencil"></i></button>';
 										control += '<button class="btn btn-xs btn-default" data-action="delete"><i class="fa fa-times text-danger"></i></button>';
-										control += '<a class="btn btn-xs btn-default" href="'+site_news+'/'+row.alias+'" target="_blank" ><i class="fa fa-globe text-primary"></i></a>';
+										//control += '<a class="btn btn-xs btn-default" href="'+site_news+'/'+row.alias+'" target="_blank" ><i class="fa fa-globe text-primary"></i></a>';
 										return control;
 									}}
                                 ];
