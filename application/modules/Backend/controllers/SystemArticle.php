@@ -52,6 +52,7 @@ class SystemArticle extends MX_Controller
     {
         header('X-XSS-Protection:0');
         if ($this->input->post()) {
+            dd('pst porm');
             $crawlerSource = $this->input->post("crawler_source");
 
             $formData = [];

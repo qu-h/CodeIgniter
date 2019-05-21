@@ -46,13 +46,14 @@ class SmartadminInput_select extends CI_Smarty {
     }
     static function input_tags($params = null)
     {
-        $ci = get_instance();
-        $ci->load->model('SystemTag/SystemTagModel');
-        if( !array_key_exists('tag-type',$params) ){
-            $params['tag-type'] = FALSE;
-        }
-        $params['options'] = $ci->SystemTagModel->load_options(1,[],2);
-        return self::input_select2($params);
+//        $ci = get_instance();
+//        $ci->load->model('SystemTag/SystemTagModel');
+//        if( !array_key_exists('tag-type',$params) ){
+//            $params['tag-type'] = FALSE;
+//        }
+//        $params['options'] = $ci->SystemTagModel->load_options(1,[],2);
+        //return self::input_select2($params);
+        return parent::fetchView("inputs/tags-input",$params);
     }
 
     static function input_multiple_image($params = null){

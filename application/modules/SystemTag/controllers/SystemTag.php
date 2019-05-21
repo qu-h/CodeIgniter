@@ -49,4 +49,11 @@ class SystemTag extends MX_Controller {
         $this->formFill($id);
         temp_view("Tag/form",['fields'=>$this->fields]);
     }
+
+    public function typeHead(){
+        $data = ["aaaa","bbb"];
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
+    }
 }

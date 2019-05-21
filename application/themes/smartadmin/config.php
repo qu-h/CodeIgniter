@@ -15,7 +15,11 @@ $config['css'] = array(
 //    "$domain/css/ict.css",
 //     "//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"
 
-    'styles.min.css'
+    'styles.min.css',
 );
 
-$config['js'] = [ 'smart-admin-ict.js'];
+$config['js'] = [
+    'smart-admin-ict.js'
+];
+$config['js'][] =     git_assets('bootstrap-tagsinput.js','bootstrap/plugins/tags-input',null,null,false);
+$config['js'][] =     git_assets('typeahead.bundle.min.js','typeahead','0.11.1',null,false);

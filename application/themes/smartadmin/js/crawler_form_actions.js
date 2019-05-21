@@ -1,5 +1,6 @@
 
 $( document ).ready(function() {
+
     var crawlerGet = function(input){
         console.log(' call crawler get',input);
         if(input && input[0].tagName === "INPUT"){
