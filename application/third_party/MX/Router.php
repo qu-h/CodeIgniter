@@ -148,7 +148,7 @@ class MX_Router extends CI_Router
             }
             if (is_dir($source = $location . $module . '/controllers/')) {
                 $this->module = $module;
-                $this->directory = $offset . $module . '/controllers/';
+                $this->directory = Modules::getRealPathApp($source);
                 /* module sub-controller exists? */
                 if ($directory) {
                     /* module sub-directory exists? */
@@ -203,7 +203,6 @@ class MX_Router extends CI_Router
             return;
         }
 
-
         /* application sub-directory controller exists? */
         if ($directory) {
             if (is_file(APPPATH . 'controllers/' . $module . '/' . ucfirst($directory) . $ext)) {
@@ -241,7 +240,6 @@ class MX_Router extends CI_Router
         if (!empty($_route)) {
             // Are module/directory/controller/method segments being specified?
             $sgs = sscanf($_route, '%[^/]/%[^/]/%[^/]/%s', $module, $directory, $class, $method);
-
             // set the module/controller directory location if found
             if ($this->locate(array($module, $directory, $class))) {
                 //reset to class/method

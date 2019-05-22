@@ -380,8 +380,11 @@ $BM->mark('loading_time:_base_classes_end');
 $e404 = FALSE;
 $class = ucfirst($RTR->class);
 $method = $RTR->method;
-//dd($RTR);
+
 if (empty($class) OR !file_exists(APPPATH . 'controllers/' . $RTR->directory . $class . '.php')) {
+    if( env('IS_DEV') ) {
+        dd("file php require : [" . APPPATH . 'controllers/' . $RTR->directory . $class . '.php' . "]",false);
+    }
     $e404 = TRUE;
 } else {
     require_once(APPPATH . 'controllers/' . $RTR->directory . $class . '.php');

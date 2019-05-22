@@ -46,7 +46,7 @@ class SystemTagModel extends MX_Model
         return $fields;
     }
 
-    function dataTableJson($group_id = 0)
+    function items_json($group_id = 0)
     {
         $this->db->select("w.id, w.word, w.status, w.rate, '' AS actions")->from($this->table . " AS w");
         if ($group_id !== null) {
@@ -54,7 +54,11 @@ class SystemTagModel extends MX_Model
         }
         $this->db->where("(w.status <> -1 OR w.status IS NULL)");
 
-        return parent::dataTableJson($this->db);
+        if ($this->search) {
+            $this->db->like('LOWER(w.word)', strtolower($this->search));
+        }
+
+        return $this->dataTableJson();
     }
 
     function update($data){
@@ -72,7 +76,7 @@ class SystemTagModel extends MX_Model
         }
 
         if( $this->isExist(['alias'=>$data['alias'],'group_id'=>$data['group_id']],$data['id']) ){
-            set_error('Dupplicate Article');
+            set_error('Duplicate Alias');
             return false;
         } elseif( intval($data['id']) > 0 ) {
             $data['modified_date'] = date("Y-m-d H:i:s");

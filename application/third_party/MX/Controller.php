@@ -46,9 +46,10 @@ require dirname(__FILE__).'/Base.php';
 class MX_Controller
 {
 	public $autoload = array();
-	var $model;
+	var $model, $load;
     var $url_suffix = 'html';
-    var $msg = [];
+    var $msg, $fields = [];
+
 	public function __construct()
 	{
 		$class = str_replace(CI::$APP->config->item('controller_suffix'), '', get_class($this));
@@ -94,7 +95,7 @@ class MX_Controller
     }
 
     private function fieldFillRow($id){
-        $item = $this->model->get($id);
+        $item = $this->model->where('id',$id)->get_row();
         foreach ($this->fields AS $field=>$val){
             if( isset($item->$field) ){
                 $this->fields[$field]['value']=$item->$field;
