@@ -434,7 +434,6 @@ class Modules
     }
 
     static function getRealPathApp($path){
-        dd("realPath : $path | app : ".APPPATH,false);
 	    $from = str_replace([DIRECTORY_SEPARATOR,"\\"],DS,APPPATH);
 	    $from = realpath($from);
 	    $from = explode(DS,$from);
@@ -442,8 +441,8 @@ class Modules
         $path = realpath($path);
         $path = explode(DS,$path);
 
-
         $modulePath = $diff = "";
+
         foreach ($path AS $index=>$name){
             if( array_key_exists($index,$from) && $from[$index] == $name ){
 
@@ -454,9 +453,12 @@ class Modules
                 }
             }
         }
-        $diffPath = $diff.$modulePath;
+
+        $modulePath = substr($modulePath, 1);
+        $diffPath = $diff.$modulePath.DS;
+
         if( is_dir(APPPATH.$diffPath) ){
-            return "../../$diffPath";
+            return "../$diffPath";
         }
 
         return false;

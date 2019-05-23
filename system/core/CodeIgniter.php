@@ -383,6 +383,7 @@ $method = $RTR->method;
 
 if (empty($class) OR !file_exists(APPPATH . 'controllers/' . $RTR->directory . $class . '.php')) {
     if( env('IS_DEV') ) {
+        dd('directory '.$RTR->directory,false,0);
         dd("file php require : [" . APPPATH . 'controllers/' . $RTR->directory . $class . '.php' . "]",false);
     }
     $e404 = TRUE;

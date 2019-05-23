@@ -139,6 +139,8 @@ class MX_Router extends CI_Router
 
         /* check modules */
         foreach (Modules::$locations as $location => $offset) {
+            $offset = Modules::getRealPathApp($location);
+
             $location = realpath($location) . DS;
             list($moduleFolder, $moduleReadPath) = Modules::is_file_in_dir($location, $module);
 
@@ -148,7 +150,9 @@ class MX_Router extends CI_Router
             }
             if (is_dir($source = $location . $module . '/controllers/')) {
                 $this->module = $module;
-                $this->directory = Modules::getRealPathApp($source);
+                //$this->directory = Modules::getRealPathApp($source);
+                $this->directory = $offset . $module . '/controllers/';
+
                 /* module sub-controller exists? */
                 if ($directory) {
                     /* module sub-directory exists? */
