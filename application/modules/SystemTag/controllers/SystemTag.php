@@ -38,6 +38,7 @@ class SystemTag extends MX_Controller {
      * @param int $id
      * @return bool|void
      */
+    var $uriForm = "keyword/%s/%d";
     public function form($id=0){
         $fields = $this->fields;
         if( $this->input->post() ){
@@ -52,8 +53,8 @@ class SystemTag extends MX_Controller {
             }
             $add = $this->SystemTagModel->update($formData);
             if( $add ){
-                $newUri = url_to_edit(null,$add);
-                redirect($newUri, 'refresh');
+                $uriEdit  = sprintf($this->uriForm,'edit',$add);
+                redirect($uriEdit, 'refresh');
                 return false;
             }
         }

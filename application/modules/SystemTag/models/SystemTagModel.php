@@ -20,7 +20,7 @@ class SystemTagModel extends MX_Model
             'icon' => 'link'
         ),
         'group_id' => array(
-            'type' => 'multiselect',
+            'type' => 'select_category_tag',
             'icon' => 'list',
             'value' => 0
         ),
@@ -75,6 +75,10 @@ class SystemTagModel extends MX_Model
             $data['status'] = 0;
         }
 
+        if( !isset($data['group_id']) || $data['group_id'] === null ){
+            $data['group_id'] = 0;
+        }
+
         if( $this->isExist(['alias'=>$data['alias'],'group_id'=>$data['group_id']],$data['id']) ){
             set_error('Duplicate Alias');
             return false;
@@ -108,7 +112,7 @@ class SystemTagModel extends MX_Model
             $this->db->where_not_in('k.id',$using_id);
         }
 
-        if( $status ){
+        if( $status !== null ){
             $this->db->where('k.status',$status);
         }
 
