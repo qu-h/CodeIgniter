@@ -48,11 +48,14 @@ class SystemTagModel extends MX_Model
 
     public function get_row(){
         $row = parent::get_row();
-        $row->group_id = [];
-        $categories = $query = $this->db->where('children',$row->id)->get("keywords_category");
-        if( $categories->num_rows() > 0 ) foreach ($categories->result() AS $cate){
-            $row->group_id [] = $cate->parent;
+        if( $row ){
+            $row->group_id = [];
+            $categories = $query = $this->db->where('children',$row->id)->get("keywords_category");
+            if( $categories->num_rows() > 0 ) foreach ($categories->result() AS $cate){
+                $row->group_id [] = $cate->parent;
+            }
         }
+
         return $row;
     }
 
@@ -133,7 +136,7 @@ class SystemTagModel extends MX_Model
 
     private function update_category($id,$categories=[]){
         $query = $this->db->where('children',$id)->get("keywords_category");
-        if( $query->num_rows() < 1 ) foreach ($categories AS $cate){
+        if( $query->num_rows() < 1 && !empty($categories) ) foreach ($categories AS $cate){
             $data = ['children'=>$id,'parent'=>$cate];
             $this->db->insert("keywords_category",$data);
         } else {

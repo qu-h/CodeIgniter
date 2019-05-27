@@ -44,7 +44,6 @@ var ict = {
 			if( group.length > 0 ){
 				var btnCrawler = group.find('.btn.data-crawler');
 				if( btnCrawler.length > 0 ){
-					alert('submit crawler');
 					if ($(this).val().length > 0 && e.keyCode === 67 && e.ctrlKey === true) {
 						btnCrawler.click();
 						e.preventDefault();
