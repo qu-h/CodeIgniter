@@ -21,14 +21,13 @@ class SmartadminInput_check extends CI_Smarty {
             $params['checked'] = 'checked';
         }
 
-        //$input = '<input '._stringify_attributes($inputAttributes).'>';
-        //$input.= '<i data-swchon-text="'.lang("Publish").'" data-swchoff-text="'.lang("Unpublish").'"></i>';
+        if( isset($params['label']) != true )  {
+            $params['label'] = lang("Public");
+        }
 
-        //$html = '<label class="toggle w80">'.$input.lang($inputAttributes['placeholder']).'</label>';
 
         return parent::fetchView("inputs/publish",$params);
 
-        //return self::row_input($params);
-        //return $html;
+
     }
 }

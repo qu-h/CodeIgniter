@@ -13,11 +13,11 @@ if (!function_exists('bug')) {
     }
 }
 
-function dd($value,$die=null,$traceStep = 2){
+function dd($value,$die=null,$traceStep = 50){
     $backtrace = debug_backtrace();
     if( count($backtrace) > 0 ) {
         if( $traceStep ){
-            krsort($backtrace);
+            //krsort($backtrace);
         } else {
             $backtraceLast = $backtrace[0];
             $backtrace = [$backtraceLast];

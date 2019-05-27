@@ -1,0 +1,44 @@
+$toggle-width : 49px;
+
+.smart-form .toggle.input-public {
+  min-height: 50px;
+
+  i {
+    width: 80px;
+    height: 20px;
+
+    &:after {
+      line-height: 14px;
+    }
+
+    &:before {
+      top: 5px;
+    }
+  }
+
+  input:checked + i:before {
+    right: 65px;
+  }
+
+  .label-input {
+    font-size: 13px;
+  }
+}
+
+.select2-drop-multi .select2-results {
+  .level-1 {
+    font-weight: bold;
+  }
+
+  .level-2 .select2-result-label:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+  }
+
+  .level-3 .select2-result-label:before {
+    content: ' ';
+    display: inline-block;
+    width: 30px;
+  }
+}

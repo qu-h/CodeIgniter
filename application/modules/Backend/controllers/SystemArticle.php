@@ -99,7 +99,7 @@ class SystemArticle extends MX_Controller
         }
 
         if (!$crawlerSource) {
-dd($formData);
+//dd($formData);
             $add = $this->SystemArticleModel->update($formData);
             if ($add) {
                 set_success(lang('Success.'));

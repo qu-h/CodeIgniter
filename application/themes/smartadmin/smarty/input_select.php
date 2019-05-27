@@ -40,6 +40,9 @@ class SmartadminInput_select extends CI_Smarty {
         }
         $params['label'] = NULL;
         $params['state'] = "state-success";
+        if( !array_key_exists('optgroup',$params) ){
+            $params['optgroup'] = true;
+        }
         return parent::fetchView("inputs/select2",$params);
 
     }
@@ -55,6 +58,7 @@ class SmartadminInput_select extends CI_Smarty {
             $without_ids = $params['without_ids'];
         }
         $params['options'] = $ci->SystemTagModel->load_options(null,$without_ids,$level=2);
+        $params['optgroup'] = false;
         return self::input_select2($params);
     }
 

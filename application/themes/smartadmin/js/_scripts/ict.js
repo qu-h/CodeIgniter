@@ -12,7 +12,7 @@ var ict = {
 		var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer");
 		if( footer.length > 0 ){
 			footer = footer.get(0);
-			$(footer).css({'position':'absolute','top':0,'width':'100%'});
+			$(footer).css({'position':'absolute','top':100,'width':'100%'});
 
 			$(window).scroll(function() {
 				var footerToTop = $(window).scrollTop() + $(window).height() - footer.offsetHeight - contentArea.offset().top;

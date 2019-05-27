@@ -394,7 +394,6 @@ class SmartadminInputs extends CI_Smarty
         if( isset($params['placeholder']) ){
             $attributes['placeholder'] = $params['placeholder'];
         }
-
         $params['html'] = '<textarea '._stringify_attributes($attributes).'>' . $value . '</textarea >';
         if( $editor =='row_input' ){
             $params["class_type"] = "textarea";

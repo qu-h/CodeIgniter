@@ -40,26 +40,31 @@ class SystemTag extends MX_Controller {
      */
     var $uriForm = "keyword/%s/%d";
     public function form($id=0){
-        $fields = $this->fields;
         if( $this->input->post() ){
-            if( isset($_POST['cancel']) ){
-                redirect('keyword');
-                return false;
-            }
-
-            $formData = [];
-            foreach ($fields as $name => $field) {
-                $fields[$name]['value'] = $formData[$name] = input_post($name);
-            }
-            $add = $this->SystemTagModel->update($formData);
-            if( $add ){
-                $uriEdit  = sprintf($this->uriForm,'edit',$add);
-                redirect($uriEdit, 'refresh');
-                return false;
-            }
+            $this->formSubmit();
         }
         $this->formFill($id);
         temp_view("Tag/form",['fields'=>$this->fields]);
+    }
+
+    private function formSubmit(){
+        $fields = $this->fields;
+
+        if( isset($_POST['cancel']) ){
+            redirect('keyword');
+            return false;
+        }
+
+        $formData = [];
+        foreach ($fields as $name => $field) {
+            $fields[$name]['value'] = $formData[$name] = input_post($name);
+        }
+        $add = $this->SystemTagModel->update($formData);
+        if( $add ){
+            $uriEdit  = sprintf($this->uriForm,'edit',$add);
+            redirect($uriEdit, 'refresh');
+            return false;
+        }
     }
 
     public function typeHead(){
