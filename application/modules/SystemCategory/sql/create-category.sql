@@ -15,6 +15,18 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 ALTER TABLE `category` ADD PRIMARY KEY (`id`), ADD KEY `id` (`id`);
-
-
 ALTER TABLE `category` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `category_map` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `target_table` varchar(100) NOT NULL,
+  `target_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `category_map` ADD PRIMARY KEY (`id`);
+ALTER TABLE `category_map` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+COMMIT;

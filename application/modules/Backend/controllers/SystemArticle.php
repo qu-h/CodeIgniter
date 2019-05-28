@@ -5,6 +5,7 @@
  * @property SystemArticleModel $SystemArticleModel
  * @property SystemCrawler $SystemCrawler
  * @property SystemArticleModel $model
+ * @property SystemTagModel $SystemTagModel
  * @property CI_Upload $upload
  */
 class SystemArticle extends MX_Controller
@@ -37,14 +38,17 @@ class SystemArticle extends MX_Controller
             if (isset($this->model->fields['category']['value']) && $this->model->fields['category']['value'] > 0) {
                 $category_id = $this->model->fields['category']['value'];
             }
-            return $this->SystemArticleModel->items_json($category_id);
+            $filter = input_get('filter');
+            return $this->SystemArticleModel->items_json($category_id,false,$filter);
         }
         $data = columns_fields($this->table_fields);
+        $data['filter'] = ['tags'=>[1]];
         temp_view('Backend/articles', $data);
     }
 
     var $formView = "backend/article-form";
-
+    var $uriEdit = "article/edit/%d";
+    var $uriList = "article";
     /**
      * @param int $id
      */
@@ -56,7 +60,9 @@ class SystemArticle extends MX_Controller
         } else {
             $item = $this->model->get_item_by_id($id);
             if ($id > 0) {
-                $this->model->fields['source']['type'] = 'source_link';
+                if( array_key_exists('value',$this->model->fields['source']) && strlen($this->model->fields['source']['value']) > 0 ){
+                    $this->model->fields['source']['type'] = 'source_link';
+                }
                 $this->model->fields['alias']['type'] = env('ARTICLE_SITE') ? 'news_link': 'editable';
             }
             foreach ($this->model->fields AS $field => $val) {
@@ -99,13 +105,12 @@ class SystemArticle extends MX_Controller
         }
 
         if (!$crawlerSource) {
-//dd($formData);
             $add = $this->SystemArticleModel->update($formData);
             if ($add) {
                 set_success(lang('Success.'));
-                $newUri = url_to_edit(null, $add);
+                $newUri = sprintf($this->uriEdit,$add);
                 if (input_post('back')) {
-                    $newUri = url_to_list();
+                    $newUri = sprintf($this->uriList);
                 }
                 return redirect($newUri, 'refresh');
             } else {
@@ -114,8 +119,8 @@ class SystemArticle extends MX_Controller
         } else {
             $check = $this->model->where('source',$crawlerSource);
             if( ($row = $check->get_row()) != null ){
-//                    $uriEdit = url_to_edit(null, $row->id);
-                $uriEdit  = "article/edit/".$row->id;
+                $uriEdit = sprintf($this->uriEdit,$row->id);
+                //dd($uriEdit);
                 set_error('Dupplicate Article ' .  anchor($uriEdit, $row->title));
                 redirect($uriEdit);
             } else {

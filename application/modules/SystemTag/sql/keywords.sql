@@ -14,5 +14,17 @@ CREATE TABLE `keywords` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `keywords` ADD PRIMARY KEY (`id`);
-
 ALTER TABLE `keywords` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `keywords_category` (
+  `id` int(11) NOT NULL,
+  `children` int(11) NOT NULL,
+  `parent` int(11) NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `keywords_category` ADD PRIMARY KEY (`id`);
+ALTER TABLE `keywords_category` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+COMMIT;

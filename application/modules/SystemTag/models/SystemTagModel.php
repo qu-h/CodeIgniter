@@ -71,6 +71,14 @@ class SystemTagModel extends MX_Model
             $this->db->like('LOWER(w.word)', strtolower($this->search));
         }
 
+        if ($this->orders) {
+            foreach ($this->orders AS $o) {
+                $this->db->order_by("w." . $o[0], $o[1]);
+            }
+        } else {
+            $this->db->order_by('w.id DESC');
+        }
+
         return $this->dataTableJson();
     }
 
@@ -189,6 +197,11 @@ class SystemTagModel extends MX_Model
             }
         }}
         return $options;
+
+    }
+
+    public function getTargetIds($tagIds=[]){
+        $this->db->select()->where_in();
 
     }
 }

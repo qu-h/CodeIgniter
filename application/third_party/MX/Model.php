@@ -106,7 +106,7 @@ class MX_Model extends CI_Model
         $num_rows = $tempDb->count_all_results();
         $query = $db->limit($this->limit, $this->offset)->get();
         $data = $query->result_array();
-
+//        dd($this->db->last_query());
         return jsonData(array('data' => $data, 'draw' => $this->draw, 'recordsTotal' => $num_rows, 'recordsFiltered' => $num_rows));
     }
 

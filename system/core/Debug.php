@@ -15,24 +15,33 @@ if (!function_exists('bug')) {
 
 function dd($value,$die=null,$traceStep = 50){
     $backtrace = debug_backtrace();
+    $lineChecking = __LINE__;
+    $fileChecking = "";
     if( count($backtrace) > 0 ) {
+
         if( $traceStep ){
             //krsort($backtrace);
         } else {
             $backtraceLast = $backtrace[0];
             $backtrace = [$backtraceLast];
         }
+        $lastFile = reset($backtrace);
+        $lineChecking = $lastFile['line'];
+        $fileChecking = pathinfo($lastFile['file'], PATHINFO_BASENAME);
         if( $traceStep > 0 ){
             $count = 1;
             bug("=========================================BEGIN BACK-TRACE",false);
-            foreach ($backtrace AS $b){
+            $systemModulePath = realpath(BASEPATH."..".DS."application".DS."modules").DS;
+            foreach ($backtrace AS $index=>$b){
                 if( $count > $traceStep ){
                     break;
                 }
 
                 $file = $b['file'];
-                $file = str_replace(BASEPATH,'[BASEPATH]',$file);
-                $file = str_replace(BASEPATH,'[BASEPATH]',$file);
+                $file = str_replace(BASEPATH,'[BASEPATH    ] ',$file);
+
+                $file = str_replace($systemModulePath,'[SystemModule] ',$file);
+                $file = str_replace(APPPATH,'[APPPATH     ] ',$file);
                 $line = $b['line'];
                 $class = array_key_exists('class',$b) ? $b['class'] : null;
                 $function = array_key_exists('function',$b) ? $b['function'] : null;
@@ -43,6 +52,7 @@ function dd($value,$die=null,$traceStep = 50){
             bug("========================================================END BACK-TRACE",false);
         }
     }
+
     bug($value,false);
     if( $die === false ){
         return;
@@ -50,6 +60,6 @@ function dd($value,$die=null,$traceStep = 50){
     if( is_string($die) ){
         die($die);
     } else {
-        die('go to die '.__LINE__);
+        die("go to die $fileChecking [$lineChecking]");
     }
 }

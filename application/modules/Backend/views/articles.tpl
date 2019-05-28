@@ -29,7 +29,18 @@
 				<!-- widget div-->
 				<div>
 					<div class="jarviswidget-editbox"></div>
+					<div class="smart-form">
+						<div class="row">
+							<div class="col-md-12 padding-10">
+								<section>
+								{input_tags name="filter[tags]" value=$filter.tags class="data-table-filter"}
+								</section>
+							</div>
+						</div>
+					</div>
+
 					<div class="widget-body no-padding">
+
 						{if isset($fields)}
 						<table
 								id="data_ajax"
@@ -63,7 +74,8 @@
 						{*https://datatables.net/examples/ajax/*}
 						<script type="text/javascript">
 							var site_news  = '{config_item("news-site")}';
-                            $(document).ready(function() {
+
+							$(document).ready(function() {
                                 tables.url = '{$data_json_url}';
                                 tables.columns = [{$columns_fields}];
                                 tables.columnDefs = [

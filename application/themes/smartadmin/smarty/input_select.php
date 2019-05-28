@@ -71,7 +71,6 @@ class SmartadminInput_select extends CI_Smarty {
         }
         $params['options'] = $ci->SystemTagModel->load_options($status=1,$idsUsing=[],$level=2);
         return self::input_select2($params);
-        //return parent::fetchView("inputs/tags-input",$params);
     }
 
     static function input_multiple_image($params = null){

@@ -43,7 +43,7 @@
         {if isset($icon)}
             <i class="icon-prepend {$icon}"></i>
         {/if}
-        <select name="{$name}[]" multiple class="select2 select-multi-level">
+        <select name="{$name}[]" multiple class="select2 select-multi-level {if isset($class)}{$class}{/if}">
             {if isset($options) && $options|@count > 0 }
                 {select_options items=$options selected=$value level=1}
             {/if}

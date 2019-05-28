@@ -118,7 +118,26 @@ var tables = {
         });
 
         if( tables.url !== null ){
-            tables.opts.ajax = { url: tables.url, dataSrc: 'data' };
+            tables.opts.ajax = { url: tables.url, dataSrc: 'data',
+				data:function(data){
+					var filters = jQuery('.data-table-filter');
+					if( filters.length > 0 ){
+						filters.each(function(index,input){
+							switch (input.tagName) {
+								case 'SELECT':
+									data[input.name] = $(input).children("option:selected").val();
+									break;
+								case 'INPUT':
+									break;
+							}
+						});
+					}
+				}
+            };
+
+			$('.data-table-filter').change(function(){
+				tables.table.draw();
+			});
 		}
         tables.opts.columns = tables.columns;
 	    tables.table  =  $(attribute).DataTable(tables.opts);
