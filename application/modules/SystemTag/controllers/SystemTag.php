@@ -1,5 +1,11 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Class SystemTag
+ * @property SystemTagModel $SystemTagModel
+ * @property CI_Output $output
+ * @property array $fields
+ */
 class SystemTag extends MX_Controller {
 
     function __construct()
@@ -15,38 +21,56 @@ class SystemTag extends MX_Controller {
     }
 
     var $table_fields = array(
-        'id'=>array("#",5,true,'text-center'),
-        'word'=>array("Keyword"),
-        'actions'=>array('',5,false),
+        'id'=>      ["#",5,true,'text-center'],
+        'word'=>    ["Keyword"],
+        'actions'=> ['',5,false]
     );
 
     public function dataTable(){
         if( $this->uri->extension =='json' ){
-            return $this->SystemTagModel->dataTableJson();
+            return $this->SystemTagModel->items_json();
         }
         $data = columns_fields($this->table_fields);
         temp_view('datatables',$data);
     }
 
+    /**
+     * @param int $id
+     * @return bool|void
+     */
+    var $uriForm = "keyword/%s/%d";
     public function form($id=0){
-        $fields = $this->fields;
         if( $this->input->post() ){
-            if( isset($_POST['cancel']) ){
-                redirect('keyword');
-                return FALSE;
-            }
-
-            $formdata = array();
-            foreach ($fields as $name => $field) {
-                $fields[$name]['value'] = $formdata[$name] = input_post($name);
-            }
-            $add = $this->SystemTagModel->update($formdata);
-            if( $add ){
-                $newUri = url_to_edit(null,$add);
-                return redirect($newUri, 'refresh');
-            }
+            $this->formSubmit();
         }
         $this->formFill($id);
         temp_view("Tag/form",['fields'=>$this->fields]);
+    }
+
+    private function formSubmit(){
+        $fields = $this->fields;
+
+        if( isset($_POST['cancel']) ){
+            redirect('keyword');
+            return false;
+        }
+
+        $formData = [];
+        foreach ($fields as $name => $field) {
+            $fields[$name]['value'] = $formData[$name] = input_post($name);
+        }
+        $add = $this->SystemTagModel->update($formData);
+        if( $add ){
+            $uriEdit  = sprintf($this->uriForm,'edit',$add);
+            redirect($uriEdit, 'refresh');
+            return false;
+        }
+    }
+
+    public function typeHead(){
+        $data = ["aaaa","bbb"];
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
     }
 }

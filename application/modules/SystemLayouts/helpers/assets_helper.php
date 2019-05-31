@@ -56,21 +56,18 @@ function git_assets($file=NULL,$folder='',$version=null,$attributes=NULL,$dirFil
         $type = get_mime_by_extension($file);
 
         $dir = "$assets_dir/";
-        switch ($type){
-            case 'text/css':
-            case 'css':
-                if( $dirFileType ){
+        if( $dirFileType ){
+            switch ($type){
+                case 'text/css':
+                case 'css':
                     $dir .= "css/";
-                }
-
-                break;
-            case 'application/x-javascript':
-                if( $dirFileType ){
+                    break;
+                case 'application/x-javascript':
                     $dir .= "js/";
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if( !empty($attributes) && is_array($attributes)){

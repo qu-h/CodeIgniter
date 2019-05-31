@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script core allowed');
 
+/**
+ * Class SystemArticleModel
+ * @property SystemCategoryMapModel $SystemCategoryMapModel
+ */
 class SystemArticleModel extends MX_Model
 {
     var $table = 'article';
@@ -56,6 +60,19 @@ class SystemArticleModel extends MX_Model
         return $this->fields;
     }
 
+    /**
+     * Overwrite parent
+     * @return mixed
+     */
+    public function get_row(){
+        $row = parent::get_row();
+        if( $row ){
+            $row->category = $query = $this->SystemCategoryMapModel->getCategories($row->id,$this->table);
+        }
+
+        return $row;
+    }
+
     function get_item_by_id($id = 0)
     {
 
@@ -100,17 +117,25 @@ class SystemArticleModel extends MX_Model
             $data['ordering'] = 0;
         }
 
-        if (is_null($data['category']) || strlen($data['category']) < 1) {
-            $data['category'] = 0;
+        $categories = [];
+        if ( is_array($data['category']) ) {
+            $categories = $data['category'];
         }
+        unset($data['category']);
+
         $data['status'] = $data['status'] == 'on' ? true : false;
         $tags = $data['tags'];
         unset($data['tags']);
-        $exist = $this->check_exist($data['alias'], $data['id'], $data['category']);
+        $exist = $this->check_exist($data['alias'], $data['id'],$categories);
 
         if ($exist) {
-            $link = anchor(url_to_edit(null, $exist->id), $exist->title);
-            set_error('Dupplicate Article ' . $link . ' ');
+            $ci = get_instance();
+            if( isset($ci->SystemArticle) ){
+                $uri = sprintf($ci->SystemArticle->uriEdit,$exist->id);
+            } else {
+                $uri = url_to_edit(null, $exist->id);
+            }
+            set_error('Dupplicate Article ' . anchor($uri, $exist->title) . ' ');
             return false;
         } elseif (intval($data['id']) > 0) {
             $data['modified'] = date("Y-m-d H:i:s");
@@ -125,6 +150,9 @@ class SystemArticleModel extends MX_Model
         if (!$id) {
             bug($this->db->last_query());
         }
+
+        $this->SystemCategoryMapModel->update($id,$this->table,$categories);
+
         if (is_array($tags) && !empty($tags)) {
             $this->updateTags($id, $tags);
         }
@@ -132,30 +160,32 @@ class SystemArticleModel extends MX_Model
         return $id;
     }
 
-    function check_exist($alias, $id, $category = 0)
+    function check_exist($alias, $id,$categories=[])
     {
-        if (!is_numeric($category)) {
-            $category = 0;
-        }
+        $existed = false;
         if (!is_numeric($id)) {
             $id = 0;
         }
-        $this->db->where('alias', $alias)
-            ->where("category = $category")
-            ->where('id <>', $id);
-        $result = $this->db->get($this->table);
-        if (!$result) {
-            bug($this->db->last_query());
-            die;
-        }
 
-        return ($result->num_rows() > 0) ? $result->row() : false;
+        $row = $this->where(['alias'=>$alias,'id <>'=>$id])->get_row();
+        if( $row ){
+            if( empty($categories) ){
+                $existed = true;
+            } else {
+                foreach ($categories AS $cate){
+                    if( in_array($cate,$row->category) ){
+                        $existed = true;
+                    }
+                }
+            }
+        }
+        return $existed;
     }
 
     /*
      * Json return for Datatable
      */
-    function items_json($category_id = null, $actions_allow = NULL)
+    function items_json($category_id = null, $actions_allow = NULL,$filter=[])
     {
         $this->db->select('a.id,a.title,a.alias, a.source, a.imgthumb, a.status, a.ordering');
         $this->db->join("category AS c", 'c.id=a.category', 'LEFT')->select('c.name AS category_name,a.category AS category_id');
@@ -163,9 +193,20 @@ class SystemArticleModel extends MX_Model
         $this->db->select("(SELECT GROUP_CONCAT(tag.keyword_id) FROM article_tags AS tag WHERE tag.article_id = a.id) AS tag_ids", FALSE);
         $this->db->select("(SELECT GROUP_CONCAT(k.word) FROM keywords AS k LEFT JOIN article_tags AS tag ON k.id = tag.keyword_id WHERE tag.article_id = a.id) AS tag_names", FALSE);
 
-        if ($category_id !== null) {
+        if ($category_id !== null && is_array($category_id) != true ) {
             $this->db->where("a.category", $category_id);
         }
+
+        if ( is_array($filter) ) {
+            foreach ($filter AS $k => $value) {
+                if ($k == 'tags') {
+                    $this->db->join("article_tags AS tag",'tag.article_id = a.id',"LEFT")
+                        ->select('tag.keyword_id')
+                        ->where('( keyword_id IN ('.implode(',',$value).') OR keyword_id IS NULL)');
+                }
+            }
+        }
+
         $this->db->where("(a.status <> -1 OR a.status IS NULL)");
         $this->db->from($this->table . " AS a");
 
@@ -180,6 +221,7 @@ class SystemArticleModel extends MX_Model
         } else {
             $this->db->order_by('id DESC');
         }
+
         return $this->dataTableJson();
     }
 

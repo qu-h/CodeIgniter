@@ -7,16 +7,16 @@ const gulp = require("gulp"),
     // uglify = require('gulp-uglify'),
     gutil = require("gulp-util");
 
-var resourcePath = 'D:\\WWW\\CI-3.0.1/application/themes/smartadmin/';
-var gitPublicResource = 'D:\\WWW\\sites-template-git/smart-admin';
+var resourcePath = '';
+var gitPublicResource = 'git-public/';
 
 // Minifies SCSS
 gulp.task("sass", function() {
     return gulp.src(resourcePath+'scss/*.scss') // Gets all files ending with .scss in app/scss and children dirs
         // .pipe(uglify({mangle: false}))
         .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
-
-        .pipe(sass({outputStyle: 'compressed'}))
+        //.pipe(sass({outputStyle: 'compressed'}))
+        .pipe(sass())
         .pipe(concat('styles.min.css'))
         // .pipe(sass())
 
@@ -32,7 +32,7 @@ gulp.task("sass", function() {
         //     spaceAfterClosingBrace: true
         // }))
         //.pipe(rename({ suffix: '.min' })) // Append our suffix to the name
-        .pipe(gulp.dest(gitPublicResource+'/css'))
+        .pipe(gulp.dest(gitPublicResource+'/css'));
 });
 
 // Minifies JS
@@ -40,6 +40,7 @@ gulp.task('js', function(){
     $script_files = [
 
         //PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
+        'js/_scripts/prototype.js',
         'js/libs/jquery-2.1.1.min.js',
         'js/plugin/pace/pace.min.js',
         'js/libs/jquery-ui-1.10.3.min.js',
@@ -59,7 +60,7 @@ gulp.task('js', function(){
         //MAIN APP JS FILE
         'js/app.min.js',
         'js/tables.js',
-        'js/demo.min.js',
+        //'js/demo.min.js',
 
         'js/speech/voicecommand.min.js',
 
@@ -74,7 +75,6 @@ gulp.task('js', function(){
         'js/plugin/datatables/jquery.dataTables.min.js',
         'js/plugin/datatables/dataTables.bootstrap.min.js',
 
-
         'js/bootstrap/bootstrap.min.js',
         "js/_scripts/ckeditor.config.js",
         "js/_scripts/ict.js",
@@ -87,7 +87,7 @@ gulp.task('js', function(){
         //     gutil.log(gutil.colors.red('[Error]'), err.toString());
         // })
 
-        .pipe(gulp.dest(gitPublicResource+'/js'))
+        .pipe(gulp.dest('git-public/js'))
 });
 
 gulp.task('copy-resource', function(){
@@ -96,11 +96,11 @@ gulp.task('copy-resource', function(){
     gulp.src(resourcePath+'images/*').pipe(gulp.dest(gitPublicResource+'/images'));
     gulp.src(resourcePath+'fonts/*').pipe(gulp.dest(gitPublicResource+'/fonts'));
 
-    gulp.src(resourcePath+'js/crawler_form_actions.js').pipe(gulp.dest(gitPublicResource+'/js'));
+    return gulp.src(resourcePath+'js/crawler_form_actions.js').pipe(gulp.dest(gitPublicResource+'/js'));
+
+
 });
 
+gulp.task("default", gulp.series("js",'sass'), () => {
 
-gulp.task('default', function() {
-    gulp.start(['sass','js']);
-    gulp.start(['copy-resource']);
 });

@@ -9,6 +9,4 @@ CREATE TABLE `article_tags` (
 
 
 ALTER TABLE `article_tags` ADD PRIMARY KEY (`id`);
-
-
 ALTER TABLE `article_tags` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

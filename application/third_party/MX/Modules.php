@@ -432,4 +432,35 @@ class Modules
         }
         return [$module,$moduleFullPath];
     }
+
+    static function getRealPathApp($path){
+	    $from = str_replace([DIRECTORY_SEPARATOR,"\\"],DS,APPPATH);
+	    $from = realpath($from);
+	    $from = explode(DS,$from);
+        $path = str_replace([DIRECTORY_SEPARATOR,"\\"],DS,$path);
+        $path = realpath($path);
+        $path = explode(DS,$path);
+
+        $modulePath = $diff = "";
+
+        foreach ($path AS $index=>$name){
+            if( array_key_exists($index,$from) && $from[$index] == $name ){
+
+            } else {
+                $modulePath .= DS.$name;
+                if( array_key_exists($index,$from) ){
+                    $diff .= "..".DS;
+                }
+            }
+        }
+
+        $modulePath = substr($modulePath, 1);
+        $diffPath = $diff.$modulePath.DS;
+
+        if( is_dir(APPPATH.$diffPath) ){
+            return "../$diffPath";
+        }
+
+        return false;
+    }
 }

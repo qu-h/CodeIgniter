@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Class SystemUser
+ * @property SystemUserModel $SystemUserModel
+ */
 class SystemUser extends MX_Controller
 {
 

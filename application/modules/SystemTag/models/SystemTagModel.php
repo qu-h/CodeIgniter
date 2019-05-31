@@ -20,7 +20,7 @@ class SystemTagModel extends MX_Model
             'icon' => 'link'
         ),
         'group_id' => array(
-            'type' => 'multiselect',
+            'type' => 'select_category_tag',
             'icon' => 'list',
             'value' => 0
         ),
@@ -46,7 +46,20 @@ class SystemTagModel extends MX_Model
         return $fields;
     }
 
-    function dataTableJson($group_id = 0)
+    public function get_row(){
+        $row = parent::get_row();
+        if( $row ){
+            $row->group_id = [];
+            $categories = $query = $this->db->where('children',$row->id)->get("keywords_category");
+            if( $categories->num_rows() > 0 ) foreach ($categories->result() AS $cate){
+                $row->group_id [] = $cate->parent;
+            }
+        }
+
+        return $row;
+    }
+
+    function items_json($group_id = 0)
     {
         $this->db->select("w.id, w.word, w.status, w.rate, '' AS actions")->from($this->table . " AS w");
         if ($group_id !== null) {
@@ -54,7 +67,19 @@ class SystemTagModel extends MX_Model
         }
         $this->db->where("(w.status <> -1 OR w.status IS NULL)");
 
-        return parent::dataTableJson($this->db);
+        if ($this->search) {
+            $this->db->like('LOWER(w.word)', strtolower($this->search));
+        }
+
+        if ($this->orders) {
+            foreach ($this->orders AS $o) {
+                $this->db->order_by("w." . $o[0], $o[1]);
+            }
+        } else {
+            $this->db->order_by('w.id DESC');
+        }
+
+        return $this->dataTableJson();
     }
 
     function update($data){
@@ -71,8 +96,15 @@ class SystemTagModel extends MX_Model
             $data['status'] = 0;
         }
 
-        if( $this->isExist(['alias'=>$data['alias'],'group_id'=>$data['group_id']],$data['id']) ){
-            set_error('Dupplicate Article');
+        $categories = [];
+        if( array_key_exists('group_id',$data) ){
+            $categories = $data['group_id'];
+            unset($data['group_id']);
+        }
+
+
+        if( $this->isExist($data['alias'],$data['id'],$categories) ){
+            set_error('Duplicate Alias');
             return false;
         } elseif( intval($data['id']) > 0 ) {
             $data['modified_date'] = date("Y-m-d H:i:s");
@@ -83,10 +115,53 @@ class SystemTagModel extends MX_Model
             $this->db->insert($this->table,$data);
             $id = $this->db->insert_id();
         }
+
         if( !$id ){
             bug($this->db->last_query());
+        } else {
+            $this->update_category($id,$categories);
         }
         return $id;
+    }
+
+    function isExist($alias, $id = 0,$groupIds=[])
+    {
+        if (!is_numeric($id)) {
+            $id = 0;
+        }
+        $this->db->from('keywords AS t')->where(['t.alias'=>$alias])->where('t.id <>', $id)->select('t.*');
+        $this->db->join('keywords_category AS c','c.children=t.id','INNER')->select('c.id AS link_id');
+
+        $result = $this->db->get();
+
+        if (!$result) {
+            bug($this->db->last_query());
+            die;
+        }
+
+        return $result->num_rows() > 0;
+    }
+
+    private function update_category($id,$categories=[]){
+        $query = $this->db->where('children',$id)->get("keywords_category");
+        if( $query->num_rows() < 1 && !empty($categories) ) foreach ($categories AS $cate){
+            $data = ['children'=>$id,'parent'=>$cate];
+            $this->db->insert("keywords_category",$data);
+        } else {
+            foreach ($query->result() AS $row){
+                if( in_array($row->parent,$categories) != true ){
+                    $this->db->where('id', $row->id)->delete('keywords_category');
+                } else if (($key = array_search($row->parent, $categories)) !== false) {
+                    unset($categories[$key]);
+                }
+            }
+            if( !empty($categories) ){
+                foreach ($categories AS $cate){
+                    $data = ['children'=>$id,'parent'=>$cate];
+                    $this->db->insert("keywords_category",$data);
+                }
+            }
+        }
     }
 
     public function load_options($status=1,$using_id=[],$level=1,$parent_id=0)
@@ -104,7 +179,7 @@ class SystemTagModel extends MX_Model
             $this->db->where_not_in('k.id',$using_id);
         }
 
-        if( $status ){
+        if( $status !== null ){
             $this->db->where('k.status',$status);
         }
 
@@ -114,12 +189,19 @@ class SystemTagModel extends MX_Model
         if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
             $subOptions = $this->load_options($status,$using_id,$level-1,$row->id);
             if( $level > 1 && !empty($subOptions) ){
-                $options[$row->word] = $subOptions;
+                //$options[$row->word] = $subOptions;
+                $options[$row->id] = ['id'=>$row->id,'label'=>$row->word,'children'=>$subOptions];
             } else {
-                $options[$row->id] = $row->word;
+                //$options[$row->id] = $row->word;
+                $options[$row->id] = ['id'=>$row->id,'label'=>$row->word];
             }
         }}
         return $options;
+
+    }
+
+    public function getTargetIds($tagIds=[]){
+        $this->db->select()->where_in();
 
     }
 }

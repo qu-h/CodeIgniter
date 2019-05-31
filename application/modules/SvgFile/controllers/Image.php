@@ -29,4 +29,11 @@ class Image extends MX_Controller
         $this->load->view('image-thumb', $data);
 
     }
+
+    public function viewFile($filename=""){
+        $filename = str_replace(array(".svg"), NULL, strtolower($filename));
+        $img_size = explode("x", $filename);
+
+        $this->thumb($img_size[0],$img_size[1]);
+    }
 }
