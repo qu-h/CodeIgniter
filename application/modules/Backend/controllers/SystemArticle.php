@@ -171,7 +171,10 @@ class SystemArticle extends MX_Controller
 
     private function LazyLoadImage(){
         if( $this->lazyLoad && !empty($this->model->fields) && array_key_exists('content',$this->model->fields) ){
-            $html = $this->model->fields['content']['value'];
+            $html = array_key_exists("value",$this->model->fields['content']) ? $this->model->fields['content']['value'] : null;
+            if( strlen($html) < 1 ){
+                return;
+            }
             $htmlDom = str_get_html($html);
             // Find all images
             foreach($htmlDom->find('img') as $img){
