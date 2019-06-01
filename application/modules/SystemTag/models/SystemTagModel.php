@@ -30,6 +30,7 @@ class SystemTagModel extends MX_Model
             'type' => 'publish',
             'value' => 1
         ),
+        //'custom-field'=>''
         //'ordering' => ['type' => 'number', 'icon' => 'sort-numeric-desc']
     );
 
@@ -55,7 +56,6 @@ class SystemTagModel extends MX_Model
                 $row->group_id [] = $cate->parent;
             }
         }
-
         return $row;
     }
 

@@ -2,9 +2,9 @@
 
 /**
  * Class SystemArticleModel
- * @property SystemCategoryMapModel $SystemCategoryMapModel
+ * @property BaseCategoryMapModel $BaseCategoryMapModel
  */
-class SystemArticleModel extends MX_Model
+class BaseArticleModel extends MX_Model
 {
     var $table = 'article';
     var $table_tags = 'article_tags';
@@ -30,7 +30,8 @@ class SystemArticleModel extends MX_Model
         'category' => array(
             'type' => 'select_category',
             'icon' => 'list',
-            'category-type' => 'article'
+            'category-type' => 'article',
+            'multiple'=>true
         ),
         'source' => array(
             'type' => 'crawler_link',
@@ -45,7 +46,7 @@ class SystemArticleModel extends MX_Model
         ),
         'status' => ['type' => 'publish', 'value' => 1],
         'ordering' => ['type' => 'number', 'icon' => 'sort-numeric-desc'],
-        'tags' => ['type' => 'tags']
+        'tags' => ['type' => 'tags','multiple'=>true]
     );
 
     var $page_limit = 10;
@@ -67,7 +68,7 @@ class SystemArticleModel extends MX_Model
     public function get_row(){
         $row = parent::get_row();
         if( $row ){
-            $row->category = $query = $this->SystemCategoryMapModel->getCategories($row->id,$this->table);
+            $row->category = $query = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
         }
 
         return $row;
@@ -151,7 +152,7 @@ class SystemArticleModel extends MX_Model
             bug($this->db->last_query());
         }
 
-        $this->SystemCategoryMapModel->update($id,$this->table,$categories);
+        $this->BaseCategoryMapModel->update($id,$this->table,$categories);
 
         if (is_array($tags) && !empty($tags)) {
             $this->updateTags($id, $tags);
@@ -188,18 +189,21 @@ class SystemArticleModel extends MX_Model
     function items_json($category_id = null, $actions_allow = NULL,$filter=[])
     {
         $this->db->select('a.id,a.title,a.alias, a.source, a.imgthumb, a.status, a.ordering');
-        $this->db->join("category AS c", 'c.id=a.category', 'LEFT')->select('c.name AS category_name,a.category AS category_id');
+//        $this->db->join("category AS c", 'c.id=a.category', 'LEFT')->select('c.name AS category_name,a.category AS category_id');
 
-        $this->db->select("(SELECT GROUP_CONCAT(tag.keyword_id) FROM article_tags AS tag WHERE tag.article_id = a.id) AS tag_ids", FALSE);
-        $this->db->select("(SELECT GROUP_CONCAT(k.word) FROM keywords AS k LEFT JOIN article_tags AS tag ON k.id = tag.keyword_id WHERE tag.article_id = a.id) AS tag_names", FALSE);
+        $this->db->select("(SELECT GROUP_CONCAT(tag.keyword_id) FROM article_tags AS tag WHERE tag.article_id = a.id) AS tag_ids", FALSE)
+                ->select("(SELECT GROUP_CONCAT(k.word) FROM keywords AS k LEFT JOIN article_tags AS tag ON k.id = tag.keyword_id WHERE tag.article_id = a.id) AS tag_names", FALSE);
+
+        $this->db->select("(SELECT GROUP_CONCAT(category_map.category_id) FROM category_map WHERE category_map.target_id = a.id AND category_map.target_table = '".$this->table."') AS category_ids", FALSE)
+            ->select("(SELECT GROUP_CONCAT(category.name) FROM category LEFT JOIN category_map ON category_map.category_id = category.id WHERE category_map.target_id = a.id AND category_map.target_table = '".$this->table."') AS category_names", FALSE);
 
         if ($category_id !== null && is_array($category_id) != true ) {
             $this->db->where("a.category", $category_id);
         }
 
-        if ( is_array($filter) ) {
+        if ( is_array($filter) && !empty($filter) ) {
             foreach ($filter AS $k => $value) {
-                if ($k == 'tags') {
+                if ($k == 'tags' && is_array($value) &&  !empty($value)) {
                     $this->db->join("article_tags AS tag",'tag.article_id = a.id',"LEFT")
                         ->select('tag.keyword_id')
                         ->where('( keyword_id IN ('.implode(',',$value).') OR keyword_id IS NULL)');

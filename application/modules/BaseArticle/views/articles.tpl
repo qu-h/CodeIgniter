@@ -33,7 +33,7 @@
 						<div class="row">
 							<div class="col-md-12 padding-10">
 								<section>
-								{input_tags name="filter[tags]" value=$filter.tags class="data-table-filter"}
+								{input_tags name="filter[tags]" value=$filter.tags class="data-table-filter" multiple=true}
 								</section>
 							</div>
 						</div>
@@ -86,9 +86,15 @@
 											return null;
 									}},
                                     { "targets": 2, "render": function ( data, type, row, meta ) {
-										if( row.category_name !== null ){
-											return '<a href="?category-id='+row.category_id+'">'+row.category_name+'</a>';
-										}
+											if( row.category_names !== null ){
+												let categories = '',names = row.category_names.split(','), ids = row.category_ids.split(',');
+												if( names.length > 0 ){
+													names.map( function(name,i) {
+														categories += ' <a href="?category-id='+ids[i]+'" class="tb-categories" >'+name+'</a>';
+													})
+												}
+												return categories;
+											}
 										return null;
 									}},
                                     { "targets": 3, "render": function ( data, type, row, meta ) {
@@ -102,10 +108,9 @@
                                             let tags = '',tag_names = row.tag_names.split(','), tag_ids = row.tag_ids.split(',');
 											if( tag_names.length > 0 ){
                                                 tag_names.map( function(tag,i) {
-                                                    tags += ' <a href="?keyword='+tag_ids[i]+'" >'+tag+'</a>';
+                                                    tags += ' <a href="?keyword='+tag_ids[i]+'" class="tb-tags" >'+tag+'</a>';
                                                 })
 											}
-                                            //console.log('bug',{ row, tag_names,tag_ids },typeof tag_names);
 											return tags;
 										}
 										return null;

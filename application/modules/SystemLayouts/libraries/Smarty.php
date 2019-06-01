@@ -56,7 +56,8 @@ class CI_Smarty extends SmartyBC {
         if( $path === FALSE ){
             list($path, $_view) = Modules::find($resource_name, $ci->router->module,"views/",true );
         }
-        //bug($ci->router);
+
+//        dd("debug view : path:$path | _view:$_view");
         //bug("smarty 55 ==== path:".$path." modulue:find ".$ci->router->class);
         //bug($ci->router);
 

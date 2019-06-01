@@ -19,7 +19,7 @@ class SmartadminInput_select extends CI_Smarty {
 
     static function input_select_category($params){
         $ci = get_instance();
-        $ci->load->model('SystemCategory/SystemCategoryModel');
+        $ci->load->model('BaseCategory/BaseCategoryModel');
         if( !isset($params['category-type']) ){
             $params['category-type'] = 'category';
         }
@@ -27,7 +27,8 @@ class SmartadminInput_select extends CI_Smarty {
         if( array_key_exists('without_ids',$params) ){
             $without_ids = $params['without_ids'];
         }
-        $params['options'] = $ci->SystemCategoryModel->load_options($params['category-type'],1,$without_ids,2);
+        $params['options'] = $ci->BaseCategoryModel->load_options($params['category-type'],null,$without_ids,2);
+
         return self::input_select2($params);
         //return self::input_multi_select($params);
     }
@@ -43,6 +44,14 @@ class SmartadminInput_select extends CI_Smarty {
         if( !array_key_exists('optgroup',$params) ){
             $params['optgroup'] = true;
         }
+        if( array_key_exists('class',$params) != true ){
+            $params['class'] = '';
+        }
+        if( array_key_exists('multiple',$params) && $params['multiple'] == true ){
+            $params['name'] .= '[]';
+            $params['class'] .= ' select-multi-level';
+        }
+
         return parent::fetchView("inputs/select2",$params);
 
     }
@@ -59,6 +68,7 @@ class SmartadminInput_select extends CI_Smarty {
         }
         $params['options'] = $ci->SystemTagModel->load_options(null,$without_ids,$level=2);
         $params['optgroup'] = false;
+        $params['multiple'] = true;
         return self::input_select2($params);
     }
 

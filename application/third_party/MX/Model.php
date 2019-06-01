@@ -68,7 +68,7 @@ class MX_Model extends CI_Model
         return $row;
     }
 
-    function items_json($fields=[])
+    public function items_json($fields=[])
     {
         if( !$this->table ){
             return [];

@@ -418,7 +418,6 @@ class Modules
 
         if( strlen($module) < 1 ){
             $filescheck = glob($path."/$file.*");
-
             if( !empty($filescheck) ){
                 foreach ($filescheck as $dir) {
                     if( strlen($module) > 0 ){

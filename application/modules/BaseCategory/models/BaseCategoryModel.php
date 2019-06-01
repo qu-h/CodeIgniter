@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script coess allowed');
 
-class SystemCategoryModel extends MX_Model {
+class BaseCategoryModel extends MX_Model {
 
     var $table = 'category';
 
@@ -153,7 +153,10 @@ class SystemCategoryModel extends MX_Model {
             $this->db->where_not_in('c.id',$using_id);
         }
 
-        $this->db->where(array("c.type"=>$type,'c.status'=>$status));
+        $this->db->where("c.type",$type);
+        if( $status !== null && $status !== '*' ){
+            $this->db->where('c.status',$status);
+        }
         $this->db->order_by("c.ordering ASC");
         $query = $this->db->get($this->table." AS c");
 

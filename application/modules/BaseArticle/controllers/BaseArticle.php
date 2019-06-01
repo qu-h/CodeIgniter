@@ -2,13 +2,13 @@
 
 /**
  * Class SystemArticle
- * @property SystemArticleModel $SystemArticleModel
+ * @property BaseArticleModel $BaseArticleModel
  * @property SystemCrawler $SystemCrawler
- * @property SystemArticleModel $model
+ * @property BaseArticleModel $model
  * @property SystemTagModel $SystemTagModel
  * @property CI_Upload $upload
  */
-class SystemArticle extends MX_Controller
+class BaseArticle extends MX_Controller
 {
     var $lazyLoad = false;
     function __construct()
@@ -16,10 +16,10 @@ class SystemArticle extends MX_Controller
         parent::__construct();
         $this->load->module('layouts');
         if (!function_exists('columns_fields')) {
-            $this->load->helper("backend/datatables");
+            $this->load->helper("BaseArticle/dataTables");
         }
         $this->load->module('SystemCrawler');
-        // $this->model->fields = $this->SystemArticleModel->fields();
+        // $this->model->fields = $this->BaseArticleModel->fields();
     }
 
     var $table_fields = [
@@ -39,11 +39,11 @@ class SystemArticle extends MX_Controller
                 $category_id = $this->model->fields['category']['value'];
             }
             $filter = input_get('filter');
-            return $this->SystemArticleModel->items_json($category_id,false,$filter);
+            return $this->BaseArticleModel->items_json($category_id,false,$filter);
         }
         $data = columns_fields($this->table_fields);
         $data['filter'] = ['tags'=>[1]];
-        temp_view('Backend/articles', $data);
+        temp_view('BaseArticle/articles', $data);
     }
 
     var $formView = "backend/article-form";
@@ -105,17 +105,18 @@ class SystemArticle extends MX_Controller
         }
 
         if (!$crawlerSource) {
-            $add = $this->SystemArticleModel->update($formData);
+            $add = $this->BaseArticleModel->update($formData);
             if ($add) {
                 set_success(lang('Success.'));
                 $newUri = sprintf($this->uriEdit,$add);
                 if (input_post('back')) {
                     $newUri = sprintf($this->uriList);
                 }
-                return redirect($newUri, 'refresh');
+                redirect($newUri, 'refresh');
             } else {
-                return redirect(uri_string(), 'refresh');
+                redirect(uri_string(), 'refresh');
             }
+            return true;
         } else {
             $check = $this->model->where('source',$crawlerSource);
             if( ($row = $check->get_row()) != null ){
@@ -157,7 +158,7 @@ class SystemArticle extends MX_Controller
             foreach ($this->model->fields as $name => $field) {
                 $formData[$name] = $this->input->post($name);
             }
-            if (!empty($formData) AND ($add = $this->SystemArticleModel->update($formData))) {
+            if (!empty($formData) AND ($add = $this->BaseArticleModel->update($formData))) {
                 set_error(lang('Success.'));
             }
         }
@@ -172,7 +173,7 @@ class SystemArticle extends MX_Controller
 
     public function delete($id = 0)
     {
-        $this->SystemArticleModel->item_delete($id);
+        $this->BaseArticleModel->item_delete($id);
         $newUri = url_to_list();
 
         return redirect($newUri, 'refresh');

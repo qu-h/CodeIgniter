@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script coess allowed');
 
-class SystemCategoryMapModel extends MX_Model
+class BaseCategoryMapModel extends MX_Model
 {
 
     var $table = 'category_map';
