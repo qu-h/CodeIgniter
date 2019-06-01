@@ -15,12 +15,13 @@
                 {elseif is_array($childrent)}
 
                     {if !array_key_exists('children',$childrent) }
-                        {if is_string($childrent) }
+
+                        {if array_key_exists('label',$childrent)}
+                            <option value="{$id}" {if in_array($id,$selected)}selected{/if} class="level-{$level}" >{$childrent['label']}</option>
+                        {elseif is_string($id) }
                             <optgroup label="{$id}">
                                 {select_options items=$childrent selected=$selected}
                             </optgroup>
-                        {elseif array_key_exists('label',$childrent)}
-                            <option value="{$id}" {if in_array($id,$selected)}selected{/if} class="level-{$level}" >{$childrent['label']}</option>
                         {else}
                             {select_options items=$childrent selected=$selected}
                         {/if}
@@ -30,7 +31,6 @@
                         {foreach $childrent['children'] as $id=>$childrent2}
                             {select_options items=$childrent2 selected=$selected level=$level+1}
                         {/foreach}
-
                     {/if}
                 {/if}
             {/foreach}

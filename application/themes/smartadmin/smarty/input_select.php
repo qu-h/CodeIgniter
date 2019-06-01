@@ -28,9 +28,11 @@ class SmartadminInput_select extends CI_Smarty {
             $without_ids = $params['without_ids'];
         }
         $params['options'] = $ci->BaseCategoryModel->load_options($params['category-type'],null,$without_ids,2);
-
+//dd($params['options']);
+        if( array_key_exists('multiple',$params) != true || $params['multiple'] != true ){
+            $params['options'] = array_merge([0=>lang("-- Select Category -- ")],$params['options']);
+        }
         return self::input_select2($params);
-        //return self::input_multi_select($params);
     }
 
     static function input_select2($params = null){
@@ -51,7 +53,6 @@ class SmartadminInput_select extends CI_Smarty {
             $params['name'] .= '[]';
             $params['class'] .= ' select-multi-level';
         }
-
         return parent::fetchView("inputs/select2",$params);
 
     }
