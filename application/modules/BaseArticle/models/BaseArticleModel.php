@@ -81,6 +81,7 @@ class BaseArticleModel extends MX_Model
 
         if (!is_null($row) && isset($row->id)) {
             $row->tags = $this->getTags($row->id);
+            $row->category = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
         }
         return $row;
     }
