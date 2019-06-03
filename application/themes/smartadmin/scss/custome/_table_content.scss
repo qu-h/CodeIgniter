@@ -1,0 +1,18 @@
+
+.table {
+	td {
+		[class^="tb-"] {
+			display: inline;
+			padding: .2em .6em .3em;
+			line-height: 1;
+			color: #fff;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: baseline;
+			border-radius: .25em;
+		}
+
+		.tb-tags { background-color: #739e73;}
+		.tb-categories { background-color: #3276b1;}
+	}
+}

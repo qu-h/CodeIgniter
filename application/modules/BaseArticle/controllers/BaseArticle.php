@@ -42,11 +42,12 @@ class BaseArticle extends MX_Controller
             return $this->BaseArticleModel->items_json($category_id,false,$filter);
         }
         $data = columns_fields($this->table_fields);
-        $data['filter'] = ['tags'=>[1]];
+        $data['filter'] = ['tags'=>[1,43]];
         temp_view('BaseArticle/articles', $data);
     }
 
-    var $formView = "backend/article-form";
+    var $formView = "BaseArticle/form";
+
     var $uriEdit = "article/edit/%d";
     var $uriList = "article";
     /**

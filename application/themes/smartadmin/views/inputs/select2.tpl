@@ -41,7 +41,7 @@
 <section class="{if isset($col)}{$col}{/if}">
     <label class="select">
         {if isset($icon)}
-            <i class="icon-prepend {$icon}"></i>
+            <icon class="icon-prepend {$icon}" ></icon>
         {/if}
         <select name="{$name}" class="select2 {if isset($class)}{$class}{/if}" {if isset($multiple)}multiple{/if}>
             {if isset($options) && $options|@count > 0 }

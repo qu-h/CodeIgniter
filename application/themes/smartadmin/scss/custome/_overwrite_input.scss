@@ -1,28 +1,42 @@
 $toggle-width : 49px;
 
-.smart-form .toggle.input-public {
-  min-height: 50px;
+.smart-form {
+  .toggle.input-public {
+    min-height: 30px;
 
-  i {
-    width: 80px;
-    height: 20px;
+    i {
+      width: 80px;
+      height: 20px;
 
-    &:after {
-      line-height: 14px;
+      &:after {
+        line-height: 14px;
+      }
+
+      &:before {
+        top: 5px;
+      }
     }
 
-    &:before {
-      top: 5px;
+    input:checked + i:before {
+      right: 65px;
+    }
+
+    .label-input {
+      font-size: 13px;
     }
   }
 
-  input:checked + i:before {
-    right: 65px;
+  .select {
+    .icon-prepend {
+      z-index: 99;
+
+      + .select2-container .select2-choices{
+        padding-left: 30px;
+      }
+    }
+
   }
 
-  .label-input {
-    font-size: 13px;
-  }
 }
 
 .select2-drop-multi .select2-results {

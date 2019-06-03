@@ -1,4 +1,4 @@
-<section id="widget-grid" class="">
+<section id="widget-grid" >
 	<div class="row">
 
 		<!-- NEW WIDGET START -->
@@ -7,26 +7,12 @@
 			<!-- Widget ID (each widget will need unique ID)-->
 			<div class="jarviswidget jarviswidget-color-darken" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false"
 			>
-				<!-- widget options:
-								usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-								data-widget-colorbutton="false"
-								data-widget-editbutton="false"
-								data-widget-togglebutton="false"
-								data-widget-deletebutton="false"
-
-								data-widget-custombutton="false"
-								data-widget-collapsed="true"
-								data-widget-sortable="false"
-
-								-->
 				<header>
 					{if isset($PageTitle)}
 					<span class="widget-icon"> <i class="fa fa-table"></i></span>
 					<h2>{$PageTitle}</h2>
 					{/if}
 				</header>
-				<!-- widget div-->
 				<div>
 					<div class="jarviswidget-editbox"></div>
 					<div class="smart-form">
@@ -98,10 +84,14 @@
 										return null;
 									}},
                                     { "targets": 3, "render": function ( data, type, row, meta ) {
+                                    	var btn = '';
 										if( row.source !== null ){
-											return '<a href="'+row.source+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-globe"></i></a>';
+											btn += '<a href="'+row.source+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-globe"></i></a>';
 										}
-										return null;
+										if( typeof row.markdown !== 'undefined' && row.markdown.length > 0 ){
+											btn += '<a href="'+row.markdown+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-book"></i></a>';
+										}
+										return btn;
 									}},
                                     { "targets": 4, "render": function ( data, type, row, meta ) {
 										if( row.tag_names !== null ){

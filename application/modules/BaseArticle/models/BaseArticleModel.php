@@ -8,7 +8,7 @@ class BaseArticleModel extends MX_Model
 {
     var $table = 'article';
     var $table_tags = 'article_tags';
-    var $fields = array(
+    var $fields = [
         'id' => array(
             'type' => 'hidden'
         ),
@@ -29,25 +29,27 @@ class BaseArticleModel extends MX_Model
         ),
         'category' => array(
             'type' => 'select_category',
-            'icon' => 'list',
+            'icon' => 'fa-tasks',
             'category-type' => 'article',
             'multiple'=>true
         ),
+        'markdown'=>['icon'=>'fa-book'],
         'source' => array(
             'type' => 'crawler_link',
             'icon' => 'globe'
         ),
         'summary' => array(
             'type' => 'textarea',
-            'editor' => 'form-control'
+            'editor' => 'form-control',
+            'icon'=>'fa-folder-open-o',
         ),
         'content' => array(
             'type' => 'textarea'
         ),
         'status' => ['type' => 'publish', 'value' => 1],
         'ordering' => ['type' => 'number', 'icon' => 'sort-numeric-desc'],
-        'tags' => ['type' => 'tags','multiple'=>true]
-    );
+        'tags' => ['icon'=>'fa-folder-open','type' => 'tags','multiple'=>true]
+    ];
 
     var $page_limit = 10;
 
@@ -189,7 +191,7 @@ class BaseArticleModel extends MX_Model
      */
     function items_json($category_id = null, $actions_allow = NULL,$filter=[])
     {
-        $this->db->select('a.id,a.title,a.alias, a.source, a.imgthumb, a.status, a.ordering');
+        $this->db->select('a.id,a.title,a.alias, a.source, a.imgthumb, a.status, a.ordering, a.markdown');
 //        $this->db->join("category AS c", 'c.id=a.category', 'LEFT')->select('c.name AS category_name,a.category AS category_id');
 
         $this->db->select("(SELECT GROUP_CONCAT(tag.keyword_id) FROM article_tags AS tag WHERE tag.article_id = a.id) AS tag_ids", FALSE)
@@ -216,7 +218,9 @@ class BaseArticleModel extends MX_Model
         $this->db->from($this->table . " AS a");
 
         if ($this->search) {
-            $this->db->like('LOWER(a.title)', strtolower($this->search));
+            //$this->db->like('LOWER(a.title)', strtolower($this->search));
+            $search = strtolower($this->search);
+            $this->db->where("( LOWER(a.title) LIKE '%$search%' OR LOWER(a.source) LIKE '%$search%' OR a.alias LIKE '%$search%') ");
         }
 
         if ($this->orders) {
