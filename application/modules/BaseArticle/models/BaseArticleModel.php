@@ -52,10 +52,12 @@ class BaseArticleModel extends MX_Model
     ];
 
     var $page_limit = 10;
+    var $markdown_link;
 
     function __construct()
     {
         parent::__construct();
+        $this->markdown_link = env('ARTICLE_MARKDOWN');
     }
 
     function fields()

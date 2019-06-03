@@ -36,7 +36,8 @@ class MX_Model extends CI_Model
 
         $search = input_get('search');
         if ($search) {
-            $this->search = $search['value'];
+            $this->search = strip_tags(trim($search['value']));
+            $this->search = strtolower($this->search);
         }
 
         $columns = input_get('columns');
