@@ -113,8 +113,10 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
         //} elseif ( !is_null($theme_folder) AND file_exists($resource_dir."/$theme_folder/js/".$file) ) {
     } elseif ( file_exists($theme_dir.DS.$sub_directory.DS.$file) ) {
         $file = "$theme_url/$theme_folder/$sub_directory/$file";
-    } elseif ( strpos($file, '{root_assets}') !== false ){
+    } elseif ( strpos($file, '{root_assets}') !== false ) {
         $file = str_replace('{root_assets}', $root_assets_url, $file);
+    } elseif (strlen($theme_url) > 0){
+        $file = "$theme_url$sub_directory/$file";
     } else {
         //$file = base_url()."assets/$sub_directory/$file";
         //$file = $theme_url."$sub_directory/$file";

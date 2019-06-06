@@ -21,7 +21,7 @@
 <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
 <script src="{theme_url}js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
 <!-- BOOTSTRAP JS -->
-<script src="{theme_url}js/bootstrap/bootstrap.min.js"></script>
+<script src="{theme_url}js/bootstrap/bootstrap.4.3.1.min.js"></script>
 <!-- CUSTOM NOTIFICATION -->
 <script src="{theme_url}js/notification/SmartNotification.min.js"></script>
 <!-- JARVIS WIDGETS -->
@@ -78,7 +78,7 @@
 <script src="{theme_url}js/plugin/datatables/jquery.dataTables.min.js"></script>
 <script src="{theme_url}js/plugin/datatables/dataTables.colVis.min.js"></script>
 <script src="{theme_url}js/plugin/datatables/dataTables.tableTools.min.js"></script>
-<script src="{theme_url}js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+<script src="{theme_url}js/plugin/datatables/dataTables.bootstrap.4.3.1.min.js"></script>
 <script src="{theme_url}js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
 
 <!-- PAGE RELATED PLUGIN(S) -->
