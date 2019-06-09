@@ -139,7 +139,7 @@ class BaseArticleModel extends MX_Model
             if( isset($ci->SystemArticle) ){
                 $uri = sprintf($ci->SystemArticle->uriEdit,$exist->id);
             } else {
-                $uri = url_to_edit(null, $exist->id);
+                $uri = sprintf(get_instance()->BaseArticle->uriEdit,$exist->id);
             }
             set_error('Dupplicate Article ' . anchor($uri, $exist->title) . ' ');
             return false;
@@ -185,7 +185,7 @@ class BaseArticleModel extends MX_Model
                 }
             }
         }
-        return $existed;
+        return $existed ? $row : false;
     }
 
     /*

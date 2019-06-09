@@ -25,6 +25,4 @@ function smarty_function_site_url($params){
         }
         return site_url($uri).$q;
     }
-
-
 }
