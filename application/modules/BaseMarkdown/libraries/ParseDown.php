@@ -14,8 +14,17 @@
 #
 #
 
-class Parsedown
+class CI_ParseDown
 {
+    var $imageUrl;
+    function __construct()
+    {
+    }
+
+    public function setImageUrl($url){
+        $this->imageUrl = $url;
+    }
+
     # ~
 
     const version = '1.8.0-beta-7';
@@ -1367,16 +1376,19 @@ class Parsedown
             return;
         }
 
+        if( preg_match('#^(\w+:)?//#i', $Link['element']['attributes']['href']) != true ){
+            $Link['element']['attributes']['href'] = $this->imageUrl.$Link['element']['attributes']['href'];
+        }
         $Inline = array(
             'extent' => $Link['extent'] + 1,
-            'element' => array(
+            'element' => [
                 'name' => 'img',
-                'attributes' => array(
+                'attributes' => [
                     'src' => $Link['element']['attributes']['href'],
                     'alt' => $Link['element']['handler']['argument'],
-                ),
+                ],
                 'autobreak' => true,
-            ),
+            ],
         );
 
         $Inline['element']['attributes'] += $Link['element']['attributes'];

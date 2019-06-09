@@ -88,9 +88,11 @@
 										if( row.source !== null ){
 											btn += '<a href="'+row.source+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-globe"></i></a>';
 										}
+										{if 'MARKDOWN_URL'|env|count_characters > 0}
 										if( typeof row.markdown !== 'undefined' && row.markdown.length > 0 ){
-											btn += '<a href="'+row.markdown+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-book"></i></a>';
+											btn += '<a href="{'MARKDOWN_URL'|env}'+row.markdown+'" target="_blank" class="btn btn-xs btn-default" ><i class="fa fa-book"></i></a>';
 										}
+										{/if}
 										return btn;
 									}},
                                     { "targets": 4, "render": function ( data, type, row, meta ) {
@@ -98,7 +100,7 @@
                                             let tags = '',tag_names = row.tag_names.split(','), tag_ids = row.tag_ids.split(',');
 											if( tag_names.length > 0 ){
                                                 tag_names.map( function(tag,i) {
-                                                    tags += ' <a href="?keyword='+tag_ids[i]+'" class="tb-tags" >'+tag+'</a>';
+                                                    tags += '<a href="?keyword='+tag_ids[i]+'" class="tb-tags" >'+tag+'</a>';
                                                 })
 											}
 											return tags;

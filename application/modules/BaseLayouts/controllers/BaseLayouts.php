@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class SystemLayouts extends MX_Controller {
+class BaseLayouts extends MX_Controller {
 
     function __construct()
     {
