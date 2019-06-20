@@ -17,6 +17,8 @@
 class CI_ParseDown
 {
     var $imageUrl;
+    var $title, $content;
+    var $ictArticle = true;
     function __construct()
     {
     }
@@ -40,7 +42,7 @@ class CI_ParseDown
 
         # trim line breaks
         $markup = trim($markup, "\n");
-
+        $this->content = $markup;
         return $markup;
     }
 
@@ -176,7 +178,7 @@ class CI_ParseDown
 
     protected function linesElements(array $lines)
     {
-        $Elements = array();
+        $Elements = [];
         $CurrentBlock = null;
 
         foreach ($lines as $line)
@@ -267,7 +269,6 @@ class CI_ParseDown
                         {
                             $Elements[] = $this->extractElement($CurrentBlock);
                         }
-
                         $Block['identified'] = true;
                     }
 
@@ -275,7 +276,6 @@ class CI_ParseDown
                     {
                         $Block['continuable'] = true;
                     }
-
                     $CurrentBlock = $Block;
 
                     continue 2;
@@ -322,7 +322,6 @@ class CI_ParseDown
         }
 
         # ~
-
         return $Elements;
     }
 
@@ -1255,10 +1254,10 @@ class CI_ParseDown
 
         $Inline['element']['elements'] = self::pregReplaceElements(
             $this->breaksEnabled ? '/[ ]*+\n/' : '/(?:[ ]*+\\\\|[ ]{2,}+)\n/',
-            array(
-                array('name' => 'br'),
-                array('text' => "\n"),
-            ),
+            [
+                ['name' => 'br'],
+                ['text' => "\n"],
+            ],
             $text
         );
 
@@ -1603,6 +1602,7 @@ class CI_ParseDown
 
     protected function handle(array $Element)
     {
+
         if (isset($Element['handler']))
         {
             if (!isset($Element['nonNestables']))
@@ -1701,6 +1701,7 @@ class CI_ParseDown
 
     protected function element(array $Element)
     {
+
         if ($this->safeMode)
         {
             $Element = $this->sanitiseElement($Element);
@@ -1789,7 +1790,7 @@ class CI_ParseDown
 
         $autoBreak = true;
 
-        foreach ($Elements as $Element)
+        foreach ($Elements as $index=> $Element)
         {
             if (empty($Element))
             {
@@ -1801,6 +1802,15 @@ class CI_ParseDown
             );
             // (autobreak === false) covers both sides of an element
             $autoBreak = !$autoBreak ? $autoBreak : $autoBreakNext;
+
+            if( $index===0 && array_key_exists('name',$Element) && $Element['name']==='h1' ){
+                //dd($Element);
+                $this->title = str_replace(['[source]','[',']'],null,$Element['handler']['argument']);
+                if( array_key_exists('source',$this->DefinitionData['Reference']) ){
+                    $this->source = $this->DefinitionData['Reference']['source']['url'];
+                }
+                continue;
+            }
 
             $markup .= ($autoBreak ? "\n" : '') . $this->element($Element);
             $autoBreak = $autoBreakNext;
