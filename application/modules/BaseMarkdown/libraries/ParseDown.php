@@ -1806,7 +1806,7 @@ class CI_ParseDown
             if( $index===0 && array_key_exists('name',$Element) && $Element['name']==='h1' ){
                 //dd($Element);
                 $this->title = str_replace(['[source]','[',']'],null,$Element['handler']['argument']);
-                if( array_key_exists('source',$this->DefinitionData['Reference']) ){
+                if( array_key_exists('Reference',$this->DefinitionData) && array_key_exists('source',$this->DefinitionData['Reference']) ){
                     $this->source = $this->DefinitionData['Reference']['source']['url'];
                 }
                 continue;
