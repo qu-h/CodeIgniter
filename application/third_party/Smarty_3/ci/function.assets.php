@@ -7,6 +7,7 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
 
     $root_assets_url = get_instance()->config->item('root_assets_url');
 
+
     if( $type ){
         $folder = $content->theme;
         $html = '';
@@ -88,6 +89,20 @@ function smarty_function_assets($params,$content,$template=null, &$repeat=null){
         return $html;
     }
 
+    $file = ( isset($params['file']) )?$params['file']:null;
+
+    if( $file ){
+        switch ( pathinfo($file,PATHINFO_EXTENSION) ){
+            case 'js':
+                $file = add_asset_file($file,'js');
+                if( strlen($file) > 0 ){
+                    return "<script type=\"text/javascript\" src=\"$file\" ></script>\n";
+                }
+                break;
+        }
+
+    }
+
 }
 
 
@@ -101,12 +116,12 @@ function add_asset_file($file=NULL,$sub_directory='js',$theme_folder=NULL){
         return assets($file[0],$file[1]);
     }
 
-
     if( substr($file,0,2) == '//' || substr($file,0,4) == 'http' ){
 
+    } elseif ( file_exists(APPPATH."../public/$sub_directory/$file") ) {
+        $file = base_url()."$sub_directory/$file";
     } elseif ( file_exists($theme_dir.DS.$file) ) {
         $file = "$theme_url/$theme_folder/$file";
-
     } elseif( file_exists($theme_dir."/$sub_directory/".$file) ){
         $file = $theme_url.DS.$sub_directory.DS.$file;
         //} else if (file_exists($resource_dir.$file)) {
