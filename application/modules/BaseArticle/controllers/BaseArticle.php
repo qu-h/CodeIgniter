@@ -122,11 +122,11 @@ class BaseArticle extends MX_Controller
             $check = $this->model->where('source',$crawlerSource);
             if( ($row = $check->get_row()) != null ){
                 $uriEdit = sprintf($this->uriEdit,$row->id);
-                //dd($uriEdit);
                 set_error('Dupplicate Article ' .  anchor($uriEdit, $row->title));
                 redirect($uriEdit);
             } else {
                 list($c_title, $c_content, $c_thumb) = Modules::run('SystemCrawler/get_content', $crawlerSource);
+
                 if (!is_null($c_title)) {
                     $this->model->fields["title"]['value'] = $c_title;
                     $this->model->fields["content"]['value'] = $c_content;

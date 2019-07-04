@@ -125,15 +125,17 @@ class SystemCrawler extends MX_Controller
 
     //http://simplehtmldom.sourceforge.net/manual.htm
     private function findArticleObject($url,$crawlerMask){
+        $content = get_site_html_curl($url);
         $html = new simple_html_dom();
-        $html->load(get_site_html_curl($url));
+        $html->load($content);
 
         $title = $thumbnail = $content = null;
         try{
-            foreach ($html->find('iframe') as $node)
+            foreach ($html->find('iframe, script') as $node)
             {
                 $node->outertext = '';
             }
+
 
             $replace="textarea";
             foreach($html->find($replace) as $key=>$element){
@@ -141,6 +143,7 @@ class SystemCrawler extends MX_Controller
             }
 
             $titleObject = $html->find($crawlerMask->title_element,0);
+
             if( $titleObject  ){
                 $title = trim( strip_tags($titleObject->innertext) );
             }
