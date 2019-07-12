@@ -26,6 +26,10 @@ function set_temp_val($name="",$val=NULL){
     }
 }
 
+/**
+ * @param string $name name of variable
+ * @param null $val value of variable
+ */
 function add_temp_val($name="",$val=NULL){
     if( strlen($name) > 0 ){
         $tempVal = get_instance()->smarty->getTemplateVars($name);
