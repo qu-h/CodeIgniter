@@ -21,6 +21,7 @@ class BaseCategoryModel extends MX_Model {
         ),
         'parent' => array(
             'type' => 'select_category',
+            'category-type'=>"article",
             //'icon' => 'list',
             'value'=>0
         ),
@@ -195,9 +196,10 @@ class BaseCategoryModel extends MX_Model {
     }
 
     public function items_tree($type='article',$parent_id=0,$level=1,$where=[],$using_id=[]){
-        $items = array();
+        $items = [];
         if( $level < 1 )
             return [];
+
         if( is_numeric($level) && $level > 0  ){
             $this->db->where('c.parent',$parent_id);
         }
@@ -210,7 +212,6 @@ class BaseCategoryModel extends MX_Model {
 
         $this->db->where(array("type"=>$type));
         if( !empty($where) ){
-            //,$status=1
             $this->db->where($where);
         }
         $this->db->select("id, name, status, ordering, type");

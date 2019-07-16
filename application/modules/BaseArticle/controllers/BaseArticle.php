@@ -47,7 +47,6 @@ class BaseArticle extends MX_Controller
     }
 
     var $formView = "BaseArticle/form";
-
     var $uriEdit = "article/edit/%d";
     var $uriList = "article";
     /**

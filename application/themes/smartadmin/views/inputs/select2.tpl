@@ -9,13 +9,18 @@
             {/if}
         {else}
 
-            {foreach $items as $id=>$childrent}
+            {foreach $items as $index=>$childrent}
+
+                {if isset($childrent.id)}
+                    {assign var="id" value=$childrent.id}
+                {else}
+                    {assign var="id" value=$index}
+                {/if}
+
                 {if is_string($childrent)}
                     <option value="{$id}" {if in_array($id,$selected)}selected{/if} >{if is_array($childrent) && array_key_exists('label',$childrent)} {$childrent['label']} {elseif (is_string($childrent))} {$childrent} {/if}</option>
                 {elseif is_array($childrent)}
-
                     {if !array_key_exists('children',$childrent) }
-
                         {if array_key_exists('label',$childrent)}
                             <option value="{$id}" {if in_array($id,$selected)}selected{/if} class="level-{$level}" >{$childrent['label']}</option>
                         {elseif is_string($id) }

@@ -28,6 +28,7 @@ class BaseCategory extends MX_Controller
             return $this->update_order(input_post('data'),0);
         }
         $items = $this->BaseCategoryModel->items_tree($this->fields["type"]["value"],0,2);
+//        dd($items,true,0);
         $data['categories'] = $items;
 
         add_git_assets('jquery.nestable.min.js','jquery/nestable');
