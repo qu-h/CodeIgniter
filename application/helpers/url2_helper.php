@@ -73,6 +73,10 @@ function submit_redirect($id=0){
                 $newUri = url_to_list();
             }
             break;
+        default:
+            $newUri = url_to_list();
+            break;
+
     }
     return redirect($newUri, 'refresh');
 }

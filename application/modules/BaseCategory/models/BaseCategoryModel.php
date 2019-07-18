@@ -139,12 +139,11 @@ class BaseCategoryModel extends MX_Model {
     public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
     {
         $options = [];
-        if( $level < 1 )
+//        dd("debug level : $level",false,1);
+        if( $level == 0 )
             return [];
-        if( is_numeric($level) && $level > 0  ){
-//		    if( $level <= 1 ){
-//                $parent_id = 0;
-//            }
+
+        if( is_numeric($level) && ( $level !== 0 )  ){
             $this->db->where('c.parent',$parent_id);
         }
         if( is_numeric($using_id) ){
@@ -165,7 +164,7 @@ class BaseCategoryModel extends MX_Model {
             $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
 
             $option = ['id'=>$row->id,'label'=>$row->name];
-            if( $level > 1 && !empty($subOptions) ){
+            if(  $level !== 0 && !empty($subOptions) ){
                 $option['children'] = $subOptions;
             }
             $options[$row->id] = $option;

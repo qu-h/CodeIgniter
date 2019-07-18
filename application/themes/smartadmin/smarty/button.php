@@ -40,18 +40,26 @@ class SmartAdminButton extends CI_Smarty {
     }
     static function btnSubmit($params=[]){
         $params['txt'] = 'Submit';
-        $params['icon'] = 'glyphicon-ok';
+        $params['icon'] = 'fa-retweet';
         $params['type'] = "primary";
+
         return self::btn($params);
     }
 
     static function btnSave($params=[]){
         $params['txt'] = 'Save';
-        $params['icon'] = 'glyphicon-floppy-disk';
+        $params['icon'] = 'fa-save';
         $params['type'] = "success";
-        $params['name'] = 'save';
-        return self::btn($params);
 
+        return self::btn($params);
+    }
+
+    static function btnCancel($params=[]){
+        $params['txt'] = 'cancel';
+        $params['icon'] = 'glyphicon-trash';
+        $params['type'] = "cancel";
+
+        return self::btn($params);
     }
 
     static function btnCrawler(){
@@ -60,5 +68,13 @@ class SmartAdminButton extends CI_Smarty {
         $params['type'] = "default";
         $params['name'] = 'crawler';
         return self::btn($params);
+    }
+
+    static function backendButtons(){
+        $btn = self::btnCancel();
+        $btn.= self::btnSubmit();
+        $btn.= self::btnSave();
+
+        return $btn;
     }
 }

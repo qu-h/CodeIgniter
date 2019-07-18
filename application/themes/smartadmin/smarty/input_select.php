@@ -18,6 +18,8 @@ class SmartadminInput_select extends CI_Smarty {
     }
 
     static function input_select_category($params){
+        $level = isset($params['level']) ? $params['level'] : 2;
+
         $ci = get_instance();
         $ci->load->model('BaseCategory/BaseCategoryModel');
         if( !isset($params['category-type']) ){
@@ -27,7 +29,7 @@ class SmartadminInput_select extends CI_Smarty {
         if( array_key_exists('without_ids',$params) ){
             $without_ids = $params['without_ids'];
         }
-        $params['options'] = $ci->BaseCategoryModel->load_options($params['category-type'],null,$without_ids,2);
+        $params['options'] = $ci->BaseCategoryModel->load_options($params['category-type'],null,$without_ids,$level);
         if( array_key_exists('multiple',$params) != true || $params['multiple'] != true ){
             $params['options'] = array_merge([0=>lang("-- Select Category -- ")],$params['options']);
         }

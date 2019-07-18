@@ -22,12 +22,12 @@ class BaseCategory extends MX_Controller
     );
 
 
-    function items()
+    function items($level=2)
     {
         if( input_post("update-order") ){
             return $this->update_order(input_post('data'),0);
         }
-        $items = $this->BaseCategoryModel->items_tree($this->fields["type"]["value"],0,2);
+        $items = $this->BaseCategoryModel->items_tree($this->fields["type"]["value"],0,$level);
 //        dd($items,true,0);
         $data['categories'] = $items;
 
@@ -35,7 +35,7 @@ class BaseCategory extends MX_Controller
         temp_view("categories",$data);
     }
 
-
+    var $formView = "form";
     public function form($id = 0)
     {
         if ($this->input->post()) {
@@ -69,7 +69,7 @@ class BaseCategory extends MX_Controller
         $data = array(
             'fields' => $this->fields
         );
-        temp_view('form', $data);
+        temp_view($this->formView, $data);
     }
     public function delete($id=0){
         $this->BaseCategoryModel->item_delete($id);
@@ -84,5 +84,10 @@ class BaseCategory extends MX_Controller
                 $this->update_order($cate["children"],$cate["id"]);
             }
         }
+    }
+
+    public function setType($value){
+        $this->fields["type"]["value"] = $value;
+        $this->fields["parent"]["category-type"] = $value;
     }
 }
