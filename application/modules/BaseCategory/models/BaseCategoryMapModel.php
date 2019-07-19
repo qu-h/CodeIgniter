@@ -37,12 +37,22 @@ class BaseCategoryMapModel extends MX_Model
         }
     }
 
-    public function getCategories($target_id,$target_table=''){
+    public function getCategories($target_id,$target_table='article'){
         $data = [];
         $where = ['target_id' => $target_id, 'target_table' => $target_table];
         $query = $this->db->where($where)->get($this->table);
         if( $query->num_rows() > 0 ) foreach ($query->result() AS $cate){
             $data[] = $cate->category_id;
+        }
+        return $data;
+    }
+
+    public function getChildrens($id,$target_table='category'){
+        $data = [];
+        $where = ['category_id' => $id, 'target_table' => $target_table];
+        $query = $this->db->where($where)->get($this->table);
+        if( $query->num_rows() > 0 ) foreach ($query->result() AS $cate){
+            $data[] = $cate->target_id;
         }
         return $data;
     }

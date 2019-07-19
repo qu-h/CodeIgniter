@@ -22,6 +22,10 @@ class SmartAdminButton extends CI_Smarty {
             $attr['name'] = "btn-".$params['name'];
         }
 
+        if ( array_key_exists('value',$params) ){
+            $attr['value'] = $params['value'];
+        }
+
         if ( array_key_exists('icon',$params) ){
             $icon = $params['icon'];
             $iconClass = '';
@@ -42,7 +46,7 @@ class SmartAdminButton extends CI_Smarty {
         $params['txt'] = 'Submit';
         $params['icon'] = 'fa-retweet';
         $params['type'] = "primary";
-
+        $params['value'] = "submit";
         return self::btn($params);
     }
 
@@ -50,7 +54,7 @@ class SmartAdminButton extends CI_Smarty {
         $params['txt'] = 'Save';
         $params['icon'] = 'fa-save';
         $params['type'] = "success";
-
+        $params['value'] = "save";
         return self::btn($params);
     }
 
@@ -58,7 +62,7 @@ class SmartAdminButton extends CI_Smarty {
         $params['txt'] = 'cancel';
         $params['icon'] = 'glyphicon-trash';
         $params['type'] = "cancel";
-
+        $params['value'] = "cancel";
         return self::btn($params);
     }
 

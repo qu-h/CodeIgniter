@@ -1,5 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script coess allowed');
 
+/**
+ * Class BaseCategoryModel
+ * @property BaseCategoryMapModel $BaseCategoryMapModel
+ */
 class BaseCategoryModel extends MX_Model {
 
     var $table = 'category';
@@ -23,7 +27,8 @@ class BaseCategoryModel extends MX_Model {
             'type' => 'select_category',
             'category-type'=>"article",
             //'icon' => 'list',
-            'value'=>0
+            'value'=>0,
+            'multiple'=>true
         ),
         'summary'=>array(
             'type' => 'textarea',
@@ -42,10 +47,10 @@ class BaseCategoryModel extends MX_Model {
         $this->checkTableExist($this->table,'sql/create-category.sql','backend');
     }
 
-
     function fields()
     {
-        return $this->category_fields;
+        $fields = $this->category_fields;
+        return $fields;
     }
 
     function get_item_by_alias($alias="",$returnArray=false){
@@ -63,10 +68,21 @@ class BaseCategoryModel extends MX_Model {
     }
 
     function get_item_by_id($id=0){
-        return $this->db->where('id',$id)->get($this->table)->row();
+        $row = $this->db->where('id',$id)->get($this->table)->row();
+        if( $this->category_fields['parent']['multiple'] && $row->id > 0 ){
+            $row->parent = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
+        }
+        return $row;
     }
 
     function update($data=NULL,$validation=true){
+        $parents = [];
+        if( is_array($data['parent']) ){
+            $parents = $data['parent'];
+            $data['parent'] = reset($parents);
+        } else if ( is_null($data['parent']) ){
+            $data['parent'] = 0;
+        }
         if( $validation ){
             if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
                 if( strlen($data['name']) > 0 ){
@@ -76,9 +92,8 @@ class BaseCategoryModel extends MX_Model {
                     return false;
                 }
             }
-
             if( is_null($data['parent']) || strlen($data['parent']) < 1){
-                $data['parent'] = 0;
+                $data['parent'] = reset($data['parent']);
             }
             $data['status'] = ($data['status']=='on' || $data['status']) ? true: false;
         }
@@ -100,21 +115,29 @@ class BaseCategoryModel extends MX_Model {
             $data['name'] = trim_title($data['name']);
         }
 
-        if( $validation && $this->check_exist($data['alias'],$data['id'],$data['parent']) ){
+
+        if( $validation && $this->check_exist($data['alias'],$data['id']) ){
             set_error('Dupplicate Category');
             return false;
         }
 
+
+        $id = 0;
         if( intval($data['id']) > 0 ) {
             $data['modified'] = date("Y-m-d H:i:s");
             $id = $data['id'];
             unset($data['id']);
             $this->db->where('id',$id)->update($this->table,$data);
-            return $id;
         } elseif ($validation) {
             $this->db->insert($this->table,$data);
-            return $this->db->insert_id();
+            $id = $this->db->insert_id();
         }
+
+        if( !empty($parents)){
+            $this->BaseCategoryMapModel->update($id,$this->table,$parents);
+        }
+
+        return $id;
     }
 
     public function item_delete($id=0){
@@ -130,30 +153,39 @@ class BaseCategoryModel extends MX_Model {
         }
         $this->db->where('alias',$alias)
             ->where("parent = $parent")
+            ->where("type",$this->table)
             ->where('id <>',$id);
+
         $result = $this->db->get($this->table);
 
         return ( $result->num_rows() > 0) ? true : false;
     }
 
-    public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0)
+    public function load_options($type='article',$status=1,$using_id=[],$level=1,$parent_id=0,$whereIds=[])
     {
         $options = [];
-//        dd("debug level : $level",false,1);
+
         if( $level == 0 )
             return [];
 
-        if( is_numeric($level) && ( $level !== 0 )  ){
+        if( is_numeric($level) && $level !== 0 && $parent_id > -1 ){
             $this->db->where('c.parent',$parent_id);
         }
         if( is_numeric($using_id) ){
             $using_id = [$using_id];
         }
         if( !empty($using_id) ){
-            $this->db->where_not_in('c.id',$using_id);
+            /**
+             * remove to show all item in select box
+             */
+//            $this->db->where_not_in('c.id',$using_id);
         }
 
         $this->db->where("c.type",$type);
+        if(!empty($whereIds)){
+            $this->db->where_in('c.id',$whereIds);
+        }
+
         if( $status !== null && $status !== '*' ){
             $this->db->where('c.status',$status);
         }
@@ -161,12 +193,19 @@ class BaseCategoryModel extends MX_Model {
         $query = $this->db->get($this->table." AS c");
 
         if( $query->num_rows() > 0 ){ foreach ($query->result() as $row) {
-            $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
 
+//            $subOptions = $this->load_options($type,$status,$using_id,$level-1,$row->id);
             $option = ['id'=>$row->id,'label'=>$row->name];
-            if(  $level !== 0 && !empty($subOptions) ){
-                $option['children'] = $subOptions;
+            if(  $level !== 0 ){
+                $parents = $this->BaseCategoryMapModel->getChildrens($row->id,$this->table);
+                if( !empty($parents)){
+                    $subOptions = $this->load_options($type,$status,$using_id,$level-1,-1,$parents);
+                    if(  !empty($subOptions) ){
+                        $option['children'] = $subOptions;
+                    }
+                }
             }
+
             $options[$row->id] = $option;
         }}
         return $options;
@@ -185,7 +224,6 @@ class BaseCategoryModel extends MX_Model {
         $query = $this->db->get();
 
         $items = [];
-
         if( $query ){
             $items = $query->result_array();
         } else {
@@ -194,12 +232,12 @@ class BaseCategoryModel extends MX_Model {
         return $items;
     }
 
-    public function items_tree($type='article',$parent_id=0,$level=1,$where=[],$using_id=[]){
+    public function items_tree($type='article',$parent_id=0,$level=1,$where=[],$using_id=[],$whereIds=[]){
         $items = [];
         if( $level < 1 )
             return [];
 
-        if( is_numeric($level) && $level > 0  ){
+        if( is_numeric($level) && $level > 0 && $parent_id > -1 ){
             $this->db->where('c.parent',$parent_id);
         }
         if( is_numeric($using_id) ){
@@ -213,13 +251,20 @@ class BaseCategoryModel extends MX_Model {
         if( !empty($where) ){
             $this->db->where($where);
         }
+        if(!empty($whereIds)){
+            $this->db->where_in('id',$whereIds);
+        }
+
         $this->db->select("id, name, status, ordering, type");
         $this->db->order_by("c.ordering ASC");
         $query = $this->db->get($this->table." AS c");
 
         if( $query->num_rows() > 0 ){ foreach ($query->result_array() as $row) {
             if( $level > 1 ){
-                $row['children'] = $this->items_tree($type,$row['id'],$level-1,$where,$using_id);
+                $parents = $this->BaseCategoryMapModel->getChildrens($row['id'],$this->table);
+                if( !empty($parents)){
+                    $row['children'] = $this->items_tree($type,-1,$level-1,$where,$using_id,$parents);
+                }
             }
             $items[] = $row;
         }}

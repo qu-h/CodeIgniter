@@ -59,6 +59,12 @@ function url_to_list(){
 }
 
 function submit_redirect($id=0){
+    $uriBack = input_get("back");
+
+    if( strlen($uriBack) > 0 ){
+        redirect($uriBack, 'refresh');
+        return;
+    }
     $submit = input_post('submit');
 
     switch ($submit){
@@ -66,19 +72,14 @@ function submit_redirect($id=0){
             $newUri = url_to_edit(null,$id);
             break;
         case 'submit':
-            $uriBack = input_get("back");
-            if( strlen($uriBack) > 0 ){
-                $newUri = base64url_decode($uriBack);
-            } else {
-                $newUri = url_to_list();
-            }
+            $newUri = url_to_list();
             break;
         default:
             $newUri = url_to_list();
             break;
 
     }
-    return redirect($newUri, 'refresh');
+    redirect($newUri, 'refresh');
 }
 
 function trim_all( $str , $what = NULL , $with = ' ' )

@@ -39,7 +39,7 @@ class BaseCategory extends MX_Controller
     public function form($id = 0)
     {
         if ($this->input->post()) {
-            $data = array();
+            $data = [];
             foreach ($this->fields as $name => $field) {
                 $this->fields[$name]['value'] = $data[$name] = $this->input->post($name);
             }
@@ -71,13 +71,14 @@ class BaseCategory extends MX_Controller
         );
         temp_view($this->formView, $data);
     }
+
     public function delete($id=0){
         $this->BaseCategoryModel->item_delete($id);
         $newUri = url_to_list();
         return redirect($newUri, 'refresh');
     }
-    private function update_order($items=[],$parent_id=0){
 
+    private function update_order($items=[],$parent_id=0){
         if( !empty($items) ) foreach ($items AS $i => $cate){
             $this->BaseCategoryModel->update(['id'=>$cate["id"],"ordering"=>$i+1,'parent'=>$parent_id],false);
             if( isset($cate["children"]) ){

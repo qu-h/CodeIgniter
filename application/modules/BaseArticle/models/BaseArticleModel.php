@@ -72,7 +72,7 @@ class BaseArticleModel extends MX_Model
     public function get_row(){
         $row = parent::get_row();
         if( $row ){
-            $row->category = $query = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
+            $row->category = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
         }
 
         return $row;
@@ -82,7 +82,6 @@ class BaseArticleModel extends MX_Model
     {
 
         $row = $this->db->where('id', $id)->get($this->table)->row();
-
         if (!is_null($row) && isset($row->id)) {
             $row->tags = $this->getTags($row->id);
             $row->category = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
