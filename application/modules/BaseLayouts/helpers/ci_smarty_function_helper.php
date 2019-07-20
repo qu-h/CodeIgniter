@@ -1,7 +1,10 @@
 <?php
-function add_js($file=NULL){
+function add_js($file=NULL, $is_public=false){
     if( strlen($file) < 4 )
         return ;
+    if( $is_public ){
+        $file = base_url($file);
+    }
     $ci = get_instance();
 
     $files = $ci->config->item('js');
@@ -16,9 +19,13 @@ function add_js($file=NULL){
     $ci->config->set_item('js', $files);
 }
 
-function add_css($file=NULL){
+function add_css($file=NULL, $is_public=false){
     if( strlen($file) < 4 )
         return ;
+
+    if( $is_public ){
+        $file = base_url($file);
+    }
     $ci = get_instance();
     $files = $ci->config->item('css');
     if( is_null($files) ){
