@@ -44,7 +44,10 @@ class BaseCategoryModel extends MX_Model {
     );
     function __construct(){
         parent::__construct();
-        $this->checkTableExist($this->table,'sql/create-category.sql','backend');
+//        $this->checkTableExist($this->table,'sql/create-category.sql','backend');
+        if( !class_exists('BaseCategoryMapModel')){
+            $this->load->model("BaseCategory/BaseCategoryMapModel");
+        }
     }
 
     function fields()
@@ -234,7 +237,7 @@ class BaseCategoryModel extends MX_Model {
 
     public function items_tree($type='article',$parent_id=0,$level=1,$where=[],$using_id=[],$whereIds=[]){
         $items = [];
-        if( $level < 1 )
+        if( $level == 0 )
             return [];
 
         if( is_numeric($level) && $level > 0 && $parent_id > -1 ){
