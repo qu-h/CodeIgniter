@@ -149,7 +149,6 @@ class CI_URI {
 	 * @param 	string	$str
 	 * @return	void
 	 */
-	const EXT_ALLOW = ['json','xml','html','csv'];
 	protected function _set_uri_string($str)
 	{
 		// Filter out control characters and trim slashes
@@ -158,7 +157,8 @@ class CI_URI {
 		if ($this->uri_string !== '')
 		{
 		    // Remove the URL suffix, if present
-		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), self::EXT_ALLOW) ){
+            $ext_allow = ['json','xml','html','csv'];
+		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), $ext_allow) ){
 		        $this->extension = $ext;
 		        $ext = ".".$this->extension;
 		        $slen = strlen($ext);
