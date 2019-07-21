@@ -107,9 +107,9 @@ var ict = {
 	formOnKeydown:function () {
 		$(document).on('keydown', function(e) {
 			if( e.altKey === true ){
-				let saveBtn = jQuery("input[name=submit][value=save]"),
-					submitBtn = jQuery("input[name=submit][value=submit]"),
-					cancelBtn = jQuery("input[name=submit][value=cancel]");
+				let saveBtn = jQuery("[name=submit][value=save]"),
+					submitBtn = jQuery("[name=submit][value=submit]"),
+					cancelBtn = jQuery("[name=submit][value=cancel]");
 				switch (e.keyCode) {
 					case 83: // S
 						if(saveBtn.length > 0){
