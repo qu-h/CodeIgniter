@@ -6,7 +6,8 @@ var ict = {
 		this.footerFixed();
 		this.summerNote();
 		this.crawlerActions();
-		this.inputTags();
+		this.formOnKeydown();
+		// this.inputTags();
 	},
 	footerFixed:function(){
 		var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer");
@@ -101,6 +102,35 @@ var ict = {
 			});
 		}
 
+	},
+
+	formOnKeydown:function () {
+		$(document).on('keydown', function(e) {
+			if( e.altKey === true ){
+				let saveBtn = jQuery("input[name=submit][value=save]"),
+					submitBtn = jQuery("input[name=submit][value=submit]"),
+					cancelBtn = jQuery("input[name=submit][value=cancel]");
+				switch (e.keyCode) {
+					case 83: // S
+						if(saveBtn.length > 0){
+							saveBtn.click();
+						}
+						break;
+					case 90: // Z
+						if(cancelBtn.length > 0){
+							cancelBtn.click();
+						}
+						break;
+					case 88: // X
+						if(submitBtn.length > 0){
+							submitBtn.click();
+						}
+						break;
+				}
+				console.warn('debug keydown',e.keyCode);
+			}
+
+		});
 	}
 };
 
