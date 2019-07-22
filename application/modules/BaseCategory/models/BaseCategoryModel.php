@@ -26,7 +26,7 @@ class BaseCategoryModel extends MX_Model {
         'parent' => array(
             'type' => 'select_category',
             'category-type'=>"article",
-            //'icon' => 'list',
+            'icon' => 'fa-tasks',
             'value'=>0,
             'multiple'=>true
         ),
@@ -267,6 +267,54 @@ class BaseCategoryModel extends MX_Model {
                 $parents = $this->BaseCategoryMapModel->getChildrens($row['id'],$this->table);
                 if( !empty($parents)){
                     $row['children'] = $this->items_tree($type,-1,$level-1,$where,$using_id,$parents);
+                }
+            }
+            $items[] = $row;
+        }}
+        return $items;
+    }
+
+    public function items_tree_with_logo($type='article',$level=0,$whereIds=[],$using_id=[]){
+        $items = [];
+        if( $level == 0 )
+            return [];
+
+        if( is_numeric($using_id) ){
+            $using_id = [$using_id];
+        }
+        if( !empty($using_id) ){
+            $this->db->where_not_in('id',$using_id);
+        }
+
+        $this->db->where(array("type"=>$type));
+
+        if(!empty($whereIds)){
+            $this->db->where_in('id',$whereIds);
+        } else {
+            $this->db->where('c.parent < ',1);
+        }
+
+        $this->db->select("id, name, status, ordering, type, summary");
+        $this->db->order_by("c.ordering ASC");
+        $query = $this->db->get($this->table." AS c");
+
+        if( $query->num_rows() > 0 ){ foreach ($query->result_array() as $row) {
+
+            $summary = trim($row['summary']);
+            if ( strlen($summary) > 0 ){
+                $markdown = new CI_MarkdownRead($summary);
+
+                $logo = $markdown->get_reference('logo');
+                $row['logo'] = null;
+                if( $logo ){
+                    $row['logo'] = env('ASSETS_GIT_PATH')."app-logo/$logo";
+                }
+            }
+
+            if( $level > 1 ){
+                $parents = $this->BaseCategoryMapModel->getChildrens($row['id'],$this->table);
+                if( !empty($parents)){
+                    $row['children'] = $this->items_tree_with_logo($type,$level-1,$parents,$using_id);
                 }
             }
             $items[] = $row;
