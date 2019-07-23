@@ -44,7 +44,8 @@ class BaseArticleModel extends MX_Model
             'icon'=>'fa-folder-open-o',
         ),
         'content' => array(
-            'type' => 'textarea'
+            'type' => 'textarea',
+            'editor'=>'ckeditor'
         ),
         'status' => ['type' => 'publish', 'value' => 1],
         'ordering' => ['type' => 'number', 'icon' => 'sort-numeric-desc'],

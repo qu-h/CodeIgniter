@@ -186,6 +186,8 @@ class BaseArticle extends MX_Controller
             }
             $html = $this->model->fields['content']['value'];
             $htmlDom = str_get_html($html);
+            if( !is_object($htmlDom) )
+                return;
             // Find all images
             foreach($htmlDom->find('img') as $img){
                 //$img->{'data-src'} = $img->src;

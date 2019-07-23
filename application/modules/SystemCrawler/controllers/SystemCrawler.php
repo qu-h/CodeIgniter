@@ -128,10 +128,9 @@ class SystemCrawler extends MX_Controller
         $content = get_site_html_curl($url);
         $html = new simple_html_dom();
         $html->load($content);
-
         $title = $thumbnail = $content = null;
         try{
-            foreach ($html->find('iframe, script') as $node)
+            foreach ($html->find('iframe,script') as $node)
             {
                 $node->outertext = '';
             }
