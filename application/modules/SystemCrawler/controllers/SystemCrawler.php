@@ -127,6 +127,8 @@ class SystemCrawler extends MX_Controller
     private function findArticleObject($url,$crawlerMask){
         $content = get_site_html_curl($url);
         $html = new simple_html_dom();
+//        dd($url,false);
+//        dd($content);
         $html->load($content);
         $title = $thumbnail = $content = null;
         try{

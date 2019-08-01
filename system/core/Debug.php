@@ -36,7 +36,9 @@ function dd($value,$die=null,$traceStep = 50){
                 if( $count > $traceStep ){
                     break;
                 }
-
+                if( array_key_exists('file',$b) != true){
+                    continue;
+                }
                 $file = $b['file'];
                 $file = str_replace(BASEPATH,'[BASEPATH    ] ',$file);
 
