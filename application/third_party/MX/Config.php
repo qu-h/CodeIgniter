@@ -35,14 +35,16 @@
  **/
 class MX_Config extends CI_Config
 {
-	public function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE, $_module = '')
+	public function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE, $_module = '',$replace=false)
 	{
-		if (in_array($file, $this->is_loaded, TRUE))
-		    return $this->item($file);
+
+		if (in_array($file, $this->is_loaded, TRUE)){
+//            dd( $this->is_loaded);
+            return $this->item($file);
+        }
 
 		if( file_exists($file) ) {
 		    $path = null;
-
         } else {
            $_module OR $_module = CI::$APP->router->fetch_module();
            list($path, $file) = Modules::find($file, $_module, 'config/');
@@ -58,7 +60,6 @@ class MX_Config extends CI_Config
 		{
 			/* reference to the config array */
 			$current_config =& $this->config;
-
 			if ($use_sections === TRUE)
 			{
 				if (isset($current_config[$file]))
@@ -73,7 +74,7 @@ class MX_Config extends CI_Config
 			}
 			else
 			{
-				$current_config = array_merge($current_config, $config);
+				$current_config = $replace ? array_replace($current_config,$config) : array_merge($current_config,$config);
 			}
 
 			$this->is_loaded[] = $file;

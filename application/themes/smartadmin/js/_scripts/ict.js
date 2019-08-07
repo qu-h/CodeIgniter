@@ -7,6 +7,7 @@ var ict = {
 		this.summerNote();
 		this.crawlerActions();
 		this.formOnKeydown();
+		this.wysiwygEditor();
 		// this.inputTags();
 	},
 	footerFixed:function(){
@@ -131,6 +132,32 @@ var ict = {
 			}
 
 		});
+	},
+
+	wysiwygEditor:function(){
+		console.log("call me");
+		if( $.fn.markdownEditor){
+			jQuery(".bootstrap-markdown-editor").markdownEditor({
+				preview: true,
+				onPreview: function (content, callback) {
+					callback( marked(content) );
+				}
+			});
+		}
+		if( typeof editormd != 'undefined'){
+			var testEditor;
+
+			$(function() {
+				testEditor = editormd({
+					id: "editor-md",
+					// width: "90%",
+					height: 640,
+					path: "http://github.giaiphapict.loc//editor.md/1.5.0/lib/"
+				});
+			});
+		}
+
+
 	}
 };
 

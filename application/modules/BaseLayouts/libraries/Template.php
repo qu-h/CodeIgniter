@@ -387,7 +387,7 @@ class Template
          */
 
         if ($this->get_theme_path() != "") {
-            $this->_ci->config->load($this->get_theme_path() . "config.php");
+            $this->_ci->config->load($this->get_theme_path() . "config.php",FALSE,FALSE,'',true);
 
             $this->_data['assets_dir'] = $this->_ci->config->item('assets_dir');
             $this->_data['assets_url'] = $this->_ci->config->item('assets_url');

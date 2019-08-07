@@ -54,6 +54,9 @@
                             *}
                         </fieldset>
                         <footer>
+                            {if isset($google_login_url)}
+                            <a class="btn btn-primary" href="{$google_login_url}">{lang txt="Google Login"}</a>
+                            {/if}
                             <button type="submit" class="btn btn-primary">{lang txt="Sign In"}</button>
                         </footer>
                     </form>

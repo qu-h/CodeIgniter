@@ -183,10 +183,8 @@ class MX_Router extends CI_Router
                         $this->located = 2;
                         $segments[0] = ucfirst($module) . ucfirst($appDir);
                         return $segments;
-
                     } else {
-                        dd("source=$source");
-                        dd('go here');
+                        dd($source . ucfirst($segments[1]) . ucfirst($appDir) . $ext);
                         $this->located = -1;
                     }
                 } elseif (is_file($source . ucfirst($module) . ucfirst($appDir) . $ext)) {

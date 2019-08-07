@@ -376,29 +376,62 @@ class SmartadminInputs extends CI_Smarty
         $value = isset($params['value']) ? trim($params['value']) : "";
         $editor= isset($params['editor']) ? $params['editor'] : "ict-ckeditor";
 
-        if( in_array($editor,['ckeditor','ict-ckeditor'])){
-            $js = git_assets('ckeditor.js','ckeditor','4.10.0',null,false);
-            add_js($js);
-//            $editor_config = git_assets('config/giaiphapict.js','ckeditor','4.10.0',null,false);
-//            add_js("ckeditor.config.js");
+        switch ($editor){
+            case 'ckeditor':
+            case 'ict-ckeditor':
+                $js = git_assets('ckeditor.js','ckeditor','4.10.0',null,false);
+                add_js($js);
+                break;
+            case 'bootstrap-markdown-editor':
+                add_js("//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js");
+                add_js("//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js");
+
+                $js = git_assets('bootstrap-markdown-editor.js','bootstrap/markdown-editor','2.0.2',null,false);
+                add_js($js);
+
+                $css = git_assets('bootstrap-markdown-editor.css','bootstrap/markdown-editor','2.0.2',null,false);
+                add_css($css);
+                break;
+            case 'editor-md':
+                $js = git_assets('editormd.min.js','editor.md','1.5.0',null,false);
+                add_js($js);
+                $js = git_assets('en.js','editor.md/1.5.0/languages',null,null,false);
+                add_js($js);
+                add_js("//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js");
+
+                $css = git_assets('editormd.min.css','editor.md','1.5.0');
+                add_css($css);
+                break;
+
+
         }
+
         $attributes = [
             'name'=>$name,
             'class'=>$editor,
             'rows'=>  isset($params['rows']) ? $params['rows'] : 3
         ];
+
         if( isset($params['rows']) ){
             $attributes['rows'] = $params['rows'];
         }
-
-        if( isset($params['placeholder']) ){
+//        if( isset($params['id']) ){
+//            $attributes['id'] = $params['id'];
+//        }
+        if( isset($params['placeholder']) && $params['placeholder'] ){
             $attributes['placeholder'] = $params['placeholder'];
         }
         $params['html'] = '<textarea '._stringify_attributes($attributes).'>' . $value . '</textarea >';
+
+        if ($editor === 'editor-md'){
+            $params['html'] = '<div id="editor-md">'.$params['html'].'</div>';
+        }
+
         if( $editor =='row_input' ){
             $params["class_type"] = "textarea";
             return self::row_input($params);
         }
+
         return self::row_input($params);
     }
 

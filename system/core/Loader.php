@@ -1307,7 +1307,7 @@ class CI_Loader {
 	protected function _ci_autoloader()
 	{
 	    $autoload_using = array();
-
+        $autoload = [];
 	    if (file_exists(BASEPATH.'../application/config/autoload.php'))
 	    {
 	        include(BASEPATH.'../application/config/autoload.php');

@@ -10,8 +10,7 @@ class SystemUser extends MX_Controller
     function __construct()
     {
         parent::__construct();
-//        $this->load->module('layouts');
-        //$this->template->set_theme('smartadmin')->set_layout('main');
+
         $this->fields = $this->SystemUserModel->fields();
         $this->load->library('Session');
 
@@ -51,6 +50,7 @@ class SystemUser extends MX_Controller
         if ($this->session->userdata('user_id')) {
             redirect('', 'location');
         }
+
         if ($this->input->post()) {
             $post = array(
                 'username' => input_post('username'),
@@ -78,6 +78,9 @@ class SystemUser extends MX_Controller
             }
         }
 
+        if( class_exists("Google") ){
+            set_temp_val("google_login_url",$this->google->get_login_url());
+        }
         $this->template->set_layout('login')->build('login');
     }
 
