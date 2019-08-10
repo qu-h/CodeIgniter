@@ -9,7 +9,7 @@ class BaseArticleMarkdownModel extends MX_Model
     }
 
     public function update($article_id,$content=null){
-        $row = $this->row(['article_id'=>$article_id]);
+        $row = $this->where(['article_id'=>$article_id])->row();
 
         if( empty($row) ){
             $this->db->insert($this->table,['article_id'=>$article_id,'content'=>$content]);
