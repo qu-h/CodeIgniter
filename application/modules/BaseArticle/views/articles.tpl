@@ -67,7 +67,7 @@
                                 tables.columnDefs = [
 									{ "targets": 1, "render": function ( data, type, row, meta ) {
 											if( row.title !== null ){
-												return "<a href=\"article/edit/%s\">%s</a>".format(row.id,row.title);
+												return "<a href=\"{$uri_edit}\">%s</a>".format(row.id,row.title);
 											}
 											return null;
 									}},
