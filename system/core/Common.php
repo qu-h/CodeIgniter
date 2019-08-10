@@ -889,8 +889,15 @@ if ( ! function_exists('function_usable'))
 }
 
 if( !function_exists('env') ){
-    function env($env_name) {
+    function env($env_name,$convert=false) {
         $ENV =& load_class('Env', 'core');
-        return $ENV->get($env_name);
+
+        $value = $ENV->get($env_name);
+        switch ($convert){
+            case 'boolean':
+                $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                break;
+        }
+        return $value;
     }
 }
