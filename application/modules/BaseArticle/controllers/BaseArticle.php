@@ -39,7 +39,7 @@ class BaseArticle extends MX_Controller
                 $category_id = $this->model->fields['category']['value'];
             }
             $filter = input_get('filter');
-            return $this->BaseArticleModel->items_json($category_id,false,$filter);
+            return $this->model->items_json($category_id,false,$filter);
         }
         $data = columns_fields($this->table_fields);
         $data['filter'] = ['tags'=>[1,43]];
@@ -108,7 +108,12 @@ class BaseArticle extends MX_Controller
             $add = $this->BaseArticleModel->update($formData);
             if ($add) {
                 set_success(lang('Success.'));
+                $uri_edit = get_temp_val("uri_edit");
+                if( strlen($uri_edit) > 0 ){
+                    $this->uriEdit = $uri_edit;
+                }
                 $newUri = sprintf($this->uriEdit,$add);
+
                 if (input_post('back')) {
                     $newUri = sprintf($this->uriList);
                 }

@@ -397,7 +397,11 @@ class SmartadminInputs extends CI_Smarty
                 add_js($js);
                 $js = git_assets('en.js','editor.md/1.5.0/languages',null,null,false);
                 add_js($js);
-                add_js("//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js");
+
+                $js = git_assets('clipboard.min.js','clipboard.js','2.0.0',null,false);
+                add_js($js);
+
+//                add_js("//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js");
 
                 $css = git_assets('editormd.min.css','editor.md','1.5.0');
                 add_css($css);

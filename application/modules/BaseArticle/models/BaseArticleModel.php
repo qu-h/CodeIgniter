@@ -3,6 +3,7 @@
 /**
  * Class SystemArticleModel
  * @property BaseCategoryMapModel $BaseCategoryMapModel
+ * @property BaseArticleMarkdownModel BaseArticleMarkdownModel
  */
 class BaseArticleModel extends MX_Model
 {
@@ -81,11 +82,13 @@ class BaseArticleModel extends MX_Model
 
     function get_item_by_id($id = 0)
     {
-
         $row = $this->db->where('id', $id)->get($this->table)->row();
         if (!is_null($row) && isset($row->id)) {
             $row->tags = $this->getTags($row->id);
             $row->category = $this->BaseCategoryMapModel->getCategories($row->id,$this->table);
+            if( array_key_exists('is_markdown',$this->fields) && $this->fields['is_markdown']['value'] == true){
+                $this->fields['content']['value'] = $this->BaseArticleMarkdownModel->getContent($row->id);
+            }
         }
         return $row;
     }
@@ -134,13 +137,24 @@ class BaseArticleModel extends MX_Model
         unset($data['tags']);
         $exist = $this->check_exist($data['alias'], $data['id'],$categories);
 
+        $markdown = false;
+        if( array_key_exists('is_markdown',$data)){
+            $markdown = $data['content'];
+            $data['content'] = null;
+            unset($data['is_markdown']);
+        }
+
         if ($exist) {
             $ci = get_instance();
-            if( isset($ci->SystemArticle) ){
+            $uri_edit = get_temp_val("uri_edit");
+            if( strlen($uri_edit) > 0) {
+                $uri = sprintf($uri_edit,$exist->id);
+            } elseif( isset($ci->SystemArticle) ){
                 $uri = sprintf($ci->SystemArticle->uriEdit,$exist->id);
             } else {
                 $uri = sprintf(get_instance()->BaseArticle->uriEdit,$exist->id);
             }
+
             set_error('Dupplicate Article ' . anchor($uri, $exist->title) . ' ');
             return false;
         } elseif (intval($data['id']) > 0) {
@@ -159,6 +173,9 @@ class BaseArticleModel extends MX_Model
 
         $this->BaseCategoryMapModel->update($id,$this->table,$categories);
 
+        if( $markdown ){
+            $this->BaseArticleMarkdownModel->update($id,$markdown);
+        }
         if (is_array($tags) && !empty($tags)) {
             $this->updateTags($id, $tags);
         }
@@ -233,6 +250,10 @@ class BaseArticleModel extends MX_Model
             $this->db->order_by('id DESC');
         }
 
+        if( array_key_exists('is_markdown',$this->fields) && $this->fields['is_markdown']['value'] == true){
+            $this->db->join("article_markdown AS m",'m.article_id = a.id')
+                ->where('m.content is NOT NULL');
+        }
         return $this->dataTableJson();
     }
 

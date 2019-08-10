@@ -49,3 +49,16 @@
 		}
 	}
 }
+/*
+Fix
+ */
+.smart-form .input .icon-prepend + textarea.form-control {
+  padding-left: 37px;
+}
+
+/*
+Fix Editor.md Auto Height
+ */
+//.CodeMirror-scroll {
+//	margin-top: 40px;
+//}

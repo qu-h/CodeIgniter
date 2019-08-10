@@ -128,14 +128,14 @@ var ict = {
 						}
 						break;
 				}
-				console.warn('debug keydown',e.keyCode);
+				// console.warn('debug keydown',e.keyCode);
 			}
 
 		});
 	},
 
 	wysiwygEditor:function(){
-		console.log("call me");
+
 		if( $.fn.markdownEditor){
 			jQuery(".bootstrap-markdown-editor").markdownEditor({
 				preview: true,
@@ -152,7 +152,14 @@ var ict = {
 					id: "editor-md",
 					// width: "90%",
 					height: 640,
-					path: "http://github.giaiphapict.loc//editor.md/1.5.0/lib/"
+					path: "http://github.giaiphapict.loc//editor.md/1.5.0/lib/",
+					autoHeight : true, toolbar  : false,
+					onpreviewing : function() {
+						console.log('onpreviewing', this);
+					},
+					onpreviewed:()=>{
+						console.warn("on onpreviewed")
+					}
 				});
 			});
 		}
