@@ -152,7 +152,7 @@ var ict = {
 					id: "editor-md",
 					// width: "90%",
 					height: 640,
-					path: "http://github.giaiphapict.loc//editor.md/1.5.0/lib/",
+					path: "http://github.giaiphapict.com//editor.md/1.5.0/lib/",
 					autoHeight : true, toolbar  : false,
 					onpreviewing : function() {
 						console.log('onpreviewing', this);
