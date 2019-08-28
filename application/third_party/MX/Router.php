@@ -56,6 +56,7 @@ class MX_Router extends CI_Router
         $segmentsInput = $segments;
         $segments = $this->locate($segments);
 
+
         /**
          * update check Controller with application folder
          */
@@ -292,12 +293,11 @@ class MX_Router extends CI_Router
 
             list($file, $path) = Modules::is_file_in_dir(APPPATH . DS . "controllers", ucfirst($dirName) . ucfirst($controllerFile));
             if ($file) {
-//                $this->directory = null;
                 $this->located = 1;
                 $segments[0] = $file;
                 return $segments;
             }
-//dd($this);
+
             list($file, $path) = Modules::is_file_in_dir(ROOT_PATH, ucfirst($dirName) . ucfirst($controllerFile));
             if ($file) {
                 $this->located = 1;
