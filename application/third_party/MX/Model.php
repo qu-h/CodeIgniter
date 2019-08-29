@@ -2,7 +2,7 @@
 
 /**
  * Class MX_Model
- * @property CI_DB_query_builder $db
+ * @property CI_DB_mysql_driver $db
  * @property CI_Loader $load
  */
 class MX_Model extends CI_Model
@@ -138,13 +138,20 @@ class MX_Model extends CI_Model
         return $data;
     }
 
-    function isExist($where, $id = 0)
+    function isExist($where, $id = 0,$table_name=null)
     {
         if (!is_numeric($id)) {
             $id = 0;
         }
         $this->db->where($where)->where('id <>', $id);
-        $result = $this->db->get($this->table);
+        if( $table_name ){
+            if( $this->db->table_exists($table_name) ){
+                $this->db->from($table_name);
+            }
+        } elseif ($this->table) {
+            $this->db->from($this->table);
+        }
+        $result = $this->db->get();
         if (!$result) {
             bug($this->db->last_query());
             die;

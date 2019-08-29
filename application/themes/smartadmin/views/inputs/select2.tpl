@@ -47,6 +47,8 @@
     <label class="select">
         {if isset($icon)}
             <icon class="icon-prepend {$icon}" ></icon>
+        {else}
+
         {/if}
         <select name="{$name}" class="select2 {if isset($class)}{$class}{/if}" {if isset($multiple)}multiple{/if}>
             {if isset($options) && $options|@count > 0 }

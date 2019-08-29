@@ -31,7 +31,8 @@ class SmartadminInput_select extends CI_Smarty {
         }
         $params['options'] = $ci->BaseCategoryModel->load_options($params['category-type'],null,$without_ids,$level);
         if( array_key_exists('multiple',$params) != true || $params['multiple'] != true ){
-            $params['options'] = array_merge([0=>lang("-- Select Category -- ")],$params['options']);
+            $text = array_key_exists('label',$params) ? $params['label'] : "Select Category";
+            $params['options'] = array_merge([0=>lang("-- $text -- ")],$params['options']);
         }
         return self::input_select2($params);
     }

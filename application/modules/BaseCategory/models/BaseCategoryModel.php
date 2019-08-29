@@ -80,12 +80,6 @@ class BaseCategoryModel extends MX_Model {
 
     function update($data=NULL,$validation=true){
         $parents = [];
-        if( is_array($data['parent']) ){
-            $parents = $data['parent'];
-            $data['parent'] = reset($parents);
-        } else if ( is_null($data['parent']) ){
-            $data['parent'] = 0;
-        }
         if( $validation ){
             if( !isset($data['alias']) OR  strlen($data['alias']) < 1 ){
                 if( strlen($data['name']) > 0 ){
@@ -95,9 +89,9 @@ class BaseCategoryModel extends MX_Model {
                     return false;
                 }
             }
-            if( is_null($data['parent']) || strlen($data['parent']) < 1){
-                $data['parent'] = reset($data['parent']);
-            }
+//            if( is_null($data['parent']) || strlen($data['parent']) < 1){
+//                $data['parent'] = reset($data['parent']);
+//            }
             $data['status'] = ($data['status']=='on' || $data['status']) ? true: false;
         }
 
@@ -123,7 +117,6 @@ class BaseCategoryModel extends MX_Model {
             set_error('Dupplicate Category');
             return false;
         }
-
 
         $id = 0;
         if( intval($data['id']) > 0 ) {
@@ -155,7 +148,7 @@ class BaseCategoryModel extends MX_Model {
             $id = 0;
         }
         $this->db->where('alias',$alias)
-            ->where("parent = $parent")
+//            ->where("parent = $parent")
             ->where("type",$this->table)
             ->where('id <>',$id);
 
@@ -171,9 +164,9 @@ class BaseCategoryModel extends MX_Model {
         if( $level == 0 )
             return [];
 
-        if( is_numeric($level) && $level !== 0 && $parent_id > -1 ){
-            $this->db->where('c.parent',$parent_id);
-        }
+//        if( is_numeric($level) && $level !== 0 && $parent_id > -1 ){
+//            $this->db->where('c.parent',$parent_id);
+//        }
         if( is_numeric($using_id) ){
             $using_id = [$using_id];
         }
