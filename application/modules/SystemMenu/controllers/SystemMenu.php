@@ -1,6 +1,10 @@
 <?php
 if (! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Class SystemMenu
+ * @property Menu_Model $Menu_Model
+ */
 class SystemMenu extends MX_Controller
 {
     function __construct()
@@ -78,7 +82,7 @@ class SystemMenu extends MX_Controller
     }
 
     public function navigation(){
-        $items = $this->Menu_Model->get_menus($backend = 1, $level = 2);
+        $items = $this->Menu_Model->get_menus($backend = 1, $level = 2,0,1);
         smarty_view("navigation",['items'=>$items,"uri_string"=>uri_string()]);
     }
 

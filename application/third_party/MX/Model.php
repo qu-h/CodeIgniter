@@ -7,7 +7,7 @@
  */
 class MX_Model extends CI_Model
 {
-    public $limit = 50, $page = 1;
+    public $limit = 50, $page = 1, $offset = 0;
     public $table = NULL;
     var $search, $orders = [];
     var $tableFields, $fields = [];
@@ -103,11 +103,16 @@ class MX_Model extends CI_Model
         if (is_null($db)) {
             $db = $this->db;
         }
+
         $tempDb = clone $db;
+        $backupDB = clone $db;
         $num_rows = $tempDb->count_all_results();
         $query = $db->limit($this->limit, $this->offset)->get();
         $data = $query->result_array();
-//        dd($this->db->last_query());
+        if( $num_rows > 0 && empty($data) ){
+            $this->offset = 0;
+            return $this->dataTableJson($backupDB);
+        }
         return jsonData(array('data' => $data, 'draw' => $this->draw, 'recordsTotal' => $num_rows, 'recordsFiltered' => $num_rows));
     }
 
