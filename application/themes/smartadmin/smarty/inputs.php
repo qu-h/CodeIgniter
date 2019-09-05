@@ -16,6 +16,7 @@ class SmartadminInputs extends CI_Smarty
         if( array_key_exists('show-label',$params) ){
             $html .= '<label class="label">'.$params['label'].'</label>';
         }
+
         $html .= '<label class="' . $type_input . '">';
 
         if (isset($params['icon']) && strlen($params['icon']) > 0) {

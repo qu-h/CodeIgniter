@@ -175,9 +175,17 @@
                 {/foreach}
 
                 {if isset($uri_add)}
+                    {if is_string($uri_add)}
                     <li>
                         {button_anchor icon=plus txt="Add New" uri=$uri_add is_btn=true class="key-ctr-n" }
                     </li>
+                    {elseif is_array($uri_add)}
+                        {foreach $uri_add AS $title=>$uri}
+                            <li>
+                                {button_anchor icon=plus txt=lang($title) uri=$uri is_btn=true class="key-ctr-n" }
+                            </li>
+                        {/foreach}
+                    {/if}
                 {/if}
 
                 {if isset($breadcrumbButtons)} {foreach $breadcrumbButtons AS $btn}

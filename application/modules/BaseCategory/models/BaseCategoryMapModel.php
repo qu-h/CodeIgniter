@@ -64,12 +64,14 @@ class BaseCategoryMapModel extends MX_Model
         $query = $this->db->where($where)->limit(1)->get($this->table);
         if( $query->num_rows() > 0 ) {
             $row = $query->row();
-//            dd($row);
             $map_data =$this->row_get($row->category_id,"category");
 
-            $row->mapping_value = $map_data->name;
-            $row->mapping_id = $map_data->id;
-
+            if( $map_data ){
+                $row->mapping_value = $map_data->name;
+                $row->mapping_id = $map_data->id;
+            } else {
+                return [];
+            }
 
             return $row;
         }

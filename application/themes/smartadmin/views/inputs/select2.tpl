@@ -43,18 +43,47 @@
     {/if}
 {/function}
 
-<section class="{if isset($col)}{$col}{/if}">
-    <label class="select">
-        {if isset($icon)}
-            <icon class="icon-prepend {$icon}" ></icon>
-        {else}
+{assign var="class_input" value="" }
+{if isset($col)}
+    {$class_input=$class_input|cat:$col}
+{/if}
 
-        {/if}
-        <select name="{$name}" class="select2 {if isset($class)}{$class}{/if}" {if isset($multiple)}multiple{/if}>
-            {if isset($options) && $options|@count > 0 }
-                {select_options items=$options selected=$value level=1}
+{if isset($show_label)}
+    {$class_input=$class_input|cat:" row"}
+{/if}
+
+{if isset($show_label)}
+    <div class="form-group has-success">
+        <label class="col-md-2 control-label">{$show_label}</label>
+        <div class="col-md-10">
+            <div class="input-group">
+                {if isset($icon)}
+                    <span class="input-group-addon"><i class="{$icon}"></i></span>
+                {/if}
+                <select name="{$name}" class="select2 {if isset($class)}{$class}{/if}" {if isset($multiple)}multiple{/if}>
+                    {if isset($options) && $options|@count > 0 }
+                        {select_options items=$options selected=$value level=1}
+                    {/if}
+                </select>
+            </div>
+            <span class="help-block">Something may have gone wrong</span>
+        </div>
+    </div>
+{else}
+    <section {if $class_input|count_characters > 0 }class="{$class_input|trim}"{/if}>
+        <label class="select">
+            {if isset($icon)}
+                <icon class="icon-prepend {$icon}" ></icon>
             {/if}
-        </select>
+            <select name="{$name}" class="select2 {if isset($class)}{$class}{/if}" {if isset($multiple)}multiple{/if}>
+                {if isset($options) && $options|@count > 0 }
+                    {select_options items=$options selected=$value level=1}
+                {/if}
+            </select>
 
-    </label>
-</section>
+        </label>
+        {if isset($note) }
+            <div class="note note-success">{$note}</div>
+        {/if}
+    </section>
+{/if}

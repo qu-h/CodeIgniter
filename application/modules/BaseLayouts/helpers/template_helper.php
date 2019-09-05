@@ -30,13 +30,22 @@ function set_temp_val($name="",$val=NULL){
  * @param string $name name of variable
  * @param null $val value of variable
  */
-function add_temp_val($name="",$val=NULL){
+function add_temp_val($name="",$val=NULL,$key=null){
     if( strlen($name) > 0 ){
         $tempVal = get_instance()->smarty->getTemplateVars($name);
         if( is_null($tempVal) ){
             $tempVal = [$val];
         } else {
-            $tempVal[] = $val;
+            if( is_string($tempVal) ){
+                $tempVal = [$tempVal];
+            }
+
+            if( is_string($key)){
+                $tempVal[$key] = $val;
+            } else {
+                $tempVal[] = $val;
+            }
+
         }
         get_instance()->smarty->assign($name,$tempVal);
     }

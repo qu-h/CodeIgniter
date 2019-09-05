@@ -91,12 +91,14 @@ class CI_URI {
 	 */
 	protected $_permitted_uri_chars;
 
+    public $extension = 'html';
+    public $extension_allow = ['html','htm','json','xml','svg','csv'];
+
 	/**
 	 * Class constructor
 	 *
 	 * @return	void
 	 */
-	var $extension = 'html';
 	public function __construct()
 	{
 		$this->config =& load_class('Config', 'core');
@@ -157,8 +159,7 @@ class CI_URI {
 		if ($this->uri_string !== '')
 		{
 		    // Remove the URL suffix, if present
-            $ext_allow = ['json','xml','html','csv'];
-		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), $ext_allow) ){
+		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), $this->extension_allow) ){
 		        $this->extension = $ext;
 		        $ext = ".".$this->extension;
 		        $slen = strlen($ext);
