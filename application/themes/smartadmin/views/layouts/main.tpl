@@ -96,8 +96,8 @@
         <!-- end search mobile button -->
 
         <!-- input: search field -->
-        <form action="" class="header-search pull-right">
-            <input id="search-fld" type="text" name="param" placeholder="{lang txt="Find reports and more"}"
+        <form action="{if isset($search_uri)}{$search_uri}{/if}" class="header-search pull-right">
+            <input id="search-fld" type="text" name="q" placeholder="{lang txt="Find reports and more"}"
                    data-autocomplete='[]'>
             <button type="submit">
                 <i class="fa fa-search"></i>

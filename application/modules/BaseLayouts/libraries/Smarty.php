@@ -152,20 +152,28 @@ class CI_Smarty extends SmartyBC {
 	    $this->script['header'].= $str;
 	}
 
-	function loadLibrariesPlugin($class=''){
-		if( !$class ) return false;
+	function loadLibrariesPlugin($className=''){
+		if( !$className ) return false;
 
-		if( !class_exists($class) ){
-			$this->CI->load->library($class);
+		if( !class_exists($className) ){
+			get_instance()->load->library($className);
 		}
 
-		$methods = get_class_methods( $class );
+        $reflection = new ReflectionClass($className);
+        $methods = $reflection->getMethods(ReflectionMethod::IS_STATIC);
 		foreach ($methods AS $plugin){
-			if( $plugin !='__construct' ){
-				$this->registerPlugin('function', $plugin, $class.'::'.$plugin);
-			}
+            $registered_plugins = $this->registered_plugins;
+            if (strpos($plugin->name, 'modifier_') === 0 ) {
+                $func_name = substr($plugin->name, strlen("modifier_"));
+                if( !array_key_exists('modifier',$registered_plugins) || !array_key_exists($func_name,$registered_plugins['modifier']) ){
+                    $this->registerPlugin('modifier', $func_name, $className . '::' . $plugin->name);
+                }
 
+            } else if (!isset($registered_plugins['function']) || !array_key_exists($plugin->name, $registered_plugins['function']) ) {
+                $this->registerPlugin('function', $plugin->name, $className . '::' . $plugin->name);
+            }
 		}
+
 	}
 
 }

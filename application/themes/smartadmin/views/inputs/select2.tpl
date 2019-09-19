@@ -52,10 +52,10 @@
     {$class_input=$class_input|cat:" row"}
 {/if}
 
-{if isset($show_label)}
+{if isset($label_title)}
     <div class="form-group has-success">
-        <label class="col-md-2 control-label">{$show_label}</label>
-        <div class="col-md-10">
+        <label class="col-md-3 control-label">{$label_title}</label>
+        <div class="col-md-9">
             <div class="input-group">
                 {if isset($icon)}
                     <span class="input-group-addon"><i class="{$icon}"></i></span>

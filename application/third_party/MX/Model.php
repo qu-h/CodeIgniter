@@ -208,7 +208,6 @@ class MX_Model extends CI_Model
         return $id;
     }
 
-
     /**
      * @param $params
      * @param null $value

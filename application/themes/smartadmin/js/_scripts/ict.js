@@ -1,7 +1,7 @@
 /**
  *
  */
-var ict = {
+const ict = {
 	init:function(){
 		this.footerFixed();
 		this.summerNote();
@@ -9,6 +9,19 @@ var ict = {
 		this.formOnKeydown();
 		this.wysiwygEditor();
 		// this.inputTags();
+		this.inputSynonyms();
+	},
+	inputSynonyms:function(){
+
+		jQuery(".input-synonyms button[name=add-synonym]").click((e)=>{
+			let btn = e.target,
+				btn_row = btn.closest('.row'),
+				input_row = btn_row.previousElementSibling.cloneNode(true);
+
+			jQuery('input[type=text], input[type=hidden]',input_row).val('');
+
+			jQuery(btn_row).before(input_row);
+		});
 	},
 	footerFixed:function(){
 		var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer");
@@ -163,8 +176,6 @@ var ict = {
 				});
 			});
 		}
-
-
 	}
 };
 

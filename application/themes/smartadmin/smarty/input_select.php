@@ -38,7 +38,7 @@ class SmartadminInput_select extends CI_Smarty {
     }
 
     static function input_select2($params = null){
-        if( !isset($params['value']) ){
+        if(!isset($params['value'])){
             $params['value'] = [];
         } else if ( is_numeric($params['value']) || is_string($params['value']) ){
             $params['value'] = [$params['value']];
@@ -55,6 +55,7 @@ class SmartadminInput_select extends CI_Smarty {
             $params['name'] .= '[]';
             $params['class'] .= ' select-multi-level';
         }
+//        dd($params,false,0);
         return parent::fetchView("inputs/select2",$params);
 
     }
@@ -96,6 +97,11 @@ class SmartadminInput_select extends CI_Smarty {
         $params['label'] = NULL;
         $params['state'] = "state-success";
         return parent::fetchView("inputs/multiple_image",$params);
+    }
+
+    static function input_synonym($params){
+        return parent::fetchView("inputs/synonyms",$params);
+
     }
 
 }

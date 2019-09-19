@@ -13,13 +13,6 @@ class SmartadminInputs extends CI_Smarty
 
         $type_input = isset($params['class_type']) ? $params['class_type'] : 'input';
 
-        if( array_key_exists('show-label',$params) ){
-            if( array_key_exists('label',$params) != true && is_string($params['show-label']) ){
-                $params['label'] = $params['show-label'];
-            }
-            $html .= '<label class="label">'.$params['label'].'</label>';
-        }
-
         $html .= '<label class="' . $type_input . '">';
 
         if (isset($params['icon']) && strlen($params['icon']) > 0) {
@@ -129,6 +122,7 @@ class SmartadminInputs extends CI_Smarty
         $name = isset($params['name']) ? $params['name'] : NULL;
         $field = isset($params['field']) ? $params['field'] : NULL;
 
+
         if( empty($field) ){
             $fields = get_instance()->smarty->getTemplateVars("fields");
             if( array_key_exists($name,$fields) ){
@@ -137,7 +131,7 @@ class SmartadminInputs extends CI_Smarty
                 $field = ['type'=>'text'];
             }
         }
-
+        $field = array_merge($field,$params);
         if (strlen($name) < 1 )
             return NULL;
 
@@ -167,8 +161,17 @@ class SmartadminInputs extends CI_Smarty
             $field['label'] = ucfirst($name);
         }
 
+        $label_title = array_key_exists('label-title',$field) ? $field['label-title'] : ( array_key_exists('show-label',$field) ? $field['show-label'] : null );
+        if( $label_title && !array_key_exists('label_title',$field) ){
+            $field['label_title'] = $label_title;
+            unset($field['show-label']);
+            unset($field['label-title']);
+        }
+
         if( ! isset($field['placeholder']) ){
-            if (isset($field['label']) ) {
+            if (isset($field['label_title']) ) {
+                $field['placeholder'] = $field['label_title'];
+            }else if (isset($field['label']) ) {
                 $field['placeholder'] = $field['label'];
             } else {
                 $field['placeholder'] = ucfirst($name);
@@ -192,12 +195,16 @@ class SmartadminInputs extends CI_Smarty
         if( array_key_exists('show-label',$params) ){
             $field['show-label'] = $params['show-label'];
         }
-
+        if( array_key_exists('value',$field) != true){
+            $field['value'] = null;
+        }
         $params['field'] = $field;
 
         $input_func = "input_" . $field['type'];
 
         $function_registered = $template->registered_plugins['function'];
+
+
         if (array_key_exists($input_func, $function_registered)) {
             return call_user_func_array($function_registered[$input_func][0],array($params['field'],$template));
         } else {
@@ -333,8 +340,12 @@ class SmartadminInputs extends CI_Smarty
             }
         }
 
-        $params['html'] = '<input '._stringify_attributes($input_attributes).'>';
-        return $returnParams ? $params : self::row_input($params);
+        $params['attr'] = $input_attributes;
+
+//        $params['html'] = '<input '._stringify_attributes($input_attributes).'>';
+//        return $returnParams ? $params : self::row_input($params);
+
+        return parent::fetchView("inputs/text",$params);
     }
 
     static function input_text_addon_str($params = null){

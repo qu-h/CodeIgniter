@@ -113,4 +113,74 @@ class BaseCategoryMapModel extends MX_Model
         }
         return $sql;
     }
+
+    protected $tree_from_top = [];
+    public function GetTreeFromTop($target_id,$target_table='article',$stop_at=null){
+        $type_skip = ['class_cladus'];
+
+        $sync = "SELECT GROUP_CONCAT(sync.value) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=m.category_id";
+        $query = $this->db->from($this->table." AS m")
+                ->where(['m.target_id' => $target_id, 'm.target_table' => $target_table])
+                ->join("$target_table AS c","c.id=m.category_id")
+                ->select("c.id, c.name, c.type, m.alias")
+                ->select("($sync) AS synonyms",false)
+                ->where_not_in('m.alias',$type_skip)
+                ->get();
+
+
+        if( $query->num_rows() > 0 ) {
+            $row = $query->row();
+
+            $this->tree_from_top[] = $row;
+            $stopped = (is_string($stop_at) && $row->alias == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
+            if(  count($this->tree_from_top) > 20 ){
+                $stopped = true;
+            }
+            if (  $stopped != true ){
+                $this->GetTreeFromTop($row->id,$target_table,$stop_at);
+            }
+        } else {
+//            dd($this->db->last_query(),false,0);
+        }
+        return $this->tree_from_top;
+    }
+
+    protected $tree_from_root = [];
+    public function GetTreeFromRoot($target_id,$stop_at=null,$target_table='category'){
+        $type_skip = ['branch'];
+        $sync = "SELECT GROUP_CONCAT(sync.value) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=c.id";
+        $children_ids_select = "SELECT GROUP_CONCAT(m.target_id) FROM category_map AS m WHERE m.target_table = 'category' AND m.category_id=c.id";
+        $query = $this->db
+            ->from("$target_table AS c")
+            ->where(['c.id' => $target_id])
+            ->where_not_in('c.type',$type_skip)
+            ->select("c.id, c.name, c.type")
+            ->select("($sync) AS synonyms",false)
+            ->select("($children_ids_select) AS children_ids",false)
+            ->get();
+
+        $data = [];
+        if( $query->num_rows() > 0 ) {
+            foreach ($query->result() AS $row){
+                $stopped = (is_string($stop_at) && $row->type == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
+                if ( $stopped != true ){
+                    $children_ids = strlen($row->children_ids) > 0 ? explode(',',$row->children_ids) : [];
+                    if( count($children_ids) > 0 ) {
+                        $row->children = [];
+                        foreach ($children_ids AS $id){
+                            $childes = $this->GetTreeFromRoot($id, $stop_at, $target_table);
+                            if( is_array($childes)){
+                                $row->children = array_merge($row->children,$childes);
+                            }
+                        }
+                    }
+                    $data[] = $row;
+                } else {
+                    $data = [$row];
+                }
+
+            }
+        }
+        return $data;
+    }
 }
