@@ -148,7 +148,7 @@ class BaseCategoryMapModel extends MX_Model
     protected $tree_from_root = [];
     public function GetTreeFromRoot($target_id,$stop_at=null,$target_table='category'){
         $type_skip = ['branch'];
-        $sync = "SELECT GROUP_CONCAT(sync.value) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=c.id";
+        $sync = "SELECT GROUP_CONCAT(sync.value ORDER BY sync.ordering) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=c.id ";
         $children_ids_select = "SELECT GROUP_CONCAT(m.target_id) FROM category_map AS m WHERE m.target_table = 'category' AND m.category_id=c.id";
         $query = $this->db
             ->from("$target_table AS c")
