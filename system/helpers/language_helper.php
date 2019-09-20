@@ -74,6 +74,11 @@ if ( ! function_exists('lang'))
         }
 		return $line_lang;
 	}
+
+	function lang_ucwords($txt){
+	    $txt = ucwords($txt);
+	    return lang($txt);
+    }
 }
 
 // function _($txt=null){

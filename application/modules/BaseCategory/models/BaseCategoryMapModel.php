@@ -116,13 +116,13 @@ class BaseCategoryMapModel extends MX_Model
 
     protected $tree_from_top = [];
     public function GetTreeFromTop($target_id,$target_table='article',$stop_at=null){
-        $type_skip = ['class_cladus'];
+        $type_skip = ['class_cladus','cladus'];
 
         $sync = "SELECT GROUP_CONCAT(sync.value) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=m.category_id";
         $query = $this->db->from($this->table." AS m")
                 ->where(['m.target_id' => $target_id, 'm.target_table' => $target_table])
                 ->join("$target_table AS c","c.id=m.category_id")
-                ->select("c.id, c.name, c.type, m.alias")
+                ->select("c.id, c.name, c.type, m.alias AS link_alias, c.alias")
                 ->select("($sync) AS synonyms",false)
                 ->where_not_in('m.alias',$type_skip)
                 ->get();
@@ -132,7 +132,7 @@ class BaseCategoryMapModel extends MX_Model
             $row = $query->row();
 
             $this->tree_from_top[] = $row;
-            $stopped = (is_string($stop_at) && $row->alias == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
+            $stopped = (is_string($stop_at) && $row->link_alias == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
             if(  count($this->tree_from_top) > 20 ){
                 $stopped = true;
             }
@@ -154,17 +154,21 @@ class BaseCategoryMapModel extends MX_Model
             ->from("$target_table AS c")
             ->where(['c.id' => $target_id])
             ->where_not_in('c.type',$type_skip)
-            ->select("c.id, c.name, c.type")
+            ->where('( c.extinct IS NULL OR `c`.`extinct` = 0) ')
+            ->select("c.id, c.name, c.type, c.extinct")
             ->select("($sync) AS synonyms",false)
             ->select("($children_ids_select) AS children_ids",false)
             ->get();
-
+        if( array_key_exists('debug',$_GET) ){
+            dd($this->db->last_query(),false,0);
+        }
         $data = [];
         if( $query->num_rows() > 0 ) {
             foreach ($query->result() AS $row){
                 $stopped = (is_string($stop_at) && $row->type == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
                 if ( $stopped != true ){
                     $children_ids = strlen($row->children_ids) > 0 ? explode(',',$row->children_ids) : [];
+
                     if( count($children_ids) > 0 ) {
                         $row->children = [];
                         foreach ($children_ids AS $id){
