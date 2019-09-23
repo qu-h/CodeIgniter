@@ -12,8 +12,8 @@ const ict = {
 		this.inputSynonyms();
 	},
 	inputSynonyms:function(){
-
-		jQuery(".input-synonyms button[name=add-synonym]").click((e)=>{
+		let rows = jQuery('section.input-synonyms');
+		jQuery(".input-synonyms button[name=add-synonym]").unbind('click').click((e)=>{
 			let btn = e.target,
 				btn_row = btn.closest('.row'),
 				input_row = btn_row.previousElementSibling.cloneNode(true);
@@ -21,8 +21,32 @@ const ict = {
 			jQuery('input[type=text], input[type=hidden]',input_row).val('');
 
 			jQuery(btn_row).before(input_row);
+
+			if( jQuery("[name=remove-synonym]",rows).length === 1){
+				jQuery("[name=remove-synonym]",rows).removeClass('disabled')
+			}
+			ict.inputSynonymsRemoveAction();
+		});
+
+		ict.inputSynonymsRemoveAction();
+
+	},
+
+	inputSynonymsRemoveAction:function(){
+		let rows = jQuery('section.input-synonyms');
+		jQuery(".input-synonyms button[name=remove-synonym]").unbind('click').click((e)=> {
+			let btn = e.target,
+				btn_row = btn.closest('.row');
+
+			if( jQuery("[name=remove-synonym]",rows).length > 1){
+				btn_row.remove();
+			} else {
+				jQuery("[name=remove-synonym]",rows).addClass('disabled')
+			}
 		});
 	},
+
+
 	footerFixed:function(){
 		var contentArea = jQuery(".smart-form-editor"), footer = jQuery(".smart-form-editor footer");
 		if( footer.length > 0 ){

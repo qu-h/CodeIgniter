@@ -48,6 +48,7 @@ class MX_Controller
 	public $autoload = array();
 	var $model, $load;
     var $url_suffix = 'html';
+    var $page_title_species='';
     var $msg, $fields = [];
 
 	public function __construct()

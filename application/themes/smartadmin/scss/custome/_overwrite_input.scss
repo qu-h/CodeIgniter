@@ -34,7 +34,10 @@ $toggle-width : 49px;
         padding-left: 30px;
       }
     }
+  }
 
+  input[type=text]:read-only {
+    background-color: #eeeeee;
   }
 
 }
