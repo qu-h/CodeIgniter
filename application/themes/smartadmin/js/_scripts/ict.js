@@ -10,7 +10,18 @@ const ict = {
 		this.wysiwygEditor();
 		// this.inputTags();
 		this.inputSynonyms();
+		this.inputPublic();
 	},
+
+	inputPublic:function(){
+		$(".input-public i").click((e)=>{
+			let checkbox = $(e.target).closest('.toggle').find('input[type=checkbox]').get(0),
+			input = $('input[type=hidden][name='+checkbox.dataset.name+']'), value = checkbox.checked?0:1;
+			input.val(value);
+			console.warn("debug",{checkbox,input,value});
+		});
+	},
+
 	inputSynonyms:function(){
 		let rows = jQuery('section.input-synonyms');
 		jQuery(".input-synonyms button[name=add-synonym]").unbind('click').click((e)=>{
