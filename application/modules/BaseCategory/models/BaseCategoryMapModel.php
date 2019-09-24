@@ -145,46 +145,5 @@ class BaseCategoryMapModel extends MX_Model
         return $this->tree_from_top;
     }
 
-    protected $tree_from_root = [];
-    public function GetTreeFromRoot($target_id,$stop_at=null,$target_table='category'){
-        $type_skip = ['branch'];
-        $sync = "SELECT GROUP_CONCAT(sync.value ORDER BY sync.ordering) FROM synonym AS sync WHERE sync.link_table = 'category' AND sync.link_id=c.id ";
-        $children_ids_select = "SELECT GROUP_CONCAT(m.target_id) FROM category_map AS m WHERE m.target_table = 'category' AND m.category_id=c.id";
-        $query = $this->db
-            ->from("$target_table AS c")
-            ->where(['c.id' => $target_id])
-            ->where_not_in('c.type',$type_skip)
-            ->where('( c.extinct IS NULL OR `c`.`extinct` = 0) ')
-            ->select("c.id, c.name, c.type, c.extinct")
-            ->select("($sync) AS synonyms",false)
-            ->select("($children_ids_select) AS children_ids",false)
-            ->get();
-        if( array_key_exists('debug',$_GET) ){
-            dd($this->db->last_query(),false,0);
-        }
-        $data = [];
-        if( $query->num_rows() > 0 ) {
-            foreach ($query->result() AS $row){
-                $stopped = (is_string($stop_at) && $row->type == $stop_at) || (is_numeric($stop_at) && $row->id == $stop_at);
-                if ( $stopped != true ){
-                    $children_ids = strlen($row->children_ids) > 0 ? explode(',',$row->children_ids) : [];
 
-                    if( count($children_ids) > 0 ) {
-                        $row->children = [];
-                        foreach ($children_ids AS $id){
-                            $childes = $this->GetTreeFromRoot($id, $stop_at, $target_table);
-                            if( is_array($childes)){
-                                $row->children = array_merge($row->children,$childes);
-                            }
-                        }
-                    }
-                    $data[] = $row;
-                } else {
-                    $data = [$row];
-                }
-
-            }
-        }
-        return $data;
-    }
 }
