@@ -62,3 +62,21 @@ Fix Editor.md Auto Height
 //.CodeMirror-scroll {
 //	margin-top: 40px;
 //}
+
+.label-normal {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+.highlight {
+	i {
+
+	}
+	&.success {
+		background: yellow;
+	}
+}
+
+.label .highlight {
+	color: #0a0c0f;
+}
