@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -90,6 +90,7 @@ class CI_URI {
 	 * @var	string
 	 */
 	protected $_permitted_uri_chars;
+
 
     public $extension = 'html';
     public $extension_allow = ['html','htm','json','xml','svg','csv'];
@@ -158,22 +159,19 @@ class CI_URI {
 
 		if ($this->uri_string !== '')
 		{
-		    // Remove the URL suffix, if present
-		    if( in_array($ext = pathinfo($this->uri_string, PATHINFO_EXTENSION), $this->extension_allow) ){
-		        $this->extension = $ext;
-		        $ext = ".".$this->extension;
-		        $slen = strlen($ext);
-		        if (substr($this->uri_string, -$slen) === $ext)
-		        {
-		            $this->uri_string = substr($this->uri_string, 0, -$slen);
-		        }
-		    } elseif (($suffix = (string) $this->config->item('url_suffix')) !== '') {
-
+			// Remove the URL suffix, if present
+			//if (($suffix = (string) $this->config->item('url_suffix')) !== '')
+            if( in_array($suffix = pathinfo($this->uri_string, PATHINFO_EXTENSION), $this->extension_allow) )
+			{
+                $this->extension = $suffix;
+                $ext = ".$suffix";
 				$slen = strlen($suffix);
-				if (substr($this->uri_string, -$slen) === $suffix)
+
+				if (substr($this->uri_string, -$slen-1) === $ext)
 				{
-					$this->uri_string = substr($this->uri_string, 0, -$slen);
+					$this->uri_string = substr($this->uri_string, 0, -$slen-1);
 				}
+
 			}
 
 			$this->segments[0] = NULL;

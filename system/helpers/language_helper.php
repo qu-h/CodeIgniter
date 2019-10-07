@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -62,28 +62,14 @@ if ( ! function_exists('lang'))
 	 * @return	string
 	 */
 	function lang($line, $for = '', $attributes = array())
-    {
-		$line_lang = get_instance()->lang->line($line);
+	{
+		$line = get_instance()->lang->line($line);
 
 		if ($for !== '')
 		{
-			$line_lang = '<label for="'.$for.'"'._stringify_attributes($attributes).'>'.$line_lang.'</label>';
+			$line = '<label for="'.$for.'"'._stringify_attributes($attributes).'>'.$line.'</label>';
 		}
-        if( !$line_lang ){
-            $line_lang = $line;
-        }
-		return $line_lang;
+
+		return $line;
 	}
-
-	function lang_ucwords($txt){
-	    $txt = ucwords($txt);
-	    return lang($txt);
-    }
 }
-
-// function _($txt=null){
-//     if( strlen($txt) > 0 ){
-//         return lang($txt);
-//     }
-//     return NULL;
-// }

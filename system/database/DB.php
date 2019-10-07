@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -53,16 +53,9 @@ function &DB($params = '', $query_builder_override = NULL)
 	// Load the DB config file if a DSN string wasn't passed
 	if (is_string($params) && strpos($params, '://') === FALSE)
 	{
-		// Is the config file in the environment folder?
-		if ( ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database.php')
-			&& ! file_exists($file_path = APPPATH.'config/database.php')
-            && ! file_exists($file_path = BASE_APP_PATH.'config/database.php') )
-		{
-			show_error('The configuration file database.php does not exist.');
-		}
-
-		include($file_path);
-
+	    $configs = get_config_base('database',['db','active_group']);
+        $db = $configs['db'];
+        $active_group = $configs['active_group'];
 		// Make packages contain database config files,
 		// given that the controller instance already exists
 		if (class_exists('CI_Controller', FALSE))
@@ -122,7 +115,7 @@ function &DB($params = '', $query_builder_override = NULL)
 			'dbdriver'	=> $dsn['scheme'],
 			'hostname'	=> isset($dsn['host']) ? rawurldecode($dsn['host']) : '',
 			'port'		=> isset($dsn['port']) ? rawurldecode($dsn['port']) : '',
-			'username'	=> isset($dsn['ICTUser']) ? rawurldecode($dsn['ICTUser']) : '',
+			'username'	=> isset($dsn['user']) ? rawurldecode($dsn['user']) : '',
 			'password'	=> isset($dsn['pass']) ? rawurldecode($dsn['pass']) : '',
 			'database'	=> isset($dsn['path']) ? rawurldecode(substr($dsn['path'], 1)) : ''
 		);

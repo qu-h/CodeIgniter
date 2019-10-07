@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -195,9 +195,7 @@ if ( ! function_exists('reduce_multiples'))
 if ( ! function_exists('random_string'))
 {
 	/**
-	 * Create a Random String
-	 *
-	 * Useful for generating passwords or hashes.
+	 * Create a "Random" String
 	 *
 	 * @param	string	type of random string.  basic, alpha, alnum, numeric, nozero, unique, md5, encrypt and sha1
 	 * @param	int	number of characters
@@ -303,72 +301,4 @@ if ( ! function_exists('repeater'))
 	{
 		return ($num > 0) ? str_repeat($data, $num) : '';
 	}
-}
-
-function alphabet_id($in, $to_num = false, $pad_up = false, $passKey = null){
-    $index = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ";
-    if ($passKey !== null) {
-        // Although this function's purpose is to just make the
-        // ID short - and not so much secure,
-        // with this patch by Simon Franz (http://blog.snaky.org/)
-        // you can optionally supply a password to make it harder
-        // to calculate the corresponding numeric ID
-
-        for ($n = 0; $n<strlen($index); $n++) {
-            $i[] = substr( $index,$n ,1);
-        }
-
-        $passhash = hash('sha256',$passKey);
-        $passhash = (strlen($passhash) < strlen($index))
-        ? hash('sha512',$passKey)
-        : $passhash;
-
-        for ($n=0; $n < strlen($index); $n++) {
-            $p[] =  substr($passhash, $n ,1);
-        }
-
-        array_multisort($p,  SORT_DESC, $i);
-        $index = implode($i);
-    }
-
-    $base  = strlen($index);
-
-    if ($to_num) {
-        // Digital number  <<--  alphabet letter code
-        $in  = strrev($in);
-        $out = 0;
-        $len = strlen($in) - 1;
-        for ($t = 0; $t <= $len; $t++) {
-            $bcpow = bcpow($base, $len - $t);
-            $out   = $out + strpos($index, substr($in, $t, 1)) * $bcpow;
-        }
-
-        if (is_numeric($pad_up)) {
-            $pad_up--;
-            if ($pad_up > 0) {
-                $out -= pow($base, $pad_up);
-            }
-        }
-        $out = sprintf('%F', $out);
-        $out = substr($out, 0, strpos($out, '.'));
-    } else {
-        // Digital number  -->>  alphabet letter code
-        if (is_numeric($pad_up)) {
-            $pad_up--;
-            if ($pad_up > 0) {
-                $in += pow($base, $pad_up);
-            }
-        }
-
-        $out = "";
-        for ($t = floor(log($in, $base)); $t >= 0; $t--) {
-            $bcp = bcpow($base, $t);
-            $a   = floor($in / $bcp) % $base;
-            $out = $out . substr($index, $a, 1);
-            $in  = $in - ($a * $bcp);
-        }
-        $out = strrev($out); // reverse
-    }
-
-    return $out;
 }

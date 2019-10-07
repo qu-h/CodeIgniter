@@ -13,12 +13,14 @@ if (!function_exists('bug')) {
     }
 }
 
-function dd($value,$die=null,$traceStep = 50){
+function dd($value,$die=null,$traceStep = 1){
     $backtrace = debug_backtrace();
     $lineChecking = __LINE__;
     $fileChecking = "";
     if( count($backtrace) > 0 ) {
-
+        if( $traceStep==-1){
+            $traceStep = 50;
+        }
         if( $traceStep ){
             //krsort($backtrace);
         } else {
@@ -30,7 +32,7 @@ function dd($value,$die=null,$traceStep = 50){
         $fileChecking = pathinfo($lastFile['file'], PATHINFO_BASENAME);
         if( $traceStep > 0 ){
             $count = 1;
-            bug("=========================================BEGIN BACK-TRACE",false);
+            bug("========================================================BEGIN BACK-TRACE",false);
             $systemModulePath = realpath(BASEPATH."..".DS."application".DS."modules").DS;
             foreach ($backtrace AS $index=>$b){
                 if( $count > $traceStep ){

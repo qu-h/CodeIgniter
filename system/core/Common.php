@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -135,7 +135,7 @@ if ( ! function_exists('load_class'))
 	 *
 	 * @param	string	the class name being requested
 	 * @param	string	the directory where the class should be found
-	 * @param	string	an optional argument to pass to the class constructor
+	 * @param	mixed	an optional argument to pass to the class constructor
 	 * @return	object
 	 */
 	function &load_class($class, $directory = 'libraries', $param = NULL)
@@ -154,35 +154,21 @@ if ( ! function_exists('load_class'))
 		// then in the native system/libraries folder
 		foreach (array(APPPATH, BASEPATH) as $path)
 		{
-		    $fileTry = $path.$directory.'/'.$class.'.php';
-		    $fileExist = false;
-            if (file_exists($fileTry)){
-                $fileExist = true;
-            }
-            if (!$fileExist){
-                if (file_exists($path.$directory.'/'.$class."/$class.php")){
-                    $fileTry = $path.$directory.'/'.$class."/$class.php";
-                    $fileExist = true;
-                }
-            }
-			if ($fileExist)
+			if (file_exists($path.$directory.'/'.$class.'.php'))
 			{
 				$name = 'CI_'.$class;
 
 				if (class_exists($name, FALSE) === FALSE)
 				{
-					require_once($fileTry);
+					require_once($path.$directory.'/'.$class.'.php');
 				}
 
-// 				if (class_exists($name, FALSE) === FALSE){
-// 				    $name = $class;
-// 				}
 				break;
 			}
 		}
 
 		// Is the request a class extension? If so we load it too
-		if ($name!= FALSE && file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
+		if (file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
 		{
 			$name = config_item('subclass_prefix').$class;
 
@@ -198,7 +184,7 @@ if ( ! function_exists('load_class'))
 			// Note: We use exit() rather than show_error() in order to avoid a
 			// self-referencing loop with the Exceptions class
 			set_status_header(503);
-			echo 'Common line 190 : Unable to locate the specified class: '.$class.'.php';
+			echo 'Unable to locate the specified class: '.$class.'.php';
 			exit(5); // EXIT_UNK_CLASS
 		}
 
@@ -252,27 +238,18 @@ if ( ! function_exists('get_config'))
 	function &get_config(Array $replace = array())
 	{
 		static $config;
-		require(BASEPATH.'../application/config/config.php');
-		$config_base = $config;
 
-		if (file_exists(APPPATH.'config/config.php'))
-		{
-		    require(APPPATH.'config/config.php');
-		    $config = array_merge($config_base,$config);
-		}
-
-		/*
 		if (empty($config))
 		{
-
-
-			$file_path = APPPATH.'config/config.php';
-			$found = TRUE;
-			if (file_exists($file_path))
-			{
-// 				$found = TRUE;
-				require($file_path);
-			}
+//			$file_path = APPPATH.'config/config.php';
+//			$found = FALSE;
+//			if (file_exists($file_path))
+//			{
+//				$found = TRUE;
+//				require($file_path);
+//			}
+            $found = true;
+            $config = get_config_base('config');
 
 			// Is the config file in the environment folder?
 			if (file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php'))
@@ -294,7 +271,6 @@ if ( ! function_exists('get_config'))
 				exit(3); // EXIT_CONFIG
 			}
 		}
-		*/
 
 		// Are any values being dynamically added or replaced?
 		foreach ($replace as $key => $val)
@@ -304,6 +280,85 @@ if ( ! function_exists('get_config'))
 
 		return $config;
 	}
+
+	function get_config_base($file_config, $variable=null){
+        $config_base = [];
+	    $$file_config = [];
+        require(BASE_APP_PATH."config/$file_config.php");
+
+        if( $variable != null ){
+            if( is_string($variable)){
+                $config_base = $$variable;
+            } else if (is_array($variable)){
+                foreach ($variable AS $var){
+                    $config_base[$var] = $$var;
+                }
+            }
+        } else {
+            $config_base = $$file_config;
+        }
+//        dd("get config file config/$file_config.php",false);
+
+        if (file_exists(APPPATH."config/$file_config.php"))
+        {
+            require(APPPATH."config/$file_config.php");
+            try{
+                if( $variable != null ){
+                    if( is_string($variable)){
+                        $config_base = array_merge_config($config_base,$$variable);
+                    } else if (is_array($variable)){
+                        foreach ($variable AS $var){
+                            if( is_array($$var)){
+                                $config_base[$var] = array_merge_config($config_base[$var],$$var);
+                            } else if( is_string($$var)){
+                                $config_base[$var] = $$var;
+                            }
+                        }
+                    }
+                } else {
+//                    dd("config_base",false,0);
+//                    dd($config_base,false,0);
+//                    dd("$file_config",false,0);
+//                    dd($$file_config,false,0);
+                    $config_base = array_merge_config($config_base,$$file_config);
+                }
+            } catch (Exception $e){
+                dd($e,true,-1);
+            }
+        }
+
+
+//        dd($config_base,false,3);
+
+
+        return $config_base;
+    }
+
+    function array_merge_config($arr1, $arr2){
+        $config = [];
+        foreach ($arr1 AS $k=>$v){
+            if( is_string($v)){
+                $config[$k] = $v;
+                if( array_key_exists($k, $arr2) & strlen($arr2[$k]) > 0 ){
+                    $config[$k] = $arr2[$k];
+                }
+            } else if ( is_array($v) ){
+                $config[$k] = $v;
+                if( array_key_exists($k, $arr2) & count($arr2[$k]) > 0 ){
+                    $config[$k] = array_merge($config[$k],$arr2[$k]);
+                    $config[$k] = array_unique($config[$k]);
+                }
+            } else {
+                $config[$k] = $v;
+            }
+        }
+        foreach (array_keys($arr2) AS $k){
+            if( !array_key_exists($k,$arr1)){
+                $config[$k] = $arr2[$k];
+            }
+        }
+        return $config;
+    }
 }
 
 // ------------------------------------------------------------------------
@@ -345,27 +400,14 @@ if ( ! function_exists('get_mimes'))
 
 		if (empty($_mimes))
 		{
-		    if (file_exists(BASE_APP_PATH.'config/mimes.php'))
-		    {
-		        $_mimes_default = include(BASE_APP_PATH.'config/mimes.php');
-		    }
+			$_mimes = file_exists(APPPATH.'config/mimes.php')
+				? include(APPPATH.'config/mimes.php')
+				: array();
 
 			if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
 			{
-				$_mimes = include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
+				$_mimes = array_merge($_mimes, include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'));
 			}
-			elseif (file_exists(APPPATH.'config/mimes.php'))
-			{
-				$_mimes = include(APPPATH.'config/mimes.php');
-			}
-			else
-			{
-				$_mimes = array();
-			}
-		}
-
-		if( isset($_mimes_default) ){
-		    $_mimes = array_merge($_mimes,$_mimes_default);
 		}
 
 		return $_mimes;
@@ -390,7 +432,7 @@ if ( ! function_exists('is_https'))
 		{
 			return TRUE;
 		}
-		elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+		elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
 		{
 			return TRUE;
 		}
@@ -445,11 +487,6 @@ if ( ! function_exists('show_error'))
 		if ($status_code < 100)
 		{
 			$exit_status = $status_code + 9; // 9 is EXIT__AUTO_MIN
-			if ($exit_status > 125) // 125 is EXIT__AUTO_MAX
-			{
-				$exit_status = 1; // EXIT_ERROR
-			}
-
 			$status_code = 500;
 		}
 		else
@@ -579,13 +616,18 @@ if ( ! function_exists('set_status_header'))
 				416	=> 'Requested Range Not Satisfiable',
 				417	=> 'Expectation Failed',
 				422	=> 'Unprocessable Entity',
+				426	=> 'Upgrade Required',
+				428	=> 'Precondition Required',
+				429	=> 'Too Many Requests',
+				431	=> 'Request Header Fields Too Large',
 
 				500	=> 'Internal Server Error',
 				501	=> 'Not Implemented',
 				502	=> 'Bad Gateway',
 				503	=> 'Service Unavailable',
 				504	=> 'Gateway Timeout',
-				505	=> 'HTTP Version Not Supported'
+				505	=> 'HTTP Version Not Supported',
+				511	=> 'Network Authentication Required',
 			);
 
 			if (isset($stati[$code]))
@@ -601,12 +643,12 @@ if ( ! function_exists('set_status_header'))
 		if (strpos(PHP_SAPI, 'cgi') === 0)
 		{
 			header('Status: '.$code.' '.$text, TRUE);
+			return;
 		}
-		else
-		{
-			$server_protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-			header($server_protocol.' '.$code.' '.$text, TRUE, $code);
-		}
+
+		$server_protocol = (isset($_SERVER['SERVER_PROTOCOL']) && in_array($_SERVER['SERVER_PROTOCOL'], array('HTTP/1.0', 'HTTP/1.1', 'HTTP/2'), TRUE))
+			? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+		header($server_protocol.' '.$code.' '.$text, TRUE, $code);
 	}
 }
 
@@ -633,7 +675,7 @@ if ( ! function_exists('_error_handler'))
 	 */
 	function _error_handler($severity, $message, $filepath, $line)
 	{
-		$is_error = (((E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
+		$is_error = (((E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
 		// When an error occurred, set the status header to '500 Internal Server Error'
 		// to indicate to the client something went wrong.
@@ -691,6 +733,7 @@ if ( ! function_exists('_exception_handler'))
 		$_error =& load_class('Exceptions', 'core');
 		$_error->log_exception('error', 'Exception: '.$exception->getMessage(), $exception->getFile(), $exception->getLine());
 
+		is_cli() OR set_status_header(500);
 		// Should we display the error?
 		if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors')))
 		{
@@ -751,8 +794,9 @@ if ( ! function_exists('remove_invisible_characters'))
 		// carriage return (dec 13) and horizontal tab (dec 09)
 		if ($url_encoded)
 		{
-			$non_displayables[] = '/%0[0-8bcef]/';	// url encoded 00-08, 11, 12, 14, 15
-			$non_displayables[] = '/%1[0-9a-f]/';	// url encoded 16-31
+			$non_displayables[] = '/%0[0-8bcef]/i';	// url encoded 00-08, 11, 12, 14, 15
+			$non_displayables[] = '/%1[0-9a-f]/i';	// url encoded 16-31
+			$non_displayables[] = '/%7f/i';	// url encoded 127
 		}
 
 		$non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S';	// 00-08, 11, 12, 14-31, 127
@@ -831,9 +875,6 @@ if ( ! function_exists('_stringify_attributes'))
 
 		foreach ($attributes as $key => $val)
 		{
-		    if( is_array($val) ){
-		        $val = implode(" ",$val);
-            }
 			$atts .= ($js) ? $key.'='.$val.',' : ' '.$key.'="'.$val.'"';
 		}
 
@@ -859,7 +900,7 @@ if ( ! function_exists('function_usable'))
 	 * terminate script execution if a disabled function is executed.
 	 *
 	 * The above described behavior turned out to be a bug in Suhosin,
-	 * but even though a fix was commited for 0.9.34 on 2012-02-12,
+	 * but even though a fix was committed for 0.9.34 on 2012-02-12,
 	 * that version is yet to be released. This function will therefore
 	 * be just temporary, but would probably be kept for a few years.
 	 *
